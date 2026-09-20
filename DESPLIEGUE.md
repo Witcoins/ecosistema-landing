@@ -108,14 +108,24 @@ cd C:\Users\ASUS\StudioProjects\witown-cloud-functions
 firebase deploy --only functions:landingContacto,functions:landingHoras,functions:landingAgendar
 ```
 
-> El sitio y las funciones se despliegan por separado. Si se publica el Hosting
-> antes que las funciones, los formularios devuelven 404 hasta que las funciones
-> esten arriba.
+> El sitio y las funciones se despliegan por separado, y el orden importa: **las
+> funciones primero**. Si se publica el Hosting antes, los formularios devuelven
+> 404 hasta que las funciones esten arriba.
 
-> **Queda desplegada una funcion que ya no se usa**: `landingAgendarTeams`, del
-> agendamiento viejo. Es un endpoint publico que escribe en Firestore y manda
-> correo, asi que conviene borrarla:
-> `firebase functions:delete landingAgendarTeams --region us-central1`
+> Estado al 2026-09-20: el Hosting y las **tres funciones estan desplegados**, y
+> el formulario del sitio en vivo responde (un `POST` a `/api/contacto` sin datos
+> devuelve 422 con el mensaje de la funcion, no un 404 de Hosting). La funcion
+> vieja `landingAgendarTeams` **no esta desplegada, asi que no hay que borrarla**.
+>
+> Como comprobar el estado en cualquier momento, sin desplegar nada:
+>
+> ```bash
+> firebase functions:list --project witcoins-network
+> curl -s -X POST https://ecosistema-iwitown.web.app/api/contacto -d "x=1"
+> ```
+>
+> Un 404 ahi significa que falta el deploy de las funciones; un 422 significa que
+> estan arriba y validando.
 
 ## 3. Se prueba en dos tiempos
 
@@ -220,14 +230,15 @@ no se nota; en datos móviles sí. El diseño está probado a 375 px.
 
 ---
 
-## Checklist de publicación
+## Checklist de la primera publicación
 
-En este orden.
+Se hizo el **2026-09-20**, en este orden. Queda como referencia para la proxima
+vez (un subdominio nuevo, otro sitio), no como tareas pendientes: lo que sigue
+abierto esta en [`PENDIENTES.md`](PENDIENTES.md).
 
 - [ ] **Videos `solucion-1/2/3.mp4` regrabados sin datos reales** (§0) — bloqueante
-- [ ] Las tres Cloud Functions desplegadas desde `main` del repo de funciones (§2)
-- [ ] Borrada la funcion vieja `landingAgendarTeams` (§2)
-- [ ] `firebase deploy --only hosting` desde este repositorio (§1)
+- [x] Las tres Cloud Functions desplegadas desde `main` del repo de funciones (§2)
+- [x] `firebase deploy --only hosting` desde este repositorio (§1)
 - [ ] La página se ve igual que en local, descontando lo de [`PENDIENTES.md`](PENDIENTES.md) §3
 - [ ] `firebase hosting:sites:list --project witcoins-network` muestra `ecosistema-iwitown` — si el sitio y las funciones no están en el mismo proyecto, los formularios dan 404
 - [ ] Formulario probado de verdad: el aviso llego a las DOS bandejas, al visitante le llego el correo de gracias, y el lead se ve en `LandingLeads`
