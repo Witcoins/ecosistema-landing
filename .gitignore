@@ -1,0 +1,15 @@
+# Comprimidos que se arman para enviar el kit
+*.zip
+
+# Basura que dejan Windows y macOS
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Editores
+.vscode/
+.idea/
+
+# Si algún día se ponen las credenciales de verdad en un archivo
+# aparte, va aquí para que no suban al repositorio.
+config-local.php

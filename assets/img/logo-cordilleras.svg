@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 80" width="240" height="80" role="img" aria-label="Gimnasio Cordilleras">
+  <!-- ============================================================
+       MARCADOR DE POSICIÓN
+       Witown tiene el logo real del Gimnasio Cordilleras.
+       Guardarlo como logo-gimnasio-cordilleras.png en esta misma
+       carpeta y cambiar el src en index.html (sección 7).
+       ============================================================ -->
+  <rect width="240" height="80" rx="10" fill="#FFFFFF" stroke="#E4E0EC" stroke-dasharray="6 5"/>
+  <text x="120" y="36" font-family="Segoe UI, system-ui, sans-serif" font-size="14" font-weight="700" fill="#4A4458" text-anchor="middle">Gimnasio Cordilleras</text>
+  <text x="120" y="56" font-family="Segoe UI, system-ui, sans-serif" font-size="10" fill="#A9A2B8" text-anchor="middle">poner aquí el logo real</text>
+</svg>

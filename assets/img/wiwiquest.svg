@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 380" width="480" height="380" role="img" aria-label="Pantalla de Wiwi Quest">
+  <!-- ============================================================
+       MARCADOR DE POSICIÓN
+       Reemplazar por una captura real de Wiwi Quest.
+       ============================================================ -->
+  <rect width="480" height="380" rx="16" fill="#2E1065"/>
+
+  <text x="32" y="48" font-family="Segoe UI, system-ui, sans-serif" font-size="11" fill="#C4B5FD" letter-spacing="2">WIWI QUEST</text>
+  <text x="32" y="78" font-family="Segoe UI, system-ui, sans-serif" font-size="24" font-weight="700" fill="#FFFFFF">Escoge tu camino</text>
+
+  <!-- Modo Exploración -->
+  <rect x="32" y="104" width="196" height="134" rx="14" fill="#7C3AED"/>
+  <circle cx="60" cy="134" r="14" fill="#FFFFFF" opacity=".2"/>
+  <text x="60" y="140" font-family="Segoe UI, system-ui, sans-serif" font-size="14" fill="#FFFFFF" text-anchor="middle">◎</text>
+  <text x="52" y="176" font-family="Segoe UI, system-ui, sans-serif" font-size="16" font-weight="700" fill="#FFFFFF">Exploración</text>
+  <text x="52" y="198" font-family="Segoe UI, system-ui, sans-serif" font-size="11" fill="#DDD6FE">Yo escojo el tema</text>
+  <text x="52" y="216" font-family="Segoe UI, system-ui, sans-serif" font-size="11" fill="#DDD6FE">que quiero explorar</text>
+
+  <!-- Modo Refuerzo -->
+  <rect x="252" y="104" width="196" height="134" rx="14" fill="#FFFFFF" opacity=".08"/>
+  <rect x="252" y="104" width="196" height="134" rx="14" fill="none" stroke="#C4B5FD" stroke-opacity=".35"/>
+  <circle cx="280" cy="134" r="14" fill="#C4B5FD" opacity=".2"/>
+  <text x="280" y="140" font-family="Segoe UI, system-ui, sans-serif" font-size="14" fill="#C4B5FD" text-anchor="middle">↻</text>
+  <text x="272" y="176" font-family="Segoe UI, system-ui, sans-serif" font-size="16" font-weight="700" fill="#FFFFFF">Refuerzo</text>
+  <text x="272" y="198" font-family="Segoe UI, system-ui, sans-serif" font-size="11" fill="#C4B5FD">Un tema asignado</text>
+  <text x="272" y="216" font-family="Segoe UI, system-ui, sans-serif" font-size="11" fill="#C4B5FD">o que quiero repasar</text>
+
+  <!-- Barra de progreso -->
+  <rect x="32" y="266" width="416" height="76" rx="14" fill="#FFFFFF" opacity=".06"/>
+  <text x="52" y="294" font-family="Segoe UI, system-ui, sans-serif" font-size="12" fill="#C4B5FD">Multiplicación por dos cifras</text>
+  <text x="428" y="294" font-family="Segoe UI, system-ui, sans-serif" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="end">+120 pts</text>
+  <rect x="52" y="308" width="376" height="9" rx="4.5" fill="#4C1D95"/>
+  <rect x="52" y="308" width="252" height="9" rx="4.5" fill="#25D366"/>
+</svg>

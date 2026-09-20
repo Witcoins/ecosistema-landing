@@ -1,0 +1,1609 @@
+/* ============================================================
+   i'Witown — Simulador del recorrido (Vista 1: Modalidad)
+   ============================================================
+   Este archivo solo tiene los estilos del simulador.
+   Los colores generales de la marca siguen estando en styles.css
+   ============================================================ */
+
+:root {
+  /* ---- Colores de la interfaz de WiTeacher ----
+     REEMPLAZAR por los códigos oficiales de la plataforma. */
+  --wt-barra:   #6B0D6B;   /* barra superior morada */
+  --wt-texto:   #5C0B5C;   /* textos de la plataforma */
+  --wt-acento:  #A21CA2;
+  --wt-panel:   #FCE9F7;   /* fondo rosado del panel */
+  --wt-borde:   #F0DAEA;
+  --wt-lateral: #FFFFFF;
+}
+
+/* Las secciones del simulador se muestran y se esconden con el atributo
+   "hidden". Algunas usan display:flex o grid, que le gana al hidden del
+   navegador, así que aquí se fuerza. No quitar esta regla. */
+[hidden] { display: none !important; }
+
+/* ============================================================
+   SECCIÓN COMPLETA
+   ============================================================ */
+
+.sim {
+  background:
+    radial-gradient(900px 480px at 85% -10%, rgba(118,4,103,.40), transparent 60%),
+    linear-gradient(160deg, var(--morado-900) 0%, var(--morado-800) 58%, #3B1470 100%);
+  color: #fff;
+  padding: 58px 0 74px;
+}
+
+/* Esta fila va DEBAJO de la ventana del docente, no encima. */
+.sim__intro {
+  max-width: 860px;
+  margin: 22px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.sim__paso {
+  margin: 0;
+  font-size: .76rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--morado-300);
+  border: 1px solid rgba(214,146,206,.4);
+  border-radius: 999px;
+  padding: .42em 1.1em;
+}
+
+.sim__instruccion {
+  display: inline-flex;
+  align-items: center;
+  gap: .7em;
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(214,146,206,.3);
+  border-radius: 999px;
+  padding: .6em 1.3em;
+  font-size: .95rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+}
+.sim__instruccion::before {
+  content: "";
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--whatsapp);
+  box-shadow: 0 0 0 0 rgba(37,211,102,.7);
+  animation: latido 2s infinite;
+}
+@keyframes latido {
+  70%  { box-shadow: 0 0 0 11px rgba(37,211,102,0); }
+  100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); }
+}
+
+/* ============================================================
+   LA VENTANA DE WITEACHER
+   ============================================================ */
+
+.vt {
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 30px 70px rgba(0,0,0,.42);
+  color: var(--tinta);
+}
+
+/* ---- Barra superior ---- */
+.vt__barra {
+  background: var(--wt-barra);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 11px 18px;
+  color: #fff;
+}
+.vt__barra-ico {
+  width: 26px; height: 26px;
+  flex-shrink: 0;
+  opacity: .85;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.6;
+}
+.vt__usuario { min-width: 0; }
+.vt__nombre {
+  margin: 0;
+  font-weight: 700;
+  font-size: .96rem;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.vt__colegio { margin: 0; font-size: .78rem; color: rgba(255,255,255,.72); }
+
+.vt__acciones { margin-left: auto; display: flex; align-items: center; gap: 14px; }
+.vt__marca {
+  font-family: var(--fuente-titulos);
+  font-weight: 700;
+  font-size: 1.02rem;
+  letter-spacing: .06em;
+  padding-left: 14px;
+  border-left: 1px solid rgba(255,255,255,.28);
+}
+.vt__marca em { font-style: italic; font-size: .62em; opacity: .8; }
+
+/* ---- Cuerpo ---- */
+.vt__cuerpo { display: flex; min-height: 430px; }
+
+.vt__lateral {
+  background: var(--wt-lateral);
+  border-right: 1px solid var(--wt-borde);
+  padding: 14px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex-shrink: 0;
+}
+.vt__lateral svg {
+  width: 21px; height: 21px;
+  stroke: #8A7F93;
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.vt__lateral .is-actual { position: relative; }
+.vt__lateral .is-actual svg { stroke: var(--wt-acento); }
+.vt__lateral .is-actual::before {
+  content: "";
+  position: absolute;
+  left: -10px; top: 50%;
+  transform: translateY(-50%);
+  width: 3px; height: 22px;
+  border-radius: 0 3px 3px 0;
+  background: var(--wt-acento);
+}
+
+.vt__contenido { flex: 1; padding: 22px 24px 26px; background: #fff; min-width: 0; }
+
+/* ---- Encabezado del tema ---- */
+.vt__tema {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 14px;
+  padding-bottom: 16px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--wt-borde);
+}
+.vt__tema h3 { margin: 0; font-size: 1.22rem; color: var(--wt-texto); }
+.vt__tema-meta { margin: 0; font-size: .84rem; color: #8A7F93; }
+.vt__tema-etiqueta {
+  margin-left: auto;
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--wt-acento);
+  background: var(--wt-panel);
+  border-radius: 999px;
+  padding: .38em 1em;
+}
+
+/* ---- Panel rosado con las modalidades ---- */
+.vt__panel { background: var(--wt-panel); border-radius: 14px; padding: 20px 18px; }
+.vt__panel-titulo {
+  margin: 0 0 14px;
+  font-family: var(--fuente-titulos);
+  font-size: 1.14rem;
+  font-weight: 700;
+  color: var(--wt-texto);
+  padding-left: 6px;
+}
+
+.vt__grid {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px 10px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+}
+
+/* ---- Cada modalidad ---- */
+.vt-mod {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  padding: 14px 6px 12px;
+  background: transparent;
+  border: 1.5px solid transparent;
+  border-radius: 11px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background .16s, border-color .16s, transform .16s;
+}
+.vt-mod__ico {
+  width: 25px; height: 25px;
+  color: #6E6478;
+  transition: color .16s, transform .16s;
+}
+.vt-mod__texto {
+  font-size: .73rem;
+  line-height: 1.25;
+  text-align: center;
+  color: #5D5468;
+  font-weight: 600;
+  transition: color .16s;
+}
+.vt-mod:hover {
+  background: var(--wt-panel);
+  border-color: var(--wt-borde);
+  transform: translateY(-2px);
+}
+.vt-mod:hover .vt-mod__ico { color: var(--wt-acento); transform: scale(1.08); }
+.vt-mod:hover .vt-mod__texto { color: var(--wt-texto); }
+.vt-mod:focus-visible { outline: 3px solid var(--morado-300); outline-offset: 2px; }
+
+.vt-mod.is-vista .vt-mod__ico { color: var(--wt-acento); }
+
+.vt-mod.is-activa {
+  background: var(--wt-acento);
+  border-color: var(--wt-acento);
+  box-shadow: 0 6px 16px rgba(162,28,162,.3);
+}
+.vt-mod.is-activa .vt-mod__ico,
+.vt-mod.is-activa .vt-mod__texto { color: #fff; }
+
+/* ============================================================
+   RESULTADO DE LA MODALIDAD ESCOGIDA
+   ============================================================ */
+
+.res {
+  margin-top: 18px;
+  border: 1.5px solid var(--wt-borde);
+  border-left: 4px solid var(--wt-acento);
+  border-radius: 12px;
+  padding: 20px 22px;
+  background: #FFFDFE;
+  animation: entra .34s ease;
+}
+@keyframes entra {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.res__head { display: flex; align-items: center; gap: 13px; flex-wrap: wrap; margin-bottom: 12px; }
+.res__ico {
+  width: 42px; height: 42px;
+  border-radius: 11px;
+  background: var(--wt-panel);
+  color: var(--wt-acento);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.res__ico svg { width: 22px; height: 22px; }
+.res__eyebrow {
+  margin: 0;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #8A7F93;
+}
+.res__head h3 { margin: 0; font-size: 1.24rem; color: var(--wt-texto); }
+.res__conteo {
+  margin-left: auto;
+  font-size: .76rem;
+  font-weight: 700;
+  color: var(--wt-acento);
+  background: var(--wt-panel);
+  border-radius: 999px;
+  padding: .42em 1em;
+}
+
+.res__intro { font-size: .96rem; color: var(--tinta-suave); margin-bottom: .9rem; }
+.res__intro strong { color: var(--wt-texto); }
+
+.res__lista { list-style: none; padding: 0; margin: 0 0 1.1rem; }
+.res__lista li {
+  position: relative;
+  padding: 9px 0 9px 30px;
+  font-size: .96rem;
+  color: var(--tinta);
+  border-bottom: 1px solid #F5EEF3;
+}
+.res__lista li:last-child { border-bottom: 0; }
+.res__lista li::before {
+  content: "";
+  position: absolute;
+  left: 4px; top: 15px;
+  width: 15px; height: 15px;
+  border-radius: 50%;
+  background: var(--wt-acento);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+  background-size: 10px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.res__remate {
+  margin: 0;
+  padding: 13px 16px;
+  background: var(--wt-panel);
+  border-radius: 10px;
+  font-size: .96rem;
+  color: var(--wt-texto);
+  line-height: 1.55;
+}
+
+/* ============================================================
+   PIE DEL SIMULADOR: progreso y botones
+   ============================================================ */
+
+.sim__pie {
+  margin-top: 26px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+}
+
+.sim__progreso { flex: 1 1 260px; min-width: 220px; }
+.sim__contador { margin: 0 0 8px; font-size: .92rem; color: rgba(255,255,255,.8); }
+.sim__contador strong { color: #fff; }
+.sim__barra-fondo {
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.18);
+  overflow: hidden;
+}
+.sim__barra {
+  height: 100%;
+  width: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--morado-600), var(--whatsapp));
+  transition: width .45s ease;
+}
+
+.sim__botones { display: flex; flex-wrap: wrap; gap: 12px; }
+.sim__botones .btn:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 980px) {
+  .vt__grid { grid-template-columns: repeat(4, 1fr); }
+  .vt__cuerpo { min-height: 0; }
+}
+
+@media (max-width: 720px) {
+  .sim { padding: 42px 0 56px; }
+  .vt__lateral { display: none; }          /* en celular el menú lateral estorba */
+  .vt__contenido { padding: 18px 14px 20px; }
+  .vt__panel { padding: 14px 12px; }
+  .vt__grid { grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 12px 6px; }
+  .vt-mod { padding: 12px 3px 10px; }
+  .vt-mod__texto { font-size: .68rem; }
+  .vt__nombre { font-size: .86rem; }
+  .vt__marca { font-size: .88rem; padding-left: 10px; }
+  .vt__tema-etiqueta { margin-left: 0; }
+  .res { padding: 16px 15px; }
+  .res__conteo { margin-left: 0; }
+  .sim__botones { width: 100%; }
+  .sim__botones .btn { flex: 1 1 100%; }
+}
+
+@media (max-width: 420px) {
+  .vt__grid { grid-template-columns: repeat(2, 1fr); }
+  .vt__acciones .vt__barra-ico { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .res { animation: none; }
+  .sim__instruccion::before { animation: none; }
+  .vt-mod:hover { transform: none; }
+}
+
+/* ============================================================
+   ============================================================
+   VISTA DEL ESTUDIANTE — WIWI QUEST
+   ============================================================
+   ============================================================ */
+
+:root {
+  /* ---- Colores de la pantalla del estudiante ----
+     REEMPLAZAR por los códigos oficiales de la plataforma. */
+  --wq-barra:  #14100F;   /* barra superior negra */
+  --wq-verde:  #3BD16F;   /* nombre del colegio */
+  --wq-fondo:  #FDEFE9;   /* fondo durazno del tablero */
+  --wq-rojo:   #BE3A31;   /* tarjeta del robot */
+  --wq-modo:   #7B1E23;   /* botón del modo de juego */
+  --wq-lila:   #8B5CF6;   /* contador de respuestas correctas */
+  --wq-linea:  #E9A79A;   /* constelación del fondo */
+
+  /* Colores neón del recorrido automático */
+  --wq-verde-neon:  #39FF96;
+  --wq-rosa-neon:   #FF4FA3;
+  --wq-morado-neon: #B14BFF;
+}
+
+.wq { animation: entra .34s ease; }
+.wq[hidden] { display: none; }
+
+/* ---- Aviso de contexto y botón de volver ----
+   Va DEBAJO de la pantalla del estudiante. ---- */
+.wq__aviso {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  margin-top: 16px;
+}
+.wq__aviso-txt {
+  margin: 0;
+  font-size: .95rem;
+  color: rgba(255,255,255,.82);
+}
+.wq__aviso-txt strong { color: #fff; }
+
+/* ---- Botón de volver: borde morado neón para que no pase desapercibido ---- */
+.wq__aviso .btn {
+  margin-left: auto;
+  padding: .6em 1.3em;
+  font-size: .9rem;
+  color: #fff;
+  background: rgba(177,75,255,.14);
+  border-color: var(--wq-morado-neon);
+  animation: neonMorado 1.8s ease-in-out infinite;
+}
+.wq__aviso .btn:hover {
+  background: rgba(177,75,255,.3);
+  border-color: #D9A6FF;
+}
+@keyframes neonMorado {
+  0%, 100% { box-shadow: 0 0 0 2px rgba(177,75,255,.28), 0 0 14px 1px rgba(177,75,255,.45); }
+  50%      { box-shadow: 0 0 0 4px rgba(177,75,255,.45), 0 0 26px 5px rgba(177,75,255,.75); }
+}
+
+/* ---- Ventana ---- */
+.wq__ventana {
+  position: relative;          /* el modal se monta encima de esta ventana */
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 30px 70px rgba(0,0,0,.42);
+  color: var(--tinta);
+}
+
+/* ---- Barra superior negra ---- */
+.wq__barra {
+  background: var(--wq-barra);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 9px 18px;
+}
+.wq__barra svg { fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+
+.wq__menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+  font-size: .64rem;
+  color: rgba(255,255,255,.75);
+}
+.wq__menu svg { width: 21px; height: 21px; }
+
+.wq__ident { min-width: 0; flex: 1; }
+.wq__hola {
+  margin: 0;
+  font-weight: 700;
+  font-size: .93rem;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 9px;
+}
+/* El nombre se corta con puntos suspensivos si no cabe, en vez de
+   partirse en varias líneas y deformar la barra. */
+.wq__hola-txt {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wq__saldo {
+  flex-shrink: 0;
+  background: #fff;
+  color: var(--wq-barra);
+  border-radius: 999px;
+  padding: .18em .85em;
+  font-size: .78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.wq__colegio {
+  margin: 0;
+  font-size: .78rem;
+  color: var(--wq-verde);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wq__barra-der { margin-left: auto; display: flex; align-items: center; gap: 15px; }
+.wq__barra-der svg { width: 20px; height: 20px; opacity: .8; }
+.wq__marca {
+  position: relative;
+  font-family: var(--fuente-titulos);
+  font-weight: 700;
+  font-size: 1.16rem;
+  letter-spacing: .04em;
+  padding-left: 15px;
+  border-left: 1px solid rgba(255,255,255,.28);
+}
+.wq__marca em {
+  position: absolute;
+  top: -.62em;
+  right: 0;
+  font-size: .42em;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0;
+  opacity: .85;
+}
+
+/* ---- Cuerpo ---- */
+.wq__cuerpo { display: flex; }
+
+.wq__lateral {
+  background: #fff;
+  border-right: 1px solid #EFE6E2;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex-shrink: 0;
+}
+.wq__lateral svg {
+  width: 20px; height: 20px;
+  fill: none;
+  stroke: #9A8F8B;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ---- Tablero ---- */
+.wq__tablero {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  background: var(--wq-fondo);
+  padding: 16px 18px 22px;
+  overflow: hidden;
+}
+.wq__constelacion {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: .5;
+  pointer-events: none;
+}
+.wq__tablero > *:not(.wq__constelacion) { position: relative; }
+
+/* ---- Fila superior: modo, reloj, expandir ---- */
+.wq__top { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+
+.wq__modo {
+  background: var(--wq-modo);
+  color: #fff;
+  font-family: var(--fuente-titulos);
+  font-weight: 700;
+  font-size: .98rem;
+  border-radius: 999px;
+  padding: .72em 1.5em;
+}
+
+.wq__reloj {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  background: #fff;
+  border-radius: 999px;
+  padding: .45em .6em .45em 1em;
+  box-shadow: 0 2px 8px rgba(190,58,49,.12);
+}
+.wq__reloj svg { width: 17px; height: 17px; fill: none; stroke: var(--wq-rojo); stroke-width: 1.8; stroke-linecap: round; }
+.wq__reloj b { font-size: 1.18rem; font-family: var(--fuente-titulos); color: #3A2F2C; }
+.wq__aciertos {
+  background: var(--wq-lila);
+  color: #fff;
+  font-size: .74rem;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: .35em .9em;
+}
+.wq__expandir {
+  width: 19px; height: 19px;
+  fill: none; stroke: #8A7A76; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round;
+  margin-left: 4px;
+}
+
+/* ---- Interruptor de audio ---- */
+.wq__audio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  margin: 14px 0 6px;
+  font-size: .86rem;
+  color: #6B5C58;
+}
+.wq__audio svg { width: 17px; height: 17px; fill: none; stroke: #6B5C58; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.wq__switch {
+  width: 42px; height: 21px;
+  border-radius: 999px;
+  background: #EADCD6;
+  position: relative;
+  display: inline-block;
+}
+.wq__switch i {
+  position: absolute;
+  top: 2.5px; left: 3px;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: #8B5E3C;
+}
+
+/* ---- Rejilla principal ---- */
+.wq__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 76px;
+  gap: 18px;
+  align-items: start;
+  margin-top: 6px;
+}
+
+/* ---- Columna izquierda ---- */
+.wq__meta { margin: 0 0 2px; font-size: .86rem; color: #6B5C58; }
+.wq__meta b { font-weight: 600; color: #3A2F2C; }
+.wq__info {
+  display: inline-grid;
+  place-items: center;
+  width: 14px; height: 14px;
+  border: 1px solid #A89A96;
+  border-radius: 50%;
+  font-size: .58rem;
+  font-style: italic;
+  color: #A89A96;
+  vertical-align: middle;
+}
+
+.wq__tarjeta {
+  position: relative;
+  margin-top: 12px;
+  background: linear-gradient(150deg, #C8433A, var(--wq-rojo) 60%, #A93029);
+  border-radius: 16px;
+  min-height: 200px;
+  display: grid;
+  place-items: center;
+  padding: 14px;
+}
+.wq__tarjeta-esq {
+  position: absolute;
+  display: flex;
+  gap: 4px;
+  flex-direction: column;
+  font-size: .76rem;
+  color: rgba(255,255,255,.85);
+}
+.wq__tarjeta-esq span { display: inline-flex; align-items: center; gap: 5px; }
+.wq__tarjeta-esq svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.wq__tarjeta-esq--tl { top: 12px; left: 14px; }
+.wq__tarjeta-esq--br { bottom: 12px; right: 14px; align-items: flex-end; }
+
+/* El robot es el archivo oficial assets/img/robot_wiwiquest.svg.
+   El SVG ya trae su propia sombra dibujada, por eso aquí no se le
+   agrega ninguna: solo se le da el movimiento de flotar.
+   Para que flote más o menos, se cambian los 10px de abajo. */
+.wq__robot {
+  display: grid;
+  place-items: center;
+  padding: 6px 0 10px;
+}
+.wq__robot-img {
+  width: 150px;
+  height: auto;
+  display: block;
+  animation: flota 3.2s ease-in-out infinite;
+}
+@keyframes flota {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+
+.wq__leer {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: -18px auto 0;
+  position: relative;
+  background: #fff;
+  border: 0;
+  border-radius: 999px;
+  padding: .55em 1.3em;
+  font-family: inherit;
+  font-size: .9rem;
+  font-weight: 600;
+  color: #3A2F2C;
+  box-shadow: 0 3px 10px rgba(0,0,0,.14);
+  cursor: pointer;
+}
+.wq__leer svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+
+.wq__pregunta {
+  position: relative;
+  margin-top: 16px;
+  background: #fff;
+  border: 1px solid #F0DED8;
+  border-radius: 14px;
+  padding: 20px 18px;
+  min-height: 74px;
+  display: flex;
+  align-items: center;
+}
+.wq__pregunta p { margin: 0; font-size: 1rem; color: #3A2F2C; }
+.wq__puntos {
+  position: absolute;
+  top: -13px;
+  right: 16px;
+  background: #fff;
+  border: 1px solid #F0DED8;
+  border-radius: 999px;
+  padding: .3em 1em;
+  font-size: .82rem;
+  font-weight: 700;
+  color: #3A2F2C;
+  box-shadow: 0 2px 6px rgba(0,0,0,.07);
+}
+
+/* ---- La pregunta se enciende en verde neón cuando arranca el recorrido ---- */
+.wq__pregunta.esta-encendida {
+  border-color: var(--wq-verde-neon);
+  animation: enciende 1.25s ease-in-out infinite;
+}
+@keyframes enciende {
+  0%, 100% { box-shadow: 0 0 0 2px rgba(57,255,150,.30), 0 0 14px 1px rgba(57,255,150,.40); }
+  50%      { box-shadow: 0 0 0 4px rgba(57,255,150,.50), 0 0 30px 6px rgba(57,255,150,.75); }
+}
+.wq__pregunta.esta-encendida .wq__puntos {
+  border-color: var(--wq-verde-neon);
+  color: #0B6B3A;
+}
+
+.wq__tiempo { margin-top: 16px; }
+.wq__tiempo-top, .wq__tiempo-pie {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: .74rem;
+  color: #6B5C58;
+}
+.wq__tiempo-barra {
+  height: 9px;
+  border-radius: 999px;
+  background: #E6D9D4;
+  overflow: hidden;
+  margin: 4px 0;
+}
+.wq__tiempo-fill {
+  height: 100%;
+  width: 20%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #2ECC71 78%, #1B5E3A 78%);
+  transition: width 1s linear;
+}
+.wq__tiempo-pie { padding-left: 34%; }
+.wq__power {
+  display: grid;
+  place-items: center;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: #7A6A66;
+}
+.wq__power svg { width: 14px; height: 14px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; }
+
+/* ---- Opciones de respuesta ---- */
+.wq__opciones { display: flex; flex-direction: column; gap: 12px; padding-top: 6px; }
+
+.wq-op {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  text-align: left;
+  background: #EAE7E6;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  padding: 16px 18px;
+  font-family: inherit;
+  font-size: .96rem;
+  color: #3A2F2C;
+  cursor: pointer;
+  transition: background .16s, border-color .16s, transform .16s;
+}
+.wq-op__letra {
+  display: grid;
+  place-items: center;
+  width: 26px; height: 26px;
+  flex-shrink: 0;
+  border-radius: 7px;
+  background: #DAD5D3;
+  font-size: .84rem;
+  font-weight: 700;
+  color: #5A4D49;
+}
+.wq-op:hover { background: #E2DEDC; transform: translateX(3px); }
+.wq-op:focus-visible { outline: 3px solid var(--morado-300); outline-offset: 2px; }
+
+/* ---- Respuesta correcta: verde neón ---- */
+.wq-op.es-correcta {
+  background: #D8FFE9;
+  border-color: var(--wq-verde-neon);
+  box-shadow: 0 0 0 3px rgba(57,255,150,.28), 0 0 22px 2px rgba(57,255,150,.55);
+}
+.wq-op.es-correcta .wq-op__letra { background: var(--wq-verde-neon); color: #08361F; }
+
+/* ---- Respuesta equivocada: rosado neón ---- */
+.wq-op.es-errada {
+  background: #FFE1F0;
+  border-color: var(--wq-rosa-neon);
+  box-shadow: 0 0 0 3px rgba(255,79,163,.24), 0 0 22px 2px rgba(255,79,163,.5);
+}
+.wq-op.es-errada .wq-op__letra { background: var(--wq-rosa-neon); color: #fff; }
+
+/* ---- Momento en que el recorrido "escoge" una opción ---- */
+.wq-op.se-escoge { transform: scale(1.03); border-color: #C9C2BF; }
+
+.wq-op[disabled] { cursor: default; }
+.wq-op[disabled]:hover { transform: none; background: #EAE7E6; }
+.wq-op.es-correcta[disabled]:hover { background: #D8FFE9; }
+.wq-op.es-errada[disabled]:hover  { background: #FFE1F0; }
+.wq-op.se-escoge[disabled]:hover  { transform: scale(1.03); }
+
+/* ---- Barra de herramientas del estudiante ---- */
+.wq__rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  padding-top: 6px;
+}
+.wq__rail-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: .62rem;
+  line-height: 1.2;
+  text-align: center;
+  color: #6B5C58;
+}
+.wq__rail-ico, .wq__avatar {
+  display: grid;
+  place-items: center;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.75);
+}
+.wq__avatar { background: #F3C9A8; }
+.wq__rail svg {
+  width: 17px; height: 17px;
+  fill: none;
+  stroke: #6B5C58;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.wq__avatar svg { stroke: #8B5E3C; }
+
+/* ============================================================
+   MODAL DE RETROALIMENTACIÓN
+   ============================================================ */
+
+.wq-modal {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(24,12,30,.55);
+  backdrop-filter: blur(3px);
+  animation: velo .25s ease;
+}
+@keyframes velo { from { opacity: 0; } to { opacity: 1; } }
+
+.wq-modal__caja {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  background: #fff;
+  border-radius: 16px;
+  border-top: 5px solid var(--wq-verde-neon);
+  padding: 26px 26px 22px;
+  box-shadow: 0 24px 60px rgba(0,0,0,.4), 0 0 40px rgba(57,255,150,.25);
+  animation: sube .34s cubic-bezier(.2,.9,.3,1.2);
+}
+@keyframes sube {
+  from { opacity: 0; transform: translateY(22px) scale(.96); }
+  to   { opacity: 1; transform: none; }
+}
+
+.wq-modal__sello {
+  display: inline-block;
+  font-size: .66rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #0B6B3A;
+  background: #D8FFE9;
+  border-radius: 999px;
+  padding: .38em 1em;
+  margin-bottom: .9rem;
+}
+.wq-modal__caja h3 {
+  margin: 0 0 .6rem;
+  font-size: 1.5rem;
+  color: var(--wq-texto);
+}
+.wq-modal__texto { margin: 0 0 1rem; font-size: 1rem; color: var(--tinta-suave); }
+
+.wq-modal__nota {
+  background: #FFF1F8;
+  border-left: 3px solid var(--wq-rosa-neon);
+  border-radius: 9px;
+  padding: 12px 14px;
+  font-size: .92rem;
+  color: var(--tinta-suave);
+  line-height: 1.55;
+}
+.wq-modal__nota strong { color: #A8135F; display: block; margin-bottom: .2rem; }
+
+.wq-modal__pie {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 1.3rem;
+}
+.wq-modal__puntos {
+  font-family: var(--fuente-titulos);
+  font-size: 1.32rem;
+  font-weight: 700;
+  color: #0B8B4B;
+}
+.wq-modal__pie .btn { margin-left: auto; }
+
+/* ---- Responsive del Wiwi Quest ---- */
+@media (max-width: 980px) {
+  .wq__grid { grid-template-columns: minmax(0, 1fr) 68px; }
+  .wq__opciones { grid-column: 1; }
+  .wq__rail { grid-column: 2; grid-row: 1 / span 2; }
+}
+
+@media (max-width: 720px) {
+  .wq__aviso .btn { margin-left: 0; width: 100%; }
+  .wq__lateral { display: none; }
+  .wq__tablero { padding: 14px 12px 18px; }
+  .wq__grid { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .wq__rail {
+    grid-column: 1;
+    grid-row: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    padding-top: 2px;
+  }
+  .wq__modo { font-size: .88rem; padding: .62em 1.1em; }
+  .wq__reloj b { font-size: 1.04rem; }
+  .wq__barra { gap: 11px; padding: 8px 12px; }
+  .wq__hola { font-size: .82rem; }
+  .wq__saldo { font-size: .7rem; padding: .16em .7em; }
+  .wq__menu span { display: none; }          /* en celular sobra la palabra "Menú" */
+  .wq__barra-der svg { display: none; }      /* y las campanas quitan espacio al nombre */
+  .wq__marca { font-size: .95rem; padding-left: 11px; }
+  .wq__tiempo-pie { padding-left: 0; }
+  .wq-op { padding: 14px 14px; font-size: .92rem; }
+
+  .wq-modal { padding: 14px; align-items: start; padding-top: 50px; }
+  .wq-modal__caja { padding: 20px 18px 18px; }
+  .wq-modal__caja h3 { font-size: 1.28rem; }
+  .wq-modal__pie { flex-wrap: wrap; }
+  .wq-modal__pie .btn { margin-left: 0; width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wq { animation: none; }
+  .wq__robot-img { animation: none; }
+  .wq-op:hover { transform: none; }
+  .wq__pregunta.esta-encendida { animation: none; box-shadow: 0 0 0 3px rgba(57,255,150,.45); }
+  .wq-modal, .wq-modal__caja { animation: none; }
+  .wq__aviso .btn { animation: none; box-shadow: 0 0 0 3px rgba(177,75,255,.4); }
+}
+
+/* ============================================================
+   ============================================================
+   MODO COMPACTO — DENTRO DEL MARCO
+
+   Todo lo de aquí abajo solo aplica cuando el simulador va dentro
+   del marco de la presentación (.pres__app). Achica iconos, letras
+   y espacios para que la pantalla completa quepa sin barra de
+   desplazamiento.
+
+   Si algún día el marco se hace más alto, estos valores se pueden
+   soltar un poco. No tocan al simulador fuera del marco.
+   ============================================================
+   ============================================================ */
+
+/* ---- Fila de controles ---- */
+.pres__app .sim__intro { margin: 10px 0 0; gap: 8px; }
+.pres__app .sim__paso { font-size: .62rem; padding: .34em .85em; }
+.pres__app .sim__instruccion { font-size: .76rem; padding: .42em 1em; }
+.pres__app .sim__instruccion::before { width: 7px; height: 7px; }
+.pres__app .pres__reiniciar { font-size: .7rem; padding: .38em .9em; }
+
+/* ---- Ventana del docente ---- */
+.pres__app .vt { border-radius: 11px; box-shadow: 0 14px 34px rgba(0,0,0,.35); }
+.pres__app .vt__barra { padding: 6px 12px; gap: 10px; }
+.pres__app .vt__barra-ico { width: 18px; height: 18px; }
+.pres__app .vt__nombre { font-size: .8rem; }
+.pres__app .vt__colegio { font-size: .66rem; }
+.pres__app .vt__marca { font-size: .84rem; padding-left: 10px; }
+.pres__app .vt__acciones { gap: 9px; }
+
+.pres__app .vt__cuerpo { min-height: 0; }
+.pres__app .vt__lateral { padding: 9px 7px; gap: 11px; }
+.pres__app .vt__lateral svg { width: 16px; height: 16px; }
+.pres__app .vt__contenido { padding: 11px 14px 12px; }
+
+.pres__app .vt__tema { padding-bottom: 7px; margin-bottom: 9px; gap: 4px 10px; }
+.pres__app .vt__tema h3 { font-size: .98rem; }
+.pres__app .vt__tema-meta { font-size: .7rem; }
+.pres__app .vt__tema-etiqueta { font-size: .58rem; padding: .3em .8em; }
+
+.pres__app .vt__panel { padding: 10px 9px; border-radius: 10px; }
+.pres__app .vt__panel-titulo { font-size: .88rem; margin-bottom: 7px; }
+
+/* 8 columnas en vez de 6: las 15 modalidades caben en 2 filas */
+.pres__app .vt__grid { grid-template-columns: repeat(8, 1fr); padding: 8px 5px; gap: 2px; border-radius: 9px; }
+.pres__app .vt-mod { padding: 7px 2px 6px; gap: 4px; border-radius: 8px; }
+.pres__app .vt-mod__ico { width: 18px; height: 18px; }
+.pres__app .vt-mod__texto { font-size: .58rem; line-height: 1.15; }
+
+/* ---- Lista de recursos de una modalidad ---- */
+.pres__app .res { margin-top: 9px; padding: 11px 13px; border-radius: 9px; }
+.pres__app .res__head { gap: 9px; margin-bottom: 7px; }
+.pres__app .res__ico { width: 30px; height: 30px; border-radius: 8px; }
+.pres__app .res__ico svg { width: 16px; height: 16px; }
+.pres__app .res__head h3 { font-size: 1rem; }
+.pres__app .res__eyebrow { font-size: .58rem; }
+.pres__app .res__conteo { font-size: .64rem; padding: .3em .8em; }
+.pres__app .res__intro { font-size: .78rem; margin-bottom: .5rem; }
+.pres__app .res__lista li { font-size: .76rem; padding: 5px 0 5px 24px; }
+.pres__app .res__lista li::before { top: 9px; width: 13px; height: 13px; background-size: 9px; }
+.pres__app .res__remate { font-size: .76rem; padding: 9px 11px; line-height: 1.45; }
+
+/* ---- Progreso y botones ---- */
+.pres__app .sim__pie { margin-top: 10px; gap: 12px; }
+.pres__app .sim__contador { font-size: .74rem; margin-bottom: 5px; }
+.pres__app .sim__barra-fondo { height: 5px; }
+.pres__app .sim__botones .btn { font-size: .76rem; padding: .55em 1.1em; }
+
+/* ---- Pantalla del estudiante ---- */
+.pres__app .wq__ventana { border-radius: 11px; box-shadow: 0 14px 34px rgba(0,0,0,.35); }
+.pres__app .wq__barra { padding: 6px 12px; gap: 12px; }
+.pres__app .wq__menu svg { width: 17px; height: 17px; }
+.pres__app .wq__menu { font-size: .55rem; }
+.pres__app .wq__hola { font-size: .76rem; gap: 7px; }
+.pres__app .wq__saldo { font-size: .64rem; padding: .14em .7em; }
+.pres__app .wq__colegio { font-size: .66rem; }
+.pres__app .wq__barra-der svg { width: 16px; height: 16px; }
+.pres__app .wq__marca { font-size: .95rem; padding-left: 11px; }
+
+.pres__app .wq__lateral { padding: 10px 8px; gap: 12px; }
+.pres__app .wq__lateral svg { width: 16px; height: 16px; }
+.pres__app .wq__tablero { padding: 10px 12px 12px; }
+
+.pres__app .wq__modo { font-size: .76rem; padding: .5em 1.1em; }
+.pres__app .wq__reloj { padding: .32em .45em .32em .8em; gap: 7px; }
+.pres__app .wq__reloj b { font-size: .95rem; }
+.pres__app .wq__aciertos { font-size: .6rem; padding: .28em .7em; }
+.pres__app .wq__audio { margin: 7px 0 3px; font-size: .7rem; }
+.pres__app .wq__switch { width: 34px; height: 17px; }
+.pres__app .wq__switch i { width: 13px; height: 13px; top: 2px; }
+
+.pres__app .wq__grid { gap: 12px; margin-top: 3px; grid-template-columns: minmax(0,1fr) minmax(0,1fr) 62px; }
+.pres__app .wq__meta { font-size: .7rem; }
+.pres__app .wq__tarjeta { min-height: 0; margin-top: 7px; padding: 8px; border-radius: 12px; }
+.pres__app .wq__robot { padding: 2px 0 4px; }
+.pres__app .wq__robot-img { width: 88px; }
+.pres__app .wq__tarjeta-esq { font-size: .62rem; }
+.pres__app .wq__tarjeta-esq svg { width: 11px; height: 11px; }
+.pres__app .wq__leer { font-size: .72rem; padding: .4em 1em; margin-top: -13px; }
+.pres__app .wq__leer svg { width: 13px; height: 13px; }
+
+.pres__app .wq__pregunta { margin-top: 10px; padding: 11px 12px; min-height: 0; border-radius: 11px; }
+.pres__app .wq__pregunta p { font-size: .8rem; }
+.pres__app .wq__puntos { font-size: .68rem; padding: .24em .8em; top: -11px; }
+.pres__app .wq__tiempo { margin-top: 9px; }
+.pres__app .wq__tiempo-top, .pres__app .wq__tiempo-pie { font-size: .62rem; }
+.pres__app .wq__tiempo-barra { height: 6px; }
+.pres__app .wq__power { width: 20px; height: 20px; }
+.pres__app .wq__power svg { width: 11px; height: 11px; }
+
+.pres__app .wq__opciones { gap: 7px; padding-top: 2px; }
+.pres__app .wq-op { padding: 9px 11px; font-size: .78rem; gap: 10px; border-radius: 9px; }
+.pres__app .wq-op__letra { width: 21px; height: 21px; font-size: .7rem; border-radius: 6px; }
+
+.pres__app .wq__rail { gap: 9px; padding-top: 2px; }
+.pres__app .wq__rail-item { font-size: .52rem; gap: 3px; }
+.pres__app .wq__rail-ico, .pres__app .wq__avatar { width: 26px; height: 26px; }
+.pres__app .wq__rail svg { width: 13px; height: 13px; }
+
+.pres__app .wq__aviso { margin-top: 9px; gap: 10px; }
+.pres__app .wq__aviso-txt { font-size: .76rem; }
+.pres__app .wq__aviso .btn { font-size: .72rem; padding: .42em 1em; }
+
+/* ---- Modal de retroalimentación ---- */
+.pres__app .wq-modal { padding: 12px; }
+.pres__app .wq-modal__caja { padding: 16px 18px 15px; border-radius: 12px; max-width: 380px; }
+.pres__app .wq-modal__sello { font-size: .56rem; margin-bottom: .55rem; padding: .3em .85em; }
+.pres__app .wq-modal__caja h3 { font-size: 1.12rem; margin-bottom: .4rem; }
+.pres__app .wq-modal__texto { font-size: .82rem; margin-bottom: .6rem; }
+.pres__app .wq-modal__nota { font-size: .76rem; padding: 9px 11px; line-height: 1.4; }
+.pres__app .wq-modal__pie { margin-top: .8rem; gap: 10px; }
+.pres__app .wq-modal__puntos { font-size: 1.05rem; }
+.pres__app .wq-modal__pie .btn { font-size: .78rem; padding: .5em 1.2em; }
+
+/* Los iconos del menú lateral traían mucho aire: cada uno ocupaba 28 px
+   para un dibujo de 16. Así el menú medía 437 px y estiraba la ventana
+   entera. Con esto ocupa lo que realmente mide. */
+.pres__app .vt__lateral,
+.pres__app .wq__lateral { padding: 8px 6px; gap: 8px; }
+.pres__app .vt__lateral > span,
+.pres__app .wq__lateral > span { display: flex; align-items: center; justify-content: center; }
+.pres__app .vt__lateral svg,
+.pres__app .wq__lateral svg { width: 15px; height: 15px; }
+
+/* Botón para volver de la lista de recursos a la cuadrícula */
+.res__volver {
+  display: inline-flex;
+  align-items: center;
+  background: transparent;
+  border: 1.5px solid var(--wt-borde);
+  border-radius: 999px;
+  padding: .4em 1em;
+  margin-bottom: .9rem;
+  font-family: inherit;
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--wt-acento);
+  cursor: pointer;
+  transition: background .16s, border-color .16s;
+}
+.res__volver:hover { background: var(--wt-panel); border-color: var(--wt-acento); }
+.res__volver:focus-visible { outline: 3px solid var(--morado-300); outline-offset: 2px; }
+.pres__app .res__volver { font-size: .7rem; padding: .32em .85em; margin-bottom: .6rem; }
+
+/* ---- Último ajuste fino para que las dos vistas restantes quepan ---- */
+
+/* Lista de recursos */
+.pres__app .res { padding: 9px 11px; }
+.pres__app .res__head { margin-bottom: 5px; }
+.pres__app .res__intro { margin-bottom: .35rem; }
+.pres__app .res__lista { margin-bottom: .6rem; }
+.pres__app .res__lista li { padding: 3px 0 3px 22px; }
+.pres__app .res__lista li::before { top: 7px; }
+.pres__app .res__remate { padding: 7px 10px; font-size: .72rem; line-height: 1.35; }
+.pres__app .res__volver { margin-bottom: .4rem; }
+
+/* Pantalla del estudiante */
+.pres__app .wq__tablero { padding: 8px 10px 9px; }
+.pres__app .wq__audio { margin: 4px 0 2px; }
+/* Tema, subtema y principio en la misma línea: ahorra dos renglones */
+.pres__app .wq__meta { display: inline-block; margin: 0 14px 2px 0; }
+.pres__app .wq__tarjeta { margin-top: 5px; padding: 6px; }
+.pres__app .wq__robot-img { width: 70px; }
+.pres__app .wq__pregunta { margin-top: 8px; padding: 9px 11px; }
+.pres__app .wq__pregunta p { font-size: .76rem; }
+.pres__app .wq__tiempo { margin-top: 7px; }
+.pres__app .wq-op { padding: 7px 10px; }
+.pres__app .wq__aviso { margin-top: 7px; }
+.pres__app .sim__intro { margin-top: 8px; }
+.pres__app .sim__pie { margin-top: 8px; }
+
+/* La fila de controles va arriba y SIEMPRE en un solo renglón.
+   Si no cabe, se acorta la instrucción con puntos suspensivos en vez
+   de partirse en dos líneas. */
+.pres__app .sim__intro {
+  max-width: none;
+  margin: 0 0 10px;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+.pres__app .sim__paso { flex-shrink: 0; }
+.pres__app .pres__reiniciar { flex-shrink: 0; }
+.pres__app .sim__instruccion {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---- Pantalla del estudiante: recorte final para que quepa ---- */
+.pres__app .wq__barra { padding: 5px 11px; }
+.pres__app .wq__top { gap: 9px; }
+.pres__app .wq__modo { padding: .42em 1em; font-size: .72rem; }
+.pres__app .wq__reloj b { font-size: .88rem; }
+.pres__app .wq__audio { margin: 3px 0 1px; font-size: .66rem; }
+.pres__app .wq__switch { width: 30px; height: 15px; }
+.pres__app .wq__switch i { width: 11px; height: 11px; }
+
+.pres__app .wq__meta { font-size: .64rem; margin: 0 12px 0 0; }
+.pres__app .wq__tarjeta { margin-top: 4px; padding: 5px; }
+.pres__app .wq__robot { padding: 0 0 2px; }
+.pres__app .wq__robot-img { width: 55px; }
+.pres__app .wq__leer { font-size: .68rem; padding: .32em .9em; margin-top: -11px; }
+.pres__app .wq__pregunta { margin-top: 7px; padding: 7px 10px; }
+.pres__app .wq__pregunta p { font-size: .72rem; }
+.pres__app .wq__puntos { top: -9px; font-size: .62rem; }
+.pres__app .wq__tiempo { margin-top: 6px; }
+.pres__app .wq__tiempo-top, .pres__app .wq__tiempo-pie { font-size: .56rem; }
+.pres__app .wq__tiempo-barra { height: 5px; margin: 3px 0; }
+.pres__app .wq__power { width: 17px; height: 17px; }
+.pres__app .wq__power svg { width: 9px; height: 9px; }
+
+.pres__app .wq-op { padding: 6px 9px; font-size: .74rem; }
+.pres__app .wq-op__letra { width: 19px; height: 19px; font-size: .66rem; }
+.pres__app .wq__opciones { gap: 6px; }
+.pres__app .wq__aviso { margin-top: 5px; }
+
+/* La columna de herramientas de la derecha era la más alta de las tres
+   y estiraba toda la pantalla. Con esto ya no manda ella. */
+.pres__app .wq__rail { gap: 6px; }
+.pres__app .wq__rail-item { font-size: .46rem; line-height: 1.1; gap: 2px; }
+.pres__app .wq__rail-ico, .pres__app .wq__avatar { width: 21px; height: 21px; }
+.pres__app .wq__rail svg { width: 11px; height: 11px; }
+.pres__app .wq__grid { grid-template-columns: minmax(0,1fr) minmax(0,1fr) 54px; gap: 10px; }
+.pres__app .wq__barra { padding: 4px 11px; }
+.pres__app .wq__top { gap: 8px; }
+.pres__app .wq__tablero { padding: 7px 9px 8px; }
+
+/* ============================================================
+   MODO COMPACTO EN CELULAR
+   En pantalla angosta 8 columnas de modalidades son ilegibles,
+   y la pantalla del estudiante no cabe a lo ancho. Aquí se
+   reacomoda todo para que siga entrando en el marco.
+   ============================================================ */
+
+@media (max-width: 720px) {
+  .pres__app { padding: 10px; }
+  .pres__app .sim__intro { margin-bottom: 7px; gap: 6px; }
+  .pres__app .sim__paso { font-size: .54rem; padding: .3em .7em; }
+  .pres__app .sim__instruccion { font-size: .64rem; padding: .34em .8em; }
+  .pres__app .pres__reiniciar { font-size: .58rem; padding: .3em .7em; }
+
+  /* 5 columnas: las 15 modalidades caben en 3 filas y se leen */
+  .pres__app .vt__grid { grid-template-columns: repeat(5, 1fr); }
+  .pres__app .vt-mod__texto { font-size: .5rem; }
+  .pres__app .vt-mod__ico { width: 15px; height: 15px; }
+  .pres__app .vt-mod { padding: 5px 1px 4px; gap: 3px; }
+  .pres__app .vt__tema h3 { font-size: .85rem; }
+  .pres__app .vt__tema-meta { font-size: .6rem; }
+  .pres__app .vt__tema-etiqueta { font-size: .5rem; }
+  .pres__app .vt__contenido { padding: 8px 9px 9px; }
+  .pres__app .vt__panel-titulo { font-size: .76rem; }
+
+  .pres__app .sim__pie { margin-top: 6px; gap: 8px; }
+  .pres__app .sim__contador { font-size: .6rem; }
+  .pres__app .sim__botones .btn { font-size: .62rem; padding: .45em .85em; }
+
+  /* Pantalla del estudiante: una sola columna y herramientas en fila */
+  .pres__app .wq__grid { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .pres__app .wq__rail { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 8px; }
+  .pres__app .wq__robot-img { width: 46px; }
+  .pres__app .wq-op { padding: 5px 8px; font-size: .68rem; }
+}
+
+/* En computador la fila de arriba va en un solo renglón. En teléfono
+   no caben los tres elementos: ahí sí se permite que baje de línea,
+   porque acortarla con puntos suspensivos la dejaba ilegible. */
+@media (max-width: 720px) {
+  .pres__app .sim__intro { flex-wrap: wrap; }
+  .pres__app .sim__instruccion { white-space: normal; overflow: visible; text-overflow: clip; }
+}
+
+/* ---- Con el marco más alto hay aire de sobra: se suelta lo apretado ---- */
+.pres__app .vt__grid { grid-template-columns: repeat(6, 1fr); padding: 10px 7px; gap: 3px; }
+.pres__app .vt-mod { padding: 9px 3px 8px; gap: 5px; }
+.pres__app .vt-mod__ico { width: 21px; height: 21px; }
+.pres__app .vt-mod__texto { font-size: .63rem; }
+.pres__app .vt__contenido { padding: 13px 16px 14px; }
+.pres__app .vt__panel { padding: 12px 11px; }
+.pres__app .vt__panel-titulo { font-size: .95rem; margin-bottom: 9px; }
+.pres__app .vt__tema h3 { font-size: 1.05rem; }
+.pres__app .vt__tema-meta { font-size: .74rem; }
+.pres__app .vt__barra { padding: 8px 13px; }
+.pres__app .vt__nombre { font-size: .85rem; }
+.pres__app .sim__intro { margin-bottom: 12px; }
+.pres__app .sim__pie { margin-top: 12px; }
+
+/* Pantalla del estudiante: también respira */
+.pres__app .wq__robot-img { width: 78px; }
+.pres__app .wq__pregunta p { font-size: .8rem; }
+.pres__app .wq-op { padding: 9px 11px; font-size: .78rem; }
+.pres__app .wq__meta { font-size: .7rem; }
+.pres__app .wq__rail-item { font-size: .5rem; }
+.pres__app .wq__rail-ico, .pres__app .wq__avatar { width: 24px; height: 24px; }
+.pres__app .wq__rail svg { width: 13px; height: 13px; }
+.pres__app .wq__grid { grid-template-columns: minmax(0,1fr) minmax(0,1fr) 60px; gap: 12px; }
+
+/* ============================================================
+   QUE EL CONTENIDO LLENE EL MARCO
+
+   Antes la ventana medía lo que medía y, si el marco era más alto,
+   quedaba una franja negra abajo. Ahora la ventana se estira hasta
+   el borde: la fila de controles arriba, el pie abajo, y la ventana
+   ocupando todo lo que sobra en el medio.
+   ============================================================ */
+
+.pres__app {
+  display: flex;
+  flex-direction: column;
+}
+.pres__app .sim__intro,
+.pres__app .sim__pie { flex-shrink: 0; }
+
+/* La ventana del docente se estira */
+.pres__app .vt {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.pres__app .vt__barra { flex-shrink: 0; }
+.pres__app .vt__cuerpo { flex: 1; min-height: 0; }
+.pres__app .vt__contenido { display: flex; flex-direction: column; min-height: 0; }
+.pres__app .vt__tema { flex-shrink: 0; }
+
+/* El panel rosado ocupa lo que sobra y las modalidades quedan centradas */
+.pres__app .vt__panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.pres__app .vt__panel-titulo { flex-shrink: 0; }
+.pres__app .vt__grid { flex: 1; align-content: center; }
+
+/* Cuando sale la lista de recursos, también llena */
+.pres__app #simResultado { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+.pres__app .res { flex: 1; display: flex; flex-direction: column; }
+.pres__app .res__lista { flex: 1; }
+
+/* La pantalla del estudiante, igual */
+.pres__app .wq { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+.pres__app .wq__ventana { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+.pres__app .wq__barra { flex-shrink: 0; }
+.pres__app .wq__cuerpo { flex: 1; min-height: 0; }
+.pres__app .wq__tablero { display: flex; flex-direction: column; min-height: 0; }
+.pres__app .wq__grid { flex: 1; align-items: stretch; }
+.pres__app .wq__aviso { flex-shrink: 0; }
+
+/* ============================================================
+   CELULAR — SE REPITE AL FINAL A PROPÓSITO
+
+   Los ajustes de "soltar lo apretado" de arriba son más nuevos que
+   el bloque de celular y lo estaban pisando: en el teléfono volvían
+   6 columnas y la pantalla del estudiante a tres columnas.
+   Al ir al final, estas reglas mandan. No mover de aquí.
+   ============================================================ */
+
+@media (max-width: 720px) {
+  .pres__app .vt__grid { grid-template-columns: repeat(5, 1fr); padding: 7px 4px; gap: 2px; }
+  .pres__app .vt-mod { padding: 5px 1px 4px; gap: 3px; }
+  .pres__app .vt-mod__ico { width: 15px; height: 15px; }
+  .pres__app .vt-mod__texto { font-size: .5rem; }
+  .pres__app .vt__contenido { padding: 8px 9px 9px; }
+  .pres__app .vt__panel { padding: 9px 8px; }
+  .pres__app .vt__panel-titulo { font-size: .76rem; margin-bottom: 6px; }
+  .pres__app .vt__tema h3 { font-size: .85rem; }
+  .pres__app .vt__tema-meta { font-size: .6rem; }
+  .pres__app .vt__barra { padding: 5px 10px; }
+  .pres__app .vt__nombre { font-size: .72rem; }
+  .pres__app .sim__intro { margin-bottom: 7px; }
+  .pres__app .sim__pie { margin-top: 7px; }
+
+  /* Pantalla del estudiante: una sola columna y herramientas en fila */
+  .pres__app .wq__grid { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .pres__app .wq__rail { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 8px; }
+  .pres__app .wq__robot-img { width: 52px; }
+  .pres__app .wq-op { padding: 6px 9px; font-size: .68rem; }
+  .pres__app .wq__meta { font-size: .62rem; }
+  .pres__app .wq__pregunta p { font-size: .72rem; }
+}
+
+/* ============================================================
+   CATÁLOGO DE ACTIVIDADES INTERACTIVAS
+
+   Es la pantalla que sale al escoger la modalidad "Actividades
+   interactivas". Reproduce el catálogo de la plataforma real.
+
+   Los colores de cada actividad se eligen con data-color en
+   js/simulador.js: verde, azul, morado, naranja o rojo.
+   ============================================================ */
+
+.acts { display: flex; flex-direction: column; min-height: 0; }
+
+.acts__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.acts__titulo {
+  margin: 0;
+  font-size: .82rem;
+  color: var(--tinta-suave);
+}
+.acts__titulo strong { color: var(--wt-texto); }
+
+.acts__grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 7px;
+  align-content: start;
+}
+
+.act {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+  padding: 9px 6px 8px;
+  background: #fff;
+  border: 1px solid var(--wt-borde);
+  border-radius: 10px;
+  transition: border-color .16s, transform .16s, box-shadow .16s;
+}
+.act:hover {
+  border-color: var(--wt-acento);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(162,28,162,.14);
+}
+
+.act__ico {
+  display: grid;
+  place-items: center;
+  width: 30px; height: 30px;
+  border-radius: 9px;
+  flex-shrink: 0;
+}
+.act__ico svg {
+  width: 17px; height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.act__nombre {
+  margin: 0;
+  font-size: .68rem;
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--tinta);
+}
+.act__desc {
+  margin: 0;
+  font-size: .58rem;
+  line-height: 1.25;
+  color: #8A7F93;
+}
+
+
+/* ---- Los cinco colores ---- */
+.act[data-color="verde"]   .act__ico { background: #E3F5EA; color: #2E9E62; }
+.act[data-color="azul"]    .act__ico { background: #E4EFFB; color: #2C7BE5; }
+.act[data-color="morado"]  .act__ico { background: #EDE9FE; color: #7C3AED; }
+.act[data-color="naranja"] .act__ico { background: #FDEEE0; color: #E08A2E; }
+.act[data-color="rojo"]    .act__ico { background: #FDE6E6; color: #D9534F; }
+
+/* ---- Dentro del marco va más apretado ---- */
+.pres__app .acts__head { margin-bottom: 7px; gap: 8px; }
+.pres__app .acts__titulo { font-size: .74rem; }
+.pres__app .acts__grid { gap: 5px; }
+.pres__app .act { padding: 7px 4px 6px; gap: 3px; border-radius: 9px; }
+.pres__app .act__ico { width: 25px; height: 25px; border-radius: 8px; }
+.pres__app .act__ico svg { width: 14px; height: 14px; }
+.pres__app .act__nombre { font-size: .6rem; }
+.pres__app .act__desc { font-size: .52rem; line-height: 1.2; }
+
+@media (max-width: 720px) {
+  .acts__grid { grid-template-columns: repeat(3, 1fr); gap: 5px; }
+  .pres__app .act__desc { display: none; }   /* en celular no cabe */
+  .pres__app .act__nombre { font-size: .55rem; }
+}
+
+/* La descripción de cada actividad se corta a dos renglones. Sin esto,
+   en ventanas angostas el texto crece, la cuadrícula se alarga y la
+   última fila queda cortada dentro de la ventana. */
+.act__desc {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Por debajo de 1020 px ya no hay alto para las descripciones:
+   se deja solo el nombre, que es lo que identifica la actividad. */
+@media (max-width: 1020px) {
+  .pres__app .act__desc { display: none; }
+  .pres__app .act { padding: 8px 4px 7px; }
+}
+
+/* Que el panel nunca recorte: si algo creciera de más, se desplaza
+   por dentro en vez de quedar cortado. */
+.pres__app .vt__panel { overflow: hidden; }
+.pres__app #simResultado { overflow-y: auto; }
+
+/* Dentro del marco no hay alto para las descripciones: con 20 tarjetas
+   en cuatro filas, la última quedaba cortada. Se dejan solo el ícono y
+   el nombre, y la descripción sale al pasar el mouse por encima (va en
+   el atributo "title" de cada tarjeta, en js/simulador.js). */
+.pres__app .act__desc { display: none; }
+.pres__app .act { padding: 9px 4px 8px; gap: 4px; }
+.pres__app .act__ico { width: 27px; height: 27px; }
+.pres__app .act__ico svg { width: 15px; height: 15px; }
+.pres__app .act__nombre { font-size: .63rem; }
+
+
+.pres__app .act { padding: 7px 4px 6px; gap: 3px; }
+.pres__app .acts__grid { gap: 4px; }
+
+/* ============================================================
+   VOLVER A LAS MODALIDADES
+
+   Este botón tiene que verse siempre y de una: es la única forma
+   de regresar a la cuadrícula desde la lista de recursos o desde
+   el catálogo de actividades. Antes era un botón de contorno claro
+   sobre fondo blanco y pasaba desapercibido.
+   ============================================================ */
+.res__volver {
+  background: var(--wt-acento);
+  border-color: var(--wt-acento);
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(162,28,162,.28);
+}
+.res__volver:hover {
+  background: var(--wt-texto);
+  border-color: var(--wt-texto);
+}
+.pres__app .res__volver { font-size: .72rem; padding: .42em 1em; }

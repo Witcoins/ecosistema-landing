@@ -1,0 +1,2898 @@
+/* ============================================================
+   i'Witown — Landing page
+   Un producto de GMG-LATAM
+
+   ┌──────────────────────────────────────────────────────┐
+   │  TODO LO QUE SE CAMBIA ESTÁ EN ESTE PRIMER BLOQUE.   │
+   │  Colores, fuentes y espaciados. No hay que buscar    │
+   │  nada más abajo.                                     │
+   └──────────────────────────────────────────────────────┘
+   ============================================================ */
+
+:root {
+  /* ============================================================
+     COLORES DE MARCA
+
+     El color de i'Witown es el --morado-700: #520348. Los demás
+     escalones salen de ese mismo tono, unos más claros y otros
+     más oscuros, para que todo combine sin tener que escoger
+     color por color.
+
+     Para cambiar el color de la marca se cambia el 700 y se
+     ajustan los otros seis en la misma dirección.
+     ============================================================ */
+  --morado-900: #36022F;   /* fondos oscuros */
+  --morado-800: #45023C;
+  --morado-700: #520348;   /* color principal de marca */
+  --morado-600: #760467;   /* botones y acentos */
+  --morado-300: #D692CE;
+  --morado-100: #F7E6F5;   /* fondos suaves */
+  --morado-050: #FBF3FA;
+
+  /* El verde del botón "Contacto" del menú: pastel, no neón */
+  --verde-suave:       #B7E3C8;
+  --verde-suave-hondo: #A2D8B7;
+  --verde-tinta:       #14472F;
+
+  --whatsapp:   #25D366;
+  --whatsapp-oscuro: #1DA851;
+
+  --tinta:      #1A1523;   /* texto principal */
+  --tinta-suave:#4A4458;   /* texto secundario */
+  --gris-borde: #E4E0EC;
+  --blanco:     #FFFFFF;
+  --hueso:      #FAF9FC;
+
+  /* ---- TIPOGRAFÍA ----
+     Por defecto usa la fuente del sistema, así se ve bien en
+     cualquier computador sin depender de internet.
+     Para poner las fuentes de la marca, ver el bloque @font-face
+     que está justo debajo de este :root. */
+  --fuente-titulos: "IwitownDisplay", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --fuente-texto:   "IwitownTexto", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+
+  /* ---- MEDIDAS ---- */
+  --ancho-max: 1180px;
+  --radio: 14px;
+  --radio-chico: 9px;
+  --sombra: 0 4px 24px rgba(54, 2, 47, .08);
+  --sombra-fuerte: 0 12px 40px rgba(54, 2, 47, .16);
+}
+
+/* ============================================================
+   FUENTES DE LA MARCA
+   Pon los archivos .woff2 en assets/fonts/ y quita los comentarios
+   de abajo. Mientras tanto la página usa la fuente del sistema.
+   ============================================================
+
+@font-face {
+  font-family: "IwitownDisplay";
+  src: url("../assets/fonts/display-bold.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "IwitownTexto";
+  src: url("../assets/fonts/texto-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "IwitownTexto";
+  src: url("../assets/fonts/texto-bold.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+*/
+
+/* ============================================================
+   BASE
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 86px; }
+
+body {
+  margin: 0;
+  font-family: var(--fuente-texto);
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--tinta);
+  background: var(--blanco);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--fuente-titulos);
+  line-height: 1.2;
+  margin: 0 0 .5em;
+  letter-spacing: -.02em;
+}
+
+h2 { font-size: clamp(1.9rem, 3.6vw, 2.7rem); }
+h3 { font-size: 1.22rem; }
+
+p { margin: 0 0 1rem; }
+a { color: var(--morado-700); }
+
+img { max-width: 100%; height: auto; display: block; }
+
+.contenedor {
+  width: 100%;
+  max-width: var(--ancho-max);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.centro { text-align: center; }
+
+/* ============================================================
+   BOTONES
+   ============================================================ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .55em;
+  padding: .82em 1.6em;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  font-family: var(--fuente-titulos);
+  font-size: .98rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+  line-height: 1.2;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn:focus-visible { outline: 3px solid var(--morado-300); outline-offset: 3px; }
+
+.btn--grande { padding: 1.02em 2em; font-size: 1.06rem; }
+.btn--bloque { width: 100%; }
+
+.btn--wa { background: var(--whatsapp); color: #062e18; box-shadow: 0 6px 18px rgba(37, 211, 102, .3); }
+.btn--wa:hover { background: var(--whatsapp-oscuro); color: #fff; }
+
+.btn--morado { background: var(--morado-600); color: #fff; box-shadow: 0 6px 18px rgba(118, 4, 103, .28); }
+.btn--morado:hover { background: var(--morado-700); }
+
+.btn--fantasma { background: transparent; color: #fff; border-color: rgba(255,255,255,.45); }
+.btn--fantasma:hover { border-color: #fff; background: rgba(255,255,255,.1); }
+
+/* De contorno, para el segundo botón: el que acompaña sin competir */
+.btn--linea {
+  background: #fff;
+  color: var(--tinta);
+  border-color: var(--gris-borde);
+  box-shadow: 0 2px 10px rgba(54, 2, 47, .06);
+}
+.btn--linea:hover { border-color: var(--morado-600); color: var(--morado-700); }
+
+/* ============================================================
+   LA PORTADA
+
+   Lo primero que se ve al entrar. Una sola frase que dice qué
+   hacemos, un renglón que lo explica y dos caminos.
+
+   ┌──────────────────────────────────────────────────────────┐
+   │  EL TAMAÑO DE LA FRASE SE AJUSTA SOLO.                   │
+   │                                                          │
+   │  "clamp" le pone un mínimo, un ideal y un máximo: en el  │
+   │  teléfono no se desborda y en el computador no se ve     │
+   │  chiquita. No hay que escribir medidas para cada         │
+   │  pantalla.                                               │
+   └──────────────────────────────────────────────────────────┘
+   ============================================================ */
+
+.portada {
+  padding: clamp(48px, 7vw, 92px) 0 clamp(28px, 4vw, 48px);
+  background: #fff;
+  /* El resplandor del celular es más ancho que su columna: sin esto
+     asoma por el borde y aparece una barra de desplazamiento
+     horizontal en toda la página. */
+  overflow: hidden;
+}
+
+/* Dos columnas: el texto a la izquierda y el celular a la derecha.
+   En pantallas angostas se apilan y el texto se centra. */
+/* Las dos columnas no se reparten la página: cada una mide lo que
+   mide su contenido y el par queda centrado. Así el texto no se va
+   al borde izquierdo, sino que se acerca al celular. */
+.portada__inner {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: center;
+  /* Arriba, no al centro: el celular arranca a la misma altura que
+     el título y termina antes de los botones. */
+  align-items: start;
+  gap: clamp(26px, 4vw, 52px);
+}
+
+.portada__texto { text-align: center; }
+
+.portada__titulo {
+  margin: 0 auto;
+  max-width: 15ch;
+  font-family: var(--fuente-titulos);
+  font-size: clamp(2.1rem, 5.4vw, 3.9rem);
+  /* Delgada a propósito: a este tamaño la letra gruesa se ve
+     apretada. Con 500 respira y se lee más limpia. */
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -.015em;
+  /* La frase va en el morado de la marca y la parte que se resalta
+     en negro. Para devolverlo al revés se cambian estos dos. */
+  color: var(--morado-700);
+  text-wrap: balance;
+}
+.portada__resalte { color: var(--tinta); }
+
+.portada__bajada {
+  margin: clamp(16px, 2.4vw, 26px) auto 0;
+  max-width: 44ch;
+  font-size: clamp(1rem, 1.5vw, 1.18rem);
+  line-height: 1.55;
+  color: var(--tinta-suave);
+  text-wrap: pretty;
+}
+
+/* Van fuera de las dos columnas, así que se centran con la página */
+.portada__botones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  margin-top: clamp(26px, 3.4vw, 40px);
+}
+
+.portada__play {
+  width: 1.05em;
+  height: 1.05em;
+  fill: currentColor;
+  margin-right: .1em;
+}
+
+/* ============================================================
+   EL CELULAR DE LA PORTADA
+
+   Marco de vidrio, sin imágenes: todo está hecho con degradados.
+   El borde plateado es un degradado en diagonal, el reflejo es
+   otro encima del video, y la isla de arriba es un óvalo negro.
+
+   ┌──────────────────────────────────────────────────────────┐
+   │  PARA CAMBIARLE EL TAMAÑO                                │
+   │  Se toca el "width" de .celular. Todo lo demás —el alto,  │
+   │  las esquinas, la isla— va en proporción.                 │
+   └──────────────────────────────────────────────────────────┘
+   ============================================================ */
+
+.portada__celular {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+/* El resplandor que lo despega del fondo */
+.portada__celular::before {
+  content: "";
+  position: absolute;
+  top: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 118%;
+  height: 84%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(82, 3, 72, .16), transparent 75%);
+  filter: blur(6px);
+}
+
+.celular {
+  position: relative;
+
+  /* Manda el ALTO, no el ancho: así el celular mide lo que mide el
+     texto de al lado —título y bajada— y no llega a los botones.
+     El ancho sale solo, por la proporción. */
+  height: clamp(250px, 27vw, 330px);
+  width: auto;
+  aspect-ratio: 9 / 18.6;
+  max-width: 100%;
+
+  padding: 8px;
+  border-radius: 32px;
+
+  /* El filo metálico: claro arriba a la izquierda, oscuro abajo */
+  background: linear-gradient(148deg,
+    #FDFCFF 0%, #CFC8DC 16%, #F6F4FA 34%,
+    #B5AEC6 58%, #EDEAF3 78%, #C2BBD2 100%);
+  box-shadow:
+    0 22px 44px rgba(54, 2, 47, .22),
+    0 5px 12px rgba(54, 2, 47, .1),
+    inset 0 1px 0 rgba(255,255,255,.85),
+    inset 0 -1px 0 rgba(255,255,255,.5);
+}
+
+.celular__video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 25px;
+  object-fit: cover;
+  object-position: center;
+  background: #0B0B0F;
+}
+
+/* La isla de arriba, la de las cámaras */
+.celular__isla {
+  position: absolute;
+  top: 17px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  width: 46px;
+  height: 13px;
+  border-radius: 999px;
+  background: #0B0B0F;
+}
+
+/* ---- Los mandos del celular ----
+
+   Van encima del video, abajo. Se ven siempre —no solo al pasar el
+   mouse— porque en el teléfono no hay mouse que pasar. */
+.celular__mandos {
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  z-index: 4;
+  display: flex;
+  gap: 8px;
+}
+
+/* El aviso que sale mientras el video está en silencio */
+.celular__aviso {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 10px;
+  height: 30px;
+  border-radius: 999px;
+  background: var(--morado-600);
+  color: #fff;
+  font-size: .7rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.celular__aviso[hidden] { display: none; }
+
+.celular__mando {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(12, 10, 16, .55);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  cursor: pointer;
+  transition: background .18s, transform .18s;
+}
+.celular__mando:hover { background: rgba(12, 10, 16, .78); transform: translateY(-1px); }
+.celular__mando:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+.celular__ico { width: 15px; height: 15px; }
+
+/* Cada botón trae sus dos dibujos y muestra el que toca */
+.celular__ico--pausa, .celular__ico--play { fill: currentColor; }
+.celular__ico--con, .celular__ico--sin {
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+.celular__ico--con path:last-child, .celular__ico--sin path:last-child { fill: none; }
+
+.celular__ico--play,  .celular__ico--con { display: none; }
+.celular__mando.esta-andando .celular__ico--pausa { display: block; }
+.celular__mando.esta-andando .celular__ico--play  { display: none; }
+.celular__mando:not(.esta-andando) .celular__ico--pausa { display: none; }
+.celular__mando:not(.esta-andando) .celular__ico--play  { display: block; }
+
+#celSonido .celular__ico--pausa, #celSonido .celular__ico--play { display: none; }
+#celSonido .celular__ico--sin { display: block; }
+#celSonido .celular__ico--con { display: none; }
+#celSonido.esta-sonando .celular__ico--sin { display: none; }
+#celSonido.esta-sonando .celular__ico--con { display: block; }
+
+/* Cuando está en silencio, el botón llama la atención: es el que hay
+   que tocar para oír a la presentadora. */
+#celSonido:not(.esta-sonando) {
+  background: var(--morado-600);
+  box-shadow: 0 0 0 0 rgba(118, 4, 103, .55);
+  animation: celLatido 2.4s ease-out infinite;
+}
+@keyframes celLatido {
+  0%   { box-shadow: 0 0 0 0 rgba(118, 4, 103, .5); }
+  70%  { box-shadow: 0 0 0 9px rgba(118, 4, 103, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(118, 4, 103, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  #celSonido:not(.esta-sonando) { animation: none; }
+  .celular__mando:hover { transform: none; }
+}
+
+/* El reflejo del vidrio. No recibe clics: deja pasar el mouse. */
+.celular__brillo {
+  position: absolute;
+  inset: 8px;
+  z-index: 3;   /* los mandos van en el 4, encima de este */
+  border-radius: 25px;
+  pointer-events: none;
+  background: linear-gradient(116deg,
+    rgba(255,255,255,.30) 0%,
+    rgba(255,255,255,.08) 22%,
+    rgba(255,255,255,0) 40%,
+    rgba(255,255,255,0) 64%,
+    rgba(255,255,255,.14) 88%,
+    rgba(255,255,255,.04) 100%);
+}
+
+@media (max-width: 900px) {
+  .portada__inner { grid-template-columns: 1fr; justify-items: center; }
+  .celular { height: clamp(260px, 52vw, 340px); }
+}
+
+@media (max-width: 560px) {
+  .portada__botones { flex-direction: column; align-items: stretch; }
+  .portada__botones .btn { justify-content: center; }
+}
+
+.ico-wa { width: 1.25em; height: 1.25em; fill: currentColor; flex-shrink: 0; }
+
+/* ============================================================
+   BARRA SUPERIOR
+   ============================================================ */
+
+/* ============================================================
+   LA BARRA DE ARRIBA
+
+   No va pegada de lado a lado: es una isla centrada, flotando
+   sobre la página. El logo, los enlaces y el botón van juntos en
+   el medio.
+
+   La franja de afuera es transparente; lo blanco, el borde y la
+   sombra los pone la isla (.nav__inner).
+   ============================================================ */
+
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 14px 0;
+  background: transparent;
+}
+.nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  width: fit-content;
+  max-width: 100%;
+  padding: 9px 12px 9px 18px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.94);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--gris-borde);
+  box-shadow: 0 6px 24px rgba(54, 2, 47, .08);
+}
+/* ---- La marca del menú ----
+
+   El sello redondo y, al lado, el nombre en una tipografía angosta,
+   para que ocupe poco y le deje el ancho a las pestañas. */
+.nav__marca {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  text-decoration: none;
+}
+.nav__logo { height: 38px; width: auto; display: block; }
+
+.nav__nombre {
+  font-family: "Arial Narrow", "Avenir Next Condensed",
+               "Helvetica Neue", var(--fuente-titulos), sans-serif;
+  font-stretch: semi-condensed;
+  font-size: 1.32rem;
+  font-weight: 700;
+  letter-spacing: .005em;
+  line-height: 1;
+  color: var(--morado-700);
+  white-space: nowrap;
+}
+
+@media (max-width: 420px) {
+  .nav__nombre { font-size: 1.12rem; }
+  .nav__logo { height: 32px; }
+}
+/* Los enlaces van 4 px más abajo que el centro de la barra: la
+   marca lleva el "School" encima de la palabra WITOWN, así que su
+   centro visual queda más abajo que el de la imagen. Medido: el
+   centro de WITOWN cae en el 64% del alto del logo, no en el 50%. */
+/* Todo el menú va centrado en su misma línea. Los 13px que tenían
+   estos elementos eran para la marca anterior, que llevaba "School"
+   escrito encima de la palabra y bajaba su centro visual; con el
+   sello redondo ya no hacen falta. */
+/* Los cinco enlaces bajan un pelín: su letra es más pequeña que la
+   de la marca, y centradas en la misma caja la línea del texto queda
+   más arriba. Estos píxeles igualan las dos líneas, no las cajas. */
+.nav__links { display: flex; gap: 22px; margin-top: 7px; }
+.nav__links a {
+  color: var(--tinta-suave);
+  text-decoration: none;
+  font-size: .95rem;
+  font-weight: 600;
+  padding: 6px 0;
+  border-bottom: 2px solid transparent;
+}
+.nav__links a:hover { color: var(--morado-700); border-bottom-color: var(--morado-600); }
+
+/* La pestaña que está abierta */
+.nav__links a.es-actual {
+  color: var(--morado-700);
+  border-bottom-color: var(--morado-700);
+}
+
+/* ============================================================
+   LAS VISTAS
+
+   La página cambia de pestaña en vez de desplazarse: la sección
+   que no toca se esconde de verdad, no se queda debajo.
+
+   El "!important" hace falta porque varias secciones traen su
+   propio "display" y, sin él, seguirían viéndose.
+
+   Qué se ve en cada pestaña está en js/vistas.js.
+   ============================================================ */
+
+section[hidden] { display: none !important; }
+.nav__cta { font-size: .88rem; }
+
+/* ---- "Contacto", el botón verde del menú ----
+
+   Es el único con color de los de arriba: el verde pastel llama sin
+   gritar, que es lo que se busca al lado de dos botones de contorno. */
+.nav__verde {
+  padding: .5em 1.15em !important;
+  border-radius: 999px;
+  background: var(--verde-suave);
+  color: var(--verde-tinta) !important;
+  border-bottom: 0 !important;
+  transition: background .18s;
+}
+.nav__verde:hover { background: var(--verde-suave-hondo); }
+
+/* "Wiwi": el juego. Va con el morado de la marca, en contorno, para
+   que no compita con el botón verde de contacto. */
+.nav__wiwi {
+  padding: .5em 1.15em !important;
+  border-radius: 999px;
+  border: 1.5px solid var(--morado-300) !important;
+  border-bottom-width: 1.5px !important;
+  color: var(--morado-700) !important;
+  transition: background .18s, border-color .18s;
+}
+.nav__wiwi:hover { background: var(--morado-050); border-color: var(--morado-600) !important; }
+
+/* Mientras no haya enlace, se ve apagado y lo dice */
+.nav__wiwi.esta-apagado {
+  border-style: dashed !important;
+  color: var(--tinta-suave) !important;
+  font-size: .78rem;
+  pointer-events: none;
+  opacity: .75;
+}
+
+/* Abierto, se pinta un poco más fuerte en vez de subrayarse */
+.nav__verde.es-actual {
+  background: var(--verde-suave-hondo);
+  border-bottom-color: transparent !important;
+}
+
+/* "Ingresar": para quien ya tiene cuenta. Va discreto, de contorno,
+   para que el botón verde siga siendo el que llama. */
+.nav__ingresar {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 2px;           /* su letra queda 2px arriba de las demás */
+  padding: .55em 1.05em;
+  border: 1.5px solid var(--gris-borde);
+  border-radius: 999px;
+  color: var(--tinta);
+  text-decoration: none;
+  font-size: .88rem;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: border-color .18s, color .18s, background .18s;
+}
+.nav__ingresar:hover {
+  border-color: var(--morado-600);
+  color: var(--morado-700);
+  background: var(--morado-050);
+}
+.nav__ingresar:focus-visible { outline: 2px solid var(--morado-600); outline-offset: 2px; }
+.nav__ingresar svg {
+  width: 1em;
+  height: 1em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Si falta la dirección, el botón no se puede pinchar */
+.nav__ingresar.esta-apagado {
+  opacity: .45;
+  pointer-events: none;
+}
+
+.nav__burger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: 0;
+  padding: 8px;
+  cursor: pointer;
+  margin-left: auto;
+}
+.nav__burger span { width: 25px; height: 2.5px; background: var(--tinta); border-radius: 2px; transition: .25s; }
+.nav__burger.is-abierto span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+.nav__burger.is-abierto span:nth-child(2) { opacity: 0; }
+.nav__burger.is-abierto span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+/* Nota: la primera pantalla de la página ya no es un hero estático,
+   es el simulador del recorrido. Sus estilos están en simulador.css */
+
+/* ============================================================
+   SECCIONES
+   ============================================================ */
+
+/* Arriba va menos aire que abajo: ahora cada sección empieza
+   justo debajo del menú, no en medio de la página. */
+.seccion { padding: 58px 0 76px; }
+.seccion--claro  { background: var(--hueso); }
+/* Antes estas dos secciones iban en morado oscuro con letra blanca.
+   Ahora la landing entera va en claro: se dejan sobre el mismo fondo
+   hueso del resto, y la letra vuelve a ser la normal. */
+.seccion--oscuro { background: var(--hueso); }
+.seccion--franja { background: var(--hueso); padding: 52px 0; }
+
+/* Todos los encabezados de sección van centrados y en morado.
+   Los dos "auto" son los que centran la caja; sin ellos el texto
+   se centra dentro de sus 760 px, pero la caja se queda pegada a
+   la izquierda y se ve corrido. */
+.seccion__head {
+  max-width: 760px;
+  margin: 0 auto 40px;
+  text-align: center;
+}
+.seccion__head h2 { color: var(--morado-700); }
+
+/* Los títulos que viven dentro de una columna —Wiwi Quest,
+   Conversemos— van en morado también, pero no se centran: en una
+   columna angosta el texto centrado se lee peor. */
+.dos-columnas h2 { color: var(--morado-700); }
+.seccion__intro { font-size: 1.1rem; color: var(--tinta-suave); }
+
+
+.parrafo-grande { font-size: 1.1rem; color: var(--tinta-suave); }
+
+
+.grid { display: grid; gap: 24px; }
+.grid--3 { grid-template-columns: repeat(3, 1fr); }
+.grid--4 { grid-template-columns: repeat(4, 1fr); }
+
+.dos-columnas { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
+.dos-columnas--contacto { align-items: start; }
+
+/* ============================================================
+   "EL PROBLEMA": DOS COLUMNAS CON TABLETA
+
+   A la izquierda el mensaje, a la derecha una tableta con las tres
+   tarjetas adentro. La tableta está dibujada con degradados, sin
+   imágenes, igual que el celular de la portada.
+   ============================================================ */
+
+.prob {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  /* El texto arranca arriba, a la altura del borde de la tableta, y no
+     flotando en la mitad: así el título se lee de primero. */
+  align-items: start;
+  gap: clamp(28px, 5vw, 64px);
+}
+
+/* La tableta va primera, a la izquierda. En el HTML sigue escrita
+   después del texto, que es el orden en que conviene leerla; "order"
+   solo cambia dónde se dibuja. */
+.prob__tableta { order: -1; }
+
+/* Alineado a la derecha, pero sin pegarse al borde: el bloque se
+   queda un poco adentro para que respire contra la tableta. */
+.prob__texto {
+  text-align: right;
+  padding-right: clamp(0px, 3.5vw, 54px);
+}
+
+.prob__titulo {
+  margin: 0 0 0 auto;
+  max-width: 14ch;
+  font-family: var(--fuente-titulos);
+  font-size: clamp(1.9rem, 4.2vw, 3.1rem);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -.015em;
+  color: var(--morado-700);
+  text-wrap: balance;
+}
+.prob__resalte { color: var(--tinta); }
+
+.prob__bajada {
+  margin: clamp(14px, 2vw, 22px) 0 0 auto;
+  max-width: 42ch;
+  font-size: 1.06rem;
+  line-height: 1.55;
+  color: var(--tinta-suave);
+}
+
+.prob__boton { margin-top: 26px; }
+
+.prob__pista {
+  margin: 18px 0 0;
+  font-size: .82rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--morado-600);
+}
+
+/* ---- La tableta ---- */
+
+.prob__tableta {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+/* El resplandor que la despega del fondo */
+.prob__tableta::before {
+  content: "";
+  position: absolute;
+  top: 6%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 108%;
+  height: 88%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(82, 3, 72, .14), transparent 74%);
+  filter: blur(6px);
+}
+
+/* ============================================================
+   LA TABLETA
+
+   El marco es una foto con el hueco de la pantalla transparente.
+   Las tarjetas van DETRÁS y se asoman por ese hueco.
+
+   ┌──────────────────────────────────────────────────────────┐
+   │  DE DÓNDE SALEN ESTOS PORCENTAJES                        │
+   │                                                          │
+   │  Se midió el hueco dentro de la foto: empieza en el      │
+   │  17,78% del ancho y el 3,01% del alto, y mide 60,49%     │
+   │  por 83,78%. Por eso van en porcentaje y no en píxeles:  │
+   │  así la pantalla queda en su sitio aunque la tableta     │
+   │  cambie de tamaño.                                       │
+   │                                                          │
+   │  Si se reemplaza la foto por otra, hay que volver a      │
+   │  medir el hueco y cambiar estos cuatro números.          │
+   └──────────────────────────────────────────────────────────┘
+   ============================================================ */
+
+.tableta {
+  position: relative;
+  width: min(100%, 540px);
+  aspect-ratio: 1215 / 1295;      /* la proporción de la foto */
+}
+
+.tableta__marco {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;           /* los clics pasan a las tarjetas */
+}
+
+.tableta__pantalla {
+  position: absolute;
+  left: 17.78%;
+  top: 3.01%;
+  width: 60.49%;
+  height: 83.78%;
+  z-index: 1;
+
+  background: #fff;
+  overflow: hidden;
+}
+
+/* ---- El riel que corre hacia arriba ----
+
+   Todas las escenas van una debajo de la otra dentro del riel, y cada
+   una mide exactamente la pantalla. Mover el riel un 100% equivale a
+   subir una escena: por eso la de abajo "empuja" a la de arriba.
+   Quien lo maneja es js/tableta.js. */
+
+.tableta__riel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  transition: transform .62s cubic-bezier(.45, .05, .2, 1);
+  will-change: transform;
+}
+
+.tableta__escena {
+  flex: 0 0 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+}
+
+/* La escena de una sola tarjeta: la tarjeta arriba, con el alto que
+   pida su texto, y la imagen llenando todo lo que sobra. */
+/* El nombre largo no es un capricho: hace falta para ganarle a la
+   regla de abajo, que estira las tarjetas cuando van las tres. */
+.tableta__pantalla .tableta__escena--una .tarjeta { flex: 0 0 auto; }
+
+.tableta__foto {
+  flex: 1;
+  min-height: 0;
+  border-radius: 9px;
+  overflow: hidden;
+  background: var(--morado-050);
+  box-shadow: 0 2px 8px rgba(54, 2, 47, .07);
+}
+.tableta__foto img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tableta__pantalla .tarjeta {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px 12px;
+  border-radius: 9px;
+  box-shadow: 0 2px 8px rgba(54, 2, 47, .07);
+}
+.tableta__pantalla .tarjeta__num { font-size: 1.15rem; margin-bottom: .05rem; }
+.tableta__pantalla .tarjeta h3 { font-size: .86rem; line-height: 1.22; margin-bottom: .25rem; }
+.tableta__pantalla .tarjeta p {
+  font-size: .72rem;
+  line-height: 1.38;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;      /* tres renglones y el resto se recorta */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.tableta__pantalla .tarjeta:hover { transform: scale(1.02); }
+
+@media (max-width: 900px) {
+  .prob { grid-template-columns: 1fr; }
+
+  /* Apiladas, el texto vuelve a ir primero: se lee antes de ver */
+  .prob__tableta { order: 0; }
+
+  .prob__texto { text-align: center; padding-right: 0; }
+  .prob__titulo, .prob__bajada { margin-left: auto; margin-right: auto; }
+  .tableta { width: min(100%, 340px); }
+
+  /* En la tableta chica no caben tres renglones de texto: se recorta
+     a dos y se aprieta todo un poco, para que ninguna tarjeta quede
+     cortada a mitad de una frase. */
+  .tableta__escena { gap: 5px; padding: 7px; }
+  .tableta__pantalla .tarjeta { padding: 6px 9px; overflow: hidden; }
+  .tableta__pantalla .tarjeta__num { font-size: .85rem; margin-bottom: 0; }
+  .tableta__pantalla .tarjeta h3 { font-size: .74rem; line-height: 1.2; margin-bottom: .15rem; }
+  .tableta__pantalla .tarjeta p { font-size: .62rem; line-height: 1.35; -webkit-line-clamp: 2; }
+}
+
+/* ---- Tarjetas de dolor ---- */
+.tarjeta {
+  background: #fff;
+  border: 1px solid var(--gris-borde);
+  border-radius: var(--radio);
+  padding: 30px 26px;
+  box-shadow: var(--sombra);
+  position: relative;
+}
+.tarjeta__num {
+  font-family: var(--fuente-titulos);
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--morado-100);
+  line-height: 1;
+  display: block;
+  margin-bottom: .35rem;
+}
+.tarjeta p { color: var(--tinta-suave); margin: 0; font-size: .98rem; }
+
+.cita-bloque {
+  margin: 48px auto 0;
+  max-width: 800px;
+  text-align: center;
+  font-family: var(--fuente-titulos);
+  font-size: 1.28rem;
+  line-height: 1.5;
+  color: var(--morado-800);
+}
+
+/* ============================================================
+   PESTAÑAS POR AUDIENCIA
+   ============================================================ */
+
+/* ---- La cabecera de "Solución" ----
+
+   El título a la izquierda y los dos botones a la derecha, en la misma
+   fila. El título va alineado a la izquierda aunque los de las demás
+   secciones vayan centrados: aquí comparte renglón con los botones. */
+
+.sol__cabecera { margin-bottom: 36px; }
+
+/* El título grande, centrado y a dos colores: la primera parte en
+   tinta y el remate en el morado de la marca. */
+.sol__titulo {
+  margin: 0 auto 26px;
+  max-width: 22ch;
+  font-size: clamp(2rem, 4vw, 3.1rem);
+  line-height: 1.1;
+  letter-spacing: -.015em;
+  text-align: center;
+  color: var(--tinta);
+}
+/* En renglón aparte: así la parte en tinta y la parte en morado no
+   se parten a media frase. */
+.sol__resalte { display: block; color: var(--morado-700); }
+
+/* Debajo: la frase del perfil a la izquierda y los botones a la
+   derecha, en el mismo renglón. */
+.sol__fila {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 18px 32px;
+
+  /* Los botones no se van hasta la orilla: se quedan un poco adentro,
+     a la misma altura en que terminan las tarjetas de abajo. */
+  padding-right: clamp(0px, 3.5vw, 52px);
+}
+
+/* La frase de cada perfil, debajo del título y centrada con él.
+   Cambia sola al cambiar de pestaña. */
+.sol__enunciado {
+  margin: 0 auto 26px;
+  max-width: 46ch;
+  text-align: center;
+  font-family: var(--fuente-titulos);
+  font-size: clamp(1.05rem, 1.7vw, 1.3rem);
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--tinta-suave);
+}
+.sol__enunciado[hidden] { display: none; }
+
+@media (max-width: 860px) {
+  .sol__fila { justify-content: center; padding-right: 0; }
+  .sol__enunciado { max-width: none; }
+}
+
+.tabs {
+  display: inline-flex;
+  gap: 6px;
+  background: var(--morado-050);
+  border: 1px solid var(--gris-borde);
+  border-radius: 999px;
+  padding: 6px;
+  margin: 0;
+}
+.tab {
+  border: 0;
+  background: transparent;
+  border-radius: 999px;
+  padding: .75em 1.5em;
+  font-family: var(--fuente-titulos);
+  font-size: .97rem;
+  font-weight: 700;
+  color: var(--tinta-suave);
+  cursor: pointer;
+  transition: .18s;
+}
+.tab:hover { color: var(--morado-700); }
+.tab.is-activa { background: var(--morado-700); color: #fff; box-shadow: 0 4px 14px rgba(82,3,72,.3); }
+.tab:focus-visible { outline: 3px solid var(--morado-300); outline-offset: 2px; }
+
+.panel[hidden] { display: none; }
+.panel__grid { display: grid; grid-template-columns: 1.25fr 1fr; gap: 44px; align-items: start; }
+
+/* Los paneles con celular van al revés que la retícula normal: el
+   celular a la izquierda, más angosto, y el texto con sus tarjetas a la
+   derecha. El celular se estira de arriba abajo con la columna de al
+   lado. Lo usan los dos paneles, el de rectoría y el de papás. */
+.panel__grid--cel {
+  grid-template-columns: .82fr 1fr;
+  align-items: stretch;
+}
+
+/* El celular ocupa el primer renglón, que es el de la frase y las
+   tarjetas. El botón baja a un segundo renglón, debajo de ellas, para
+   que el celular no se estire de más. */
+.panel__grid--cel .panel__lado  {
+  grid-column: 1;
+  grid-row: 1;
+  position: relative;
+
+  /* Piso para el celular. Las tarjetas ahora se recortan a tres, así
+     que la columna de al lado quedó corta; sin este mínimo el celular
+     se encogería con ella hasta quedar diminuto. */
+  min-height: 460px;
+}
+
+/* El celular se saca del flujo a propósito. Si no, es él quien decide
+   el alto del renglón —con su tamaño natural— y termina más largo que
+   las tarjetas. Sacado, el alto lo mandan la frase y las tarjetas, y el
+   celular se estira justo hasta ahí. */
+.panel__grid--cel .celsol {
+  position: absolute;
+
+  /* Arriba llega al borde superior de los botones "Soy rector / Soy
+     papá": el alto de esa pastilla más el aire que queda entre la
+     cabecera y el panel. Abajo termina con la última tarjeta. */
+  top: calc(-1 * (58px + 36px));
+  bottom: 0;
+
+  left: 50%;
+  transform: translateX(-50%);
+  height: auto;              /* lo definen el "top" y el "bottom" */
+  width: auto;               /* y el ancho sale de la proporción */
+  max-width: 100%;
+  margin: 0;
+}
+.panel__grid--cel .panel__texto {
+  grid-column: 2;
+  grid-row: 1;
+  padding-right: clamp(0px, 3.5vw, 52px);   /* igual que los botones */
+}
+.panel__grid--cel .panel__pie   { grid-column: 2; grid-row: 2; margin-top: 22px; }
+.panel__remate {
+  border-left: 4px solid var(--morado-600);
+  padding-left: 18px;
+  font-size: 1.04rem;
+  color: var(--morado-800);
+  font-weight: 600;
+  margin: 1.6rem 0;
+}
+.panel__caja {
+  background: var(--morado-050);
+  border: 1px solid var(--morado-100);
+  border-radius: var(--radio);
+  padding: 28px 26px;
+}
+.panel__caja-titulo {
+  font-family: var(--fuente-titulos);
+  font-weight: 700;
+  color: var(--morado-700);
+  font-size: .82rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: .7rem;
+}
+.panel__caja p:last-child { margin: 0; color: var(--tinta-suave); font-size: .98rem; }
+
+/* ============================================================
+   EL CELULAR DE "SOLUCIÓN"
+
+   Aquí la foto NO tiene la pantalla transparente: es blanca. Por eso
+   la imagen de cada aspecto va ENCIMA de la foto, recortada al
+   rectángulo de la pantalla.
+
+   ┌──────────────────────────────────────────────────────────┐
+   │  DE DÓNDE SALEN ESTOS PORCENTAJES                        │
+   │                                                          │
+   │  Se midió la pantalla blanca dentro de la foto: empieza  │
+   │  en el 21,13% del ancho y el 2,82% del alto, y mide      │
+   │  56,53% por 78,87%. Si se cambia la foto del celular,    │
+   │  hay que volver a medir y cambiar estos cuatro números.  │
+   └──────────────────────────────────────────────────────────┘
+   ============================================================ */
+
+/* La columna del celular. Se queda pegado arriba mientras se lee la
+   lista, que es larga. */
+.panel__lado {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+}
+
+.celsol {
+  position: relative;
+  height: 100%;
+  aspect-ratio: 658 / 1027;      /* la proporción de la foto recortada */
+  max-width: 100%;
+  margin: 0 auto;
+}
+.celsol[hidden] { display: none; }
+
+.celsol__marco {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  position: relative;
+  z-index: 1;
+}
+
+.celsol__pantalla {
+  position: absolute;
+  left: 21.13%;
+  top: 2.82%;
+  width: 56.53%;
+  height: 78.87%;
+  z-index: 2;
+  border-radius: 7.5% / 3.5%;
+  overflow: hidden;
+  background: var(--morado-700);
+}
+
+/* Las láminas van una encima de otra y se cruzan con un fundido.
+   La que entra, además, sube un pelín: lo justo para que se note el
+   cambio sin que parezca un carrusel de los de antes. */
+.celsol__lamina {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .5s ease, transform .5s cubic-bezier(.22, .8, .3, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14% 10%;
+  background: linear-gradient(160deg, var(--morado-700), var(--morado-900));
+}
+.celsol__lamina.es-actual { opacity: 1; transform: none; }
+
+.celsol__lamina img,
+.celsol__lamina video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;    /* lo importante de una captura está arriba */
+}
+
+/* ---- El paseo lento por la imagen ----
+
+   Mientras una pantalla está puesta, la imagen se acerca muy despacio
+   y baja un poco: así una captura quieta no se siente como una foto
+   pegada. Solo se mueve la que está a la vista; las demás se quedan
+   como estaban, que si no el navegador anima cosas que nadie ve.
+
+   Al video no se le hace nada: bastante se mueve ya. */
+.celsol__lamina.es-actual img {
+  animation: celsolPaseo 14s ease-out forwards;
+}
+
+@keyframes celsolPaseo {
+  from { transform: scale(1.02); }
+  to   { transform: scale(1.1) translateY(-2.4%); }
+}
+
+/* Si en el sistema está pedido "menos movimiento", no se pasea nada */
+@media (prefers-reduced-motion: reduce) {
+  .celsol__lamina.es-actual img { animation: none; }
+  .celsol__lamina { transition: opacity .3s ease; transform: none; }
+}
+
+/* El nombre del aspecto: se ve mientras no haya imagen, y se apaga
+   en cuanto la imagen carga. */
+.celsol__rotulo {
+  margin: 0;
+  font-family: var(--fuente-titulos);
+  font-weight: 700;
+  font-size: .92rem;
+  line-height: 1.3;
+  text-align: center;
+  color: #fff;
+}
+.celsol__lamina.con-foto .celsol__rotulo { display: none; }
+
+/* ---- Las tarjetas de aspecto ----
+
+   Cada una manda su pantalla al celular. La que se está viendo queda
+   encendida: borde morado, fondo blanco y una barrita al costado. */
+
+.aspectos {
+  display: grid;
+  gap: 6px;
+}
+
+/* ---- Solo se ven las tres primeras ----
+
+   La altura la calcula js/solucion.js, que mide hasta dónde llega la
+   tercera tarjeta. Las demás se alcanzan con el scroll de adentro: la
+   página no se mueve.
+
+   El "position: relative" no es decorativo: sin él, las medidas que
+   toma el JavaScript no serían respecto de esta lista. */
+.aspectos.es-scroll {
+  position: relative;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 8px;
+
+  /* La barrita, discreta pero visible: es lo que avisa que hay más */
+  scrollbar-width: thin;
+  scrollbar-color: var(--morado-300) transparent;
+}
+
+.aspectos.es-scroll::-webkit-scrollbar { width: 6px; }
+.aspectos.es-scroll::-webkit-scrollbar-track { background: transparent; }
+.aspectos.es-scroll::-webkit-scrollbar-thumb {
+  background: var(--morado-300);
+  border-radius: 999px;
+}
+.aspectos.es-scroll::-webkit-scrollbar-thumb:hover { background: var(--morado-600); }
+
+.aspecto {
+  position: relative;
+  border: 1px solid var(--gris-borde);
+  border-radius: var(--radio-chico);
+  background: var(--hueso);
+  padding: 5px 10px 5px 12px;
+  cursor: pointer;
+
+  /* En reposo se ven apagadas, como esperando turno. Se encienden del
+     todo la que está puesta en el celular y la que toca el mouse. */
+  opacity: .35;
+  transition: opacity .2s, border-color .2s, background .2s, box-shadow .2s, transform .2s;
+}
+
+/* La barrita del costado, apagada hasta que le toque el turno */
+.aspecto::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 5px; bottom: 5px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: transparent;
+  transition: background .2s;
+}
+
+.aspecto:hover {
+  opacity: 1;
+  border-color: var(--morado-300);
+  background: #fff;
+}
+
+.aspecto.es-actual {
+  opacity: 1;
+  border-color: var(--morado-600);
+  background: #fff;
+  box-shadow: 0 6px 20px rgba(82, 3, 72, .1);
+  transform: translateX(3px);
+}
+.aspecto.es-actual::before { background: var(--morado-600); }
+
+.aspecto:focus-visible {
+  opacity: 1;
+  outline: 3px solid var(--morado-300);
+  outline-offset: 3px;
+}
+
+.aspecto__titulo {
+  margin: 0 0 .05rem;
+  font-size: .82rem;
+  line-height: 1.2;
+  color: var(--tinta);
+}
+.aspecto.es-actual .aspecto__titulo { color: var(--morado-700); }
+
+.aspecto__texto {
+  margin: 0;
+  font-size: .72rem;
+  line-height: 1.35;
+  color: var(--tinta-suave);
+}
+
+/* La línea de "dónde vive" esto dentro del ecosistema. La flecha la
+   pone el CSS, no el texto: así no se lee en voz alta en un lector de
+   pantalla y no hay que escribirla en cada tarjeta. */
+.aspecto__donde {
+  margin: .25rem 0 0;
+  font-size: .66rem;
+  line-height: 1.3;
+  font-weight: 600;
+  color: var(--morado-600);
+}
+.aspecto__donde::before {
+  content: "→";
+  margin-right: .35em;
+}
+
+/* ============================================================
+   EL MAPA DE ICONOS
+
+   El mismo diseño para dos secciones: la A.C.P. y el ecosistema.
+   Arriba unos iconos; se toca uno y debajo aparece lo suyo, con sus
+   piezas, que son otros iconos. Cada pieza, al tocarla, dice qué
+   es. Nada se explica hasta que alguien pregunta: eso es lo que
+   mantiene las secciones limpias.
+
+   Con la clase "mapa--ruta" se ve como una progresión, con números
+   y flechas. Sin ella, como cosas que conviven sin orden.
+
+   La mecánica está en js/mapa.js; los textos, en js/acp.js y en
+   js/plataformas.js.
+   ============================================================ */
+
+/* ============================================================
+   EL TELÓN DE FONDO DE LA A.C.P.
+
+   Un rectángulo morado con las esquinas redondas. Detrás, muy por
+   debajo, una red neuronal que se mueve despacio, y un destello que
+   la cruza cada tanto. Todo es decoración: nada de esto se lee ni se
+   toca, y con "menos movimiento" pedido en el sistema se queda
+   quieto.
+   ============================================================ */
+
+.acp-escena {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 38px clamp(16px, 3vw, 34px) 34px;
+  border-radius: 30px;
+  background:
+    radial-gradient(120% 90% at 18% 0%, rgba(118, 4, 103, .55), transparent 60%),
+    linear-gradient(150deg, #45023C, #2C0226 72%);
+  box-shadow: 0 24px 60px rgba(40, 2, 35, .28);
+}
+
+/* ---- La red ----
+
+   Ya no es un dibujo quieto: la pinta js/acp-red.js sobre un
+   lienzo, con los puntos flotando y los hilos siguiéndolos.
+   Aquí solo se dice dónde va y qué tan transparente se ve. */
+
+.acp-red {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  display: block;
+  /* transparente al 80 % */
+  opacity: .20;
+  pointer-events: none;
+}
+
+/* ---- El destello ---- */
+
+.acp-destello {
+  position: absolute;
+  top: -40%;
+  left: -35%;
+  width: 45%;
+  height: 180%;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(105deg,
+              transparent, rgba(255, 255, 255, .13) 45%, transparent);
+  transform: rotate(8deg);
+  animation: acpBrillo 11s ease-in-out infinite;
+}
+
+@keyframes acpBrillo {
+  0%, 62%  { left: -45%; opacity: 0; }
+  68%      { opacity: 1; }
+  92%      { left: 105%; opacity: 0; }
+  100%     { left: 105%; opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .acp-destello { animation: none; }
+  .acp-destello { opacity: 0; }
+}
+
+/* ---- El mapa, sobre el morado ---- */
+
+.acp-escena .mapa__ico {
+  background: rgba(255, 255, 255, .10);
+  border-color: rgba(255, 255, 255, .28);
+}
+.acp-escena .mapa__ico svg { stroke: rgba(255, 255, 255, .82); }
+.acp-escena .mapa__nombre { color: rgba(255, 255, 255, .88); }
+.acp-escena .mapa__num {
+  background: rgba(255, 255, 255, .14);
+  border-color: rgba(255, 255, 255, .3);
+  color: #fff;
+}
+.acp-escena .mapa__flecha {
+  background: linear-gradient(90deg, rgba(255,255,255,.18), rgba(255,255,255,.45));
+}
+
+.acp-escena .mapa__paso:hover .mapa__ico {
+  background: rgba(255, 255, 255, .2);
+  border-color: rgba(255, 255, 255, .5);
+}
+.acp-escena .mapa__paso.es-hecho .mapa__ico {
+  background: rgba(255, 255, 255, .16);
+  border-color: rgba(255, 255, 255, .42);
+}
+.acp-escena .mapa__paso.es-hecho .mapa__ico svg { stroke: #fff; }
+
+.acp-escena .mapa__paso.es-actual .mapa__ico {
+  background: #fff;
+  border-color: #fff;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, .3);
+}
+.acp-escena .mapa__paso.es-actual .mapa__ico svg { stroke: var(--morado-700); }
+.acp-escena .mapa__paso.es-actual .mapa__nombre { color: #fff; }
+.acp-escena .mapa__paso.es-actual .mapa__num { background: #fff; border-color: #fff; color: var(--morado-700); }
+
+.acp-escena .mapa__frase { color: #fff; }
+.acp-escena .mapa__texto { color: rgba(255, 255, 255, .78); }
+.acp-escena .mapa__texto em { color: #fff; }
+.acp-escena .mapa__pista { color: rgba(255, 255, 255, .68); }
+.acp-escena .mapa__pista strong { color: #fff; }
+
+.acp-escena .mapa__pieza {
+  background: rgba(255, 255, 255, .08);
+  border-color: rgba(255, 255, 255, .22);
+}
+.acp-escena .mapa__pieza:hover { border-color: rgba(255, 255, 255, .5); }
+.acp-escena .mapa__pieza-ico { background: rgba(255, 255, 255, .16); }
+.acp-escena .mapa__pieza-ico svg { stroke: #fff; }
+.acp-escena .mapa__pieza-nombre { color: rgba(255, 255, 255, .9); }
+
+.acp-escena .mapa__pieza.es-actual {
+  background: #fff;
+  border-color: #fff;
+}
+.acp-escena .mapa__pieza.es-actual .mapa__pieza-ico { background: var(--morado-700); }
+.acp-escena .mapa__pieza.es-actual .mapa__pieza-nombre { color: var(--tinta); }
+
+.mapa { margin: 6px 0 0; }
+
+.mapa__fila {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+/* La variante "al lado" queda fuera: allá los botones se acomodan a
+   su casilla, y estos anchos fijos los harían salirse del fondo. */
+.mapa:not(.mapa--ruta):not(.mapa--lado) .mapa__fila { gap: 14px 22px; }
+.mapa:not(.mapa--ruta):not(.mapa--lado) .mapa__paso { width: 150px; }
+
+/* La rayita que une un momento con el siguiente */
+.mapa__flecha {
+  flex: 1 1 auto;
+  max-width: 78px;
+  height: 2px;
+  margin-top: 40px;
+  background: linear-gradient(90deg, var(--gris-borde), var(--morado-300));
+  border-radius: 2px;
+}
+
+/* ---- Cada momento ---- */
+
+.mapa__paso {
+  position: relative;
+  flex: 0 0 auto;
+  width: 124px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 4px 4px;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  color: var(--tinta-suave);
+  font-family: inherit;
+}
+
+.mapa__paso .mapa__num { display: none; }
+.mapa--ruta .mapa__paso .mapa__num { display: grid; }
+
+.mapa__num {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  margin-left: 12px;
+  width: 21px; height: 21px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #fff;
+  border: 1.5px solid var(--gris-borde);
+  font-size: .7rem;
+  font-weight: 800;
+  color: var(--tinta-suave);
+  transition: .2s;
+}
+
+.mapa__ico {
+  display: grid;
+  place-items: center;
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: var(--hueso);
+  border: 1.5px solid var(--gris-borde);
+  transition: transform .2s, background .2s, border-color .2s, box-shadow .2s;
+}
+.mapa__ico svg {
+  width: 30px; height: 30px;
+  fill: none;
+  stroke: var(--tinta-suave);
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke .2s;
+}
+
+.mapa__nombre {
+  font-family: var(--fuente-titulos);
+  font-size: .9rem;
+  font-weight: 700;
+  line-height: 1.2;
+  transition: color .2s;
+}
+
+.mapa__para {
+  font-size: .76rem;
+  line-height: 1.25;
+  color: var(--tinta-suave);
+  opacity: .85;
+}
+.mapa__paso.es-actual .mapa__para { color: var(--morado-600); opacity: 1; }
+
+.mapa__paso:hover .mapa__ico {
+  transform: translateY(-2px);
+  border-color: var(--morado-300);
+  background: #fff;
+}
+
+/* Los que ya se vieron quedan marcados, en morado suave */
+.mapa__paso.es-hecho .mapa__ico { border-color: var(--morado-300); background: var(--morado-050); }
+.mapa__paso.es-hecho .mapa__ico svg { stroke: var(--morado-600); }
+
+/* El que está abierto */
+.mapa__paso.es-actual .mapa__ico {
+  background: var(--morado-700);
+  border-color: var(--morado-700);
+  box-shadow: 0 8px 22px rgba(82, 3, 72, .22);
+}
+.mapa__paso.es-actual .mapa__ico svg { stroke: #fff; }
+.mapa__paso.es-actual .mapa__nombre { color: var(--morado-700); }
+.mapa__paso.es-actual .mapa__num {
+  background: var(--morado-700);
+  border-color: var(--morado-700);
+  color: #fff;
+}
+
+.mapa__paso:focus-visible { outline: 3px solid var(--morado-300); outline-offset: 4px; border-radius: 16px; }
+
+/* ---- Lo que sale al abrir un momento ---- */
+
+.mapa__detalle {
+  max-width: 720px;
+  margin: 26px auto 0;
+  text-align: center;
+}
+.mapa__detalle:focus { outline: none; }
+
+.mapa__frase {
+  margin: 0 0 .4rem;
+  font-family: var(--fuente-titulos);
+  font-size: 1.22rem;
+  font-weight: 700;
+  color: var(--morado-700);
+}
+.mapa__texto {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--tinta-suave);
+}
+.mapa__texto em { color: var(--tinta); font-style: normal; font-weight: 700; }
+
+/* ---- Las piezas de adentro ---- */
+
+.mapa__piezas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.mapa__pieza {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 96px;
+  padding: 12px 6px 10px;
+  border: 1.5px solid var(--gris-borde);
+  border-radius: var(--radio-chico);
+  background: #fff;
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color .18s, transform .18s, box-shadow .18s;
+}
+.mapa__pieza:hover { transform: translateY(-2px); border-color: var(--morado-300); }
+.mapa__pieza:focus-visible { outline: 3px solid var(--morado-300); outline-offset: 3px; }
+
+.mapa__pieza-ico {
+  display: grid;
+  place-items: center;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: var(--morado-050);
+  transition: background .18s;
+}
+.mapa__pieza-ico svg {
+  width: 19px; height: 19px;
+  fill: none;
+  stroke: var(--morado-600);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.mapa__pieza-nombre {
+  font-size: .76rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--tinta);
+  text-align: center;
+}
+
+.mapa__pieza.es-actual {
+  border-color: var(--morado-600);
+  box-shadow: 0 6px 18px rgba(82, 3, 72, .12);
+}
+.mapa__pieza.es-actual .mapa__pieza-ico { background: var(--morado-700); }
+.mapa__pieza.es-actual .mapa__pieza-ico svg { stroke: #fff; }
+
+/* El renglón que primero invita a tocar y después responde */
+.mapa__pista {
+  min-height: 1.4em;
+  margin: 16px 0 0;
+  font-size: .92rem;
+  color: var(--tinta-suave);
+}
+.mapa__pista.es-respuesta { color: var(--tinta); }
+.mapa__pista strong { color: var(--morado-700); }
+
+/* ---- El remate ---- */
+
+.acp-remate {
+  max-width: 660px;
+  margin: 34px auto 0;
+  padding-top: 26px;
+  border-top: 1px solid var(--gris-borde);
+  text-align: center;
+  font-size: 1.02rem;
+  line-height: 1.6;
+  color: var(--tinta-suave);
+}
+.acp-remate strong { color: var(--morado-700); }
+
+/* ---- La variante de al lado ----
+
+   Los iconos en dos por dos a la izquierda, lo que explica cada uno
+   en una tarjeta a la derecha, y debajo la foto de esa app. Así se
+   lee de corrido: quién → qué hace → cómo se ve. */
+
+.mapa--lado {
+  display: grid;
+  grid-template-columns: 296px minmax(0, 1fr);
+  gap: 26px 36px;            /* aire entre el selector y la tarjeta */
+  align-items: stretch;      /* las dos columnas, del mismo alto */
+}
+
+/* El selector, sobre su propio fondo */
+.mapa--lado .mapa__fila {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-content: center;     /* los cuatro, centrados en su caja */
+  gap: 12px 8px;
+  padding: 22px 14px;        /* con aire de sobra para los rótulos */
+  border-radius: var(--radio);
+
+  /* El morado de marca, muy rebajado: se nota el tono sin que el
+     texto oscuro pierda contraste. */
+  background: rgba(82, 3, 72, .10);
+  border: 1px solid rgba(82, 3, 72, .18);
+}
+
+/* El "min-width: 0" hace falta: sin él, un rótulo largo como
+   "Rectores y administrativos" no se deja encoger y se sale de su
+   casilla en vez de partirse en dos renglones. */
+.mapa--lado .mapa__paso {
+  width: auto;
+  min-width: 0;
+  gap: 6px;
+  padding: 8px 2px;
+}
+.mapa--lado .mapa__nombre,
+.mapa--lado .mapa__para { max-width: 100%; overflow-wrap: break-word; }
+.mapa--lado .mapa__ico { width: 52px; height: 52px; }
+.mapa--lado .mapa__ico svg { width: 22px; height: 22px; }
+.mapa--lado .mapa__nombre { font-size: .78rem; }
+.mapa--lado .mapa__para { font-size: .66rem; }
+
+/* ---- La tarjeta de los aspectos ----
+
+   En reposo casi no se ve: el fondo blanco queda al 4% y sin sombra,
+   así que lo que se lee es el texto, no la caja. Al acercar el mouse
+   —o al llegar con el teclado— vuelve el blanco de siempre.
+
+   Lo que se transparenta es el FONDO, no el contenido: los iconos y
+   las palabras se leen igual todo el tiempo. Si se apagara el bloque
+   entero, nadie sabría que ahí hay algo para tocar. */
+.mapa--lado .mapa__detalle {
+  position: relative;
+  margin: 0;
+  max-width: none;
+  padding: 24px 18px;
+  border-radius: var(--radio);
+  background: rgba(255, 255, 255, .04);
+  box-shadow: none;
+  transition: background .28s ease, box-shadow .28s ease;
+}
+
+/* Con foto, el fondo es la imagen de esa app detrás de un velo
+   blanco. El velo es el primer "background": va encima de la foto y
+   la deja apenas insinuada. Al acercar el mouse el velo se afina y la
+   foto se nota más; el texto sigue legible en los dos casos. */
+/* Con foto, la tarjeta se puede tocar para verla grande */
+.mapa--lado .mapa__detalle.con-foto { cursor: zoom-in; }
+
+.mapa--lado .mapa__detalle.con-foto {
+  background:
+    linear-gradient(rgba(255, 255, 255, .70), rgba(255, 255, 255, .70)),
+    var(--mapa-foto) center / cover no-repeat;
+}
+
+.mapa--lado .mapa__detalle:hover,
+.mapa--lado .mapa__detalle:focus-within {
+  background: #fff;
+  box-shadow: var(--sombra);
+}
+.mapa--lado .mapa__detalle.con-foto:hover,
+.mapa--lado .mapa__detalle.con-foto:focus-within {
+  background:
+    linear-gradient(rgba(255, 255, 255, .56), rgba(255, 255, 255, .56)),
+    var(--mapa-foto) center / cover no-repeat;
+  box-shadow: var(--sombra);
+}
+
+/* En esta variante, lo escogido se marca en gris y no en morado:
+   el morado ya lo lleva la app que está abierta, arriba. */
+/* Los iconos de adentro se reparten todo el ancho de la tarjeta, en
+   vez de quedar apretados en el centro con hueco a los lados. */
+.mapa--lado .mapa__piezas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  gap: 8px;
+}
+/* La lupita de la esquina: avisa que la foto se puede abrir */
+.mapa__ver {
+  position: absolute;
+  top: 12px; right: 12px;
+  width: 30px; height: 30px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .72);
+  box-shadow: 0 2px 8px rgba(26, 21, 35, .14);
+  cursor: zoom-in;
+  opacity: .55;
+  transition: opacity .2s, background .2s;
+}
+.mapa__detalle:hover .mapa__ver { opacity: 1; background: #fff; }
+.mapa__ver:focus-visible { outline: 3px solid var(--morado-300); outline-offset: 2px; opacity: 1; }
+.mapa__ver svg {
+  width: 15px; height: 15px;
+  fill: none;
+  stroke: var(--morado-700);
+  stroke-width: 1.9;
+  stroke-linecap: round;
+}
+
+.mapa--lado .mapa__pieza {
+  width: auto;
+  min-width: 0;
+  padding: 12px 4px 10px;
+  box-shadow: 0 4px 14px rgba(26, 21, 35, .12);
+}
+.mapa--lado .mapa__pieza:hover { box-shadow: 0 8px 20px rgba(26, 21, 35, .16); }
+.mapa--lado .mapa__pieza-nombre { font-size: .72rem; overflow-wrap: break-word; }
+
+.mapa--lado .mapa__pieza.es-actual {
+  border-color: #9AA0A6;
+  box-shadow: 0 6px 18px rgba(26, 21, 35, .1);
+}
+.mapa--lado .mapa__pieza.es-actual .mapa__pieza-ico { background: #5F6368; }
+.mapa--lado .mapa__pista strong { color: #3C4043; }
+
+@media (max-width: 860px) {
+  .mapa--lado { grid-template-columns: 1fr; }
+  .mapa--lado .mapa__fila { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 760px) {
+  .mapa__fila { flex-wrap: wrap; gap: 10px 4px; }
+  .mapa__flecha { display: none; }
+  .mapa__paso { width: 46%; }
+  .mapa__pieza { width: 88px; }
+  .mapa--lado .mapa__paso { width: auto; }
+}
+
+/* ============================================================
+   ANTES DE LA REUNIÓN DE TEAMS
+
+   Una ventana corta: cuatro datos y adentro. Se abre encima de
+   todo, con el fondo difuminado, y se cierra con la X, tocando
+   fuera o con Escape. Lo maneja js/teams.js.
+   ============================================================ */
+
+.teams {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(20, 8, 18, .55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: teamsEntra .2s ease;
+}
+.teams[hidden] { display: none; }
+
+@keyframes teamsEntra { from { opacity: 0; } to { opacity: 1; } }
+
+.teams__tarjeta {
+  position: relative;
+  width: min(100%, 460px);
+  max-height: 92vh;
+  overflow-y: auto;
+  padding: 30px 28px 26px;
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 30px 70px rgba(20, 2, 18, .35);
+  animation: teamsSube .24s cubic-bezier(.2, .8, .3, 1);
+}
+
+@keyframes teamsSube { from { transform: translateY(14px); } to { transform: none; } }
+
+.teams__cerrar {
+  position: absolute;
+  top: 12px; right: 12px;
+  width: 32px; height: 32px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: var(--hueso);
+  cursor: pointer;
+  transition: background .16s;
+}
+.teams__cerrar:hover { background: var(--morado-100); }
+.teams__cerrar svg {
+  width: 16px; height: 16px;
+  fill: none;
+  stroke: var(--tinta);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.teams__ojo {
+  margin: 0 0 .3rem;
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--morado-600);
+}
+.teams__titulo {
+  margin: 0 0 .35rem;
+  font-size: 1.32rem;
+  line-height: 1.22;
+  color: var(--tinta);
+}
+.teams__bajada {
+  margin: 0 0 20px;
+  font-size: .92rem;
+  line-height: 1.5;
+  color: var(--tinta-suave);
+}
+
+.teams__campos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.teams__campo--ancho { grid-column: 1 / -1; }
+
+.teams__campo { display: block; }
+.teams__campo span {
+  display: block;
+  margin-bottom: 5px;
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--tinta-suave);
+}
+.teams__campo input {
+  width: 100%;
+  padding: .7em .85em;
+  border: 1.5px solid var(--gris-borde);
+  border-radius: 11px;
+  background: var(--hueso);
+  font-family: inherit;
+  font-size: .95rem;
+  color: var(--tinta);
+  transition: border-color .16s, background .16s;
+}
+.teams__campo input:focus {
+  outline: none;
+  border-color: var(--morado-600);
+  background: #fff;
+}
+
+.teams__aviso {
+  min-height: 1.2em;
+  margin: 12px 0 0;
+  font-size: .86rem;
+  text-align: center;
+  color: var(--tinta-suave);
+}
+.teams__aviso.es-error { color: #C2185B; font-weight: 600; }
+.teams__aviso.es-bien  { color: #1B7F4B; font-weight: 600; }
+
+@media (max-width: 480px) {
+  .teams__campos { grid-template-columns: 1fr; }
+  .teams__tarjeta { padding: 26px 20px 22px; }
+}
+
+/* ---- Lista con palomita ---- */
+.lista-check { list-style: none; padding: 0; margin: 0 0 1.8rem; }
+.lista-check li {
+  position: relative;
+  padding-left: 32px;
+  margin-bottom: .85rem;
+  color: var(--tinta-suave);
+  font-size: 1rem;
+}
+.lista-check li::before {
+  content: "";
+  position: absolute;
+  left: 0; top: .42em;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--morado-600);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+  background-size: 12px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.lista-check strong { color: var(--tinta); }
+
+
+/* ============================================================
+   ECOSISTEMA
+   ============================================================ */
+
+.plataforma {
+  background: #fff;
+  border: 1px solid var(--gris-borde);
+  box-shadow: var(--sombra);
+  border-radius: var(--radio);
+  padding: 28px 24px;
+}
+.plataforma h3 { font-size: 1.22rem; margin-bottom: .2rem; }
+.plataforma__para {
+  font-size: .78rem;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--morado-600);
+  font-weight: 700;
+  margin-bottom: 1.1rem;
+}
+.plataforma ul { list-style: none; padding: 0; margin: 0; }
+.plataforma li {
+  font-size: .94rem;
+  color: var(--tinta-suave);
+  padding-left: 16px;
+  margin-bottom: .6rem;
+  position: relative;
+}
+.plataforma li::before {
+  content: "";
+  position: absolute;
+  left: 0; top: .62em;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--morado-600);
+}
+.plataforma li strong { color: var(--tinta); }
+.plataforma__nota {
+  margin: 1.1rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--gris-borde);
+  font-size: .9rem;
+  color: var(--morado-700);
+  font-style: italic;
+}
+.plataforma--destacada {
+  background: linear-gradient(160deg, rgba(118,4,103,.3), rgba(118,4,103,.1));
+  border-color: var(--morado-600);
+}
+
+/* ============================================================
+   A.C.P.
+   ============================================================ */
+
+.acp-elem {
+  background: #fff;
+  border: 1px solid var(--gris-borde);
+  border-top: 4px solid var(--morado-600);
+  border-radius: var(--radio);
+  padding: 26px 22px;
+  box-shadow: var(--sombra);
+}
+.acp-elem h3 { color: var(--morado-800); }
+.acp-elem p { color: var(--tinta-suave); font-size: .96rem; margin: 0; }
+
+.ciclo {
+  margin: 48px auto 0;
+  max-width: 860px;
+  text-align: center;
+  background: var(--morado-050);
+  border: 1px solid var(--morado-100);
+  border-radius: var(--radio);
+  padding: 34px 26px;
+}
+.ciclo__titulo {
+  font-size: .82rem;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--morado-700);
+  margin-bottom: 1.1rem;
+}
+.ciclo__pasos { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 14px; margin-bottom: 1.3rem; }
+.ciclo__paso {
+  background: var(--morado-700);
+  color: #fff;
+  font-family: var(--fuente-titulos);
+  font-weight: 700;
+  padding: .6em 1.4em;
+  border-radius: 999px;
+  font-size: 1rem;
+}
+.ciclo__flecha { color: var(--morado-600); font-size: 1.4rem; font-weight: 700; }
+.ciclo__pie { margin: 0; color: var(--tinta-suave); }
+
+.metricas { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 30px; max-width: 860px; margin-left: auto; margin-right: auto; }
+.metrica { border-left: 4px solid var(--morado-600); padding-left: 20px; }
+.metrica h4 { font-size: 1.08rem; color: var(--morado-800); margin-bottom: .3rem; }
+.metrica p { margin: 0; color: var(--tinta-suave); font-size: .96rem; }
+
+/* ============================================================
+   WIWI QUEST
+   ============================================================ */
+
+.modo {
+  border-left: 3px solid var(--morado-300);
+  padding-left: 20px;
+  margin-bottom: 1.5rem;
+}
+.modo h3 { font-size: 1.1rem; color: var(--morado-800); margin-bottom: .25rem; }
+.modo p { margin: 0; color: var(--tinta-suave); font-size: .98rem; }
+
+.frase-ancla {
+  font-family: var(--fuente-titulos);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--morado-700);
+  margin-top: 2rem;
+}
+
+.puntos-caja {
+  background: #fff;
+  border: 1px solid var(--gris-borde);
+  border-radius: var(--radio);
+  padding: 30px 26px;
+  box-shadow: var(--sombra);
+  margin-bottom: 26px;
+}
+.puntos-caja h3 { color: var(--morado-800); }
+.puntos-caja .lista-check { margin-bottom: 0; }
+
+.img-redonda { border-radius: var(--radio); box-shadow: var(--sombra-fuerte); }
+
+/* ============================================================
+   PRUEBA SOCIAL
+   ============================================================ */
+
+.franja__label {
+  font-size: .8rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--morado-700);
+  margin-bottom: 1.6rem;
+}
+.logos-clientes { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 44px; }
+.logos-clientes img { max-height: 80px; width: auto; }
+
+/* ============================================================
+   PRECIO
+   ============================================================ */
+
+.precio-caja {
+  max-width: 780px;
+  background: linear-gradient(160deg, var(--morado-050), #fff);
+  border: 1px solid var(--morado-100);
+  border-radius: var(--radio);
+  padding: 44px 40px;
+  box-shadow: var(--sombra);
+}
+.precio-caja__intro { font-size: 1.08rem; color: var(--tinta-suave); }
+.precio-caja__cifra {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 12px;
+  margin: 1.8rem 0;
+  padding: 22px 0;
+  border-top: 1px solid var(--morado-100);
+  border-bottom: 1px solid var(--morado-100);
+}
+.precio-caja__valor {
+  font-family: var(--fuente-titulos);
+  font-size: clamp(2rem, 5vw, 2.9rem);
+  font-weight: 700;
+  color: var(--morado-700);
+  line-height: 1;
+}
+.precio-caja__unidad { color: var(--tinta-suave); font-size: .96rem; }
+.precio-caja__valorizacion { color: var(--tinta-suave); margin-bottom: 1.8rem; }
+
+/* ============================================================
+   CONTACTO Y FORMULARIO
+   ============================================================ */
+
+.contacto__datos { list-style: none; padding: 0; margin: 2.4rem 0 0; }
+
+/* ---- Los datos como pie de la sección ----
+
+   En fila, centrados y sin las líneas de separación que tenían cuando
+   iban en columna. */
+.contacto__datos--pie {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px 30px;
+  margin-top: 34px;
+  padding-top: 26px;
+  border-top: 1px solid var(--gris-borde);
+}
+
+/* El nombre de la clase va dos veces a propósito: hace falta para
+   ganarle a ".contacto__datos li", que viene después y pone las
+   líneas y el reparto en columna. */
+.contacto__datos.contacto__datos--pie li {
+  display: block;
+  padding: 0;
+  border: 0;
+  text-align: center;
+  font-size: .94rem;
+}
+.contacto__datos.contacto__datos--pie span {
+  display: block;
+  min-width: 0;
+  margin-bottom: .25rem;
+}
+
+@media (max-width: 760px) {
+  .contacto__datos--pie { grid-template-columns: 1fr; }
+}
+.contacto__datos li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--gris-borde);
+  font-size: .98rem;
+  color: var(--tinta-suave);
+}
+.contacto__datos span {
+  min-width: 130px;
+  color: var(--morado-600);
+  font-size: .78rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.contacto__datos a { color: var(--morado-700); text-decoration: none; border-bottom: 1px solid var(--morado-300); }
+.contacto__datos a:hover { border-bottom-color: var(--morado-700); }
+
+.form-caja {
+  background: #fff;
+  border-radius: var(--radio);
+  padding: 34px 30px;
+  box-shadow: var(--sombra-fuerte);
+}
+.form-caja h3 { color: var(--morado-800); margin-bottom: .2rem; }
+.form-caja__sub { color: var(--tinta-suave); font-size: .95rem; margin-bottom: 1.6rem; }
+
+.campo { margin-bottom: 15px; }
+.campo label {
+  display: block;
+  font-size: .86rem;
+  font-weight: 700;
+  color: var(--tinta);
+  margin-bottom: .38rem;
+}
+.campo input, .campo select, .campo textarea {
+  width: 100%;
+  padding: .74em .9em;
+  border: 1.5px solid var(--gris-borde);
+  border-radius: var(--radio-chico);
+  font-family: inherit;
+  font-size: .97rem;
+  color: var(--tinta);
+  background: var(--hueso);
+  transition: border-color .15s, background .15s;
+}
+.campo input:focus, .campo select:focus, .campo textarea:focus {
+  outline: none;
+  border-color: var(--morado-600);
+  background: #fff;
+}
+.campo input.error, .campo select.error, .campo textarea.error { border-color: #DC2626; background: #FEF2F2; }
+.campo textarea { resize: vertical; min-height: 78px; }
+.campo--doble { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+/* ---- El formulario de ancho completo ----
+
+   Los campos se reparten en tres columnas. El mensaje ocupa dos y la
+   casilla de autorización, las tres. */
+.form-caja--ancha { padding: 38px 34px; }
+
+.form-rejilla {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px 20px;
+}
+.form-rejilla .campo { margin-bottom: 11px; }
+
+.campo--dos-columnas { grid-column: span 2; }
+.campo--ancho { grid-column: 1 / -1; }
+
+.form-enviar { display: flex; justify-content: center; margin-top: 14px; }
+
+/* Las tres maneras de contactarnos, en fila debajo del formulario.
+   La pinta de los botones viene de css/presentacion.css, donde ya
+   estaban para la pantalla final del simulador; aquí solo se cambia
+   el reparto: allá van en columna, acá en fila. */
+/* ---- El título del ecosistema ----
+
+   Dos renglones: arriba la negación, en tinta, con el "No" grande y
+   en morado claro; abajo la afirmación, en el morado de la marca. */
+
+.eco-titulo {
+  color: var(--tinta);
+  font-weight: 500;
+  line-height: 1.12;
+}
+.eco-titulo strong { font-weight: 800; color: var(--tinta); }
+
+.eco-titulo__no {
+  font-size: 1.5em;
+  font-weight: 800;
+  line-height: .85;
+  color: var(--morado-600);
+}
+
+.eco-titulo__remate {
+  display: block;
+  margin-top: .1em;
+  font-weight: 800;
+  color: var(--morado-700);
+}
+
+/* ---- Contacto: la foto y los botones, uno al lado del otro ---- */
+
+.ctc-dos {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(26px, 4vw, 54px);
+}
+
+.ctc-foto {
+  margin: 0;
+  border-radius: var(--radio);
+  overflow: hidden;
+  box-shadow: var(--sombra);
+}
+.ctc-foto img { display: block; width: 100%; height: auto; }
+
+/* ---- El formulario y su video, uno al lado del otro ---- */
+
+.conv {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
+  align-items: start;
+  gap: clamp(24px, 3.5vw, 44px);
+}
+
+/* En media página, tres columnas de campos quedan apretadas */
+.conv .form-rejilla { grid-template-columns: 1fr 1fr; }
+.conv .campo--dos-columnas { grid-column: 1 / -1; }
+
+.conv__lado { position: sticky; top: 104px; }
+
+@media (max-width: 980px) {
+  .conv { grid-template-columns: 1fr; }
+  .conv .form-rejilla { grid-template-columns: 1fr; }
+  .conv__lado { position: static; max-width: 520px; margin: 0 auto; width: 100%; }
+}
+
+/* ---- El video de la asesora ----
+
+   Ocupa el mismo sitio que tenía la foto. La foto no desapareció:
+   queda encima, escondida, y sale cuando el video termina. */
+
+.ctc-video {
+  position: relative;
+  border-radius: var(--radio);
+  overflow: hidden;
+  box-shadow: var(--sombra);
+  background: #0E0A12;
+  aspect-ratio: 16 / 9;
+}
+
+.ctc-video video,
+.ctc-video__final {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* La foto del final, apagada hasta que el video se acaba. Cuando se
+   ve, se puede tocar para volver a empezar el video. */
+.ctc-video__final {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .5s ease;
+}
+.ctc-video.es-final .ctc-video__final { opacity: 1; }
+.ctc-video.es-final { cursor: pointer; }
+
+/* ---- Los mandos ---- */
+
+.ctc-video__mandos {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.vid-boton {
+  display: grid;
+  place-items: center;
+  width: 36px; height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(16, 10, 20, .55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  cursor: pointer;
+  transition: background .18s, transform .18s;
+}
+.vid-boton:hover { background: rgba(16, 10, 20, .78); transform: translateY(-1px); }
+.vid-boton:focus-visible { outline: 3px solid var(--morado-300); outline-offset: 2px; }
+
+.vid-boton svg {
+  width: 17px; height: 17px;
+  fill: #fff;
+  stroke: none;
+}
+.vid-boton svg path[class*="onda"] {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+/* El botón de pausa muestra un dibujo u otro según lo que toque */
+.vid-boton__play  { display: block; }
+.vid-boton__pausa { display: none; }
+.vid-boton.esta-andando .vid-boton__play  { display: none; }
+.vid-boton.esta-andando .vid-boton__pausa { display: block; }
+
+/* Mientras está mudo, las ondas del parlante se apagan */
+.vid-boton svg path[class*="onda"] { opacity: 0; transition: opacity .2s; }
+.vid-boton.esta-sonando svg path[class*="onda"] { opacity: 1; }
+
+.ctc-video__aviso {
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: rgba(16, 10, 20, .55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: #fff;
+  font-size: .74rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.ctc-video__aviso[hidden] { display: none; }
+
+/* Los botones ya no van centrados en la página, sino dentro de su
+   columna, así que aquí vuelven a una sola fila de tarjetas. */
+.ctc-dos .ctc__botones.ctc__botones--fila {
+  grid-template-columns: 1fr;
+  max-width: none;
+  margin: 0;
+}
+
+@media (max-width: 860px) {
+  .ctc-dos { grid-template-columns: 1fr; }
+  .ctc-foto { max-width: 460px; margin: 0 auto; }
+
+  /* El "margin: auto" deja de estirar al elemento dentro de la
+     retícula, y este no tiene contenido en flujo que le dé ancho
+     —todo va posicionado encima—, así que hay que pedírselo. */
+  .ctc-video { width: 100%; max-width: 460px; margin: 0 auto; }
+}
+
+/* El nombre va dos veces a propósito: css/presentacion.css se carga
+   después que este archivo y pone ".ctc__botones" en columna. Con la
+   clase repetida, esta regla pesa más y gana sin depender del orden. */
+.ctc__botones.ctc__botones--fila {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+  gap: 14px;
+  width: 100%;
+  max-width: 940px;
+  margin: 30px auto 0;
+}
+
+@media (max-width: 760px) {
+  .ctc__botones.ctc__botones--fila { grid-template-columns: 1fr; max-width: 440px; }
+}
+.campo--doble label { font-size: .86rem; }
+
+.campo--check label {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-weight: 400;
+  font-size: .87rem;
+  color: var(--tinta-suave);
+  line-height: 1.5;
+  cursor: pointer;
+}
+.campo--check input { width: auto; margin-top: 3px; accent-color: var(--morado-600); flex-shrink: 0; }
+
+/* Trampa anti-spam: invisible para personas, visible para robots */
+.miel { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+.form-msg { margin: 1rem 0 0; font-size: .94rem; font-weight: 600; text-align: center; }
+.form-msg.ok    { color: #15803D; }
+.form-msg.falla { color: #DC2626; }
+
+/* ============================================================
+   PIE
+   ============================================================ */
+
+.pie { background: #17101F; color: rgba(255,255,255,.7); padding: 56px 0 0; }
+.pie__inner { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; padding-bottom: 42px; }
+/* El pie es oscuro. Este filtro vuelve blanco cualquier logo para que se lea.
+   Si el logo ya tiene una versión en blanco, usa esa y borra la línea del filter. */
+.pie__logo { height: 38px; margin-bottom: 1.1rem; filter: brightness(0) invert(1); }
+.pie__frase { font-size: .96rem; max-width: 42ch; color: rgba(255,255,255,.6); }
+.pie__col { display: flex; flex-direction: column; gap: 9px; }
+.pie__titulo {
+  font-family: var(--fuente-titulos);
+  font-size: .78rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--morado-300);
+  font-weight: 700;
+  margin-bottom: .3rem;
+}
+.pie__col a { color: rgba(255,255,255,.7); text-decoration: none; font-size: .94rem; }
+.pie__col a:hover { color: #fff; }
+.pie__base { border-top: 1px solid rgba(255,255,255,.1); padding: 20px 24px; text-align: center; }
+.pie__base p { margin: 0; font-size: .86rem; color: rgba(255,255,255,.45); }
+.pie__base strong { color: rgba(255,255,255,.7); }
+
+/* ============================================================
+   BOTÓN FLOTANTE DE WHATSAPP
+   ============================================================ */
+
+.wa-flotante {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 200;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: var(--whatsapp);
+  display: grid;
+  place-items: center;
+  box-shadow: 0 8px 24px rgba(37,211,102,.45);
+  transition: transform .18s ease;
+}
+.wa-flotante:hover { transform: scale(1.08); }
+.wa-flotante svg { width: 32px; height: 32px; fill: #fff; }
+
+/* ============================================================
+   ANIMACIÓN DE ENTRADA
+   ============================================================ */
+
+.aparece { opacity: 0; transform: translateY(22px); transition: opacity .6s ease, transform .6s ease; }
+.aparece.visible { opacity: 1; transform: none; }
+
+/* ============================================================
+   EL EFECTO DE LAS TARJETAS AL PASAR EL MOUSE
+
+   Va aquí abajo a propósito, después de ".aparece". Las tarjetas
+   entran con esa animación, que termina poniéndoles
+   "transform: none"; si el hover estuviera escrito más arriba,
+   esa regla le ganaría y la tarjeta no se movería.
+   ============================================================ */
+
+.tarjeta {
+  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+}
+.tarjeta:hover,
+.tarjeta.aparece.visible:hover {
+  transform: scale(1.03);
+  box-shadow: 0 16px 38px rgba(54, 2, 47, .16);
+  border-color: color-mix(in srgb, var(--morado-600) 35%, var(--gris-borde));
+  z-index: 1;                     /* la sombra no queda debajo de la vecina */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tarjeta:hover, .tarjeta.aparece.visible:hover { transform: none; }
+}
+
+/* ============================================================
+   EL ENCABEZADO DE "EL PROBLEMA", CENTRADO
+   ============================================================ */
+
+/* ---- La tarjeta se puede tocar: se avisa con el cursor ---- */
+.tarjeta[data-foto] { cursor: pointer; }
+.tarjeta[data-foto]:focus-visible { outline: 3px solid var(--morado-600); outline-offset: 3px; }
+
+/* ============================================================
+   EL VISOR DE IMÁGENES
+
+   La imagen de la tarjeta, a pantalla grande, sobre un fondo
+   oscurecido. Se cierra con la X, tocando el fondo o con Escape.
+   ============================================================ */
+
+.lupa {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(24, 4, 21, .78);
+  backdrop-filter: blur(4px);
+  animation: lupaEntra .18s ease-out;
+}
+.lupa[hidden] { display: none; }
+
+@keyframes lupaEntra {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.lupa__caja {
+  margin: 0;
+  max-width: min(760px, 100%);
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: lupaSube .22s cubic-bezier(.22,.61,.36,1);
+}
+
+@keyframes lupaSube {
+  from { transform: translateY(14px) scale(.98); }
+  to   { transform: none; }
+}
+
+.lupa__foto {
+  display: block;
+  width: 100%;
+  max-height: calc(100vh - 140px);
+  object-fit: contain;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 30px 70px rgba(0,0,0,.5);
+}
+
+.lupa__pie {
+  text-align: center;
+  color: #fff;
+  font-size: 1.02rem;
+  font-weight: 700;
+  text-wrap: balance;
+}
+
+.lupa__cerrar {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,.14);
+  color: #fff;
+  cursor: pointer;
+  transition: background .18s;
+}
+.lupa__cerrar:hover { background: rgba(255,255,255,.28); }
+.lupa__cerrar:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.lupa__cerrar svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+}
+
+/* Mientras el visor está abierto, la página de atrás no se mueve */
+body.con-lupa { overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lupa, .lupa__caja { animation: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .aparece { opacity: 1; transform: none; transition: none; }
+  .btn:hover, .wa-flotante:hover { transform: none; }
+}
+
+/* ============================================================
+   RESPONSIVE — TABLET
+   ============================================================ */
+
+@media (max-width: 980px) {
+  .grid--4 { grid-template-columns: repeat(2, 1fr); }
+  .grid--3 { grid-template-columns: 1fr; }
+  .dos-columnas { grid-template-columns: 1fr; gap: 44px; }
+  .panel__grid { grid-template-columns: 1fr; gap: 30px; }
+
+  /* Apilados: primero la frase y las tarjetas, y el celular debajo,
+     con su tamaño natural en vez de estirarse. */
+  .panel__grid--cel { grid-template-columns: 1fr; }
+  .panel__grid--cel .panel__lado  { grid-column: 1; grid-row: 2; min-height: 0; }
+  .panel__grid--cel .panel__texto { grid-column: 1; grid-row: 1; padding-right: 0; }
+  .panel__grid--cel .panel__pie   { grid-column: 1; grid-row: 3; }
+  /* Apilado, vuelve al flujo normal */
+  .panel__grid--cel .celsol {
+    position: static;
+    transform: none;
+    top: auto;
+    bottom: auto;
+    height: auto;
+    width: min(100%, 300px);
+    margin: 0 auto;
+  }
+  .pie__inner { grid-template-columns: 1fr 1fr; }
+
+  .nav__burger { display: flex; }
+  .nav__cta { display: none; }
+  .nav__ingresar { display: none; }
+  /* El desplegable cuelga de la isla, no de la pantalla entera:
+     por eso va con las mismas esquinas redondas y su propio borde,
+     para que se lea como una sola pieza con la barra. */
+  .nav__links {
+    position: absolute;
+    margin-top: 0;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(300px, calc(100vw - 32px));
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid var(--gris-borde);
+    border-radius: 18px;
+    padding: 8px 18px 12px;
+    gap: 0;
+    margin-left: 0;
+    display: none;
+    box-shadow: 0 14px 34px rgba(54, 2, 47, .14);
+  }
+  .nav__links.is-abierto { display: flex; }
+  .nav__links a { padding: 12px 0; border-bottom: 1px solid var(--gris-borde); }
+
+  /* En el desplegable, el botón verde se queda del ancho de su texto
+     en vez de estirarse de lado a lado */
+  .nav__links .nav__verde { align-self: flex-start; }
+  .nav__links a:last-child { border-bottom: 0; }
+}
+
+/* ============================================================
+   RESPONSIVE — CELULAR
+   ============================================================ */
+
+@media (max-width: 620px) {
+  body { font-size: 16px; }
+  .contenedor { padding: 0 18px; }
+  .seccion { padding: 58px 0; }
+
+  .grid--4 { grid-template-columns: 1fr; }
+  .metricas { grid-template-columns: 1fr; }
+  .campo--doble { grid-template-columns: 1fr; }
+  .form-rejilla { grid-template-columns: 1fr; }
+  .campo--dos-columnas { grid-column: auto; }
+  .pie__inner { grid-template-columns: 1fr; gap: 30px; }
+
+  .tabs { display: flex; width: 100%; }
+  .tab { flex: 1; padding: .75em .7em; font-size: .88rem; }
+
+  .cita-bloque { font-size: 1.1rem; }
+  .frase-ancla { font-size: 1.25rem; }
+  .precio-caja { padding: 30px 22px; }
+  .form-caja { padding: 26px 20px; }
+  .logos-clientes { gap: 26px; }
+
+  .wa-flotante { width: 52px; height: 52px; right: 14px; bottom: 14px; }
+  .wa-flotante svg { width: 28px; height: 28px; }
+}
+
+
+/* ============================================================
+   LA ANIMACIÓN DE LA MARCA
+   ============================================================
+
+   El sello del menú se toca y se abre una pantalla sola con el
+   video. Al terminar, un círculo cruza hasta el sello.
+   La mecánica está en js/marca.js.
+   ============================================================ */
+
+/* ---- El sello y el nombre, ahora separados ---- */
+
+.nav__sello {
+  display: inline-flex;
+  line-height: 0;
+  border-radius: 50%;
+  text-decoration: none;
+  transition: transform .25s ease;
+}
+.nav__sello:hover { transform: scale(1.07); }
+
+.nav__sello.es-llega {
+  animation: marcaLlega .62s cubic-bezier(.34, 1.56, .64, 1);
+}
+@keyframes marcaLlega {
+  0%   { transform: scale(.72); }
+  45%  { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
+
+a.nav__nombre { text-decoration: none; }
+
+/* ---- La pantalla del video ---- */
+
+.marca { padding: 0; background: #fff; }
+
+.marca__escena {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 110px);
+  min-height: 340px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.marca__video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  /* Un poco transparente, para que el gris del video se apoye en
+     el blanco de atrás y no se vea apagado. */
+  opacity: .82;
+  transition: opacity .5s ease;
+}
+
+/* Mientras el círculo cruza, el video se apaga */
+.marca__escena.es-va .marca__video { opacity: 0; }
+
+/* ---- El círculo que viaja ---- */
+
+.marca-vuelo {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 200;
+  border-radius: 50%;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(69, 2, 60, .28),
+              0 0 0 2px rgba(118, 4, 103, .22) inset;
+  will-change: transform, opacity;
+}
+.marca-vuelo img {
+  width: 86%;
+  height: 86%;
+  object-fit: contain;
+  display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav__sello, .nav__sello:hover { transition: none; transform: none; }
+  .nav__sello.es-llega { animation: none; }
+}
+
+/* Mientras corre la animación de la marca, la pantalla es solo
+   para ella: el pie de página se guarda. */
+body.con-marca .pie { display: none; }

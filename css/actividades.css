@@ -1,0 +1,452 @@
+/* ============================================================
+   i'Witown — Pantallas de las actividades interactivas
+   ============================================================
+   El marco es el mismo para todas: barra verde arriba con el
+   nombre de la actividad, el tema y los contadores; debajo el
+   tablero; y al pie los botones del docente.
+
+   Los contenidos están en js/actividades.js
+   ============================================================ */
+
+:root {
+  --ax-verde:      #2E9E62;   /* el verde de la barra */
+  --ax-verde-tenue:#EAF6EF;
+  --ax-borde:      #DCEBE2;
+  --ax-tinta:      #1F2A37;
+  --ax-suave:      #6B7A8C;
+}
+
+/* ---- El marco ---- */
+.ax {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--ax-verde-tenue);
+  border: 1px solid var(--ax-borde);
+  border-radius: 12px;
+  overflow: hidden;
+  animation: entra .3s ease;
+}
+
+.ax__barra {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  background: linear-gradient(100deg, #E8F5EE, #F3FAF6 70%);
+  border-bottom: 1px solid var(--ax-borde);
+  flex-shrink: 0;
+}
+.ax__ico {
+  display: grid;
+  place-items: center;
+  width: 26px; height: 26px;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid var(--ax-borde);
+  color: var(--ax-verde);
+  flex-shrink: 0;
+}
+.ax__ico svg { width: 15px; height: 15px; }
+
+.ax__tit { min-width: 0; }
+.ax__eyebrow {
+  margin: 0;
+  font-size: .56rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ax-verde);
+}
+.ax__tit h4 {
+  margin: 0;
+  font-size: .92rem;
+  color: var(--ax-tinta);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ax__chips { margin-left: auto; display: flex; align-items: center; gap: 5px; flex-shrink: 0; }
+.ax__chip {
+  display: grid;
+  place-items: center;
+  min-width: 34px;
+  height: 22px;
+  padding: 0 .55em;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid var(--ax-borde);
+  font-size: .62rem;
+  font-weight: 700;
+  color: var(--ax-suave);
+  white-space: nowrap;
+}
+.ax__chip--ico { min-width: 22px; padding: 0; font-size: .7rem; }
+.ax__chip--vidas { color: #D9534F; letter-spacing: .1em; }
+
+.ax__cuerpo {
+  flex: 1;
+  min-height: 0;
+  padding: 10px;
+  background: var(--ax-verde-tenue);
+  display: flex;
+}
+
+/* ---- Pie con las acciones del docente ---- */
+.ax__pie {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+  margin-top: 9px;
+  flex-shrink: 0;
+}
+.ax__pie-btn {
+  font-size: .64rem;
+  font-weight: 600;
+  color: var(--ax-suave);
+  background: #fff;
+  border: 1px solid var(--wt-borde);
+  border-radius: 999px;
+  padding: .4em .9em;
+}
+
+/* ============================================================
+   SOPA DE LETRAS
+   ============================================================ */
+
+.ax-sopa {
+  flex: 1;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  min-height: 0;
+}
+.ax-sopa__rejilla {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 2px;
+  align-content: start;
+}
+.ax-sopa__celda {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  min-width: 0;
+  background: #F7F9FB;
+  border: 1px solid #EDF1F5;
+  border-radius: 4px;
+  font-size: .6rem;
+  font-weight: 700;
+  color: var(--ax-tinta);
+}
+.ax-sopa__palabras {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 5px;
+}
+.ax-sopa__palabras span {
+  font-size: .58rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  color: #4A3B6B;
+  background: #F4F2FB;
+  border: 1px solid #E6E1F5;
+  border-radius: 999px;
+  padding: .34em .8em;
+}
+
+/* ============================================================
+   CRUCIGRAMA
+   ============================================================ */
+
+/* Ojo: las casillas del crucigrama van vacías, así que no tienen ancho
+   propio. Si esta columna se deja en "auto", la rejilla se aplasta hasta
+   desaparecer. Por eso va con medida. */
+.ax-cruci {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 44%) 1fr;
+  gap: 12px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  min-height: 0;
+}
+.ax-cruci__rejilla {
+  width: 100%;
+  align-self: start;
+  display: grid;
+  gap: 1px;
+  background: #1F2937;
+  border: 3px solid #1F2937;
+  border-radius: 4px;
+  align-content: start;
+}
+.ax-cruci__celda {
+  position: relative;
+  aspect-ratio: 1;
+  min-width: 0;
+  background: #fff;
+}
+.ax-cruci__celda--bloque { background: #1F2937; }
+.ax-cruci__celda i {
+  position: absolute;
+  top: 0; left: 1px;
+  font-size: .42rem;
+  font-style: normal;
+  font-weight: 700;
+  color: var(--ax-suave);
+}
+
+.ax-cruci__pistas { min-width: 0; overflow: hidden; }
+.ax-cruci__titulo {
+  margin: 0 0 4px;
+  font-size: .58rem;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--ax-verde);
+}
+.ax-cruci__titulo--v { margin-top: 8px; color: #C2410C; }
+.ax-cruci__pistas ul { list-style: none; margin: 0; padding: 0; }
+.ax-cruci__pistas li {
+  font-size: .6rem;
+  line-height: 1.4;
+  color: #2F6B4A;
+  margin-bottom: 2px;
+}
+.ax-cruci__titulo--v ~ ul li { color: #B45309; }
+.ax-cruci__pistas b { font-weight: 700; }
+
+/* ============================================================
+   WIWI JUMPS
+   ============================================================ */
+
+.ax-jump {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: radial-gradient(120% 90% at 50% 0%, #1B2A5B, #0C1330 70%);
+  border-radius: 10px;
+  padding: 12px;
+  min-height: 0;
+}
+.ax-jump__pregunta {
+  margin: 0;
+  background: #fff;
+  border-radius: 8px;
+  padding: .55em 1em;
+  text-align: center;
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--ax-tinta);
+}
+.ax-jump__planetas {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  place-items: center;
+  min-height: 0;
+}
+.ax-jump__planeta {
+  position: relative;
+  width: 100%;
+  max-width: 108px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    repeating-conic-gradient(from 0deg, rgba(255,255,255,.06) 0deg 2deg, transparent 2deg 45deg),
+    radial-gradient(circle at 50% 45%, #17306B, #0E1A44 70%);
+  border: 2px solid #34D399;
+  box-shadow: 0 0 18px rgba(52,211,153,.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+.ax-jump__letra {
+  position: absolute;
+  top: -9px;
+  display: grid;
+  place-items: center;
+  width: 19px; height: 19px;
+  border-radius: 50%;
+  background: #34D399;
+  color: #06281B;
+  font-size: .58rem;
+  font-weight: 700;
+}
+.ax-jump__num {
+  display: grid;
+  place-items: center;
+  min-width: 19px;
+  padding: 0 .3em;
+  border-radius: 4px;
+  background: #2563EB;
+  color: #fff;
+  font-size: .62rem;
+  font-weight: 700;
+}
+.ax-jump__texto { font-size: .6rem; font-weight: 700; color: #fff; }
+
+.ax-jump__ruta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.ax-jump__punta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  font-size: .46rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: rgba(255,255,255,.7);
+  flex-shrink: 0;
+}
+.ax-jump__punta b { font-size: .9rem; color: #fff; font-weight: 400; }
+.ax-jump__punta--torre b { color: #34D399; }
+.ax-jump__linea {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 1px;
+  border-top: 1px dashed rgba(255,255,255,.3);
+}
+.ax-jump__estacion {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #0C1330;
+  border: 1.5px solid rgba(255,255,255,.45);
+}
+.ax-jump__pie {
+  margin: 0;
+  text-align: center;
+  font-size: .58rem;
+  color: rgba(255,255,255,.6);
+  flex-shrink: 0;
+}
+.ax-jump__pie b { color: #34D399; }
+
+/* ============================================================
+   PLANTILLAS GENÉRICAS
+   Las usan las actividades que todavía no tienen tablero propio.
+   ============================================================ */
+
+.ax-gen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 14px 16px;
+  min-height: 0;
+}
+.ax-gen__enunciado {
+  margin: 0;
+  text-align: center;
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--ax-tinta);
+}
+.ax-gen__opciones { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+.ax-gen__op {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #F7F9FB;
+  border: 1px solid #EDF1F5;
+  border-radius: 8px;
+  padding: .5em .8em;
+  font-size: .72rem;
+  color: var(--ax-tinta);
+}
+.ax-gen__op span {
+  display: grid;
+  place-items: center;
+  width: 17px; height: 17px;
+  border-radius: 5px;
+  background: #E3E9F0;
+  font-size: .58rem;
+  font-weight: 700;
+  color: var(--ax-suave);
+}
+
+.ax-gen--parejas { flex-direction: row; align-items: center; gap: 14px; }
+.ax-gen__col { flex: 1; display: flex; flex-direction: column; gap: 7px; }
+.ax-gen__ficha {
+  background: #F4F2FB;
+  border: 1px solid #E6E1F5;
+  border-radius: 8px;
+  padding: .5em .8em;
+  text-align: center;
+  font-size: .72rem;
+  font-weight: 700;
+  color: #4A3B6B;
+}
+.ax-gen__ficha--der { background: var(--ax-verde-tenue); border-color: var(--ax-borde); color: #2F6B4A; }
+.ax-gen__medio { color: var(--ax-suave); flex-shrink: 0; }
+.ax-gen__medio svg { width: 20px; height: 20px; }
+
+.ax-gen__piezas, .ax-gen__huecos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 7px;
+}
+.ax-gen__pieza {
+  background: #F4F2FB;
+  border: 1px solid #E6E1F5;
+  border-radius: 8px;
+  padding: .45em .95em;
+  font-size: .74rem;
+  font-weight: 700;
+  color: #4A3B6B;
+}
+.ax-gen__hueco {
+  width: 56px; height: 30px;
+  border: 1.5px dashed #CBD5E1;
+  border-radius: 8px;
+}
+
+/* ============================================================
+   DENTRO DEL MARCO VA MÁS APRETADO
+   ============================================================ */
+
+.pres__app .ax__barra { padding: 7px 10px; gap: 8px; }
+.pres__app .ax__ico { width: 23px; height: 23px; }
+.pres__app .ax__tit h4 { font-size: .82rem; }
+.pres__app .ax__chip { height: 19px; font-size: .56rem; min-width: 30px; }
+.pres__app .ax__cuerpo { padding: 8px; }
+.pres__app .ax__pie { margin-top: 7px; gap: 6px; }
+.pres__app .ax__pie-btn { font-size: .58rem; padding: .34em .8em; }
+.pres__app .ax-sopa, .pres__app .ax-cruci { padding: 8px; gap: 10px; }
+.pres__app .ax-sopa__celda { font-size: .55rem; }
+.pres__app .ax-jump { padding: 9px; gap: 6px; }
+.pres__app .ax-jump__planeta { max-width: 92px; }
+
+/* ---- Celular ---- */
+@media (max-width: 720px) {
+  .ax-sopa, .ax-cruci { grid-template-columns: 1fr; }
+  .ax-sopa__palabras { justify-content: center; }
+  .ax-gen__opciones { grid-template-columns: 1fr; }
+  .ax-gen--parejas { flex-direction: column; }
+  .ax-gen__medio { transform: rotate(90deg); }
+  .ax-jump__planetas { grid-template-columns: repeat(2, 1fr); }
+  .pres__app .ax-jump__planeta { max-width: 74px; }
+  .ax__tit h4 { white-space: normal; }
+}

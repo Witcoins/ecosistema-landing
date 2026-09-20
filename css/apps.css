@@ -1,0 +1,1557 @@
+/* ============================================================
+   i'Witown — Las maquetas de las cuatro apps
+   ============================================================
+
+   Lo que se ve al hacer clic en un módulo de la rueda. Son cuatro
+   pantallas de entrada: I'Witown, I'Witeacher, I'Witutor y
+   AdmonWitown.
+
+   ┌──────────────────────────────────────────────────────────┐
+   │  SON MAQUETAS, NO LA APP DE VERDAD.                      │
+   │  Se parecen a las pantallas reales para que el rector o  │
+   │  el papá vean cómo se ve por dentro, pero no están       │
+   │  conectadas a nada. Los textos y las cifras están en     │
+   │  js/ecosistema.js, en la lista ECO_APPS.                 │
+   └──────────────────────────────────────────────────────────┘
+
+   Todo va dentro del mismo marco de la presentación, sin barra
+   de desplazamiento. Por eso está todo tan apretado: cada
+   medida está calculada para que quepa.
+   ============================================================ */
+
+.apx {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  /* abajo va más aire: ahí se para el atajo a las actividades */
+  padding: 16px 20px 58px;
+  /* Antes esto era morado oscuro. Va en claro como el resto. */
+  background: #fff;
+}
+
+/* Ojo: aquí NO se le pone "position: relative" a .apx. Ya viene
+   posicionada por css/presentacion.css (.escenario > * la pone
+   absolute para que llene el marco), y volver a declararla la
+   dejaba en relative: el marco perdía el alto y la app se
+   aplastaba. En teléfono sí hace falta, y va más abajo. */
+
+.apx__cabecera {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* ---- La fila de apps de arriba ----
+
+   Dice en cuál va el recorrido y deja saltar a cualquiera. */
+.apx__pasos {
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
+  flex-wrap: wrap;
+}
+
+.apx__paso {
+  padding: .34em .82em;
+  border: 1px solid var(--gris-borde);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--tinta-suave);
+  font-family: inherit;
+  font-size: .74rem;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background .18s, color .18s, border-color .18s;
+}
+.apx__paso:hover { border-color: var(--morado-600); color: var(--morado-700); }
+.apx__paso.es-actual {
+  background: var(--morado-700);
+  border-color: var(--morado-700);
+  color: #fff;
+}
+.apx__paso:focus-visible { outline: 2px solid var(--morado-600); outline-offset: 2px; }
+
+/* ---- El atajo a las actividades, abajo a la derecha ---- */
+.apx__atajo {
+  position: absolute;
+  right: 20px;
+  bottom: 16px;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: .7em 1.2em;
+  border: 0;
+  border-radius: 999px;
+  background: var(--morado-600);
+  color: #fff;
+  font-family: inherit;
+  font-size: .82rem;
+  font-weight: 800;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(118, 4, 103, .34);
+  transition: transform .18s, background .18s, box-shadow .18s;
+}
+.apx__atajo:hover {
+  transform: translateY(-2px);
+  background: var(--morado-700);
+  box-shadow: 0 12px 28px rgba(118, 4, 103, .42);
+}
+.apx__atajo:focus-visible { outline: 3px solid var(--morado-300); outline-offset: 3px; }
+.apx__atajo svg {
+  width: 1.05em;
+  height: 1.05em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .apx__atajo:hover { transform: none; }
+}
+.apx__aviso {
+  margin: 0;
+  font-size: .74rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #8B7FA6;
+}
+
+/* La "ventana" donde vive la maqueta */
+.apx__marco {
+  --ap-barra:   #2E1065;   /* la franja de arriba */
+  --ap-acento:  #7C3AED;   /* el color con el que se pinta la app */
+  --ap-riel:    #FAF9FC;   /* la columna de iconos */
+  --ap-tinta:   #1A1523;
+
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #fff;
+  color: var(--ap-tinta);
+  box-shadow: 0 18px 44px rgba(0,0,0,.55);
+  font-size: 12px;
+}
+
+/* El cambio de una app a otra: un parpadeo de 40 milésimas. Lo
+   justo para que no sea un salto seco, sin hacer esperar nada. */
+.apx__marco.entra { animation: apxEntra .042s ease-out; }
+@keyframes apxEntra {
+  from { opacity: 0; transform: translateY(6px) scale(.995); }
+  to   { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .apx__marco.entra { animation: none; }
+}
+
+/* ---- Los cuatro juegos de color ---- */
+.apx__marco--witown {
+  --ap-barra: #0A0A0A; --ap-acento: #6D28D9; --ap-riel: #FFFFFF;
+}
+.apx__marco--witeacher {
+  --ap-barra: #5B1A78; --ap-acento: #7B1FA2; --ap-riel: #FBF7FE;
+}
+.apx__marco--witutor {
+  --ap-barra: #D63A0F; --ap-acento: #C0350E; --ap-riel: #FFF7F4;
+}
+.apx__marco--admonwitown {
+  --ap-barra: #16794C; --ap-acento: #16794C; --ap-riel: #F6FBF8;
+}
+
+/* ============================================================
+   LA FRANJA DE ARRIBA
+   ============================================================ */
+
+.apx__barra {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 12px;
+  height: 42px;
+  background: var(--ap-barra);
+  color: #fff;
+}
+
+.apx__menu { display: grid; gap: 3px; flex: 0 0 auto; }
+.apx__menu i { display: block; width: 15px; height: 2px; background: #fff; border-radius: 2px; }
+
+.apx__quien { flex: 1; min-width: 0; }
+.apx__usuario {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.apx__colegio { margin: 0; font-size: 10px; opacity: .78; }
+
+.apx__barra-fin { display: flex; align-items: center; gap: 10px; flex: 0 0 auto; }
+
+.apx__campana { position: relative; font-size: 13px; }
+.apx__globo {
+  position: absolute;
+  top: -5px; right: -7px;
+  min-width: 14px;
+  padding: 0 3px;
+  border-radius: 999px;
+  background: #E11D48;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: center;
+}
+.apx__ayuda {
+  display: grid;
+  place-items: center;
+  width: 15px; height: 15px;
+  border: 1.4px solid rgba(255,255,255,.75);
+  border-radius: 50%;
+  font-size: 9px;
+  font-weight: 700;
+}
+.apx__marca {
+  padding-left: 10px;
+  border-left: 1px solid rgba(255,255,255,.3);
+  font-family: var(--fuente-titulos);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: .04em;
+}
+.apx__marca em {
+  font-style: italic;
+  font-size: 8px;
+  font-weight: 500;
+  vertical-align: super;
+  opacity: .9;
+}
+.apx__salir { font-size: 13px; opacity: .85; }
+
+/* ============================================================
+   EL CUERPO: COLUMNA DE ICONOS + LIENZO
+   ============================================================ */
+
+.apx__cuerpo { flex: 1; display: flex; min-height: 0; }
+
+.apx__riel {
+  flex: 0 0 auto;
+  width: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 0;
+  background: var(--ap-riel);
+  border-right: 1px solid rgba(0,0,0,.07);
+}
+
+/* ---- El menú lateral ----
+
+   Ya no es adorno: cada icono lleva a una parte de la app. Los
+   últimos sí lo son —los puntitos de abajo— y están para que la
+   columna se vea completa, como en la app real. */
+.apx__riel-bt {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: rgba(0,0,0,.34);
+  cursor: pointer;
+  transition: background .2s, color .2s;
+}
+.apx__riel-ico {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.apx__riel-bt:hover {
+  background: color-mix(in srgb, var(--ap-acento) 14%, transparent);
+  color: var(--ap-acento);
+}
+.apx__riel-bt.es-actual { background: var(--ap-acento); color: #fff; }
+.apx__riel-bt:focus-visible { outline: 2px solid var(--ap-acento); outline-offset: 2px; }
+
+.apx__riel-bt.es-adorno { color: rgba(0,0,0,.16); cursor: default; }
+.apx__riel-bt.es-adorno:hover { background: transparent; color: rgba(0,0,0,.16); }
+
+/* ============================================================
+   LO QUE SE PUEDE TOCAR
+
+   Los módulos, los accesos, la cuenta y las tarjetas son botones.
+   Se les quita la pinta de botón del navegador y se les deja un
+   movimiento corto al pasarles el mouse por encima: lo justo para
+   que se note que llevan a alguna parte.
+   ============================================================ */
+
+.apx__modulo,
+.apx__acceso,
+.apx__tarjeta,
+.apx__caja--cuenta,
+.apx__volver {
+  border: 0;
+  font: inherit;
+  text-align: inherit;
+  cursor: pointer;
+}
+
+.apx__modulo,
+.apx__tarjeta,
+.apx__caja--cuenta {
+  transition: transform .18s, box-shadow .18s, filter .18s;
+}
+.apx__modulo:hover  { transform: translateY(-2px); filter: brightness(1.08); }
+.apx__tarjeta:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0,0,0,.13);
+  border-color: var(--ap-acento);
+}
+.apx__caja--cuenta:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(0,0,0,.1); }
+.apx__acceso:hover .apx__acceso-ico { transform: scale(1.08); }
+.apx__acceso-ico { transition: transform .18s; }
+
+.apx__tarjeta { border-style: solid; }
+.apx__caja--cuenta { display: block; width: 100%; text-align: left; }
+
+.apx__modulo:focus-visible,
+.apx__acceso:focus-visible,
+.apx__tarjeta:focus-visible,
+.apx__caja--cuenta:focus-visible,
+.apx__volver:focus-visible { outline: 2px solid var(--ap-acento); outline-offset: 2px; }
+
+/* ============================================================
+   LA FICHA DE CADA PARTE
+
+   Lo que se abre al tocar un módulo o una tarjeta. No inventa
+   datos del colegio: cuenta para qué sirve esa parte de la app.
+   El texto de cada una es el campo "detalle", en ECO_APPS.
+   ============================================================ */
+
+.apx__volver {
+  align-self: flex-start;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ap-acento) 12%, #fff);
+  color: var(--ap-acento);
+  font-size: 11px;
+  font-weight: 800;
+  transition: background .2s;
+}
+.apx__volver:hover { background: color-mix(in srgb, var(--ap-acento) 22%, #fff); }
+
+.apx__ficha {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 22px 18px;
+  text-align: center;
+  animation: apxFicha .35s cubic-bezier(.22,.61,.36,1);
+}
+.apx__ficha-ico {
+  display: grid;
+  place-items: center;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--ap-acento) 13%, #fff);
+  font-size: 30px;
+  line-height: 1;
+}
+.apx__ficha-tit {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--ap-acento);
+}
+.apx__ficha-txt {
+  margin: 0;
+  max-width: 42ch;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #453F55;
+}
+.apx__ficha-pie {
+  margin: 4px 0 0;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: #9A93A8;
+}
+
+@keyframes apxFicha {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .apx__ficha { animation: none; }
+  .apx__modulo:hover, .apx__tarjeta:hover, .apx__caja--cuenta:hover { transform: none; }
+}
+
+.apx__lienzo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 12px 16px;
+  overflow: hidden;
+}
+
+/* ============================================================
+   PANTALLA DE PANEL — profesora, papás y rectoría
+   ============================================================ */
+
+.apx__fecha-simple {
+  margin: 0 0 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #5A5468;
+}
+.apx__fecha-simple span { font-weight: 400; opacity: .8; }
+
+.apx__saludo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: linear-gradient(100deg, var(--ap-acento), color-mix(in srgb, var(--ap-acento) 62%, #000));
+  color: #fff;
+}
+.apx__marco--witutor .apx__saludo {
+  background: linear-gradient(100deg, #B0300C, #8E250A);
+}
+.apx__marco--admonwitown .apx__saludo {
+  background: linear-gradient(100deg, #16794C, #0F5B39);
+}
+
+.apx__saludo-txt { flex: 1; min-width: 0; }
+.apx__saludo-tit {
+  margin: 0;
+  font-family: var(--fuente-titulos);
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+.apx__saludo-sub { margin: 5px 0 0; font-size: 11px; opacity: .88; }
+
+.apx__pastilla {
+  display: inline-block;
+  margin-left: 10px;
+  padding: 5px 11px;
+  border-radius: 8px;
+  background: rgba(255,255,255,.16);
+  box-shadow: 0 0 12px rgba(255,214,120,.5);
+  font-size: 10px;
+  font-weight: 700;
+  vertical-align: middle;
+}
+.apx__saldo {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 5px 16px;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ap-acento);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.apx__avatar {
+  display: grid;
+  place-items: center;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.9);
+  font-size: 20px;
+  flex: 0 0 auto;
+}
+.apx__avatar--grande { width: 52px; height: 52px; font-size: 27px; }
+
+.apx__nota {
+  margin: 12px 0 8px;
+  font-size: 11px;
+  color: #5A5468;
+  text-align: center;
+}
+
+.apx__tarjetas {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.apx__tarjeta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px;
+  border: 1.5px solid color-mix(in srgb, var(--ap-acento) 40%, #fff);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 3px 10px rgba(0,0,0,.07);
+}
+.apx__tarjeta-tit {
+  order: 2;
+  margin: 0;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--ap-acento);
+  text-align: center;
+  line-height: 1.25;
+}
+.apx__tarjeta-ico { order: 1; font-size: 34px; line-height: 1; }
+.apx__tarjeta-pie {
+  order: 3;
+  margin: 0;
+  font-size: 10px;
+  color: #7A7488;
+  text-align: center;
+}
+
+/* En I'Witutor el título va arriba y con fondo, como en la app real */
+.apx__marco--witutor .apx__tarjeta { padding: 0; overflow: hidden; justify-content: flex-start; }
+.apx__marco--witutor .apx__tarjeta-tit {
+  order: 0;
+  width: 100%;
+  padding: 9px 10px;
+  background: color-mix(in srgb, var(--ap-acento) 42%, #fff);
+  color: #fff;
+  font-size: 11px;
+}
+.apx__marco--witutor .apx__tarjeta-ico { order: 1; margin-top: 12px; }
+.apx__marco--witutor .apx__tarjeta-pie { order: 2; margin: 8px 0 12px; }
+
+.apx__boton {
+  align-self: center;
+  margin-top: 12px;
+  padding: 10px 26px;
+  border-radius: 10px;
+  background: #1F6FEB;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(31,111,235,.34);
+}
+.apx__marco--admonwitown .apx__boton {
+  background: #A3E635;
+  color: #14532D;
+  border-radius: 999px;
+  box-shadow: 0 4px 16px rgba(163,230,53,.45);
+}
+
+/* ============================================================
+   PANTALLA DEL ESTUDIANTE — I'Witown
+   ============================================================ */
+
+.apx__fecha {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 11px;
+  color: #5A5468;
+  text-align: right;
+}
+.apx__fecha p { margin: 0; }
+.apx__fecha p + p { margin-left: -6px; }
+
+.apx__banda {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  padding: 10px;
+  border-radius: 12px;
+  background: #D8C9F0;
+}
+.apx__modulo {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 12px;
+  border-radius: 9px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+.apx__modulo-ico { font-size: 17px; }
+.apx__modulo--morado  { background: #5B2D9E; }
+.apx__modulo--azul    { background: #1F6FEB; }
+.apx__modulo--naranja { background: #F1600A; }
+
+.apx__fila {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px;
+  margin-top: 12px;
+}
+.apx__caja {
+  padding: 12px;
+  border-radius: 10px;
+  background: #F2F1F5;
+}
+.apx__caja--accesos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+}
+.apx__acceso {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #4A3A2E;
+}
+.apx__acceso-ico {
+  display: grid;
+  place-items: center;
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: #5B3218;
+  font-size: 19px;
+}
+
+.apx__cuenta-tit { margin: 0; font-size: 12px; font-weight: 700; }
+.apx__cuenta-tit b { float: right; color: #5A5468; }
+.apx__cuenta-num { margin: 3px 0 0; font-size: 10px; color: #7A7488; }
+.apx__cuenta-eti { margin: 8px 0 0; font-size: 10px; color: #7A7488; }
+.apx__cuenta-saldo { margin: 2px 0 0; font-size: 17px; font-weight: 800; }
+
+.apx__paisaje {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  margin-top: 8px;
+  align-self: flex-end;
+}
+.apx__ciudad rect { fill: #C9CCD6; }
+.apx__cole rect, .apx__cole path { fill: #E6E8EE; }
+.apx__cole .apx__puerta { fill: #B9BDC9; }
+.apx__loma { fill: #8A5A16; }
+.apx__pinos path { fill: #1E7A3C; }
+
+/* ============================================================
+   EL PIE
+   ============================================================ */
+
+.apx__pie {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 14px;
+  height: 34px;
+  background: var(--ap-barra);
+  color: #fff;
+}
+.apx__marco--witown .apx__pie { background: #5B3218; }
+.apx__marco--admonwitown .apx__pie { background: #fff; color: #14532D; border-top: 1px solid rgba(0,0,0,.08); }
+
+.apx__interruptor {
+  flex: 0 0 auto;
+  width: 30px; height: 15px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.28);
+  position: relative;
+}
+.apx__interruptor::after {
+  content: "";
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 11px; height: 11px;
+  border-radius: 50%;
+  background: #fff;
+}
+.apx__marco--witutor .apx__interruptor,
+.apx__marco--witeacher .apx__interruptor { background: #F5B301; }
+.apx__marco--witutor .apx__interruptor::after,
+.apx__marco--witeacher .apx__interruptor::after { left: auto; right: 2px; }
+.apx__marco--admonwitown .apx__interruptor { background: #A3E635; }
+
+.apx__frase {
+  font-style: italic;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* ============================================================
+   I'WITUTOR — LA APP DE LOS PAPÁS
+
+   No es un pase de fotos: es la app. El marco rojo de arriba y
+   la columna de iconos de la izquierda están dibujados aquí, y
+   por dentro va la captura de cada sección, ya recortada.
+
+   Así el menú se puede tocar de verdad y la barra de arriba
+   cambia de sección, como en la app real.
+
+   ┌──────────────────────────────────────────────────────────┐
+   │  LAS IMÁGENES VAN EN assets/img/witutor/                 │
+   │                                                          │
+   │  Las que usa la app son las recortadas, las que empiezan │
+   │  por "p-": p-agenda.webp, p-tareas.webp, p-informes.webp,│
+   │  p-teachers.webp, p-lectura.webp y p-pagos.webp.         │
+   │                                                          │
+   │  Al lado quedan las capturas completas, por si hay que   │
+   │  volver a recortarlas. Cómo hacerlo está explicado en    │
+   │  js/witutor.js.                                          │
+   └──────────────────────────────────────────────────────────┘
+
+   ┌──────────────────────────────────────────────────────────┐
+   │  TODO SE MIDE EN "cqw": 1cqw = el 1% del ancho de la app.│
+   │                                                          │
+   │  Es lo que hace que la app se vea igual de bien grande   │
+   │  que chiquita: las letras, los iconos y los espacios     │
+   │  crecen y se achican con ella, sin tener que escribir    │
+   │  medidas distintas para cada tamaño de pantalla.         │
+   │                                                          │
+   │  Los números salen de medir la captura de verdad: el     │
+   │  nombre de quien entró mide 13 px en una pantalla de     │
+   │  1360, o sea 13/1360 = 0,96% = 0.96cqw.                  │
+   └──────────────────────────────────────────────────────────┘
+   ============================================================ */
+
+.wt {
+  /* Los colores de cada app están más abajo, en ".wt--witutor" y
+     ".wt--witeacher". Estos son los de por si acaso. */
+  --wt-rojo:   #F30D00;   /* la franja de arriba */
+  --wt-acento: #F30D00;   /* lo que se prende: el icono, los puntos */
+  --wt-hondo:  #C10A00;
+  --wt-riel:   #F9FBFC;   /* la columna de iconos */
+  --wt-lima:   #D7E84A;   /* el nombre del colegio, en la barra */
+  --wt-subray: underline; /* si el colegio va subrayado o no */
+
+  /* La proporción de la app: el ancho dividido por el alto de las
+     capturas. Si un día se reemplazan por otras de otra forma, se
+     cambia este número y todo lo demás se acomoda solo. */
+  --wt-forma: 2.24;
+
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 12px 16px 14px;
+  background: #fff;
+}
+
+/* ---- Los dos juegos de color ----
+
+   I'Witutor es roja y I'Witeacher morada, como las apps de verdad.
+   Todo lo demás —el marco, el menú, los tiempos— es igual. */
+
+.wt--witutor {
+  --wt-rojo:   #F30D00;
+  --wt-acento: #F30D00;
+  --wt-hondo:  #C10A00;
+  --wt-riel:   #F9FBFC;
+  --wt-lima:   #D7E84A;
+  --wt-forma:  2.24;
+}
+
+/* I'Witown, la app del estudiante: barra negra y verde, como se ve
+   en sus capturas (1360 por 601). */
+.wt--iwitown {
+  --wt-rojo:   #0B0B0D;
+  --wt-acento: #34C759;
+  --wt-hondo:  #000000;
+  --wt-riel:   #FFFFFF;
+  --wt-lima:   #34C759;
+  --wt-subray: none;
+  --wt-forma:  2.52;
+}
+
+/* AdmonWitown: la barra verde de su app (1297 por 542 las capturas) */
+.wt--admon {
+  --wt-rojo:   #00674B;
+  --wt-acento: #00A870;
+  --wt-hondo:  #004C37;
+  --wt-riel:   #FFFFFF;
+  --wt-lima:   rgba(255,255,255,.72);
+  --wt-subray: none;
+  --wt-forma:  2.38;
+}
+
+.wt--witeacher {
+  --wt-rojo:   #5C005B;
+  --wt-acento: #7C22CE;
+  --wt-hondo:  #3E003D;
+  --wt-riel:   #FFFFFF;
+  --wt-lima:   rgba(255,255,255,.72);
+  --wt-subray: none;
+
+  /* Las capturas de I'Witeacher son un poco más anchas que las de
+     I'Witutor: 1310 por 555. */
+  --wt-forma:  2.33;
+}
+
+/* ---- Dónde vive la app ----
+
+   El truco de "container-type: size" es lo que deja calcular el
+   ancho a partir del alto que quedó libre. Sin esto, la app se
+   sale del marco en las pantallas bajitas. */
+.wt__escena {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  container-type: size;
+}
+
+.wt__app {
+  width: min(100%, calc(100cqh * var(--wt-forma)));
+  aspect-ratio: var(--wt-forma);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 14px 34px rgba(0,0,0,.18), 0 0 0 1px rgba(0,0,0,.07);
+
+  /* De aquí sale el "cqw" de todo lo de adentro */
+  container-type: inline-size;
+}
+
+/* ============================================================
+   LA FRANJA ROJA DE ARRIBA
+   ============================================================ */
+
+.wt__barra {
+  flex: 0 0 auto;
+  height: 8.4%;
+  display: flex;
+  align-items: center;
+  background: var(--wt-rojo);
+  color: #fff;
+}
+
+/* El botón de menú va justo encima de la columna de iconos, del
+   mismo ancho, como en la app. */
+.wt__menu {
+  flex: 0 0 3.82%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .35cqw;
+}
+.wt__hamburguesa { display: grid; gap: .22cqw; }
+.wt__hamburguesa i {
+  display: block;
+  width: 1.05cqw;
+  height: .13cqw;
+  min-height: 1px;
+  border-radius: 2px;
+  background: #fff;
+}
+.wt__menu em { font-size: .55cqw; font-style: normal; opacity: .9; }
+
+.wt__quien { flex: 1; min-width: 0; padding-left: .9cqw; }
+.wt__usuario {
+  margin: 0;
+  font-size: .96cqw;
+  font-weight: 800;
+  letter-spacing: -.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wt__colegio {
+  margin: .1cqw 0 0;
+  font-size: .66cqw;
+  font-weight: 700;
+  color: var(--wt-lima);
+  text-decoration: var(--wt-subray);
+  text-underline-offset: .15cqw;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* La pastilla del centro: dice en qué sección está parado */
+.wt__pastilla {
+  flex: 0 0 auto;
+  padding: .52cqw 1.7cqw;
+  border-radius: 999px;
+  background: rgba(255,255,255,.15);
+  font-size: 1cqw;
+  font-weight: 800;
+  white-space: nowrap;
+  transition: background .25s;
+}
+
+.wt__fin {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1.2cqw;
+  padding-right: 1.1cqw;
+}
+.wt__ico-barra {
+  width: 1.35cqw;
+  height: 1.35cqw;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.wt__marca {
+  padding-left: 1.1cqw;
+  border-left: 1px solid rgba(255,255,255,.35);
+  font-size: 1.28cqw;
+  font-weight: 800;
+  letter-spacing: .02em;
+}
+
+/* ============================================================
+   EL CUERPO: LA COLUMNA DE ICONOS Y LA PANTALLA
+   ============================================================ */
+
+.wt__cuerpo {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+.wt__riel {
+  flex: 0 0 3.82%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .95cqw;
+  padding-top: 1.1cqw;
+  background: var(--wt-riel);
+  border-right: 1px solid rgba(0,0,0,.06);
+}
+
+.wt__riel-bt {
+  display: grid;
+  place-items: center;
+  width: 2.35cqw;
+  height: 2.35cqw;
+  padding: 0;
+  border: 0;
+  border-radius: .6cqw;
+  background: transparent;
+  color: #6B7280;
+  cursor: pointer;
+  transition: background .2s, color .2s;
+}
+.wt__riel-ico {
+  width: 1.5cqw;
+  height: 1.5cqw;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.wt__riel-bt:hover {
+  background: color-mix(in srgb, var(--wt-acento) 12%, transparent);
+  color: var(--wt-acento);
+}
+.wt__riel-bt.es-actual {
+  background: var(--wt-acento);
+  color: #fff;
+  box-shadow: 0 .3cqw .7cqw color-mix(in srgb, var(--wt-acento) 35%, transparent);
+}
+.wt__riel-bt:focus-visible { outline: 2px solid var(--wt-acento); outline-offset: 2px; }
+
+/* Los cinco iconos que no llevan a ninguna parte. Están para que
+   la columna se vea completa, como en la app de verdad. */
+.wt__riel-bt.es-adorno { color: #C0C6CE; cursor: default; }
+.wt__riel-bt.es-adorno:hover { background: transparent; color: #C0C6CE; }
+
+/* ---- La pantalla ---- */
+.wt__lienzo {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  background: #fff;
+}
+
+.wt__lamina {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity .45s ease, transform .45s cubic-bezier(.22,.61,.36,1);
+  pointer-events: none;
+}
+.wt__lamina.es-activa { opacity: 1; transform: none; pointer-events: auto; }
+
+.wt__foto {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top left;
+  opacity: 0;
+  transition: opacity .3s;
+}
+.wt__foto.es-buena { opacity: 1; }
+
+/* Lo que se ve si la captura no está */
+.wt__respaldo {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: #F6F7F9;
+  color: #9AA3AF;
+  font-size: 1.6cqw;
+  font-weight: 800;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+/* ---- Las zonas de la captura que se pueden tocar ----
+
+   Van encima de la imagen, justo sobre las pestañas de verdad.
+   No se ven hasta que el mouse pasa por encima: ahí se prenden
+   con el mismo subrayado rojo que usa la app. */
+.wt__toque {
+  position: absolute;
+  padding: 0;
+  border: 0;
+  border-radius: .3cqw;
+  background: transparent;
+  cursor: pointer;
+  transition: background .2s, box-shadow .2s;
+}
+.wt__toque:hover {
+  background: color-mix(in srgb, var(--wt-acento) 8%, transparent);
+  box-shadow: inset 0 -.18cqw 0 color-mix(in srgb, var(--wt-acento) 60%, transparent);
+}
+.wt__toque:focus-visible { outline: 2px solid var(--wt-acento); outline-offset: 1px; }
+
+/* ============================================================
+   EL PIE: LA FRASE Y LOS PUNTOS
+   ============================================================ */
+
+.wt__pie {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  padding-top: 11px;
+}
+
+.wt__texto {
+  margin: 0;
+  max-width: 30ch;
+  font-size: 1.45rem;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -.01em;
+  text-align: center;
+  color: #16110F;
+}
+.wt__texto.entra { animation: wtEntra .5s cubic-bezier(.22,.61,.36,1); }
+
+/* La animación solo mueve, nunca esconde: si el navegador la congela
+   —pasa cuando la pestaña queda en segundo plano— el texto se sigue
+   leyendo igual. */
+@keyframes wtEntra {
+  from { transform: translateY(7px); }
+  to   { transform: none; }
+}
+
+/* La pista de que se puede tocar. Se va sola en cuanto el visitante
+   hace el primer clic: ya no hay nada que explicarle. */
+.wt__pista {
+  margin: 0;
+  font-size: .66rem;
+  font-weight: 600;
+  color: #7A5230;          /* café */
+  transition: opacity .3s;
+}
+.wt.es-manual .wt__pista { opacity: 0; }
+
+.wt__puntos { display: flex; gap: 7px; }
+.wt__punto {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--wt-hondo) 26%, transparent);
+  cursor: pointer;
+  transition: width .3s, background .3s;
+}
+.wt__punto.es-activo { width: 22px; background: var(--wt-acento); }
+.wt__punto:focus-visible { outline: 2px solid var(--wt-acento); outline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .wt__lamina { transition: opacity .3s ease; transform: none; }
+  .wt__texto.entra { animation: none; }
+}
+
+/* ============================================================
+   LAS CUATRO PANTALLAS DIBUJADAS DE I'WITUTOR
+
+   Institucional, Gana Witkis, Banco y Perfil no son capturas:
+   están dibujadas, copiando la pantalla real. El texto de cada
+   una está en js/witutor-pantallas.js, en WITUTOR_DATOS.
+
+   ┌──────────────────────────────────────────────────────────┐
+   │  TODO VA EN "cqw": 1cqw = el 1% del ancho de la pantalla.│
+   │                                                          │
+   │  Es lo mismo que hace el marco de la app: así el dibujo  │
+   │  se ve igual de bien grande que chiquito, sin escribir   │
+   │  medidas distintas para cada tamaño.                     │
+   │                                                          │
+   │  Los números salen de medir la captura real: un texto de │
+   │  13 px en una pantalla de 1308 es 13/1308 = 1cqw.        │
+   └──────────────────────────────────────────────────────────┘
+   ============================================================ */
+
+.wt__dibujo {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #fff;
+  container-type: inline-size;
+}
+
+.wtp {
+  --wtp-rojo:   #ED1B0C;
+  --wtp-verde:  #16A34A;
+  --wtp-narja:  #EA580C;
+  --wtp-borde:  #E7E7EC;
+  --wtp-tinta:  #1B1720;
+  --wtp-suave:  #6B7280;
+  --wtp-enlace: #2563EB;
+
+  max-width: 72cqw;
+  margin: 0 auto;
+  padding: 2.4cqw 0 0;
+  font-size: 1cqw;
+  line-height: 1.45;
+  color: var(--wtp-tinta);
+}
+
+.wtp__titulo {
+  margin: 0;
+  font-size: 1.72cqw;
+  font-weight: 800;
+  color: var(--wtp-rojo);
+}
+.wtp__titulo--negro { color: var(--wtp-tinta); }
+.wtp__sub { margin: .35cqw 0 0; font-size: 1cqw; color: var(--wtp-suave); }
+
+.wtp__encabezado {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2cqw;
+  margin-bottom: 1.9cqw;
+}
+
+.wtp__caja {
+  padding: 1.1cqw 1.3cqw;
+  border: 1px solid var(--wtp-borde);
+  border-radius: .8cqw;
+  background: #fff;
+}
+
+.wtp__verde  { color: var(--wtp-verde); }
+.wtp__naranja { color: var(--wtp-narja); }
+.wtp__enlace { color: var(--wtp-enlace); }
+.wtp__derecha { text-align: right; }
+
+/* Los campos de escribir. Son de mentira: no se puede escribir en
+   ellos, solo se ven. */
+.wtp__campo {
+  display: flex;
+  align-items: center;
+  gap: .6cqw;
+  padding: .7cqw .9cqw;
+  border: 1px solid #D9D9E0;
+  border-radius: .5cqw;
+  background: #fff;
+  font-size: 1cqw;
+}
+.wtp__campo.es-vacio { color: #A0A0AB; }
+.wtp__campo--foco { border: .17cqw solid #15121A; }
+.wtp__campo--angosto { display: inline-flex; min-width: 18cqw; justify-content: space-between; }
+.wtp__campo--busca { display: inline-flex; min-width: 26cqw; color: #A0A0AB; margin-bottom: 1.4cqw; }
+
+.wtp__chevron, .wtp__lupa {
+  width: 1.1cqw;
+  height: 1.1cqw;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: #8A8A96;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.wtp__chevron { margin-left: auto; }
+
+.wtp__boton {
+  display: inline-flex;
+  align-items: center;
+  gap: .5cqw;
+  padding: .75cqw 1.3cqw;
+  border-radius: .5cqw;
+  background: var(--wtp-narja);
+  color: #fff;
+  font-size: 1cqw;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.wtp__boton--suave {
+  background: #fff;
+  border: 1px solid var(--wtp-borde);
+  color: var(--wtp-tinta);
+  font-weight: 600;
+}
+
+/* ---- Gana Witkis ---- */
+.wtp__marcadores { display: flex; gap: .9cqw; }
+.wtp__marcador {
+  min-width: 6.5cqw;
+  padding: .75cqw 1.1cqw;
+  border: 1px solid var(--wtp-borde);
+  border-radius: .7cqw;
+  text-align: center;
+}
+.wtp__marcador-eti {
+  display: block;
+  font-size: .72cqw;
+  font-weight: 700;
+  letter-spacing: .05em;
+  color: var(--wtp-suave);
+}
+.wtp__marcador-val { font-size: 1.35cqw; font-weight: 800; }
+
+.wtp__dos { display: grid; grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr); gap: 1.7cqw; }
+
+.wtp__pregunta {
+  padding: 1.5cqw 1.6cqw;
+  border-radius: .8cqw;
+  background: #FCE3D5;
+  margin-bottom: 1.3cqw;
+}
+.wtp__pregunta-txt { margin: 0; font-size: 1.35cqw; font-weight: 700; }
+.wtp__moneda {
+  margin: .5cqw 0 0;
+  font-size: .78cqw;
+  font-weight: 700;
+  letter-spacing: .04em;
+  color: #C2410C;
+}
+
+.wtp__reloj-fila {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1cqw;
+}
+.wtp__reloj-eti { font-size: 1.05cqw; font-weight: 700; }
+.wtp__reloj {
+  padding: .25cqw .6cqw;
+  border-radius: .35cqw;
+  background: #F1F2F6;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: .95cqw;
+  font-weight: 700;
+}
+.wtp__barra {
+  height: .45cqw;
+  margin: .9cqw 0 .7cqw;
+  border-radius: 999px;
+  background: #EDEDF2;
+  overflow: hidden;
+}
+.wtp__barra i { display: block; height: 100%; background: var(--wtp-rojo); }
+.wtp__reloj-fila--pie { font-size: .88cqw; color: var(--wtp-suave); }
+
+.wtp__respuesta { align-self: start; }
+.wtp__respuesta-eti { margin: 0 0 .6cqw; font-size: 1cqw; font-weight: 700; }
+.wtp__ayuda { margin: .55cqw 0 0; font-size: .82cqw; color: var(--wtp-suave); }
+
+/* ---- Banco ---- */
+.wtp__tres {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.2cqw;
+  margin-bottom: 1.5cqw;
+}
+.wtp__cifra-eti { margin: 0 0 .3cqw; font-size: 1cqw; color: #4B4753; }
+.wtp__cifra { font-size: 2cqw; font-weight: 800; }
+
+.wtp__tabla {
+  border: 1px solid var(--wtp-borde);
+  border-radius: .8cqw;
+  overflow: hidden;
+}
+.wtp__fila {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, .8fr) minmax(0, 1.2fr) minmax(0, .8fr);
+  gap: 1cqw;
+  padding: .95cqw 1.3cqw;
+  border-bottom: 1px solid #F1F1F5;
+  font-size: 1cqw;
+}
+.wtp__fila:last-child { border-bottom: 0; }
+.wtp__fila--titulos { background: #FAFAFC; font-weight: 700; color: #4B4753; }
+
+/* ---- Perfil ---- */
+.wtp__quien {
+  display: flex;
+  align-items: center;
+  gap: 1.3cqw;
+  margin-bottom: 1.6cqw;
+}
+.wtp__avatar {
+  display: grid;
+  place-items: center;
+  width: 3.6cqw;
+  height: 3.6cqw;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: #F1F2F6;
+  font-size: 2cqw;
+}
+.wtp__quien-nombre { margin: 0; font-size: 1.5cqw; font-weight: 700; }
+.wtp__quien-linea { margin: .12cqw 0 0; font-size: 1cqw; color: var(--wtp-suave); }
+.wtp__lapiz { margin-left: auto; font-size: 1.2cqw; color: var(--wtp-suave); }
+
+.wtp__con-lado { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 2.4fr); gap: 1.4cqw; }
+.wtp__lados { display: grid; gap: .7cqw; align-content: start; }
+.wtp__lado {
+  padding: .8cqw 1.1cqw;
+  border: 1px solid var(--wtp-borde);
+  border-radius: .5cqw;
+  background: #fff;
+  font-size: 1cqw;
+  font-weight: 600;
+}
+.wtp__lado.es-actual {
+  border-color: var(--wtp-rojo);
+  background: var(--wtp-rojo);
+  color: #fff;
+  font-weight: 700;
+}
+
+.wtp__panel-tit { margin: 0 0 1.1cqw; font-size: 1.45cqw; font-weight: 800; }
+.wtp__datos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1cqw 1.6cqw;
+  margin-bottom: 1.3cqw;
+}
+.wtp__dato-eti { margin: 0; font-size: 1cqw; font-weight: 700; }
+.wtp__dato-val { margin: .1cqw 0 0; font-size: 1cqw; color: #4B4753; }
+
+/* ---- Institucional ---- */
+.wtp__colegio { display: flex; align-items: center; gap: .9cqw; margin: 1.5cqw 0 1.2cqw; }
+.wtp__colegio-eti { font-size: 1cqw; font-weight: 700; }
+
+.wtp__pestanas {
+  display: flex;
+  gap: 1.8cqw;
+  border-bottom: 1px solid var(--wtp-borde);
+  margin-bottom: 1.4cqw;
+}
+.wtp__pestana {
+  padding: .5cqw 0 .7cqw;
+  font-size: 1.05cqw;
+  color: var(--wtp-suave);
+}
+.wtp__pestana.es-actual {
+  color: var(--wtp-tinta);
+  font-weight: 700;
+  box-shadow: inset 0 -.18cqw 0 var(--wtp-rojo);
+}
+
+.wtp__intro { margin: 0 0 1.2cqw; font-size: .95cqw; color: #4B4753; }
+.wtp__campos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1cqw 1.4cqw;
+}
+.wtp__campo-eti { margin: 0 0 .35cqw; font-size: .95cqw; font-weight: 700; }
+.wtp__campo-eti b { color: var(--wtp-rojo); }
+
+/* ---- En el teléfono ----
+
+   El dibujo no cabe a lo ancho: se achica la letra y las rejillas
+   de dos columnas se vuelven de una. */
+@media (max-width: 720px) {
+  .wtp { max-width: 100%; padding: 12px 12px 14px; font-size: 11px; }
+  .wtp__titulo { font-size: 16px; }
+  .wtp__sub, .wtp__campo, .wtp__dato-val, .wtp__fila { font-size: 10px; }
+  .wtp__encabezado { flex-direction: column; gap: 8px; margin-bottom: 12px; }
+  .wtp__dos, .wtp__con-lado, .wtp__campos, .wtp__datos { grid-template-columns: 1fr; gap: 10px; }
+  .wtp__tres { gap: 8px; }
+  .wtp__cifra { font-size: 15px; }
+  .wtp__pregunta-txt { font-size: 12px; }
+  .wtp__marcador-val { font-size: 12px; }
+  .wtp__quien-nombre { font-size: 12px; }
+  .wtp__avatar { width: 30px; height: 30px; font-size: 16px; }
+  .wtp__panel-tit { font-size: 13px; }
+  .wtp__caja { padding: 9px 10px; border-radius: 8px; }
+  .wtp__campo { padding: 6px 8px; border-radius: 5px; }
+  .wtp__boton { padding: 7px 11px; font-size: 10px; }
+  .wtp__barra { height: 4px; }
+
+  /* La tabla del banco no cabe con cuatro columnas */
+  .wtp__fila { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, .8fr); }
+  .wtp__fila > :nth-child(2) { display: none; }
+}
+
+/* ============================================================
+   PANTALLAS ANGOSTAS
+   ============================================================ */
+
+@media (max-width: 900px) {
+  .apx { padding: 14px 14px 16px; }
+  .apx__marco { font-size: 11px; }
+  .apx__riel { width: 32px; }
+  .apx__lienzo { padding: 10px 12px; }
+  .apx__saludo-tit { font-size: 14px; }
+  .apx__tarjeta-ico { font-size: 27px; }
+  .apx__modulo { font-size: 11px; padding: 9px 10px; }
+  .apx__marca { font-size: 12px; }
+}
+
+@media (max-width: 900px) {
+  .wt { padding: 10px 10px 12px; }
+  .wt__texto { font-size: 1.25rem; }
+  .wt__pista { font-size: .62rem; }
+}
+
+/* ------------------------------------------------------------
+   I'WITUTOR EN EL TELÉFONO
+
+   Las capturas son de pantalla de computador: muy anchas. Puestas
+   en un teléfono, la app entera mediría 150 px de alto y no se
+   leería nada.
+
+   Por eso aquí cambia de forma: el menú se acuesta y pasa a ser
+   una fila de iconos debajo de la barra, y la captura se queda
+   con todo el ancho. Además las medidas dejan de ir en "cqw" y
+   pasan a píxeles: un 0,96% de 360 px sería letra de 3 px.
+   ------------------------------------------------------------ */
+
+@media (max-width: 720px) {
+  /* En teléfono el atajo deja de flotar en la esquina —ahí taparía
+     la frase— y pasa a ser un botón normal, al final y de ancho
+     completo. Por eso tampoco hace falta posicionar nada. */
+  .apx { padding-bottom: 16px; }
+  .apx__atajo {
+    position: static;
+    width: 100%;
+    justify-content: center;
+    margin-top: 10px;
+    font-size: .86rem;
+  }
+  .apx__pasos { margin-left: 0; justify-content: center; width: 100%; }
+
+  /* En teléfono el marco deja de ser fijo y la página crece con lo que
+     hay adentro. Ahí "flex: 1" es una trampa: su base es 0 y, sin un
+     alto que repartir, todo se aplasta a cero. Por eso aquí las cajas
+     vuelven a medir lo que miden sus hijos. */
+  .apx__marco { flex: 0 0 auto; }
+  .wt { flex: 0 0 auto; }
+  .wt__escena { flex: 0 0 auto; display: block; container-type: normal; }
+  .wt__cuerpo { flex: 0 0 auto; }
+
+  .wt__app { width: 100%; aspect-ratio: auto; }
+  .wt__barra { height: auto; padding: 7px 0; }
+  .wt__menu { flex-basis: 46px; gap: 3px; }
+  .wt__hamburguesa { gap: 2px; }
+  .wt__hamburguesa i { width: 14px; height: 2px; }
+  .wt__menu em { font-size: 8px; }
+  /* En la franja no cabe todo. Se queda lo que dice dónde está
+     parado el visitante —la pastilla y la marca—, que es lo que
+     importa; el nombre de quien entró se cae a "F..." y no aporta. */
+  .wt__quien { display: none; }
+  .wt__pastilla { padding: 4px 11px; font-size: 11px; }
+  .wt__ico-barra { width: 15px; height: 15px; }
+  .wt__marca { padding-left: 9px; font-size: 13px; }
+  .wt__fin { gap: 9px; padding-right: 9px; }
+
+  .wt__cuerpo { flex-direction: column; }
+  .wt__riel {
+    flex: 0 0 auto;
+    flex-direction: row;
+    justify-content: center;
+    gap: 6px;
+    padding: 6px 0;
+    border-right: 0;
+    border-bottom: 1px solid rgba(0,0,0,.07);
+  }
+  .wt__riel-bt { width: 32px; height: 32px; border-radius: 8px; }
+  .wt__riel-ico { width: 18px; height: 18px; }
+  .wt__riel-bt.es-actual { box-shadow: 0 3px 8px rgba(243,13,0,.35); }
+
+  /* La captura conserva su forma: así no se estira ni se corta. */
+  .wt__lienzo { flex: 0 0 auto; aspect-ratio: 1306 / 545; }
+
+  /* Las cuatro pantallas dibujadas no tienen forma fija: miden lo
+     que midan sus cajas. Si se les impusiera la forma de la
+     captura, en el teléfono quedarían cortadas por la mitad. */
+  .wt.es-dibujo .wt__lienzo { aspect-ratio: auto; }
+  .wt.es-dibujo .wt__lamina.es-activa { position: relative; }
+  .wt.es-dibujo .wt__dibujo { position: relative; inset: auto; }
+  .wt__respaldo { font-size: 15px; }
+  .wt__toque { border-radius: 3px; }
+  .wt__toque:hover { box-shadow: inset 0 -2px 0 rgba(243,13,0,.6); }
+
+  .wt__texto { font-size: 1.1rem; }
+  .wt__pista { display: none; }
+
+  .apx__aviso { display: none; }
+
+  /* En la franja de arriba no cabe todo: se deja lo que identifica
+     la app (el nombre de quien entró y la marca) y se quita el
+     resto, que en la maqueta es adorno. */
+  .apx__colegio { display: none; }
+  .apx__usuario { font-size: 10px; }
+  .apx__ayuda, .apx__salir { display: none; }
+  .apx__barra { gap: 8px; padding: 0 9px; }
+  .apx__marca { padding-left: 8px; font-size: 10px; }
+  .apx__marco { font-size: 10px; }
+  .apx__fila { grid-template-columns: 1fr; gap: 8px; }
+  .apx__paisaje { display: none; }
+  .apx__banda { grid-template-columns: 1fr; }
+  .apx__frase { font-size: 10px; }
+}

@@ -1,0 +1,57 @@
+LAS PANTALLAS DE LOS CELULARES DE "SOLUCIÓN"
+============================================
+
+La sección tiene dos paneles —"Soy rector" y "Soy papá o mamá"— y cada
+uno tiene su celular. Dentro va una pantalla por cada tarjeta.
+
+PANEL DE RECTORÍA
+  1. Secciones para seguimiento ............. assets/video/solucion-4.mp4
+  2. Agenda digital con firma ............... 2.webp
+  3. Trazabilidad real de uso ............... assets/video/solucion-1.mp4
+  4. Se ve si comprendió .................... 4.webp
+  5. Contenido propio ....................... 5.webp
+  6. Cupos por curso en pantalla ............ 6.webp
+  7. Ranking docente con estrellas .......... 7.webp
+  8. Calendario institucional ............... 8.webp
+  9. Simulacros de pruebas .................. 9.webp
+ 10. Motor de agentes de IA ................. 10.webp
+
+  OJO: estas capturas venían con el nombre de la rectora, el de una
+  docente, un mensaje personal y los nombres de nueve profesoras con
+  su calificación. Todo eso se reemplazó por datos de ejemplo y las
+  caras quedaron difuminadas. Si algún día se cambian por otras, hay
+  que volver a revisarlo: esta página es pública.
+
+PANEL DE PAPÁS
+  1. Seguimiento por tema ................... papa-1.webp
+  2. Se adapta a cómo aprende él ............ papa-2.webp
+  3. Tu hijo va a querer entrar ............. papa-3.webp
+  4. El reporte te dice si comprendió ....... papa-4.webp
+  5. Toda la comunicación en un solo canal .. papa-5.webp
+  6. Los papás ven al día qué han pagado .... assets/video/solucion-3.mp4
+
+  Estas cinco también venían con datos reales: el nombre del acudiente,
+  el de su hija y el del colegio. Quedaron con la familia de ejemplo del
+  resto del kit —Andrés Restrepo Gómez, su hijo Mateo Restrepo Vélez y
+  el Colegio Santa María—.
+
+Los archivos que dicen FALTA van en esta misma carpeta.
+
+Sirve un video (.mp4) o una imagen. Son verticales de celular: la
+proporción que mejor les queda es 372 de ancho por 810 de alto. Si
+vienen en otra, se recortan solas por el centro.
+
+Mientras un archivo no exista, el celular muestra el nombre de la
+tarjeta sobre fondo morado. No se rompe nada; en cuanto se suba,
+aparece solo.
+
+Para cambiar a qué archivo apunta una tarjeta, se edita su <article>
+en el index.html:
+
+  <article class="aspecto"
+           data-sol="assets/video/solucion-1.mp4"
+           data-sol-nombre="Trazabilidad real de uso">
+
+Si se reemplaza un video por otro con el MISMO nombre, hay que subirle
+el número de versión al index.html (el "?v=" del final de la ruta) o
+los navegadores seguirán mostrando el viejo.

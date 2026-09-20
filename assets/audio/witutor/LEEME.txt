@@ -1,0 +1,19 @@
+Aquí va la voz del recorrido de I'Witutor.
+
+Hoy el recorrido va callado, a propósito: solo música de fondo,
+las pantallas y la frase escrita.
+
+Para volver a ponerle voz:
+
+  1. Deja la grabación en esta misma carpeta, por ejemplo
+     narracion.mp3
+  2. Abre js/witutor.js y escribe la ruta en "archivo":
+
+       archivo: "assets/audio/witutor/narracion.mp3"
+
+  3. Justo debajo están las "marcas": el segundo en que entra
+     cada pantalla. Si la imagen no va con lo que se oye, se
+     corrigen esos seis números.
+
+También se puede grabar una frase por pantalla en vez de una
+sola narración seguida. Está explicado en js/witutor.js.

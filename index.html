@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>i'Witown — Que el colegio muestre su propia identidad</title>
+<meta name="description" content="i'Witown es la plataforma EdTech colombiana que personaliza el aprendizaje de cada estudiante de primaria con la Arquitectura Cognitiva Personalizada. Un ecosistema completo para rectores, docentes, padres y estudiantes.">
+
+<!-- ============================================================
+     REDES SOCIALES (Open Graph) — REEMPLAZAR la URL del dominio
+     y la imagen de portada cuando estén listas.
+     ============================================================ -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="i'Witown — Que el colegio muestre su propia identidad">
+<meta property="og:description" content="Plataforma EdTech colombiana para colegios de primaria. Personaliza el aprendizaje de cada estudiante.">
+<meta property="og:image" content="assets/img/og-portada.jpg">
+<meta property="og:url" content="https://iwitown.com">
+<meta name="theme-color" content="#5B21B6">
+
+<link rel="icon" href="assets/img/favicon.png" type="image/png">
+<link rel="stylesheet" href="css/styles.css?v=303">
+<link rel="stylesheet" href="css/simulador.css?v=303">
+<link rel="stylesheet" href="css/actividades.css?v=303">
+<link rel="stylesheet" href="css/presentacion.css?v=303">
+<link rel="stylesheet" href="css/apps.css?v=303">
+<link rel="stylesheet" href="css/consultoria.css?v=303">
+</head>
+<body>
+
+<!-- =================== BARRA SUPERIOR =================== -->
+<header class="nav" id="nav">
+  <div class="contenedor nav__inner">
+    <!-- El sello y el nombre llevan a sitios distintos: el sello
+         abre la animación de la marca, el nombre va al inicio. -->
+    <div class="nav__marca">
+      <a href="#marca" class="nav__sello" id="navSello"
+         aria-label="Ver la animación de la marca">
+        <img src="assets/img/marca-circular.webp?v=303" alt="" class="nav__logo">
+      </a>
+      <a href="#inicio" class="nav__nombre">i’Witown</a>
+    </div>
+
+    <nav class="nav__links" id="menu">
+      <a href="#problema">El problema</a>
+      <a href="#solucion">La solución</a>
+      <a href="#ecosistema">El ecosistema</a>
+      <a href="#acp">La A.C.P.</a>
+      <a href="#consultoria">Consultoría</a>
+      <a href="#contacto" class="nav__verde">Contacto</a>
+      <!-- A dónde lleva se pone en js/script.js, en WIWI -->
+      <a href="#" class="nav__wiwi" data-wiwi>Wiwi</a>
+    </nav>
+
+
+    <!-- Para quien ya tiene cuenta. La dirección está en js/script.js -->
+    <a href="#" class="nav__ingresar" data-ingresar>
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M14.4 4.4H5.6v15.2h8.8"/><path d="M11.2 12h8.4"/>
+        <path d="M16.6 8.8 19.8 12l-3.2 3.2"/>
+      </svg>
+      Ingresar
+    </a>
+
+    <button class="nav__burger" id="burger" aria-label="Abrir menú" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+
+<!-- ============================================================
+     LA ANIMACIÓN DE LA MARCA
+
+     Se abre al tocar el sello redondo del menú (el nombre de al
+     lado sigue llevando al inicio). El video corre solo, sin
+     controles; cuando termina, un círculo sale del centro y se va
+     hasta el sello del menú, y ahí mismo se abre el inicio.
+
+     ┌────────────────────────────────────────────────────────┐
+     │  PARA CAMBIAR EL VIDEO                                   │
+     │                                                          │
+     │  Se reemplaza assets/video/marca.mp4 por otro con el     │
+     │  mismo nombre. Los tiempos del círculo están arriba de   │
+     │  js/marca.js.                                            │
+     └────────────────────────────────────────────────────────┘
+     ============================================================ -->
+<section class="marca" id="marca" hidden>
+  <div class="marca__escena" id="marcaEscena">
+    <video class="marca__video" id="marcaVideo"
+           src="assets/video/marca.mp4?v=303"
+           muted playsinline preload="auto"></video>
+  </div>
+</section>
+
+<!-- ============================================================
+     0. LA PORTADA
+
+     Lo primero que se ve. Dice en una frase qué hace i'Witown, y
+     deja dos caminos: pedir una demo o ver el simulador.
+
+     ┌──────────────────────────────────────────────────────────┐
+     │  PARA CAMBIAR LA FRASE GRANDE                            │
+     │                                                          │
+     │  Está aquí mismo, en el h1. La parte que va en morado    │
+     │  es la que está dentro de <span class="portada__…">.     │
+     └──────────────────────────────────────────────────────────┘
+     ============================================================ -->
+<section class="portada" id="inicio">
+  <div class="contenedor portada__inner">
+
+    <div class="portada__texto">
+
+    <h1 class="portada__titulo">
+      Enseña con <span class="portada__resalte">tus ideas y estrategias</span>,
+      no con las de la editorial
+    </h1>
+
+    <p class="portada__bajada">
+      Recupera el control de cómo enseña tu colegio. Maestros, padres y
+      estudiantes ven en tiempo real cómo va cada niño.
+    </p>
+
+
+    </div><!-- /portada__texto -->
+
+    <!-- ============================================================
+         EL CELULAR
+
+         Un marco de vidrio con el video de la presentación adentro,
+         en silencio y repitiéndose. Es el mismo archivo que usa el
+         simulador de más abajo, así que no pesa el doble: el
+         navegador lo baja una sola vez.
+
+         El video ya viene vertical, grabado para esto. Es
+         assets/video/portada-vertical.mp4: para cambiarlo, se
+         reemplaza ese archivo y ya.
+         ============================================================ -->
+    <div class="portada__celular">
+      <div class="celular">
+        <span class="celular__isla" aria-hidden="true"></span>
+        <video class="celular__video" id="celVideo" autoplay loop muted playsinline
+               preload="auto" aria-label="Presentación de i'Witown">
+          <source src="assets/video/portada-vertical.mp4?v=303" type="video/mp4">
+        </video>
+        <span class="celular__brillo" aria-hidden="true"></span>
+
+        <!-- Los mandos. El de la izquierda pausa y sigue; el de la
+             derecha prende y apaga el sonido. -->
+        <div class="celular__mandos">
+          <button type="button" class="celular__mando" id="celPausa" aria-label="Pausar">
+            <svg class="celular__ico celular__ico--pausa" viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="7" y="5" width="3.6" height="14" rx="1.2"/>
+              <rect x="13.4" y="5" width="3.6" height="14" rx="1.2"/>
+            </svg>
+            <svg class="celular__ico celular__ico--play" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M8 5.4v13.2L19 12z"/>
+            </svg>
+          </button>
+
+          <span class="celular__aviso" id="celAviso" aria-hidden="true">Toca para oír</span>
+
+          <button type="button" class="celular__mando" id="celSonido" aria-label="Activar sonido">
+            <svg class="celular__ico celular__ico--con" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 9.2h3.4L12 5.4v13.2L7.4 14.8H4z"/>
+              <path d="M15.6 9.4a3.6 3.6 0 0 1 0 5.2M18.2 7a7 7 0 0 1 0 10"/>
+            </svg>
+            <svg class="celular__ico celular__ico--sin" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 9.2h3.4L12 5.4v13.2L7.4 14.8H4z"/>
+              <path d="M16 10l4.4 4.4M20.4 10 16 14.4"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Los botones van aparte, fuera de las dos columnas: así quedan
+       centrados con la página entera y no con la columna del texto. -->
+  <div class="contenedor">
+    <div class="portada__botones">
+      <a href="#contacto" class="btn btn--morado btn--grande">Agendar cita</a>
+
+      <!-- "data-reinicia" hace que la presentación vuelva a empezar
+           desde el primer video. Lo maneja js/presentacion.js. -->
+      <a href="#presentacion" class="btn btn--linea btn--grande" data-reinicia>
+        <svg viewBox="0 0 24 24" aria-hidden="true" class="portada__play">
+          <path d="M8 5.6v12.8L19 12z"/>
+        </svg>
+        Ver simulador
+      </a>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============================================================
+     1. PRESENTACIÓN INICIAL
+     Video de la presentadora + transcripción que se va marcando
+     al lado. Es lo primero que ve el visitante: para cuando llega
+     al simulador, ya sabe cuál es el problema.
+
+     El texto de la transcripción está en js/presentacion.js
+     ============================================================ -->
+<section class="pres" id="presentacion">
+  <div class="contenedor">
+    <!-- ============================================================
+         EL MARCO
+
+         Un solo recuadro de tamaño fijo. Los videos, la frase y la app
+         van TODOS aquí adentro, uno encima del otro, y se van turnando.
+         El marco nunca cambia de tamaño: lo que no quepa se desplaza
+         por dentro.
+
+         Para hacerlo más alto o más bajo se cambia la proporción en
+         css/presentacion.css (.escenario { aspect-ratio }).
+         ============================================================ -->
+    <div class="escena">
+
+    <div class="escenario">
+
+    <!-- ---- PASO 1: los videos con sus subtítulos ---- -->
+    <div class="pres__grid" id="pasoVideos">
+
+      <!-- ---- Video ---- -->
+      <figure class="pres__video">
+        <!-- El archivo lo pone js/presentacion.js, que va pasando
+             de un video al siguiente (lista PRES_VIDEOS). -->
+        <video id="presVideo" muted autoplay playsinline preload="auto">
+          Tu navegador no puede mostrar este video.
+        </video>
+
+        <!-- Sale solo si el navegador no deja arrancar el video solo -->
+        <button type="button" class="pres__play" id="presPlay" hidden aria-label="Reproducir la presentación">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5l12 7-12 7z"/></svg>
+        </button>
+
+        <!-- Pausa y detener. Solo salen en los videos que lo pidan:
+             es el campo "controles" de js/presentacion.js. -->
+        <div class="pres__mandos" id="presMandos" hidden>
+          <button type="button" class="pres__mando" id="presPausa" aria-pressed="false">
+            <svg class="pres__ico pres__ico--pausa" viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="6.5" y="5" width="4" height="14" rx="1.2"/>
+              <rect x="13.5" y="5" width="4" height="14" rx="1.2"/>
+            </svg>
+            <svg class="pres__ico pres__ico--play" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M8 5l11 7-11 7z"/>
+            </svg>
+            <span class="pres__mando-txt">Pausa</span>
+          </button>
+
+          <button type="button" class="pres__mando" id="presStop">
+            <svg class="pres__ico" viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="6" y="6" width="12" height="12" rx="2"/>
+            </svg>
+            <span class="pres__mando-txt">Detener</span>
+          </button>
+        </div>
+
+        <button type="button" class="pres__sonido" id="presSonido" aria-pressed="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M11 5L6 9H2v6h4l5 4z"/>
+            <g class="pres__tachado"><path d="M22 9l-6 6M16 9l6 6"/></g>
+            <g class="pres__onda"><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 6a9 9 0 0 1 0 12"/></g>
+          </svg>
+          <span class="pres__sonido-txt">Activar sonido</span>
+        </button>
+
+        <!-- Subtítulos sobre el video, estilo CC de YouTube.
+             El texto lo pone js/presentacion.js; el color del banner
+             se cambia en css/presentacion.css (--pres-cc-fondo). -->
+        <div class="pres__cc" id="presCC" hidden>
+          <span class="pres__cc-txt" id="presCCTxt"></span>
+        </div>
+
+        <div class="pres__barra"><span id="presProgreso"></span></div>
+      </figure>
+
+    </div><!-- /pres__grid — fin del paso de los videos -->
+
+    <!-- ============================================================
+         PASO 2: LA FRASE
+         Sale cuando terminan los videos, en el mismo marco, y a los
+         pocos segundos da paso a la app. El texto y los segundos que
+         dura están en js/presentacion.js.
+         ============================================================ -->
+    <div class="frase" id="pasoFrase" hidden>
+      <p class="frase__arriba" id="fraseArriba">Lo que debes esperar de una app escolar</p>
+      <p class="frase__grande" id="fraseGrande">Presenta tus propios contenidos.</p>
+    </div>
+
+    <!-- ============================================================
+         PASO 3: LA APP — SIMULADOR, VISTA 1: MODALIDAD
+         Va dentro del mismo contenedor que los videos, para que se
+         sienta una sola secuencia y no dos secciones distintas.
+         Los textos, el tema y los recursos están en js/simulador.js.
+         ============================================================ -->
+    <div class="pres__app" id="pasoApp" hidden>
+
+      <div class="sim__intro">
+        <p class="sim__paso" id="simPaso">Paso 1 de 4</p>
+        <p class="sim__instruccion">Haz clic en cualquier modalidad y míralo tú mismo</p>
+        <button type="button" class="pres__volver" data-lleva="apps">← Volver al recorrido</button>
+      </div>
+
+    <div class="vt" id="simVentanaDocente">
+
+      <div class="vt__barra">
+        <svg class="vt__barra-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></svg>
+        <div class="vt__usuario">
+          <p class="vt__nombre" id="simDocente">Diana Carolina Bustamante Miranda</p>
+          <p class="vt__colegio" id="simColegio">Colegio Santa María</p>
+        </div>
+        <div class="vt__acciones">
+          <svg class="vt__barra-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+          <svg class="vt__barra-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+          <span class="vt__marca">WITEACHER <em>i'Witown</em></span>
+          <svg class="vt__barra-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        </div>
+      </div>
+
+      <div class="vt__cuerpo">
+
+        <!-- Menú lateral (decorativo, reproduce el de la plataforma real) -->
+        <aside class="vt__lateral" aria-hidden="true">
+          <span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg></span>
+          <span><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>
+          <span class="is-actual"><svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg></span>
+          <span><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
+          <span><svg viewBox="0 0 24 24"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1 2.7 3 6 3s6-2 6-3v-5"/></svg></span>
+          <span><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+          <span><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></span>
+          <span><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg></span>
+          <span><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="5" rx="1"/><path d="M4 12v9h16v-9M12 7v14"/></svg></span>
+          <span><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V10l7-5 7 5v11M9 21v-6h6v6"/></svg></span>
+          <span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg></span>
+        </aside>
+
+        <div class="vt__contenido">
+
+          <div class="vt__tema">
+            <div>
+              <h3 id="simTema">Fracciones equivalentes</h3>
+              <p class="vt__tema-meta" id="simMeta">Matemáticas · 4.º de primaria · Periodo 2</p>
+            </div>
+            <span class="vt__tema-etiqueta">Tema definido por el colegio</span>
+          </div>
+
+          <div class="vt__panel">
+            <p class="vt__panel-titulo">Modalidad:</p>
+            <div class="vt__grid" id="simGrid">
+              <!-- Las modalidades se construyen desde js/simulador.js -->
+            </div>
+          </div>
+
+          <div id="simResultado" hidden></div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         VISTA DEL ESTUDIANTE — WIWI QUEST
+         Se muestra cuando la modalidad escogida tiene una pantalla
+         de estudiante definida en js/simulador.js (campo wiwiQuest).
+         Los textos se llenan desde ese archivo; aquí solo va la
+         estructura de la pantalla.
+         ============================================================ -->
+    <div class="wq" id="simWiwi" hidden>
+
+      <div class="wq__ventana">
+
+        <!-- ---- Barra superior ---- -->
+        <div class="wq__barra">
+          <div class="wq__menu">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+            <span>Menú</span>
+          </div>
+
+          <div class="wq__ident">
+            <p class="wq__hola">
+              <span class="wq__hola-txt">Hola <span id="wqNombre">Nicolas Alberto Páez López</span> - <span id="wqGrado">Primero</span></span>
+              <span class="wq__saldo">Saldo: <span id="wqSaldo">$46.442</span></span>
+            </p>
+            <p class="wq__colegio" id="wqColegio">Colegio Santa María</p>
+          </div>
+
+          <div class="wq__barra-der">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+            <span class="wq__marca">WITOWN<em>i'Witown</em></span>
+          </div>
+        </div>
+
+        <div class="wq__cuerpo">
+
+          <!-- ---- Menú lateral del estudiante (decorativo) ---- -->
+          <aside class="wq__lateral" aria-hidden="true">
+            <span><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg></span>
+            <span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9v.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
+            <span><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg></span>
+            <span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5L17 22l-5-3-5 3 1.5-8.5"/></svg></span>
+            <span><svg viewBox="0 0 24 24"><path d="M20.8 8.6a4.6 4.6 0 0 0-6.5 0L12 10.9 9.7 8.6a4.6 4.6 0 1 0-6.5 6.5l8.8 8.8 8.8-8.8a4.6 4.6 0 0 0 0-6.5z"/></svg></span>
+            <span><svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M9 14l2 2 4-4"/></svg></span>
+            <span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg></span>
+          </aside>
+
+          <!-- ---- Tablero de juego ---- -->
+          <div class="wq__tablero">
+
+            <svg class="wq__constelacion" viewBox="0 0 1200 620" preserveAspectRatio="none" aria-hidden="true">
+              <g fill="none" stroke="#E9A79A" stroke-width="1">
+                <path d="M80 50 L300 130 L520 30 L760 110 L980 50 L1150 140"/>
+                <path d="M30 300 L240 380 L470 295 L700 420 L940 325 L1170 405"/>
+                <path d="M110 570 L360 470 L600 565 L840 480 L1090 575"/>
+                <path d="M300 130 L240 380 L360 470"/>
+                <path d="M760 110 L700 420 L840 480"/>
+                <path d="M980 50 L940 325 L1090 575"/>
+              </g>
+              <g fill="#E07A64">
+                <circle cx="300" cy="130" r="4"/><circle cx="520" cy="30" r="3"/>
+                <circle cx="760" cy="110" r="4"/><circle cx="980" cy="50" r="3"/>
+                <circle cx="240" cy="380" r="4"/><circle cx="470" cy="295" r="3"/>
+                <circle cx="700" cy="420" r="4"/><circle cx="940" cy="325" r="3"/>
+                <circle cx="360" cy="470" r="4"/><circle cx="600" cy="565" r="3"/>
+                <circle cx="840" cy="480" r="4"/><circle cx="1090" cy="575" r="3"/>
+              </g>
+            </svg>
+
+            <div class="wq__top">
+              <span class="wq__modo" id="wqModo">Refuerzo - Ganar examen</span>
+              <span class="wq__reloj">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M9 2h6"/></svg>
+                <b id="wqTiempo">00:11</b>
+                <span class="wq__aciertos" id="wqAciertos">0/6 correctas</span>
+              </span>
+              <svg class="wq__expandir" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+            </div>
+
+            <div class="wq__audio">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5L6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>
+              <span class="wq__switch"><i></i></span>
+              <span>Audio</span>
+            </div>
+
+            <div class="wq__grid">
+
+              <!-- Columna izquierda -->
+              <div class="wq__izq">
+                <p class="wq__meta">Tema: <b id="wqTema">Fraccionarios</b></p>
+                <p class="wq__meta">Subtema: <b id="wqSubtema">Fracciones equivalentes</b></p>
+                <p class="wq__meta">Principio: <b id="wqPrincipio">Rigor Conceptual</b> <span class="wq__info">i</span></p>
+
+                <div class="wq__tarjeta">
+                  <div class="wq__tarjeta-esq wq__tarjeta-esq--tl">
+                    <span><svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg> 0</span>
+                    <span><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg> 0</span>
+                  </div>
+
+                  <!-- Robot oficial de Wiwi Quest.
+                       El original es wiwiquest-app/src/assets/robot_wiwiquest.svg
+                       (716 KB). Aquí va convertido a WebP: 28 KB, se ve igual. -->
+                  <div class="wq__robot">
+                    <img class="wq__robot-img" src="assets/img/robot_wiwiquest.webp"
+                         alt="Robot de Wiwi Quest" width="150" height="225">
+                  </div>
+
+                  <div class="wq__tarjeta-esq wq__tarjeta-esq--br">
+                    <span><svg viewBox="0 0 24 24"><path d="M20.8 8.6a4.6 4.6 0 0 0-6.5 0L12 10.9 9.7 8.6a4.6 4.6 0 1 0-6.5 6.5l8.8 8.8 8.8-8.8a4.6 4.6 0 0 0 0-6.5z"/></svg> 0</span>
+                    <span><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M9 2h6"/></svg> 0</span>
+                  </div>
+                </div>
+
+                <button type="button" class="wq__leer">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5L6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>
+                  Leer
+                </button>
+
+                <div class="wq__pregunta">
+                  <span class="wq__puntos" id="wqPuntos">$200</span>
+                  <p id="wqTexto">Dos fracciones equivalentes son aquellas que:</p>
+                </div>
+
+                <div class="wq__tiempo">
+                  <div class="wq__tiempo-top">
+                    <span>0 seg</span>
+                    <span id="wqSegTotal">126 seg</span>
+                  </div>
+                  <div class="wq__tiempo-barra"><div class="wq__tiempo-fill" id="wqBarra"></div></div>
+                  <div class="wq__tiempo-pie">
+                    <span id="wqSegRest">114 seg</span>
+                    <span class="wq__power"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v9"/><path d="M18.4 6.6a9 9 0 1 1-12.8 0"/></svg></span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Opciones de respuesta (se construyen desde js/simulador.js) -->
+              <div class="wq__opciones" id="wqOpciones"></div>
+
+              <!-- Barra de herramientas del estudiante -->
+              <aside class="wq__rail" aria-hidden="true">
+                <span class="wq__rail-item">
+                  <span class="wq__avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="4"/><path d="M5 21v-1a7 7 0 0 1 14 0v1"/></svg></span>
+                  Cuenta
+                </span>
+                <span class="wq__rail-item">
+                  <span class="wq__rail-ico"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span>
+                  Ver<br>respuesta
+                </span>
+                <span class="wq__rail-item">
+                  <span class="wq__rail-ico"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span>
+                  Ver<br>contexto
+                </span>
+                <span class="wq__rail-item">
+                  <span class="wq__rail-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12h8"/></svg></span>
+                  Quitar<br>opciones
+                </span>
+                <span class="wq__rail-item">
+                  <span class="wq__rail-ico"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></span>
+                  Compartir
+                </span>
+                <span class="wq__rail-item">
+                  <span class="wq__rail-ico"><svg viewBox="0 0 24 24"><path d="M20.8 8.6a4.6 4.6 0 0 0-6.5 0L12 10.9 9.7 8.6a4.6 4.6 0 1 0-6.5 6.5l8.8 8.8 8.8-8.8a4.6 4.6 0 0 0 0-6.5z"/></svg></span>
+                  Like
+                </span>
+              </aside>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- ---- Modal de retroalimentación ----
+             Sale solo al final del recorrido automático, o cuando el
+             visitante acierta la pregunta. Los textos vienen de
+             js/simulador.js, campo "retroalimentacion". -->
+        <div class="wq-modal" id="wqModal" hidden>
+          <div class="wq-modal__caja" role="dialog" aria-modal="true" aria-labelledby="wqModalTitulo">
+            <span class="wq-modal__sello">Ratificación</span>
+            <h3 id="wqModalTitulo">¡Eso es!</h3>
+            <p class="wq-modal__texto" id="wqModalTexto"></p>
+            <div class="wq-modal__nota">
+              <strong>¿Y por qué la otra no?</strong>
+              <span id="wqModalPorque"></span>
+            </div>
+            <div class="wq-modal__pie">
+              <span class="wq-modal__puntos" id="wqModalPuntos">+200</span>
+              <button type="button" class="btn btn--morado" id="wqModalCerrar">Entendido</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="wq__aviso">
+        <p class="wq__aviso-txt">
+          Así lo ve el estudiante · modalidad <strong id="wqModalidad">Afianzamiento</strong>
+        </p>
+        <button type="button" class="btn btn--fantasma" id="wqVolver">
+          ← Volver a las modalidades
+        </button>
+      </div>
+
+    </div>
+
+
+    <!-- ---- El subtítulo del recorrido narrado ----
+         Solo sale mientras el recorrido está andando. El guion y
+         los tiempos están en js/recorrido.js. -->
+    <div class="narra" id="narraBarra" hidden aria-live="polite">
+      <p class="narra__txt" id="narraTxt"></p>
+    </div>
+
+    <!-- ---- Progreso y botones ---- -->
+    <div class="sim__pie">
+      <div class="sim__progreso">
+        <p class="sim__contador" id="simContador">Has visto <strong>0</strong> modalidades</p>
+        <div class="sim__barra-fondo"><div class="sim__barra" id="simBarra"></div></div>
+      </div>
+
+      <div class="sim__botones">
+        <button type="button" class="btn btn--fantasma" id="simAuto">Ver el recorrido narrado</button>
+        <button type="button" class="btn btn--morado" id="simContinuar" disabled>Continuar</button>
+      </div>
+    </div>
+
+    </div><!-- /pres__app -->
+
+
+    <!-- ============================================================
+         PASO 4: LAS TARJETAS
+         Sale al terminar el video de la profesora. De aquí salen los
+         tres caminos, y a aquí se vuelve desde cualquiera de ellos.
+         ============================================================ -->
+    <!-- ---- PASO 3: el remate de la presentación ----
+         Sale cuando se acaban los videos. Es el puente entre la
+         presentación y el recorrido por la app. -->
+    <div class="remate" id="pasoRemate" hidden>
+      <p class="remate__arriba">Eso es lo que hacemos</p>
+      <h3 class="remate__titulo">Ahora véalo por dentro</h3>
+      <p class="remate__texto">
+        Entra a la plataforma y muévete por ella como lo haría un colegio.
+      </p>
+      <button type="button" class="remate__boton" data-lleva="apps">
+        Recorre la app
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6.5 18.5 12 13 17.5"/></svg>
+      </button>
+    </div>
+
+    <!-- Las tres tarjetas y la rueda del selector se quitaron: ahora
+         "Recorre la app" entra derecho al recorrido de las apps. -->
+
+    <div class="apx" id="pasoApps" hidden>
+
+      <!-- La fila de arriba: en qué app va el recorrido. Los nombres
+           los pone js/ecosistema.js, con la lista ECO_RECORRIDO. -->
+      <div class="apx__cabecera">
+        <p class="apx__aviso">Así se ve por dentro</p>
+        <div class="apx__pasos" id="apxPasos"></div>
+      </div>
+
+      <div class="apx__marco" id="apxMarco" aria-live="polite"></div>
+
+
+    </div><!-- /apx -->
+
+    <!-- ============================================================
+         PASO 4-C: CONTACTO
+         Los tres botones para pedir la visita. El número, el correo
+         y el enlace de Teams se cambian arriba de js/script.js.
+         ============================================================ -->
+    <div class="ctc" id="pasoContacto" hidden>
+
+      <div class="ctc__cabecera">
+        <button type="button" class="pres__volver" data-lleva="apps">← Volver al recorrido</button>
+      </div>
+
+      <div class="ctc__cuerpo">
+        <h3 class="ctc__titulo">Contáctanos por el medio que gustes para una reunión</h3>
+
+        <div class="ctc__botones">
+
+          <a class="ctc__boton ctc__boton--teams" data-teams>
+            <span class="ctc__ico">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="2" y="6" width="13" height="12" rx="2"/>
+                <path d="M15 10l6-3.5v11L15 14"/>
+              </svg>
+            </span>
+            <span class="ctc__texto">
+              <strong>Reunión virtual</strong>
+              <em>Por Teams, cuando te quede bien</em>
+            </span>
+          </a>
+
+          <a class="ctc__boton ctc__boton--wa" data-wa
+             data-wa-msg="Hola, vi la presentación de i'Witown y quiero agendar una visita para mi colegio.">
+            <span class="ctc__ico">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M21 11.5a8.4 8.4 0 0 1-12.6 7.3L3 20.5l1.8-5.3A8.4 8.4 0 1 1 21 11.5z"/>
+                <path d="M8.5 9c0 3 2.5 5.5 5.5 5.5"/>
+              </svg>
+            </span>
+            <span class="ctc__texto">
+              <strong>WhatsApp</strong>
+              <em>Escríbenos y te respondemos</em>
+            </span>
+          </a>
+
+          <a class="ctc__boton ctc__boton--mail" data-correo>
+            <span class="ctc__ico">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="2" y="4" width="20" height="16" rx="2"/>
+                <path d="M2.5 6.5L12 13l9.5-6.5"/>
+              </svg>
+            </span>
+            <span class="ctc__texto">
+              <strong>Correo</strong>
+              <em>Cuéntanos y te escribimos</em>
+            </span>
+          </a>
+
+        </div>
+
+        <p class="ctc__nota">La visita puede ser virtual o en el colegio. La decides tú.</p>
+      </div>
+    </div><!-- /ctc -->
+
+    </div><!-- /escenario -->
+
+    <!-- Atajo para volver a ver la presentación. Va POR FUERA del
+         marco, a la derecha, y solo aparece cuando la presentación
+         ya terminó. En pantallas donde no cabe al lado, se pasa
+         debajo del marco. -->
+    <button type="button" class="escena__atajo" id="presAtajo" data-reinicia hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3"/><path d="M4.2 4.8v4h4"/>
+      </svg>
+      Volver al principio
+    </button>
+
+    </div><!-- /escena -->
+
+  </div>
+</section>
+
+<!-- =================== 2. LA REALIDAD =================== -->
+<section class="seccion seccion--claro" id="problema">
+  <div class="contenedor">
+    <!-- Dos columnas: el mensaje a la izquierda y la tableta con las
+         tres tarjetas a la derecha. En pantallas angostas se apilan. -->
+    <div class="prob">
+
+      <div class="prob__texto">
+        <h2 class="prob__titulo">
+          Sus familias <span class="prob__resalte">pueden irse</span>
+          si no soluciona esto
+        </h2>
+        <p class="prob__bajada">
+          Tres cosas que todos los que estamos en un colegio ya sabemos,
+          pero que casi nadie dice en voz alta.
+        </p>
+        <p class="prob__pista">Toca cada una para verla</p>
+
+        <!-- El mismo botón de la portada: la invitación a la demo no
+             queda solo arriba del todo, sino también aquí. -->
+        <a href="#contacto" class="btn btn--morado btn--grande prob__boton">Agendar cita</a>
+      </div>
+
+      <!-- La tableta. El marco es la foto assets/img/tablet.webp, que
+           trae el hueco de la pantalla transparente: las tarjetas van
+           DETRÁS y se asoman por ese hueco. -->
+      <div class="prob__tableta">
+        <div class="tableta">
+          <div class="tableta__pantalla">
+            <!-- El riel de la tableta. Va corriendo hacia arriba: primero
+                 las tres tarjetas, después cada una sola con su imagen, y
+                 de nuevo las tres. Las escenas de una sola tarjeta NO están
+                 escritas aquí: las arma js/tableta.js clonando estas tres,
+                 así el texto se cambia en un solo lugar. -->
+            <div class="tableta__riel" id="tabRiel">
+              <div class="tableta__escena tableta__escena--todas">
+                  <article class="tarjeta tarjeta--dolor" data-foto="assets/img/problema/01.webp"
+                           role="button" tabindex="0"
+                           aria-label="Ver la imagen de: La plataforma que pagan no se adapta a nadie">
+                    <span class="tarjeta__num">01</span>
+                    <h3>La plataforma que pagan no se adapta a nadie</h3>
+                    <p>
+                      Niños con ritmos, intereses y comprensiones distintas reciben el mismo contenido,
+                      empacado en el mismo orden. La personalización de esas plataformas cambia el color de la
+                      pantalla, no el aprendizaje del niño.
+                    </p>
+                  </article>
+
+                  <article class="tarjeta tarjeta--dolor" data-foto="assets/img/problema/02.webp"
+                           role="button" tabindex="0"
+                           aria-label="Ver la imagen de: Los textos se pagan, pero no se usan">
+                    <span class="tarjeta__num">02</span>
+                    <h3>Los textos se pagan, pero no se usan</h3>
+                    <p>
+                      La misma lista cada año. El mismo gasto para la familia. Y el libro termina guardado,
+                      a medio abrir. El que recibe el reclamo del padre no es la editorial: es el colegio.
+                    </p>
+                  </article>
+
+                  <article class="tarjeta tarjeta--dolor" data-foto="assets/img/problema/03.webp"
+                           role="button" tabindex="0"
+                           aria-label="Ver la imagen de: Las notas dicen qué se acordó, no qué entendió">
+                    <span class="tarjeta__num">03</span>
+                    <h3>Las notas dicen qué se acordó, no qué entendió</h3>
+                    <p>
+                      Evaluar memoria es fácil. Evaluar comprensión es otra cosa completamente distinta.
+                      Y un boletín con números no distingue entre un niño que comprendió y uno que repitió bien.
+                    </p>
+                  </article>
+              </div>
+            </div>
+          </div>
+          <img class="tableta__marco" src="assets/img/tablet.webp" alt="" aria-hidden="true">
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- =================== 3. BIFURCACIÓN POR AUDIENCIA =================== -->
+<section class="seccion" id="solucion">
+  <div class="contenedor">
+    <!-- El título a la izquierda y los dos botones a la derecha, en la
+         misma fila. En pantallas angostas se apilan y se centran. -->
+    <header class="sol__cabecera">
+      <h2 class="sol__titulo">
+        Demuestra con datos <span class="sol__resalte">el valor de tu plataforma.</span>
+      </h2>
+
+      <!-- La frase del perfil que esté abierto. Cada una lleva el id de
+           su panel en "data-enunciado"; las cambia js/script.js. -->
+      <p class="sol__enunciado" data-enunciado="panel-rector">
+        Por primera vez vas a poder demostrar, con datos, que la plataforma que cobras sí se usa.
+      </p>
+      <p class="sol__enunciado" data-enunciado="panel-papa" hidden>
+        Vas a saber cómo va tu hijo todos los días. No solo cuando entreguen el boletín.
+      </p>
+
+      <!-- Los dos botones, a la derecha. La frase de cada perfil va
+           dentro de su propio panel, justo debajo. -->
+      <div class="sol__fila">
+        <div class="tabs" role="tablist" aria-label="Escoge tu perfil">
+          <button class="tab is-activa" role="tab" aria-selected="true" aria-controls="panel-rector" id="tab-rector">
+            Soy rector o directivo
+          </button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="panel-papa" id="tab-papa">
+            Soy papá o mamá
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ---- Panel RECTOR ---- -->
+    <div class="panel is-activo" id="panel-rector" role="tabpanel" aria-labelledby="tab-rector">
+
+      <!-- Los dos paneles tienen la misma forma: el celular a la izquierda
+           y, a la derecha, la frase y las tarjetas. La clase
+           "panel__grid--cel" es la que arma ese reparto. -->
+      <div class="panel__grid panel__grid--cel">
+
+        <!-- El celular. La foto assets/img/celular.webp tiene la pantalla
+             BLANCA, no transparente: por eso el video o la imagen de cada
+             tarjeta va ENCIMA, recortado al rectángulo de la pantalla.
+             Lo maneja js/solucion.js. -->
+        <div class="panel__lado">
+          <div class="celsol">
+            <img class="celsol__marco" src="assets/img/celular.webp" alt="" aria-hidden="true">
+            <div class="celsol__pantalla"></div>
+          </div>
+        </div>
+
+        <div class="panel__texto">
+
+          <!-- Cada tarjeta manda una pantalla al celular de su panel:
+               "data-sol" dice cuál. La que se está viendo se marca sola. -->
+          <div class="aspectos">
+            <article class="aspecto" data-sol="assets/video/solucion-4.mp4?v=303" data-sol-desde="0" data-sol-nombre="Secciones para seguimiento">
+              <h3 class="aspecto__titulo">Secciones para seguimiento</h3>
+              <p class="aspecto__texto">El acompañamiento al proceso del estudiante se respalda con datos en tiempo real.</p>
+            </article>
+
+            <article class="aspecto" data-sol="assets/img/solucion/2.webp" data-sol-nombre="Agenda digital con firma">
+              <h3 class="aspecto__titulo">Agenda digital con firma</h3>
+              <p class="aspecto__texto">Ves en tiempo real quién leyó y quién firmó cada mensaje. Se acabaron las circulares perdidas en la mochila.</p>
+            </article>
+
+            <article class="aspecto" data-sol="assets/video/solucion-1.mp4?v=303" data-sol-nombre="Trazabilidad real de uso">
+              <h3 class="aspecto__titulo">Trazabilidad real de uso</h3>
+              <p class="aspecto__texto">Ves quién entra, qué usa y con qué frecuencia. No supones: verificas.</p>
+            </article>
+
+            <article class="aspecto" data-sol="assets/img/solucion/4.webp" data-sol-nombre="Se ve si comprendió, no solo si se acordó">
+              <h3 class="aspecto__titulo">Se ve si comprendió, no solo si se acordó</h3>
+              <p class="aspecto__texto">El seguimiento es por tema y no por promedio, así el colegio alcanza a intervenir antes del boletín y no después.</p>
+            </article>
+
+            <article class="aspecto" data-sol="assets/img/solucion/5.webp" data-sol-nombre="Contenido propio, no contenido enlatado">
+              <h3 class="aspecto__titulo">Contenido propio, no contenido enlatado</h3>
+              <p class="aspecto__texto">Tus docentes arman los temas y las tareas con el currículo del colegio. La plataforma se adapta a tu PEI, no al revés.</p>
+              <p class="aspecto__donde">i'Witeacher (asignación de tareas sin banco cerrado) · Work en la plataforma del estudiante</p>
+            </article>
+
+            <article class="aspecto" data-sol="assets/img/solucion/6.webp" data-sol-nombre="Cupos por curso en pantalla">
+              <h3 class="aspecto__titulo">Cupos por curso en pantalla</h3>
+              <p class="aspecto__texto">Grados, secciones, áreas y docentes asignados con el cupo disponible de cada curso al día.</p>
+              <p class="aspecto__donde">AdmonWitown, asignaciones académicas</p>
+            </article>
+
+            <article class="aspecto" data-sol="assets/img/solucion/7.webp" data-sol-nombre="Ranking docente con estrellas">
+              <h3 class="aspecto__titulo">Ranking docente con estrellas</h3>
+              <p class="aspecto__texto">Padres y estudiantes califican, y tú ves el consolidado por docente. Evidencia, no percepción de pasillo.</p>
+              <p class="aspecto__donde">AdmonWitown, ranking docente</p>
+            </article>
+
+            <article class="aspecto" data-sol="assets/img/solucion/8.webp" data-sol-nombre="Calendario institucional con recordatorio automático">
+              <h3 class="aspecto__titulo">Calendario institucional con recordatorio automático</h3>
+              <p class="aspecto__texto">Izadas, fechas evaluativas y eventos cargados una sola vez: le llegan al docente, al padre y al estudiante.</p>
+              <p class="aspecto__donde">WiPlan (estudiante) · AdmonWitown · i'Witutor</p>
+            </article>
+
+            <article class="aspecto" data-sol="assets/img/solucion/9.webp" data-sol-nombre="Simulacros de pruebas estandarizadas">
+              <h3 class="aspecto__titulo">Simulacros de pruebas estandarizadas</h3>
+              <p class="aspecto__texto">El estudiante practica el formato de las pruebas desde la casa y tú ves el resultado por curso.</p>
+              <p class="aspecto__donde">WiwiQuest (estudiante) · reportes en i'Witeacher</p>
+            </article>
+
+            <article class="aspecto" data-sol="assets/img/solucion/10.webp" data-sol-nombre="Motor de agentes de IA entrenados en la A.C.P.">
+              <h3 class="aspecto__titulo">Motor de agentes de IA entrenados en la A.C.P.</h3>
+              <p class="aspecto__texto">No es un chat genérico pegado encima de la plataforma: son agentes entrenados en la Arquitectura Cognitiva Personalizada, el marco pedagógico del colegio.</p>
+              <p class="aspecto__donde">La A.C.P.</p>
+            </article>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="panel" id="panel-papa" role="tabpanel" aria-labelledby="tab-papa" hidden>
+      <div class="panel__grid panel__grid--cel">
+
+        <div class="panel__lado">
+          <div class="celsol">
+            <img class="celsol__marco" src="assets/img/celular.webp" alt="" aria-hidden="true">
+            <div class="celsol__pantalla"></div>
+          </div>
+        </div>
+
+        <div class="panel__texto">
+
+          <div class="aspectos">
+            <article class="aspecto" data-sol="assets/img/solucion/papa-1.webp" data-sol-nombre="Seguimiento por tema, no por promedio">
+              <h3 class="aspecto__titulo">Seguimiento por tema, no por promedio</h3>
+              <p class="aspecto__texto">Ves en qué avanza y en qué necesita refuerzo, tema por tema.</p>
+            </article>
+
+            <article class="aspecto" data-sol="assets/img/solucion/papa-2.webp" data-sol-nombre="Se adapta a cómo aprende él">
+              <h3 class="aspecto__titulo">Se adapta a cómo aprende él</h3>
+              <p class="aspecto__texto">No al promedio del salón, no al ritmo del que va más rápido.</p>
+            </article>
+
+            <article class="aspecto" data-sol="assets/img/solucion/papa-3.webp" data-sol-nombre="Tu hijo va a querer entrar">
+              <h3 class="aspecto__titulo">Tu hijo va a querer entrar</h3>
+              <p class="aspecto__texto">Cada botón le abre un mundo de posibilidades académicas.</p>
+            </article>
+
+            <article class="aspecto" data-sol="assets/img/solucion/papa-4.webp" data-sol-nombre="El reporte te dice si comprendió">
+              <h3 class="aspecto__titulo">El reporte te dice si comprendió</h3>
+              <p class="aspecto__texto">No solo si se acordó el día del examen.</p>
+            </article>
+
+            <article class="aspecto" data-sol="assets/img/solucion/papa-5.webp" data-sol-nombre="Toda la comunicación en un solo canal">
+              <h3 class="aspecto__titulo">Toda la comunicación en un solo canal</h3>
+              <p class="aspecto__texto">Sin perderse entre cien mensajes de WhatsApp.</p>
+            </article>
+
+            <article class="aspecto" data-sol="assets/video/solucion-3.mp4?v=303" data-sol-nombre="Los papás ven al día qué han pagado">
+              <h3 class="aspecto__titulo">Los papás ven al día qué han pagado</h3>
+              <p class="aspecto__texto">Entras y ves mes por mes qué está al día y qué no. Sin llamar a preguntar y sin reclamos por un recibo que nadie encuentra.</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="panel__pie">
+          <p class="panel__remate">
+            Si esto te hace sentido, la conversación no es con nosotros. Es con el colegio de tu hijo.
+            Y si quieres, te ayudamos a tener esa conversación.
+          </p>
+
+          <a href="#" class="btn btn--wa" data-wa data-wa-msg="Hola, soy papá/mamá y quiero que el colegio de mi hijo conozca i'Witown.">
+            <svg viewBox="0 0 24 24" aria-hidden="true" class="ico-wa"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm5.8 14.18c-.24.68-1.42 1.32-1.95 1.36-.5.04-.98.22-3.3-.69-2.78-1.1-4.55-3.95-4.69-4.13-.14-.18-1.12-1.49-1.12-2.85 0-1.35.71-2.02.96-2.3.25-.27.55-.34.73-.34.18 0 .37 0 .53.01.17.01.4-.06.62.48.24.57.8 1.97.87 2.11.07.14.12.31.02.49-.09.18-.14.29-.28.45-.14.16-.29.36-.42.48-.14.14-.28.29-.12.57.16.27.72 1.18 1.54 1.91 1.06.94 1.95 1.23 2.23 1.37.27.14.43.12.59-.07.16-.18.68-.79.87-1.07.18-.27.37-.22.62-.13.25.09 1.6.75 1.87.89.27.14.45.2.52.32.07.11.07.65-.17 1.33z"/></svg>
+            Quiero llevárselo a mi colegio
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== 4. EL ECOSISTEMA =================== -->
+<section class="seccion seccion--oscuro" id="ecosistema">
+  <div class="contenedor">
+    <header class="seccion__head">
+      <h2 class="eco-titulo">
+        <span class="eco-titulo__no">No</span> es una <strong>app de quiz</strong>.
+        <span class="eco-titulo__remate">Es el colegio completo.</span>
+      </h2>
+      <p class="seccion__intro">
+        Cuatro plataformas conectadas, una para cada actor de la comunidad educativa.
+        Todas leyendo la misma información.
+      </p>
+    </header>
+
+    <!-- Las cuatro plataformas, con sus iconos. Las arma
+         js/plataformas.js, y ahí mismo se cambian los textos. -->
+    <div id="ecoMapa"></div>
+
+  </div>
+</section>
+
+<!-- =================== 5. LA A.C.P. =================== -->
+<section class="seccion" id="acp">
+  <div class="contenedor">
+    <header class="seccion__head">
+      <h2>Arquitectura Cognitiva Personalizada</h2>
+      <p class="seccion__intro">
+        Es un tratado-cognitivo que permite ver en qué punto de la comprensión está el
+        estudiante y propone estrategias y contenidos a su propio ritmo, para que logre elevar
+        sus resultados.
+      </p>
+    </header>
+
+    <!-- La progresión de la A.C.P.: cuatro momentos, con sus iconos.
+         La arma js/acp.js, y ahí mismo se cambian los textos. -->
+    <!-- El telón de fondo: un rectángulo morado con una red neuronal
+         que se mueve despacio y un destello que lo cruza cada tanto.
+         Es decoración; el contenido lo arma js/acp.js. -->
+    <div class="acp-escena">
+      <canvas class="acp-red" id="acpRed" aria-hidden="true"></canvas>
+      <span class="acp-destello" aria-hidden="true"></span>
+
+      <div class="acp-ruta" id="acpRuta"></div>
+    </div>
+
+    <p class="acp-remate">
+      Con esta organización deja de existir el
+      <strong>«le fue mal en Ciencias»</strong>:
+      existe el principio exacto donde la comprensión se detuvo.
+    </p>
+
+    <div class="ciclo">
+      <p class="ciclo__titulo">Y todo eso se materializa en un ciclo</p>
+      <div class="ciclo__pasos">
+        <span class="ciclo__paso">Incitación</span>
+        <span class="ciclo__flecha" aria-hidden="true">→</span>
+        <span class="ciclo__paso">Verificación</span>
+        <span class="ciclo__flecha" aria-hidden="true">→</span>
+        <span class="ciclo__paso">Ratificación</span>
+      </div>
+      <p class="ciclo__pie">
+        Ahí está la diferencia con una plataforma que solo mide errores:
+        <strong>aquí no solo se evalúa, se construye comprensión.</strong>
+      </p>
+    </div>
+
+    <div class="metricas">
+      <div class="metrica">
+        <h4>Área Óptima</h4>
+        <p>La zona donde el estudiante demuestra comprensión consolidada en un tema.</p>
+      </div>
+      <div class="metrica">
+        <h4>Área de Interés</h4>
+        <p>La zona donde muestra inclinación hacia ciertos contenidos, más allá de si ya los domina.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     CONSULTORÍA EN INNOVACIÓN EDUCATIVA
+
+     El servicio, contado completo: de qué se parte, las dos
+     innovaciones —la pedagógica y la tecnológica—, hasta dónde
+     llega y cómo es el proceso.
+
+     ┌──────────────────────────────────────────────────────────┐
+     │  LOS TEXTOS NO ESTÁN AQUÍ                                │
+     │                                                          │
+     │  Están todos arriba de js/consultoria.js, en cinco       │
+     │  listas. Aquí solo quedan los títulos y las frases       │
+     │  grandes; lo demás lo arma ese archivo.                  │
+     └──────────────────────────────────────────────────────────┘
+     ============================================================ -->
+<section class="seccion" id="consultoria">
+  <div class="contenedor">
+
+    <!-- El encabezado, con la foto detrás.
+
+         ┌───────────────────────────────────────────────────────┐
+         │  LA FOTO VA EN assets/img/consultoria.webp             │
+         │                                                        │
+         │  Se ve apagada detrás del texto; al tocarla, el texto  │
+         │  se desvanece y la foto toma su color. Se vuelve a     │
+         │  tocar y regresa el texto.                             │
+         │                                                        │
+         │  Si el archivo no está, el encabezado se ve normal,    │
+         │  sin foto y sin nada que tocar.                        │
+         └───────────────────────────────────────────────────────┘ -->
+    <header class="seccion__head con-cabeza" id="conCabeza">
+      <img class="con-cabeza__foto" id="conFoto" alt=""
+           src="assets/img/consultoria.webp?v=303">
+
+      <div class="con-cabeza__texto">
+        <h2 class="con-titulo">
+          Consultoría en <span class="con-titulo__fuerte">Innovación Educativa</span>
+        </h2>
+        <p class="seccion__intro">
+          Transformamos la experiencia educativa conectando la identidad del colegio con su
+          cultura, su realidad y su manera particular de enseñar.
+        </p>
+      </div>
+
+      <button type="button" class="con-cabeza__pista" id="conPista" hidden>
+        Toca la imagen
+      </button>
+    </header>
+
+    <!-- 1. De qué partimos -->
+    <h3 class="con-paso">Partimos de la identidad del colegio</h3>
+    <p class="con-bajada">
+      Para diseñar innovación no partimos de una metodología de moda. Primero entendemos
+      estas ocho cosas.
+    </p>
+    <div class="con-identidad" id="conIdentidad"></div>
+
+    <p class="con-frase">
+      No llevamos una innovación para que el colegio se adapte a ella.
+      <strong>Diseñamos la innovación para que tenga sentido en el colegio.</strong>
+    </p>
+
+    <!-- 2. Las dos innovaciones -->
+    <h3 class="con-paso">Dos innovaciones, una sola dirección</h3>
+    <div class="con-innovacion" id="conInnovacion"></div>
+
+    <!-- 3. Para qué -->
+    <h3 class="con-paso con-paso--chico">Para qué sirve esa tecnología</h3>
+    <div class="con-propositos" id="conPropositos"></div>
+
+    <!-- 4. Hasta dónde llega -->
+    <h3 class="con-paso">Hasta dónde llega la innovación</h3>
+    <p class="con-bajada">Ocho frentes de trabajo. Toca uno para ver qué incluye.</p>
+    <div class="con-alcances" id="conAlcances"></div>
+
+    <!-- 5. El proceso -->
+    <h3 class="con-paso">Cómo trabajamos</h3>
+    <p class="con-bajada">
+      No es una asesoría suelta: es un proceso completo de transformación del colegio.
+    </p>
+    <div class="con-proceso" id="conProceso"></div>
+
+    <!-- Cierre -->
+    <p class="con-cierre">
+      La innovación no consiste en hacer lo que otros colegios ya están haciendo.
+      <strong>Consiste en encontrar nuevas formas de hacer realidad aquello que hace
+      único a tu colegio.</strong>
+    </p>
+    <!-- "Agendar cita", fijo abajo mientras se lee la sección.
+         Vive dentro de la sección, así que solo se ve en esta
+         pestaña y desaparece al cambiar de pestaña. -->
+    <a href="#contacto" class="con-flota">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="3.5" y="5" width="17" height="15.5" rx="2"/>
+        <path d="M3.5 10h17M8 3v4M16 3v4"/>
+      </svg>
+      Agendar cita
+    </a>
+
+
+  </div>
+</section>
+
+<!-- =================== CONTACTO: LAS MANERAS DE HABLAR =============
+     Esta es la pestaña "Contacto" del menú: las cuatro maneras de
+     comunicarse y los datos. El formulario vive en su propia sección,
+     aquí abajo, y es a donde lleva "Escríbenos". "Agendar cita" trae
+     aquí, a las cuatro maneras de hablar. -->
+<section class="seccion seccion--oscuro" id="contacto">
+  <div class="contenedor">
+
+    <!-- Dos columnas: la foto a la izquierda y las cuatro maneras de
+         hablar con nosotros a la derecha. En el teléfono se apilan. -->
+    <div class="ctc-dos">
+
+      <!-- El video de la asesora. Arranca mudo —lo exige el navegador—
+           y al terminar deja en su lugar la foto. Lo maneja
+           js/asesora.js; los dos archivos se cambian aquí. -->
+      <div class="ctc-video" id="ctcVideo">
+        <!-- Sin "poster" a propósito: si no, lo primero que se vería
+             sería la foto, y esta sección abre con el video. -->
+        <video playsinline muted preload="auto">
+          <source src="assets/video/asesora.mp4?v=303" type="video/mp4">
+        </video>
+
+        <img class="ctc-video__final" src="assets/img/asesora.webp?v=303"
+             alt="Asesora de i'Witown lista para atender" aria-hidden="true">
+
+        <div class="ctc-video__mandos">
+          <button type="button" class="vid-boton" data-pausa aria-label="Pausar">
+            <svg viewBox="0 0 24 24" aria-hidden="true" class="vid-boton__pausa">
+              <rect x="7" y="5" width="3.6" height="14" rx="1.2"/>
+              <rect x="13.4" y="5" width="3.6" height="14" rx="1.2"/>
+            </svg>
+            <svg viewBox="0 0 24 24" aria-hidden="true" class="vid-boton__play">
+              <path d="M8 5.6v12.8L19 12z"/>
+            </svg>
+          </button>
+
+          <span class="ctc-video__aviso">Toca para oír</span>
+
+          <button type="button" class="vid-boton" data-sonido aria-label="Activar sonido" aria-pressed="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 9.5v5h3.2L12 18.5v-13L7.2 9.5H4z"/>
+              <path class="vid-boton__onda" d="M15.5 9.2a4 4 0 0 1 0 5.6"/>
+              <path class="vid-boton__onda" d="M18 6.8a7.4 7.4 0 0 1 0 10.4"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="ctc-dos__lado">
+        <!-- Las cuatro maneras de hablar con nosotros, debajo del formulario.
+             Los enlaces no van escritos aquí: los pone js/script.js con los
+             datos de la cabecera de ese archivo (TEAMS, WHATSAPP, CORREO). -->
+        <div class="ctc__botones ctc__botones--fila">
+
+          <a class="ctc__boton ctc__boton--teams" data-teams>
+            <span class="ctc__ico">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="2" y="6" width="13" height="12" rx="2"/>
+                <path d="M15 10l6-3.5v11L15 14"/>
+              </svg>
+            </span>
+            <span class="ctc__texto">
+              <strong>Reunión por Teams</strong>
+              <em>Aquí estamos en línea</em>
+            </span>
+          </a>
+
+          <a class="ctc__boton ctc__boton--wa" data-wa
+             data-wa-msg="Hola, quiero hablar sobre i'Witown para mi colegio.">
+            <span class="ctc__ico">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M21 11.5a8.4 8.4 0 0 1-12.6 7.3L3 20.5l1.8-5.3A8.4 8.4 0 1 1 21 11.5z"/>
+                <path d="M8.5 9c0 3 2.5 5.5 5.5 5.5"/>
+              </svg>
+            </span>
+            <span class="ctc__texto">
+              <strong>WhatsApp</strong>
+              <em>Escríbenos y te respondemos</em>
+            </span>
+          </a>
+
+          <a class="ctc__boton ctc__boton--mail" data-correo>
+            <span class="ctc__ico">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="2" y="4" width="20" height="16" rx="2"/>
+                <path d="M2.5 6.5L12 13l9.5-6.5"/>
+              </svg>
+            </span>
+            <span class="ctc__texto">
+              <strong>Correo</strong>
+              <em>Cuéntanos y te escribimos</em>
+            </span>
+          </a>
+
+          <!-- Esta no abre nada por fuera: lleva al formulario de abajo -->
+      <a class="ctc__boton ctc__boton--forma" href="#conversemos">
+        <span class="ctc__ico">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="4" y="3.5" width="16" height="17" rx="2.2"/>
+            <path d="M8 8.5h8M8 12.5h8M8 16.5h4"/>
+          </svg>
+        </span>
+        <span class="ctc__texto">
+          <strong>Escríbenos</strong>
+          <em>Déjanos tus datos y te buscamos</em>
+        </span>
+      </a>
+
+      <a class="ctc__boton ctc__boton--cal" data-calendario>
+            <span class="ctc__ico">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="3" y="5" width="18" height="16" rx="2"/>
+                <path d="M3 10h18M8 3v4M16 3v4"/>
+              </svg>
+            </span>
+            <span class="ctc__texto">
+              <strong>Calendario</strong>
+              <em>Escoge tú el día y la hora</em>
+            </span>
+          </a>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Los datos de contacto, como pie de la sección -->
+    <ul class="contacto__datos contacto__datos--pie">
+      <!-- REEMPLAZAR: los tres datos de abajo -->
+      <li><span>Correo</span> <a href="mailto:contacto@iwitown.com">contacto@iwitown.com</a></li>
+      <li><span>Teléfono</span> <a href="tel:+573236007819">+57 323 600 7819</a></li>
+      <li><span>Dónde estamos</span> Cra 16 No 80 - 74, Oficina 502 — Bogotá 111411, Colombia</li>
+    </ul>
+  </div>
+</section>
+
+<!-- =================== EL FORMULARIO =================== -->
+<section class="seccion" id="conversemos">
+  <div class="contenedor">
+
+    <!-- El formulario a la izquierda y, a la derecha, el video que
+         al terminar deja la foto del asesor. -->
+    <div class="conv">
+
+      <div class="conv__forma">
+        <!-- ---- FORMULARIO ----
+             Ocupa el ancho entero y reparte los campos en tres columnas.
+             En pantallas angostas se apilan solos. -->
+        <div class="form-caja form-caja--ancha">
+          <h3>Déjanos tus datos</h3>
+          <p class="form-caja__sub">Te contactamos nosotros.</p>
+
+          <form id="formContacto" action="enviar.php" method="POST" novalidate>
+            <!-- Trampa anti-spam: si un robot la llena, el envío se descarta. No la borres. -->
+            <div class="miel" aria-hidden="true">
+              <label>No llenar este campo <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+            </div>
+
+            <div class="form-rejilla">
+              <div class="campo">
+                <label for="nombre">Nombre completo *</label>
+                <input type="text" id="nombre" name="nombre" required maxlength="120" autocomplete="name">
+              </div>
+
+              <div class="campo">
+                <label for="rol">¿Quién eres? *</label>
+                <select id="rol" name="rol" required>
+                  <option value="">Selecciona una opción</option>
+                  <option value="rector">Rector o dueño de colegio</option>
+                  <option value="coordinador">Coordinador académico</option>
+                  <option value="docente">Docente</option>
+                  <option value="padre">Papá o mamá</option>
+                  <option value="otro">Otro</option>
+                </select>
+              </div>
+
+
+              <div class="campo">
+                <label for="correo">Correo electrónico *</label>
+                <input type="email" id="correo" name="correo" required maxlength="150" autocomplete="email">
+              </div>
+
+              <div class="campo">
+                <label for="telefono">WhatsApp o teléfono *</label>
+                <input type="tel" id="telefono" name="telefono" required maxlength="30" autocomplete="tel">
+              </div>
+
+              <div class="campo">
+                <label for="ciudad">Ciudad</label>
+                <input type="text" id="ciudad" name="ciudad" maxlength="80">
+              </div>
+
+
+              <div class="campo campo--dos-columnas">
+                <label for="mensaje">Escríbenos / pregúntanos</label>
+                <textarea id="mensaje" name="mensaje" rows="3" maxlength="1000"></textarea>
+              </div>
+
+              <!-- Ley 1581 de 2012 (Habeas Data). No quitar esta casilla. -->
+              <div class="campo campo--check campo--ancho">
+                <label>
+                  <input type="checkbox" name="autoriza" value="si" required>
+                  <span>Autorizo el tratamiento de mis datos personales conforme a la
+                  <!-- REEMPLAZAR: enlace a la política de datos real -->
+                  <a href="politica-datos.html" target="_blank" rel="noopener">política de tratamiento de datos</a>.</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-enviar">
+              <button type="submit" class="btn btn--morado" id="btnEnviar">Enviar mis datos</button>
+            </div>
+
+            <p class="form-msg" id="formMsg" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+
+      <div class="conv__lado">
+        <div class="ctc-video">
+          <!-- Sin "poster": abre con el video, no con la foto -->
+          <video playsinline muted preload="auto">
+            <source src="assets/video/asesor.mp4?v=303" type="video/mp4">
+          </video>
+
+          <img class="ctc-video__final" src="assets/img/asesor.webp?v=303"
+               alt="Asesor de i'Witown listo para atender" aria-hidden="true">
+
+          <div class="ctc-video__mandos">
+            <button type="button" class="vid-boton" data-pausa aria-label="Pausar">
+              <svg viewBox="0 0 24 24" aria-hidden="true" class="vid-boton__pausa">
+                <rect x="7" y="5" width="3.6" height="14" rx="1.2"/>
+                <rect x="13.4" y="5" width="3.6" height="14" rx="1.2"/>
+              </svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true" class="vid-boton__play">
+                <path d="M8 5.6v12.8L19 12z"/>
+              </svg>
+            </button>
+
+            <span class="ctc-video__aviso">Toca para oír</span>
+
+            <button type="button" class="vid-boton" data-sonido aria-label="Activar sonido" aria-pressed="false">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 9.5v5h3.2L12 18.5v-13L7.2 9.5H4z"/>
+                <path class="vid-boton__onda" d="M15.5 9.2a4 4 0 0 1 0 5.6"/>
+                <path class="vid-boton__onda" d="M18 6.8a7.4 7.4 0 0 1 0 10.4"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+</main>
+
+<!-- =================== PIE =================== -->
+<footer class="pie">
+  <div class="contenedor pie__inner">
+    <div>
+      <img src="assets/img/logo-iwitown.png" alt="i'Witown School" class="pie__logo">
+      <p class="pie__frase">Cada estudiante aprende distinto. Por eso construimos una plataforma que se adapta a cada uno.</p>
+    </div>
+    <div class="pie__col">
+      <p class="pie__titulo">Navegación</p>
+      <a href="#problema">El problema</a>
+      <a href="#ecosistema">El ecosistema</a>
+      <a href="#acp">La A.C.P.</a>
+    </div>
+    <div class="pie__col">
+      <p class="pie__titulo">Legal</p>
+      <a href="politica-datos.html">Política de tratamiento de datos</a>
+      <a href="terminos.html">Términos y condiciones</a>
+    </div>
+  </div>
+  <div class="pie__base">
+    <p>Un producto de <strong>GMG-LATAM</strong> · Bogotá, Colombia · iwitown.com</p>
+  </div>
+</footer>
+
+<!-- Botón flotante de WhatsApp -->
+<a href="#" class="wa-flotante" data-wa data-wa-msg="Hola, vi la página de i'Witown y quiero más información." aria-label="Escribir por WhatsApp">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm5.8 14.18c-.24.68-1.42 1.32-1.95 1.36-.5.04-.98.22-3.3-.69-2.78-1.1-4.55-3.95-4.69-4.13-.14-.18-1.12-1.49-1.12-2.85 0-1.35.71-2.02.96-2.3.25-.27.55-.34.73-.34.18 0 .37 0 .53.01.17.01.4-.06.62.48.24.57.8 1.97.87 2.11.07.14.12.31.02.49-.09.18-.14.29-.28.45-.14.16-.29.36-.42.48-.14.14-.28.29-.12.57.16.27.72 1.18 1.54 1.91 1.06.94 1.95 1.23 2.23 1.37.27.14.43.12.59-.07.16-.18.68-.79.87-1.07.18-.27.37-.22.62-.13.25.09 1.6.75 1.87.89.27.14.45.2.52.32.07.11.07.65-.17 1.33z"/></svg>
+</a>
+
+<!-- ============================================================
+     EL VISOR DE IMÁGENES
+     Se abre al tocar una tarjeta de "El problema". Lo maneja
+     js/lupa.js; la imagen de cada tarjeta es su "data-foto".
+     ============================================================ -->
+<!-- =================== ANTES DE LA REUNIÓN ===================
+     Cuatro datos y adentro. Al enviar, la reunión se abre en otra
+     pestaña y agendar-teams.php manda los dos correos.
+     Lo maneja js/teams.js.
+     ============================================================ -->
+<div class="teams" id="teamsCaja" hidden>
+  <div class="teams__tarjeta" role="dialog" aria-modal="true" aria-labelledby="teamsTitulo">
+
+    <button type="button" class="teams__cerrar" id="teamsCerrar" aria-label="Cerrar">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+
+    <p class="teams__ojo">Reunión por Teams</p>
+    <h3 class="teams__titulo" id="teamsTitulo">Antes de entrar, cuéntanos quién eres</h3>
+    <p class="teams__bajada">Te mandamos la confirmación con el enlace, por si necesitas volver.</p>
+
+    <form id="teamsForma" novalidate>
+      <!-- Trampa anti-spam: si un robot la llena, el envío se descarta. No la borres. -->
+      <div class="miel" aria-hidden="true">
+        <label>No llenar este campo <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+      </div>
+
+      <div class="teams__campos">
+        <label class="teams__campo">
+          <span>Nombre</span>
+          <input type="text" name="nombre" maxlength="120" autocomplete="name" required>
+        </label>
+
+        <label class="teams__campo">
+          <span>Celular</span>
+          <input type="tel" name="celular" maxlength="30" autocomplete="tel" required>
+        </label>
+
+        <label class="teams__campo teams__campo--ancho">
+          <span>Correo</span>
+          <input type="email" name="correo" maxlength="150" autocomplete="email" required>
+        </label>
+
+        <label class="teams__campo teams__campo--ancho">
+          <span>Día y hora de la reunión</span>
+          <input type="datetime-local" name="cuando" id="teamsCuando" required>
+        </label>
+      </div>
+
+      <button type="submit" class="btn btn--morado btn--bloque" id="teamsEnviar">Ingresar a Teams</button>
+      <p class="teams__aviso" id="teamsAviso" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</div>
+
+<div class="lupa" id="lupa" hidden>
+  <button type="button" class="lupa__cerrar" id="lupaCerrar" aria-label="Cerrar">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+  </button>
+  <figure class="lupa__caja">
+    <img class="lupa__foto" id="lupaFoto" src="" alt="">
+    <figcaption class="lupa__pie" id="lupaPie"></figcaption>
+  </figure>
+</div>
+
+<script src="js/lupa.js?v=303"></script>
+<script src="js/tableta.js?v=303"></script>
+<script src="js/solucion.js?v=303"></script>
+<script src="js/vistas.js?v=303"></script>
+<script src="js/portada.js?v=303"></script>
+<script src="js/script.js?v=303"></script>
+<script src="js/actividades.js?v=303"></script>
+<script src="js/simulador.js?v=303"></script>
+<script src="js/recorrido.js?v=303"></script>
+<script src="js/app-visor.js?v=303"></script>
+<script src="js/witutor-pantallas.js?v=303"></script>
+<script src="js/witutor.js?v=303"></script>
+<script src="js/witeacher.js?v=303"></script>
+<script src="js/iwitown.js?v=303"></script>
+<script src="js/admon.js?v=303"></script>
+<script src="js/mapa.js?v=303"></script>
+<script src="js/acp.js?v=303"></script>
+<script src="js/acp-red.js?v=303"></script>
+<script src="js/consultoria.js?v=303"></script>
+<script src="js/plataformas.js?v=303"></script>
+<script src="js/asesora.js?v=303"></script>
+<script src="js/teams.js?v=303"></script>
+<script src="js/marca.js?v=303"></script>
+<script src="js/ecosistema.js?v=303"></script>
+<script src="js/presentacion.js?v=303"></script>
+</body>
+</html>

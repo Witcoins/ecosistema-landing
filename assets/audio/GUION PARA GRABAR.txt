@@ -1,0 +1,99 @@
+GUION PARA GRABAR LOS AUDIOS DE LA PAGINA
+==========================================================
+
+Graba cada frase en su propio archivo, con el nombre exacto
+que dice al lado. Formato MP3.
+
+Se pueden ir poniendo de a una: las que falten siguen
+sonando con la voz del computador, sin que nada se rompa.
+
+----------------------------------------------------------
+LA FRASE DE LA APERTURA   ->  assets/audio/
+----------------------------------------------------------
+
+  frase-en-cambio.mp3
+     "En cambio, esto deberia ser asi."
+
+  Ojo: esta no va en el campo "audio" sino en
+  "vozArchivo", en js/presentacion.js.
+
+----------------------------------------------------------
+EL RECORRIDO DE I'WITUTOR   ->  ESTE YA ESTA
+----------------------------------------------------------
+
+  Se uso una narracion seguida para todo el recorrido:
+  assets/audio/witutor/narracion.mp3
+
+  Las seis frases de abajo NO hay que grabarlas. Quedan
+  aqui por si algun dia se prefiere una grabacion corta por
+  pantalla en vez de la narracion larga.
+
+  agenda.mp3
+     "Agenda. Mensajes del colegio, en tiempo real."
+
+  tareas.mp3
+     "Tareas. Revisa sus tareas, estes donde estes."
+
+  informes.mp3
+     "Informes. Conoce sus habilidades cognitivas al instante."
+
+  teachers.mp3
+     "Teachers. Conoce a sus profes y su perfil."
+
+  lectura.mp3
+     "Lectura. Fortalece su lectura y comprension."
+
+  pagos.mp3
+     "Pagos. Controla tus pagos al colegio."
+
+----------------------------------------------------------
+EL RECORRIDO NARRADO DEL SIMULADOR  ->  assets/audio/recorrido/
+----------------------------------------------------------
+
+  01.mp3
+     "Cuando una docente puede escoger sus propias actividades, el criterio humano vuelve al centro."
+
+  02.mp3
+     "Estas son las modalidades y los cientos de actividades con las que arma su clase o asigna tareas."
+
+  03.mp3
+     "Afianzamiento trabaja con la Arquitectura Cognitiva Personalizada."
+
+  04.mp3
+     "El contenido llega ajustado a la manera en que ese estudiante aprende. No a la de un estudiante promedio que no existe."
+
+  05.mp3
+     "En Actividades interactivas escoge entre cientos de actividades, y las asigna a voluntad, con el tema que ella elija."
+
+  06.mp3
+     "Una sopa de letras, con las palabras del tema que ella puso."
+
+  07.mp3
+     "Un crucigrama, armado con sus propias definiciones."
+
+  08.mp3
+     "Wiwi Jumps, para que el nino practique jugando."
+
+  09.mp3
+     "Relacionar columnas, cuando lo que importa es conectar ideas."
+
+  10.mp3
+     "Y asi, cientos de actividades distintas para el mismo contenido. Ella decide cual le sirve a cada grupo."
+
+  11.mp3
+     "Pero ensenar no es solo poner actividades."
+
+  12.mp3
+     "Esta el experimento, para que comprueben con las manos."
+
+  13.mp3
+     "La investigacion, para que aprendan a buscar y a dudar."
+
+  14.mp3
+     "Y la reflexion, que es donde el nino se mira por dentro."
+
+  15.mp3
+     "Ninguna editorial conoce a tus estudiantes."
+
+  16.mp3
+     "Su profesora si. i'Witown solo le devuelve la decision."

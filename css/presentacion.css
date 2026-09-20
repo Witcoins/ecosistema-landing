@@ -1,0 +1,1202 @@
+/* ============================================================
+   i'Witown — Presentación inicial
+   Video + panel de transcripción
+   ============================================================ */
+
+:root {
+  --pres-fondo:  #120C1D;   /* panel de transcripción */
+  --pres-borde:  #2C2140;
+  --pres-neon:   #39FF96;   /* indicador de "en vivo" y frase actual */
+  --pres-mono:   ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  /* Banner de los subtítulos sobre el video.
+     Café oscuro al 50% de transparencia. Para hacerlo más o menos
+     transparente se cambia el último número (0 = invisible, 1 = sólido). */
+  --pres-cc-fondo: rgba(59, 36, 23, .5);
+  --pres-cc-texto: #FFFFFF;
+}
+
+.pres {
+  /* La franja donde vive el marco. Antes era morada oscura; ahora va
+     en claro, como el resto de la landing. */
+  background: var(--hueso);
+  color: var(--tinta);
+  padding: 44px 0 52px;
+}
+
+/* ============================================================
+   EL ATAJO DE AL LADO
+
+   El botón "Presentación" vive FUERA del marco, pegado a su
+   borde derecho. Solo sale cuando la presentación ya terminó:
+   quien lo maneja es js/presentacion.js.
+   ============================================================ */
+
+.escena {
+  position: relative;
+  width: 100%;
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+.escena__atajo {
+  position: absolute;
+  left: 100%;
+  top: 10px;
+  margin-left: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: .62em 1.15em;
+  background: #fff;
+  border: 1.5px solid var(--gris-borde);
+  border-radius: 999px;
+  color: var(--morado-700);
+  font-family: inherit;
+  font-size: .84rem;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(54, 2, 47, .1);
+  transition: background .16s, box-shadow .16s, transform .16s, border-color .16s;
+}
+.escena__atajo svg {
+  width: 13px; height: 13px;
+  fill: #fff;
+}
+.escena__atajo:hover {
+  background: rgba(118,4,103,.5);
+  box-shadow: 0 0 28px rgba(118,4,103,.6);
+  transform: translateX(2px);
+}
+.escena__atajo:focus-visible { outline: 3px solid var(--morado-300); outline-offset: 3px; }
+.escena__atajo[hidden] { display: none; }
+
+/* Por debajo de este ancho ya no cabe al lado del marco —lo sacaría
+   de la pantalla y aparecería barra horizontal—, así que se pasa
+   debajo, centrado. */
+@media (max-width: 1230px) {
+  .escena__atajo {
+    position: static;
+    display: flex;
+    margin: 16px auto 0;
+  }
+}
+
+/* ============================================================
+   EL MARCO
+
+   Un solo recuadro de tamaño fijo. Adentro se van turnando los
+   videos, la frase y la app. El marco NUNCA cambia de tamaño:
+   lo que no quepa se desplaza por dentro.
+
+   Para hacerlo más alto o más bajo, se cambia "aspect-ratio":
+     16 / 9   = la proporción exacta del video (el más apaisado)
+     16 / 11  = lo que hay ahora: más alto, la app respira
+     16 / 13  = bastante más alto todavía
+   ============================================================ */
+
+.escenario {
+  position: relative;
+  /* "width: 100%" es necesario: sin él, la combinación de aspect-ratio
+     con min-height hace que el navegador calcule el ANCHO a partir del
+     alto mínimo (580 × 16/11 = 844 px) y el marco se sale de la página
+     en ventanas angostas. Con el ancho definido, la proporción solo
+     decide el alto. No quitarlo. */
+  width: 100%;
+  max-width: 880px;
+  margin: 0 auto;
+  aspect-ratio: 16 / 11;
+  /* Tope de seguridad: en ventanas de computador angostas la proporción
+     sola dejaría el marco muy bajo y el simulador no cabría. */
+  min-height: 580px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 18px 46px rgba(54, 2, 47, .14), 0 0 0 1px var(--gris-borde);
+}
+
+/* Las tres pantallas ocupan exactamente el marco, una encima de otra */
+.escenario > * {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(214,146,206,.35) transparent;
+}
+.escenario > *::-webkit-scrollbar { width: 7px; }
+.escenario > *::-webkit-scrollbar-thumb {
+  background: rgba(214,146,206,.35);
+  border-radius: 4px;
+}
+
+/* La pantalla del video no necesita desplazarse: llena el marco */
+.pres__grid { overflow: hidden !important; }
+
+/* ============================================================
+   VIDEO
+   ============================================================ */
+
+.pres__video {
+  position: relative;
+  margin: 0;
+  height: 100%;
+  background: #000;
+  overflow: hidden;
+}
+.pres__video video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* "cover" = el video llena el marco. Como el marco es un poco más
+     alto que el video, se recorta algo a los lados; la presentadora va
+     centrada, así que ella nunca se pierde. Si prefieres verlo completo
+     con franjas negras arriba y abajo, cambia esto por "contain". */
+  object-fit: cover;
+  transition: opacity .22s ease;
+}
+/* Fundido cortito al pasar de un video al siguiente,
+   para que no se vea el salto en negro. */
+.pres__video video.esta-cambiando { opacity: 0; }
+
+/* ---- Botón de play de respaldo (solo si el video no arranca solo) ---- */
+.pres__play {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  border: 0;
+  background: rgba(10,6,16,.45);
+  cursor: pointer;
+  padding: 0;
+}
+.pres__play[hidden] { display: none; }
+.pres__play svg {
+  width: 74px; height: 74px;
+  fill: #fff;
+  filter: drop-shadow(0 6px 18px rgba(0,0,0,.6));
+  transition: transform .16s;
+}
+.pres__play:hover svg { transform: scale(1.1); }
+.pres__play:focus-visible { outline: 3px solid var(--morado-300); outline-offset: -4px; }
+
+/* ============================================================
+   SUBTÍTULOS SOBRE EL VIDEO (estilo CC de YouTube)
+   ============================================================ */
+
+.pres__cc {
+  position: absolute;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  width: 90%;
+  z-index: 3;
+  text-align: center;
+  pointer-events: none;   /* que no estorbe para hacer clic en el video */
+}
+.pres__cc[hidden] { display: none; }
+
+.pres__cc-txt {
+  /* "inline" + box-decoration-break hace que el banner se ajuste a cada
+     renglón, como los subtítulos de YouTube, en vez de quedar un
+     rectángulo grande con espacios vacíos. */
+  display: inline;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+
+  background: var(--pres-cc-fondo);
+  color: var(--pres-cc-texto);
+  font-size: clamp(.88rem, 1.45vw, 1.1rem);
+  font-weight: 600;
+  line-height: 1.85;
+  padding: .26em .6em;
+  border-radius: 3px;
+  text-shadow: 0 1px 3px rgba(0,0,0,.5);
+}
+
+/* ---- Botón de sonido ----
+   Arriba a la derecha, para dejarle todo el borde de abajo
+   libre a los subtítulos. */
+.pres__sonido {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: .5em;
+  background: rgba(10,6,16,.72);
+  backdrop-filter: blur(6px);
+  border: 1.5px solid rgba(255,255,255,.28);
+  border-radius: 999px;
+  padding: .52em 1.05em;
+  color: #fff;
+  font-family: inherit;
+  font-size: .84rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .16s, border-color .16s;
+}
+.pres__sonido:hover { background: rgba(118,4,103,.75); border-color: #D692CE; }
+.pres__sonido:focus-visible { outline: 3px solid var(--morado-300); outline-offset: 2px; }
+.pres__sonido svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.pres__sonido .pres__tachado { display: block; }
+.pres__sonido .pres__onda { display: none; }
+.pres__sonido.esta-sonando { border-color: var(--pres-neon); }
+.pres__sonido.esta-sonando .pres__tachado { display: none; }
+.pres__sonido.esta-sonando .pres__onda { display: block; }
+
+/* ---- Barra de avance ---- */
+/* ============================================================
+   PAUSA Y DETENER
+
+   Van arriba a la izquierda: abajo está el subtítulo y arriba a
+   la derecha el botón de sonido.
+
+   Solo salen en los videos que lo pidan. Quién los pide se
+   decide en js/presentacion.js, con "controles: true".
+   ============================================================ */
+
+.pres__mandos {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  z-index: 4;
+  display: flex;
+  gap: 8px;
+}
+.pres__mandos[hidden] { display: none; }
+
+.pres__mando {
+  display: inline-flex;
+  align-items: center;
+  gap: .45em;
+  background: rgba(10,6,16,.72);
+  backdrop-filter: blur(6px);
+  border: 1.5px solid rgba(255,255,255,.28);
+  border-radius: 999px;
+  padding: .5em 1em;
+  color: #fff;
+  font-family: inherit;
+  font-size: .82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .16s, border-color .16s;
+}
+.pres__mando:hover {
+  background: rgba(118,4,103,.8);
+  border-color: rgba(255,255,255,.55);
+}
+.pres__mando:focus-visible { outline: 3px solid var(--morado-300); outline-offset: 2px; }
+
+.pres__ico { width: 15px; height: 15px; fill: currentColor; }
+
+/* El mismo botón sirve para pausar y para seguir: se cambia el
+   icono según cómo esté el video. */
+.pres__ico--play { display: none; }
+.pres__mando.esta-pausado .pres__ico--pausa { display: none; }
+.pres__mando.esta-pausado .pres__ico--play  { display: block; }
+
+
+.pres__barra {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 4px;
+  background: rgba(255,255,255,.16);
+}
+.pres__barra span {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--morado-600), var(--pres-neon));
+  transition: width .2s linear;
+}
+
+/* ============================================================
+   RÓTULO "VIDEO 1 DE 2"
+   Va sobre el video, arriba a la izquierda.
+   ============================================================ */
+
+
+/* ============================================================
+   PASO 2 — LA FRASE QUE UNE EL VIDEO CON LA APP
+   ============================================================ */
+
+.pres__grid[hidden], .frase[hidden], .pres__app[hidden] { display: none !important; }
+
+/* La frase se centra dentro del marco */
+.frase {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 28px;
+
+  /* Fondo blanco, con dos velos de color muy suaves en las esquinas
+     para que no quede plano — igual que la pantalla de las tarjetas
+     y la de la rueda. */
+  background:
+    radial-gradient(620px 360px at 16% 0%, rgba(118,4,103,.07), transparent 62%),
+    radial-gradient(540px 330px at 90% 100%, rgba(37,99,235,.07), transparent 62%),
+    #FFFFFF;
+}
+
+/* Ojo con las animaciones de aquí abajo: el texto está visible por
+   defecto y la animación solo lo hace entrar. Si se pusiera el texto
+   invisible esperando a la animación, bastaría con que el navegador
+   la congele (pasa cuando la pestaña queda en segundo plano) para que
+   el visitante viera un recuadro vacío. */
+
+.frase__arriba {
+  margin: 0 0 .5rem;
+  font-size: clamp(.95rem, 2vw, 1.25rem);
+  font-weight: 600;
+  color: var(--morado-700);
+  letter-spacing: .01em;
+  animation: fraseEntra .55s ease;
+}
+
+.frase__grande {
+  margin: 0;
+  font-family: var(--fuente-titulos);
+  font-size: clamp(1.9rem, 5.2vw, 3.4rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -.02em;
+  color: #000000;
+  max-width: 18ch;
+  animation: fraseEntra .75s ease .12s;
+}
+/* Subrayado neón que se dibuja solo debajo de la frase */
+.frase__grande::after {
+  content: "";
+  display: block;
+  height: 4px;
+  width: 58%;
+  margin: .55em auto 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--morado-600), #17A45E);
+  animation: fraseRaya .9s ease .55s;
+}
+
+/* La animación solo mueve, nunca esconde. Así el texto se lee sí o sí,
+   aunque el navegador congele las animaciones. */
+@keyframes fraseEntra {
+  from { transform: translateY(16px); }
+  to   { transform: none; }
+}
+@keyframes fraseRaya {
+  from { width: 0; }
+  to   { width: 58%; }
+}
+
+/* ============================================================
+   PASO 3 — LA APP DENTRO DEL MISMO MARCO
+   ============================================================ */
+
+/* La app también vive dentro del marco. Como es más alta que él,
+   se desplaza por dentro sin mover el resto de la página. */
+.pres__app {
+  padding: 16px;
+  animation: fraseEntra .5s ease;
+}
+
+/* Botón para volver a ver los videos desde la app */
+
+/* ============================================================
+   BOTÓN DE VOLVER, SOBRE EL FONDO OSCURO DEL MARCO
+
+   Ojo: no confundir con .res__volver, que es el de adentro de la
+   ventana blanca del simulador. Ese va sobre fondo claro; este va
+   sobre el fondo oscuro del marco.
+   ============================================================ */
+
+.pres__volver {
+  align-self: flex-start;
+  white-space: nowrap;
+  background: #fff;
+  border: 1.5px solid rgba(69,2,60,.3);
+  border-radius: 999px;
+  padding: .42em 1em;
+  color: var(--morado-800);
+  font-family: inherit;
+  font-size: .78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .16s, border-color .16s, color .16s;
+}
+.pres__volver:hover {
+  background: var(--morado-050);
+  border-color: var(--morado-600);
+  color: var(--morado-800);
+}
+.pres__volver:focus-visible { outline: 3px solid var(--morado-300); outline-offset: 2px; }
+
+/* En la fila de controles del simulador todo va más apretado */
+.pres__app .pres__volver { font-size: .72rem; padding: .34em .85em; }
+
+/* ============================================================
+   PANTALLA DE LAS TARJETAS
+
+   Es donde termina el recorrido automático. Tres caminos, y de
+   cualquiera de ellos se puede volver acá.
+
+   ┌──────────────────────────────────────────────────────────┐
+   │  LAS ILUSTRACIONES DE LAS TARJETAS.                      │
+   │                                                          │
+   │  Cada tarjeta trae un dibujo hecho con código, que se ve  │
+   │  bien pero es plano. Para poner las ilustraciones 3D de  │
+   │  verdad, basta con dejar los tres archivos en            │
+   │  assets/img/ con estos nombres exactos:                  │
+   │                                                          │
+   │      tarjeta-app-web.png                                 │
+   │      tarjeta-actividades.png                             │
+   │      tarjeta-contacto.png                                │
+   │                                                          │
+   │  Deben tener FONDO TRANSPARENTE. Al soltarlos ahí, las   │
+   │  tarjetas los toman solas: no hay que tocar el código.   │
+   │  Si el archivo no está, se queda el dibujo. Ver el       │
+   │  README, sección 10.                                     │
+   └──────────────────────────────────────────────────────────┘
+   ============================================================ */
+
+.menu {
+  --neon: #A855F7;
+  --tinta-neon: #0A0E2E;
+
+  /* Ojo: NO poner position:relative aquí. El marco le da a cada
+     pantalla position:absolute con inset:0, y con relative la
+     pantalla se encoge al alto de su contenido: queda una franja
+     negra debajo. En teléfono sí lleva relative, más abajo. */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+  padding: 26px 30px;
+
+  /* Fondo blanco, con dos velos de color muy suaves en las esquinas
+     para que el blanco no quede plano. Las tarjetas siguen oscuras:
+     ese contraste es justamente lo que las hace resaltar. */
+  background:
+    radial-gradient(620px 360px at 16% 0%, rgba(118,4,103,.08), transparent 62%),
+    radial-gradient(540px 330px at 90% 100%, rgba(37,99,235,.08), transparent 62%),
+    #FFFFFF;
+  color: var(--tinta);
+  text-align: center;
+  overflow: hidden;
+}
+
+
+/* ---- El antetítulo, con sus rayitas a los lados ---- */
+.menu__arriba {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: 0 0 8px;
+  font-size: .8rem;
+  font-weight: 800;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: #000000;
+}
+.menu__arriba::before, .menu__arriba::after {
+  content: "";
+  width: 58px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, transparent, #000000);
+}
+.menu__arriba::after { background: linear-gradient(90deg, #000000, transparent); }
+
+.menu__titulo {
+  margin: 0;
+  font-family: var(--fuente-titulos);
+  font-size: clamp(1.5rem, 3vw, 2.05rem);
+  font-weight: 800;
+  line-height: 1.14;
+  color: #000000;
+}
+
+/* Este trozo del título llevaba un degradado de colores. Ahora va
+   negro como el resto: se deja el span por si algún día se le
+   quiere volver a dar un tratamiento aparte. */
+.menu__titulo-neon { color: inherit; }
+
+/* ---- Las tarjetas ----
+
+   OJO: todas las reglas de aquí van acotadas con ".menu" adelante.
+   La clase .tarjeta también la usa la sección "Miremos esto de
+   frente", más abajo en la página, con otros estilos. Sin el
+   ".menu", estas reglas se le montan encima y le imponen la
+   proporción y el fondo transparente de estas tarjetas.
+
+
+   Cada tarjeta es UNA SOLA ILUSTRACIÓN: la foto, el marco de neón,
+   las esquinas mordidas y las rayitas vienen dibujadas en el archivo.
+   Lo único que pone el código encima es el texto, que cae sobre la
+   franja lisa de abajo que la ilustración deja libre a propósito.
+
+   Las tres imágenes están igualadas al mismo alto, con el contenido
+   pegado abajo, para que las tres tarjetas midan lo mismo y sus
+   franjas de texto queden a la misma altura.
+
+   Para cambiar una ilustración se reemplaza el archivo en
+   assets/img/ con el mismo nombre. Debe tener fondo transparente y
+   dejar libre el tercio de abajo: ahí va el texto.
+   ============================================================ */
+
+.menu__tarjetas {
+  flex: 1 1 auto;
+  max-height: 330px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: center;
+  gap: 14px;
+}
+
+.menu .tarjeta {
+  position: relative;
+  width: 100%;
+
+  /* La proporción sale de las imágenes ya igualadas: 1180 × 1250. Si
+     se cambian por otras, hay que ajustar este número o la tarjeta
+     recorta o deja aire. */
+  aspect-ratio: 1180 / 1250;
+
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  filter: drop-shadow(0 8px 16px rgba(20,22,60,.18));
+  transition: transform .18s, filter .18s;
+}
+.menu .tarjeta:hover { transform: translateY(-5px); filter: drop-shadow(0 0 22px var(--neon)); }
+.menu .tarjeta:focus-visible { outline: 3px solid var(--neon); outline-offset: 4px; }
+
+/* El color de neón de cada una, para el brillo al pasar el mouse */
+.menu .tarjeta--azul   { --neon: #2A8CF0; }
+.menu .tarjeta--morada { --neon: #A855F7; }
+.menu .tarjeta--verde  { --neon: #35C93F; }
+
+.menu .tarjeta__foto {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ---- El destello ----
+   Cruza la tarjeta entera. Por fuera de la ilustración es blanco
+   sobre blanco, así que no se nota: solo se ve encima del dibujo.
+   La pausa larga del final es lo que lo hace discreto. */
+.menu .tarjeta::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(104deg,
+              transparent 32%,
+              rgba(255,255,255,.15) 50%,
+              transparent 68%);
+  background-size: 300% 100%;
+  background-position: 140% 0;
+  pointer-events: none;
+  animation: tarjetaDestello 15s ease-in-out infinite;
+}
+.menu .tarjeta:nth-child(2)::after { animation-delay: 2.2s; }
+.menu .tarjeta:nth-child(3)::after { animation-delay: 4.4s; }
+
+@keyframes tarjetaDestello {
+  0%   { background-position: 140% 0; }
+  55%  { background-position: -70% 0; }
+  100% { background-position: -70% 0; }
+}
+
+/* ---- El texto, sobre la franja lisa de la ilustración ----
+
+   Las medidas van en porcentaje del alto de la tarjeta, no en
+   píxeles: así el texto se queda en su sitio sea cual sea el
+   tamaño de la pantalla. El 63% es el techo: la franja lisa más
+   tardía de las tres empieza en 58,5%, y de ahí para abajo las
+   tres tienen fondo parejo. */
+.menu .tarjeta__pie {
+  position: absolute;
+  left: 15%;
+  right: 15%;
+  top: 63%;
+  bottom: 10%;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+}
+
+.menu .tarjeta__titulo {
+  font-size: .8rem;
+  font-weight: 800;
+  line-height: 1.22;
+  color: #fff;
+  text-shadow: 0 1px 6px rgba(0,0,0,.45);
+}
+.menu .tarjeta__texto {
+  font-size: .68rem;
+  line-height: 1.38;
+  color: rgba(255,255,255,.88);
+  text-shadow: 0 1px 5px rgba(0,0,0,.4);
+}
+
+/* ---- El botón de volver a ver ---- */
+.menu__reiniciar {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 auto;
+  padding: .62em 1.5em;
+  background: #fff;
+  border: 1.5px solid #2563EB;
+  border-radius: 999px;
+  color: #1E3A8A;
+  font-family: inherit;
+  font-size: .88rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 14px rgba(37,99,235,.2);
+  transition: background .16s, box-shadow .16s, border-color .16s;
+}
+.menu__reiniciar svg {
+  width: 17px; height: 17px;
+  fill: none; stroke: #2563EB; stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.menu__reiniciar:hover {
+  background: #EFF5FF;
+  border-color: #1D4ED8;
+  box-shadow: 0 3px 20px rgba(37,99,235,.34);
+}
+.menu__reiniciar:focus-visible { outline: 3px solid #93B4FF; outline-offset: 3px; }
+
+/* Ventanas de portátil angostas: todo un punto más pequeño */
+@media (max-width: 900px) {
+  .menu { padding: 22px 18px; }
+  .menu__arriba::before, .menu__arriba::after { width: 34px; }
+  .menu__tarjetas { gap: 10px; }
+  .menu .tarjeta__titulo { font-size: .76rem; }
+  .menu .tarjeta__texto { font-size: .65rem; line-height: 1.32; }
+  .menu .tarjeta__pie { left: 12%; right: 12%; top: 61%; gap: 3px; }
+}
+
+/* ============================================================
+   PANTALLA DEL ECOSISTEMA — LA RUEDA
+
+   Los textos de cada módulo están en js/ecosistema.js.
+   ============================================================ */
+
+.eco {
+  --eco-morado:  #7C3AED;
+  --eco-naranja: #F59416;
+  --eco-azul:    #2196F3;
+  --eco-verde:   #17A45E;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px 24px 22px;
+
+  /* Fondo blanco, con un velo de color muy suave en las esquinas
+     para que el blanco no quede plano. */
+  background:
+    radial-gradient(620px 360px at 18% 0%, rgba(118,4,103,.07), transparent 62%),
+    radial-gradient(520px 320px at 88% 100%, rgba(33,150,243,.07), transparent 62%),
+    #FFFFFF;
+  color: var(--tinta);
+}
+
+/* Sobre el blanco, el botón de volver y los textos van oscuros */
+.eco .pres__volver {
+  border-color: rgba(69,2,60,.3);
+  color: var(--morado-800);
+}
+.eco .pres__volver:hover {
+  background: var(--morado-050);
+  border-color: var(--morado-600);
+  color: var(--morado-800);
+}
+
+.eco__cabecera {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: nowrap;
+}
+.eco__instruccion {
+  margin: 0;
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--tinta-suave);
+}
+
+/* La rueda se encaja con posición absoluta, no con porcentajes:
+   con height:100% el SVG deduce el ancho de su proporción, se pasa
+   del marco y saca barra de desplazamiento. Con inset:0 la caja
+   siempre tiene tamaño definido y el viewBox se ajusta solo. */
+.eco__cuerpo {
+  flex: 1;
+  position: relative;
+  min-height: 0;
+}
+.eco__rueda-caja { position: absolute; inset: 0; }
+.eco__rueda {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.eco__pie {
+  margin: 0;
+  font-size: .86rem;
+  font-weight: 700;
+  color: var(--tinta-suave);
+  text-align: center;
+  min-height: 1.3em;
+}
+
+/* ---- Los gajos ---- */
+
+/* El gajo lleva su propio color en el "stroke" además del relleno:
+   con las esquinas redondas, es lo que le quita el filo a las puntas. */
+.eco__gajo {
+  stroke-width: 12;
+  stroke-linejoin: round;
+  paint-order: stroke fill;
+}
+
+/* El brillo va encima del gajo, con la misma forma. Es lo que hace
+   que se vea abombado y no plano. No recibe clics: si los recibiera,
+   taparía al gajo de abajo. */
+.eco__brillo {
+  fill: url(#eco-brillo);
+  stroke: url(#eco-brillo);
+  stroke-width: 12;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+.eco__arcos path {
+  fill: none;
+  stroke-width: 5;
+  stroke-linecap: round;
+  opacity: .9;
+}
+
+.eco__mod {
+  cursor: pointer;
+  transform-origin: 200px 200px;
+  transition: transform .18s, filter .18s;
+  filter: url(#eco-sombra);
+}
+.eco__mod:hover, .eco__mod:focus-visible { transform: scale(1.045); }
+.eco__mod--centro { filter: url(#eco-sombra-centro); }
+.eco__mod--centro:hover, .eco__mod--centro:focus-visible { transform: scale(1.05); }
+.eco__mod--centro:hover .eco__centro { stroke: var(--morado-300); stroke-width: 4; }
+.eco__mod:focus-visible { outline: none; }
+.eco__mod:focus-visible .eco__gajo { stroke: #fff; }
+
+.eco__burbuja { fill: rgba(255,255,255,.26); }
+.eco__ico {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+/* 15.5 es el tope: con 17 el nombre más largo (AdmonWitown) se
+   sale del gajo verde y se monta sobre el círculo del centro. */
+.eco__nombre {
+  fill: #fff;
+  paint-order: stroke;
+  font-family: var(--fuente-titulos);
+  font-size: 15.5px;
+  font-weight: 800;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+/* AdmonWitown es el nombre más largo y necesita un punto menos */
+.eco__nombre--largo { font-size: 14px; }
+
+/* ---- El centro ---- */
+.eco__centro { fill: url(#eco-centro); }
+/* 18,5 es el tope: el disco del centro mide 116 de ancho y con 21
+   el texto queda pegado al borde. Si algún día se cambia lo que
+   dice ahí, hay que volver a medir. */
+.eco__marca {
+  fill: var(--morado-800);
+  font-family: var(--fuente-titulos);
+  font-size: 18.5px;
+  font-weight: 800;
+  text-anchor: middle;
+  pointer-events: none;
+}
+.eco__raya {
+  fill: none;
+  stroke: var(--morado-600);
+  stroke-width: 4;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+
+/* ============================================================
+   PANTALLA DE CONTACTO
+   El número, el correo y el enlace de Teams se cambian arriba
+   de js/script.js.
+   ============================================================ */
+
+.ctc {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 18px 24px 24px;
+
+  /* Fondo blanco, igual que la frase, las tarjetas y la rueda */
+  background:
+    radial-gradient(620px 360px at 16% 0%, rgba(118,4,103,.07), transparent 62%),
+    radial-gradient(540px 330px at 90% 100%, rgba(37,99,235,.07), transparent 62%),
+    #FFFFFF;
+  color: var(--tinta);
+}
+.ctc__cabecera { display: flex; }
+
+/* Sobre el blanco, el botón de volver va oscuro */
+.ctc .pres__volver {
+  border-color: rgba(69,2,60,.3);
+  color: var(--morado-800);
+}
+.ctc .pres__volver:hover {
+  background: var(--morado-050);
+  border-color: var(--morado-600);
+  color: var(--morado-800);
+}
+.ctc__cuerpo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  min-height: 0;
+}
+
+.ctc__titulo {
+  margin: 0 0 22px;
+  max-width: 22ch;
+  font-family: var(--fuente-titulos);
+  font-size: clamp(1.25rem, 2.5vw, 1.62rem);
+  font-weight: 800;
+  line-height: 1.22;
+  color: #000000;
+  text-align: center;
+}
+
+.ctc__botones {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  width: 100%;
+  max-width: 440px;
+}
+
+.ctc__boton {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 16px;
+  background: #fff;
+  border: 1.5px solid var(--gris-borde);
+  border-radius: 14px;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(26,21,35,.06);
+  transition: transform .16s, box-shadow .16s, border-color .16s;
+}
+.ctc__boton:hover {
+  transform: translateY(-2px);
+  border-color: var(--morado-600);
+  box-shadow: 0 6px 18px rgba(69,2,60,.16);
+}
+.ctc__boton:focus-visible { outline: 3px solid var(--morado-300); outline-offset: 3px; }
+
+.ctc__ico {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 40px; height: 40px;
+  border-radius: 11px;
+}
+.ctc__ico svg {
+  width: 21px; height: 21px;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.ctc__boton--teams .ctc__ico { background: linear-gradient(150deg, #760467, #45023C); }
+.ctc__boton--wa .ctc__ico    { background: linear-gradient(150deg, #34D399, var(--whatsapp-oscuro)); }
+.ctc__boton--mail .ctc__ico  { background: linear-gradient(150deg, #38BDF8, #1D7FD4); }
+.ctc__boton--cal .ctc__ico   { background: linear-gradient(150deg, #FBBF24, #D97706); }
+.ctc__boton--forma .ctc__ico { background: linear-gradient(150deg, #A855F7, #6D28D9); }
+
+.ctc__texto { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.ctc__texto strong { font-size: .95rem; font-weight: 800; color: var(--tinta); }
+.ctc__texto em {
+  font-style: normal;
+  font-size: .78rem;
+  color: var(--tinta-suave);
+}
+
+/* Mientras no haya enlace de reunión, el botón queda apagado:
+   más vale que se vea desactivado a que lleve a una página en blanco. */
+.ctc__boton.esta-apagado {
+  opacity: .42;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.ctc__nota {
+  margin: 16px 0 0;
+  font-size: .76rem;
+  color: var(--tinta-suave);
+  text-align: center;
+}
+
+/* ============================================================
+   EL SUBTÍTULO DEL RECORRIDO NARRADO
+
+   Se ve igual que el de los videos, a propósito: el visitante ya
+   sabe que ese banner café es "aquí se está contando algo".
+
+   Va flotando encima de la ventana del simulador, no dentro del
+   flujo: si ocupara sitio propio, empujaría el contenido y la
+   pantalla dejaría de caber en el marco.
+   ============================================================ */
+
+.narra {
+  position: absolute;
+  left: 50%;
+  bottom: 58px;
+  transform: translateX(-50%);
+  z-index: 5;
+  width: min(86%, 660px);
+  text-align: center;
+  pointer-events: none;
+}
+.narra[hidden] { display: none; }
+
+.narra__txt {
+  display: inline;
+  margin: 0;
+  padding: .3em .62em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  background: var(--pres-cc-fondo);
+  border-radius: 6px;
+  color: var(--pres-cc-texto);
+  font-size: .88rem;
+  font-weight: 600;
+  line-height: 1.85;
+  text-shadow: 0 1px 3px rgba(0,0,0,.5);
+}
+
+@media (max-width: 900px) {
+  .narra { bottom: 52px; width: 92%; }
+  .narra__txt { font-size: .8rem; line-height: 1.75; }
+}
+
+@media (max-width: 620px) {
+  .narra { bottom: 8px; width: 94%; }
+  .narra__txt { font-size: .74rem; padding: .24em .5em; }
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+/* Ojo con el ancho de este corte: el marco deja de ser fijo por debajo
+   de 720 px, o sea solo en teléfono. Si se sube a 980 como estaba antes,
+   las pantallas de portátil de 900-950 px pierden el marco fijo y la
+   página pega un brinco al cambiar de una pantalla a otra. */
+@media (max-width: 720px) {
+  /* En teléfono el marco fijo no funciona: tendría que caber un
+     simulador completo en 250 px de alto. Aquí el marco se adapta a
+     cada pantalla. Sigue sin haber barra de desplazamiento, que es lo
+     que importa: todo se ve completo. En computador el marco sí es fijo. */
+  .escenario {
+    aspect-ratio: auto;
+    min-height: 0;
+    overflow: visible;
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+  }
+  .escenario > * { position: static; overflow: visible; }
+  .pres__grid {
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 18px 40px rgba(0,0,0,.45);
+  }
+  .pres__video { height: auto; }
+  .pres__video video { aspect-ratio: 16 / 9; height: auto; }
+  .frase { min-height: 0; padding: 32px 18px; }
+
+  /* Las tres pantallas del final: en teléfono se apilan */
+  .menu { position: relative; padding: 24px 14px; gap: 14px; }
+  .menu__arriba { letter-spacing: .2em; font-size: .66rem; }
+  .menu__arriba::before, .menu__arriba::after { width: 22px; }
+  /* En teléfono las tarjetas van una debajo de otra. No se pueden
+     achatar en una fila como antes: ahora la tarjeta ES la
+     ilustración, y aplastarla la deformaría. */
+  .menu__tarjetas {
+    max-height: none;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 14px;
+  }
+  .menu .tarjeta { max-width: 330px; }
+  .menu .tarjeta__titulo { font-size: .92rem; }
+  .menu .tarjeta__texto { font-size: .78rem; }
+
+  .eco { padding: 16px 14px 20px; }
+  .eco__cabecera { flex-wrap: wrap; gap: 8px; }
+  /* Ojo con el "flex: 0 0 auto": la regla de arriba le pone
+     "flex: 1", que en una columna equivale a flex-basis 0 y MANDA
+     sobre el alto. Sin desactivarlo, height:300px se ignora, la
+     rueda se queda en cero y la pantalla sale vacía en teléfono. */
+  .eco__cuerpo { position: static; flex: 0 0 auto; height: 300px; }
+  .eco__rueda-caja { position: relative; inset: auto; height: 100%; }
+  .eco__pie { font-size: .78rem; }
+
+  .ctc { padding: 16px 14px 22px; }
+  .ctc__titulo { margin-bottom: 14px; }
+}
+
+@media (max-width: 620px) {
+  .pres { padding: 30px 0 38px; }
+  .frase { min-height: 220px; padding: 30px 8px; }
+  .pres__sonido { right: 9px; top: 9px; font-size: .78rem; padding: .45em .9em; }
+  .pres__mandos { left: 9px; top: 9px; gap: 6px; }
+  .pres__mando { padding: .45em .6em; }
+  .pres__mando-txt { display: none; }   /* en teléfono no cabe el texto */
+  .pres__cc { bottom: 12px; width: 94%; }
+  .pres__cc-txt { font-size: .84rem; line-height: 1.7; padding: .22em .5em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .frase__arriba, .frase__grande, .pres__app { animation: none; }
+  .frase__grande::after { animation: none; }
+
+  /* El destello de las tarjetas también se queda quieto */
+  .menu .tarjeta::after { animation: none; background-position: -70% 0; }
+}
+
+
+/* ============================================================
+   EL REMATE DE LA PRESENTACIÓN
+
+   La pantalla que sale cuando se acaban los videos, con el botón
+   "Recorre la app". Antes se saltaba derecho a las tarjetas; ahora
+   el visitante decide cuándo entrar.
+
+   Para quitarla del todo se borra su bloque en la lista
+   PRES_SECUENCIA, en js/presentacion.js.
+   ============================================================ */
+
+.remate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 32px 24px;
+  text-align: center;
+  background:
+    radial-gradient(640px 320px at 50% 8%, rgba(118, 4, 103, .16), transparent 68%),
+    #fff;
+}
+
+.remate__arriba {
+  margin: 0;
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: #8B7FA6;
+}
+
+.remate__titulo {
+  margin: 0;
+  font-family: var(--fuente-titulos);
+  font-size: clamp(1.6rem, 3.4vw, 2.5rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -.02em;
+  color: #16110F;
+}
+
+.remate__texto {
+  margin: 0;
+  max-width: 44ch;
+  font-size: 1.02rem;
+  line-height: 1.5;
+  color: #4A4458;
+}
+
+.remate__boton {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  padding: 1em 1.9em;
+  border: 0;
+  border-radius: 999px;
+  background: var(--morado-600);
+  color: #fff;
+  font-family: inherit;
+  font-size: 1.06rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 10px 26px rgba(118, 4, 103, .34);
+  transition: transform .2s, background .2s, box-shadow .2s;
+}
+.remate__boton:hover {
+  transform: translateY(-2px);
+  background: var(--morado-700);
+  box-shadow: 0 14px 32px rgba(118, 4, 103, .42);
+}
+.remate__boton:focus-visible { outline: 3px solid var(--morado-300); outline-offset: 3px; }
+
+.remate__boton svg {
+  width: 1.1em;
+  height: 1.1em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .remate__boton:hover { transform: none; }
+}
+
+@media (max-width: 720px) {
+  .remate { padding: 34px 18px; min-height: 0; }
+  .remate__texto { font-size: .95rem; }
+}
