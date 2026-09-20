@@ -22,8 +22,10 @@ viaja dentro de `assets/`.
 ## 2. Requisitos del hosting
 
 Ya no hay requisitos de hosting que cumplir: Firebase Hosting da HTTPS,
-compresión, caché y rangos de video sin configurar nada, y los dos formularios
-los atiende una Cloud Function (ver [`DESPLIEGUE.md`](DESPLIEGUE.md) §2).
+compresión, caché y rangos de video sin configurar nada. El formulario de
+contacto y el agendamiento los atienden tres Cloud Functions (ver
+[`DESPLIEGUE.md`](DESPLIEGUE.md) §2); el calendario es nuestro, no el de pago de
+Google.
 
 Lo único que hay que tener instalado en la máquina es la CLI de Firebase.
 
@@ -66,11 +68,11 @@ acá: los tres enlaces van a las páginas externas vigentes
 En `index.html` todos los archivos llevan `?v=` con un número al final:
 
 ```html
-<link rel="stylesheet" href="css/styles.css?v=304">
+<link rel="stylesheet" href="css/styles.css?v=306">
 ```
 
-El número vigente es **304**. Al cambiar un css, un js o una imagen hay que
-**subirle el número a todos** (buscar `v=304` y reemplazar por `v=305`). Si no,
+El número vigente es **306**. Al cambiar un css, un js o una imagen hay que
+**subirle el número a todos** (buscar `v=306` y reemplazar por `v=307`). Si no,
 los navegadores de quienes ya visitaron la página les siguen mostrando la
 versión vieja.
 

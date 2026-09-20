@@ -1,43 +1,310 @@
 /* ============================================================
-   i'Witown — El paso previo a la reunión de Teams
+   i'Witown — Agendar la reunión, con calendario propio
    ============================================================
 
-   Antes de entrar a la reunión se piden cuatro datos. Al enviarlos,
-   la reunión se abre DE UNA VEZ en otra pestaña y, por detrás,
-   /api/agendar-teams manda dos correos: uno a nosotros y otro a la
-   persona, con el enlace.
+   El botón "Reunión por Teams" ya NO abre la sala: abre un recuadro
+   con nuestro calendario. El visitante escoge un día, luego una hora,
+   deja cuatro datos y queda agendado, sin salir de la página.
+
+   No se usa la página de citas de Google (la cobran) ni un iframe de
+   nadie: los cupos los da nuestra Cloud Function.
 
    ┌──────────────────────────────────────────────────────────┐
-   │  POR QUÉ LA REUNIÓN SE ABRE ANTES DE SABER SI EL CORREO  │
-   │  SALIÓ                                                   │
+   │  CÓMO FUNCIONA                                           │
    │                                                          │
-   │  Los navegadores solo dejan abrir una pestaña nueva      │
-   │  mientras la persona está tocando algo. Si esperáramos   │
-   │  la respuesta del servidor, ese permiso ya se habría     │
-   │  vencido y la pestaña saldría bloqueada.                 │
+   │  1. Al abrir, se piden los cupos libres a /api/horas.    │
+   │  2. La persona toca un día y luego una hora.             │
+   │  3. Llena nombre, correo, celular y colegio.             │
+   │  4. /api/agendar reserva el cupo y manda la invitación   │
+   │     por correo, a ella y a nosotros.                     │
    │                                                          │
-   │  Así que se abre primero y el correo va por detrás. Si   │
-   │  el correo falla, la persona igual entra a la reunión,   │
-   │  que es lo que vino a hacer; el error queda en el log    │
-   │  del servidor.                                           │
+   │  Las horas libres NO se deciden acá: están en AGENDA,    │
+   │  en functions/src/handlers/landingAgenda.js del repo     │
+   │  witown-cloud-functions.                                 │
+   │                                                          │
+   │  Si el calendario no responde, el recuadro ofrece        │
+   │  WhatsApp en vez de dejar a la persona mirando un hueco. │
    └──────────────────────────────────────────────────────────┘
-
-   A dónde se mandan los datos: /api/agendar-teams (Cloud Function
-   landingAgendarTeams, en witown-cloud-functions).
-   El enlace de la reunión está arriba de js/script.js (TEAMS) y
-   también en `ENLACE_TEAMS` de functions/src/handlers/landing.js, en witown-cloud-functions, para el correo.
    ============================================================ */
 
 (function () {
-  var caja   = document.getElementById("teamsCaja");
-  var forma  = document.getElementById("teamsForma");
-  if (!caja || !forma) return;
+  var caja = document.getElementById("teamsCaja");
+  if (!caja) return;
 
   var cerrar = document.getElementById("teamsCerrar");
   var aviso  = document.getElementById("teamsAviso");
-  var boton  = document.getElementById("teamsEnviar");
+  var hueco  = document.getElementById("teamsAgenda");
 
-  var deDonde = null;
+  var deDonde  = null;
+  var cargado  = false;
+  var dias     = [];
+  var diaAbierto = null;
+  var cupoElegido = null;
+
+  /* Lo que la persona ya escribio. Se guarda porque si el cupo se lo lleva
+     otro mientras llenaba, hay que volver a pintar el calendario y seria
+     inaceptable que perdiera los cuatro campos. */
+  var escrito = {};
+
+  /* ---- Hablar con el servidor ---- */
+
+  function pedirHoras(avisoFinal) {
+    if (aviso) { aviso.textContent = "Buscando horas libres…"; aviso.className = "teams__aviso"; }
+
+    fetch("/api/horas", { headers: { "Accept": "application/json" } })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (!d || !d.ok || !d.dias || !d.dias.length) {
+          sinCalendario("Por ahora no tenemos horas libres. Escríbenos por WhatsApp y buscamos un espacio.");
+          return;
+        }
+        dias = d.dias;
+        cargado = true;
+        pintarDias();
+        /* El aviso se repone al final: si se pierde un cupo, el mensaje que
+           explica por que cambio la pantalla tiene que seguir ahi. */
+        if (aviso) {
+          aviso.textContent = avisoFinal || "";
+          aviso.className = "teams__aviso" + (avisoFinal ? " es-error" : "");
+        }
+      })
+      .catch(function () {
+        sinCalendario("No pudimos cargar el calendario. Escríbenos por WhatsApp y acordamos la hora.");
+      });
+  }
+
+  function agendar(datos, boton) {
+    if (boton) { boton.disabled = true; boton.textContent = "Agendando…"; }
+
+    fetch("/api/agendar", {
+      method: "POST",
+      body: new URLSearchParams(datos)
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (d && d.ok) {
+          pintarListo(d.mensaje);
+          return;
+        }
+        if (boton) { boton.disabled = false; boton.textContent = "Agendar la reunión"; }
+        var mensaje = (d && d.mensaje) || "No pudimos agendar. Intenta de nuevo.";
+        if (aviso) {
+          aviso.textContent = mensaje;
+          aviso.className = "teams__aviso es-error";
+        }
+        /* Si el cupo se lo llevó otro, se vuelven a pedir las horas, pero el
+           mensaje se conserva y los datos escritos también. */
+        if (d && d.recargar) { cargado = false; pedirHoras(mensaje); }
+      })
+      .catch(function () {
+        if (boton) { boton.disabled = false; boton.textContent = "Agendar la reunión"; }
+        if (aviso) {
+          aviso.textContent = "No pudimos agendar. Escríbenos por WhatsApp y lo cerramos ahí mismo.";
+          aviso.className = "teams__aviso es-error";
+        }
+      });
+  }
+
+  /* ---- Lo que se ve ---- */
+
+  function sinCalendario(texto) {
+    if (aviso) aviso.textContent = "";
+    hueco.innerHTML = "";
+
+    var p = document.createElement("p");
+    p.className = "teams__sinagenda";
+    p.textContent = texto;
+    hueco.appendChild(p);
+
+    var wa = document.createElement("a");
+    wa.className = "btn btn--wa btn--bloque";
+    wa.textContent = "Agendar por WhatsApp";
+    wa.href = "#";
+    if (typeof window.WHATSAPP === "string" && window.WHATSAPP) {
+      wa.href = "https://wa.me/" + window.WHATSAPP + "?text=" +
+        encodeURIComponent("Hola, quiero agendar una reunión para conocer i'Witown.");
+      wa.target = "_blank";
+      wa.rel = "noopener";
+    }
+    hueco.appendChild(wa);
+  }
+
+  function pintarDias() {
+    hueco.innerHTML = "";
+    cupoElegido = null;
+
+    var titulo = document.createElement("p");
+    titulo.className = "agenda__paso";
+    titulo.textContent = "1. Escoge el día";
+    hueco.appendChild(titulo);
+
+    var lista = document.createElement("div");
+    lista.className = "agenda__dias";
+
+    dias.forEach(function (dia) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "agenda__dia" + (diaAbierto === dia.fecha ? " es-elegido" : "");
+      b.innerHTML = '<span class="agenda__diaRotulo">' + dia.rotulo + "</span>" +
+                    '<span class="agenda__diaCupos">' + dia.horas.length +
+                    (dia.horas.length === 1 ? " hora" : " horas") + "</span>";
+      b.addEventListener("click", function () {
+        diaAbierto = (diaAbierto === dia.fecha) ? null : dia.fecha;
+        pintarDias();
+      });
+      lista.appendChild(b);
+    });
+
+    hueco.appendChild(lista);
+
+    if (diaAbierto) {
+      var dia = dias.filter(function (d) { return d.fecha === diaAbierto; })[0];
+      if (dia) pintarHoras(dia);
+    }
+  }
+
+  function pintarHoras(dia) {
+    var paso = document.createElement("p");
+    paso.className = "agenda__paso";
+    paso.textContent = "2. Escoge la hora — " + dia.rotulo;
+    hueco.appendChild(paso);
+
+    var lista = document.createElement("div");
+    lista.className = "agenda__horas";
+
+    dia.horas.forEach(function (hora) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "agenda__hora";
+      b.textContent = hora.rotulo;
+      b.addEventListener("click", function () {
+        cupoElegido = hora;
+        pintarFormulario(dia, hora);
+      });
+      lista.appendChild(b);
+    });
+
+    hueco.appendChild(lista);
+  }
+
+  /* Guarda lo que haya en el formulario, para reponerlo si hay que repintar. */
+  function recordar(forma) {
+    ["nombre", "celular", "correo", "colegio"].forEach(function (campo) {
+      var input = forma.querySelector("input[name=" + campo + "]");
+      if (input) escrito[campo] = String(input.value || "").trim();
+    });
+  }
+
+  function pintarFormulario(dia, hora) {
+    hueco.innerHTML = "";
+
+    var paso = document.createElement("p");
+    paso.className = "agenda__paso";
+    paso.textContent = "3. Tus datos";
+    hueco.appendChild(paso);
+
+    var elegido = document.createElement("p");
+    elegido.className = "agenda__elegido";
+    elegido.innerHTML = "Reunión el <strong>" + dia.rotulo + "</strong> a las <strong>" +
+                        hora.rotulo + "</strong> (hora de Colombia). " +
+                        '<button type="button" class="agenda__cambiar">Cambiar</button>';
+    hueco.appendChild(elegido);
+
+    elegido.querySelector(".agenda__cambiar").addEventListener("click", function () {
+      /* Se guarda lo escrito ANTES de repintar: si no, quien cambia la hora a
+         mitad de camino pierde los cuatro campos que acababa de llenar. */
+      recordar(forma);
+      if (aviso) { aviso.textContent = ""; aviso.className = "teams__aviso"; }
+      pintarDias();
+    });
+
+    var forma = document.createElement("form");
+    forma.className = "agenda__forma";
+    forma.noValidate = true;
+    forma.innerHTML =
+      '<div class="miel" aria-hidden="true">' +
+      '<label>No llenar este campo <input type="text" name="website" tabindex="-1" autocomplete="off"></label>' +
+      "</div>" +
+      '<div class="agenda__campos">' +
+      '<label class="agenda__campo"><span>Nombre</span>' +
+      '<input type="text" name="nombre" maxlength="120" autocomplete="name" required></label>' +
+      '<label class="agenda__campo"><span>Celular</span>' +
+      '<input type="tel" name="celular" maxlength="30" autocomplete="tel" required></label>' +
+      '<label class="agenda__campo agenda__campo--ancho"><span>Correo</span>' +
+      '<input type="email" name="correo" maxlength="150" autocomplete="email" required></label>' +
+      '<label class="agenda__campo agenda__campo--ancho"><span>Colegio</span>' +
+      '<input type="text" name="colegio" maxlength="150" autocomplete="organization" required></label>' +
+      "</div>" +
+      '<button type="submit" class="btn btn--morado btn--bloque">Agendar la reunión</button>';
+
+    hueco.appendChild(forma);
+
+    /* Se repone lo que ya habia escrito, si vuelve por acá. */
+    ["nombre", "celular", "correo", "colegio"].forEach(function (campo) {
+      if (escrito[campo]) {
+        var input = forma.querySelector("input[name=" + campo + "]");
+        if (input) input.value = escrito[campo];
+      }
+    });
+
+    var primero = forma.querySelector("input[name=nombre]");
+    if (primero) window.setTimeout(function () { primero.focus(); }, 60);
+
+    forma.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      var datos = new FormData(forma);
+      recordar(forma);
+
+      var falta = [];
+      if (!String(datos.get("nombre") || "").trim())  falta.push("tu nombre");
+      if (!String(datos.get("celular") || "").trim()) falta.push("tu celular");
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(String(datos.get("correo") || ""))) falta.push("un correo válido");
+      if (!String(datos.get("colegio") || "").trim()) falta.push("el colegio");
+
+      if (falta.length) {
+        if (aviso) {
+          aviso.textContent = "Falta " + falta.join(", ") + ".";
+          aviso.className = "teams__aviso es-error";
+        }
+        return;
+      }
+
+      if (aviso) { aviso.textContent = ""; aviso.className = "teams__aviso"; }
+
+      datos.set("cupo", cupoElegido ? cupoElegido.llave : "");
+      agendar(datos, forma.querySelector("button[type=submit]"));
+    });
+  }
+
+  function pintarListo(mensaje) {
+    hueco.innerHTML = "";
+    if (aviso) { aviso.textContent = ""; aviso.className = "teams__aviso"; }
+
+    var p = document.createElement("p");
+    p.className = "agenda__listo";
+    p.textContent = mensaje || "Listo, quedaste agendado. Te mandamos la invitación al correo.";
+    hueco.appendChild(p);
+
+    var nota = document.createElement("p");
+    nota.className = "teams__sinagenda";
+    nota.textContent = "En el correo va la invitación: al aceptarla, la reunión queda en tu calendario con el enlace adentro.";
+    hueco.appendChild(nota);
+
+    var listo = document.createElement("button");
+    listo.type = "button";
+    listo.className = "btn btn--morado btn--bloque";
+    listo.textContent = "Cerrar";
+    listo.addEventListener("click", cerrarla);
+    hueco.appendChild(listo);
+
+    /* Ya no se puede volver a agendar sin recargar los cupos, y lo escrito
+       deja de hacer falta. */
+    cargado = false;
+    escrito = {};
+    cupoElegido = null;
+    diaAbierto = null;
+  }
 
   /* ---- Abrir y cerrar ---- */
 
@@ -46,10 +313,15 @@
     caja.hidden = false;
     document.body.classList.add("con-lupa");     // la misma llave que usa el visor
 
+    /* Un aviso del intento anterior no puede seguir ahi al reabrir. */
     if (aviso) { aviso.textContent = ""; aviso.className = "teams__aviso"; }
 
-    var primero = forma.querySelector("input");
-    if (primero) window.setTimeout(function () { primero.focus(); }, 60);
+    if (!cargado) {
+      hueco.innerHTML = "";
+      pedirHoras();
+    }
+
+    if (cerrar) window.setTimeout(function () { cerrar.focus(); }, 60);
   }
 
   function cerrarla() {
@@ -58,7 +330,6 @@
     if (deDonde) { deDonde.focus(); deDonde = null; }
   }
 
-  /* El botón de Teams ya no lleva directo a la reunión: abre esto */
   document.addEventListener("click", function (e) {
     var b = e.target.closest ? e.target.closest("[data-teams]") : null;
     if (b && !b.classList.contains("esta-apagado")) {
@@ -70,78 +341,42 @@
   });
 
   document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape" && !caja.hidden) cerrarla();
-  });
+    if (caja.hidden) return;
 
-  /* ---- La hora: de aquí en adelante, y por defecto mañana ---- */
+    if (e.key === "Escape") { cerrarla(); return; }
 
-  var cuando = document.getElementById("teamsCuando");
-  if (cuando) {
-    var ahora = new Date();
-    var manana = new Date(ahora.getTime() + 24 * 60 * 60 * 1000);
-    manana.setHours(9, 0, 0, 0);
+    /* El recuadro es un diálogo y ahora tiene un formulario adentro: el
+       tabulador tiene que dar vueltas dentro y no irse a la página de
+       detrás, que sigue ahí y no se ve. */
+    if (e.key !== "Tab") return;
 
-    cuando.min = comoTexto(ahora);
-    cuando.value = comoTexto(manana);
-  }
+    var tarjeta = caja.querySelector(".teams__tarjeta");
+    if (!tarjeta) return;
 
-  function comoTexto(d) {
-    function dos(n) { return (n < 10 ? "0" : "") + n; }
-    return d.getFullYear() + "-" + dos(d.getMonth() + 1) + "-" + dos(d.getDate()) +
-           "T" + dos(d.getHours()) + ":" + dos(d.getMinutes());
-  }
+    var focales = tarjeta.querySelectorAll(
+      'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    );
+    if (!focales.length) return;
 
-  /* ---- Enviar ---- */
+    var primero = focales[0];
+    var ultimo  = focales[focales.length - 1];
 
-  forma.addEventListener("submit", function (e) {
-    e.preventDefault();
+    var dentro = tarjeta.contains(document.activeElement);
 
-    var datos = new FormData(forma);
-    var falta = [];
-    if (!String(datos.get("nombre") || "").trim())  falta.push("tu nombre");
-    if (!String(datos.get("celular") || "").trim()) falta.push("tu celular");
-    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(String(datos.get("correo") || ""))) falta.push("un correo válido");
-    if (!String(datos.get("cuando") || "").trim()) falta.push("el día y la hora");
-
-    if (falta.length) {
-      if (aviso) {
-        aviso.textContent = "Falta " + falta.join(", ") + ".";
-        aviso.className = "teams__aviso es-error";
-      }
+    if (!dentro) {
+      /* El foco venia de fuera (o del body, en los milisegundos de apertura):
+         el primer Tab entra al recuadro en vez de irse a la pagina de detras. */
+      e.preventDefault();
+      (e.shiftKey ? ultimo : primero).focus();
       return;
     }
 
-    /* La reunión se abre ya, mientras todavía vale el toque de la
-       persona. Si no, el navegador bloquearía la pestaña. */
-    var destino = (typeof window.TEAMS === "string" && window.TEAMS) ? window.TEAMS : "";
-    if (destino) window.open(destino, "_blank", "noopener");
-
-    if (boton) { boton.disabled = true; boton.textContent = "Entrando…"; }
-    if (aviso) {
-      aviso.textContent = "Listo. Se abrió la reunión en otra pestaña.";
-      aviso.className = "teams__aviso es-bien";
+    if (e.shiftKey && document.activeElement === primero) {
+      e.preventDefault();
+      ultimo.focus();
+    } else if (!e.shiftKey && document.activeElement === ultimo) {
+      e.preventDefault();
+      primero.focus();
     }
-
-    /* urlencoded, no FormData: la Cloud Function no parsea multipart. */
-    fetch("/api/agendar-teams", { method: "POST", body: new URLSearchParams(datos) })
-      .then(function (r) { return r.json(); })
-      .then(function (d) {
-        if (aviso && d && d.mensaje) {
-          aviso.textContent = "Listo. " + d.mensaje;
-          aviso.className = "teams__aviso " + (d.ok ? "es-bien" : "es-error");
-        }
-      })
-      .catch(function () {
-        /* Sin correo, pero la reunión ya está abierta: no hay por qué
-           asustar a nadie con un error técnico. */
-      })
-      .then(function () {
-        window.setTimeout(function () {
-          if (boton) { boton.disabled = false; boton.textContent = "Ingresar a Teams"; }
-          cerrarla();
-          forma.reset();
-          if (cuando) cuando.value = comoTexto(new Date(Date.now() + 24 * 60 * 60 * 1000));
-        }, 2200);
-      });
   });
 })();

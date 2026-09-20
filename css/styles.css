@@ -1866,9 +1866,9 @@ section[hidden] { display: none !important; }
 }
 
 /* ============================================================
-   ANTES DE LA REUNIÓN DE TEAMS
+   AGENDAR LA REUNIÓN
 
-   Una ventana corta: cuatro datos y adentro. Se abre encima de
+   Una ventana corta: dia, hora y cuatro datos. Se abre encima de
    todo, con el fondo difuminado, y se cierra con la X, tocando
    fuera o con Escape. Lo maneja js/teams.js.
    ============================================================ */
@@ -1891,7 +1891,7 @@ section[hidden] { display: none !important; }
 
 .teams__tarjeta {
   position: relative;
-  width: min(100%, 460px);
+  width: min(100%, 560px);
   max-height: 92vh;
   overflow-y: auto;
   padding: 30px 28px 26px;
@@ -1945,23 +1945,120 @@ section[hidden] { display: none !important; }
   color: var(--tinta-suave);
 }
 
-.teams__campos {
+/* ---- El calendario propio del recuadro ---- */
+
+.teams__agenda { min-height: 220px; }
+
+.agenda__paso {
+  margin: 18px 0 10px;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--morado-600);
+}
+.agenda__paso:first-child { margin-top: 0; }
+
+/* Los dias, uno por renglon: el rotulo a la izquierda y cuantas horas
+   quedan a la derecha. */
+.agenda__dias { display: flex; flex-direction: column; gap: 7px; }
+.agenda__dia {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: .72em .9em;
+  border: 1.5px solid var(--gris-borde);
+  border-radius: 12px;
+  background: var(--hueso);
+  font-family: inherit;
+  font-size: .93rem;
+  color: var(--tinta);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color .16s, background .16s;
+}
+.agenda__dia:hover { border-color: var(--morado-600); background: #fff; }
+
+/* El resto del sitio declara su propio anillo de foco; estos tambien, o quien
+   navegue con teclado se queda sin nada visible sobre el fondo hueso. */
+.agenda__dia:focus-visible,
+.agenda__hora:focus-visible,
+.agenda__cambiar:focus-visible {
+  outline: 3px solid var(--morado-600);
+  outline-offset: 2px;
+}
+.agenda__dia.es-elegido {
+  border-color: var(--morado-600);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(118, 4, 103, .12);
+}
+.agenda__diaRotulo { font-weight: 600; }
+.agenda__diaCupos { font-size: .8rem; color: var(--tinta-suave); }
+
+/* Las horas, en rejilla: entran cuatro por renglon en el ancho del
+   recuadro y dos en un telefono angosto. */
+.agenda__horas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 8px;
+}
+.agenda__hora {
+  padding: .66em .4em;
+  border: 1.5px solid var(--gris-borde);
+  border-radius: 11px;
+  background: var(--hueso);
+  font-family: inherit;
+  font-size: .9rem;
+  font-weight: 600;
+  color: var(--tinta);
+  cursor: pointer;
+  transition: border-color .16s, background .16s, color .16s;
+}
+.agenda__hora:hover {
+  border-color: var(--morado-600);
+  background: var(--morado-600);
+  color: #fff;
+}
+
+.agenda__elegido {
+  margin: 0 0 16px;
+  padding: .8em .9em;
+  border-radius: 12px;
+  background: var(--hueso);
+  font-size: .9rem;
+  line-height: 1.5;
+  color: var(--tinta-suave);
+}
+.agenda__cambiar {
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: inherit;
+  font-size: .9rem;
+  font-weight: 700;
+  color: var(--morado-600);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.agenda__campos {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
   margin-bottom: 18px;
 }
-.teams__campo--ancho { grid-column: 1 / -1; }
-
-.teams__campo { display: block; }
-.teams__campo span {
+.agenda__campo--ancho { grid-column: 1 / -1; }
+.agenda__campo { display: block; }
+.agenda__campo span {
   display: block;
   margin-bottom: 5px;
   font-size: .78rem;
   font-weight: 700;
   color: var(--tinta-suave);
 }
-.teams__campo input {
+.agenda__campo input {
   width: 100%;
   padding: .7em .85em;
   border: 1.5px solid var(--gris-borde);
@@ -1972,10 +2069,26 @@ section[hidden] { display: none !important; }
   color: var(--tinta);
   transition: border-color .16s, background .16s;
 }
-.teams__campo input:focus {
+.agenda__campo input:focus {
   outline: none;
   border-color: var(--morado-600);
   background: #fff;
+}
+
+.agenda__listo {
+  margin: 0 0 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: #1B7F4B;
+}
+
+/* Lo que se ve si el calendario no responde o no hay cupos. */
+.teams__sinagenda {
+  margin: 0 0 16px;
+  font-size: .95rem;
+  line-height: 1.55;
+  color: var(--tinta-suave);
 }
 
 .teams__aviso {
@@ -1986,11 +2099,12 @@ section[hidden] { display: none !important; }
   color: var(--tinta-suave);
 }
 .teams__aviso.es-error { color: #C2185B; font-weight: 600; }
-.teams__aviso.es-bien  { color: #1B7F4B; font-weight: 600; }
 
 @media (max-width: 480px) {
-  .teams__campos { grid-template-columns: 1fr; }
-  .teams__tarjeta { padding: 26px 20px 22px; }
+  .teams__tarjeta { padding: 26px 16px 22px; }
+  .teams__agenda { min-height: 0; }
+  .agenda__campos { grid-template-columns: 1fr; }
+  .agenda__horas { grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); }
 }
 
 /* ---- Lista con palomita ---- */

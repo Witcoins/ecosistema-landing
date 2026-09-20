@@ -51,20 +51,50 @@ firebase hosting:channel:deploy prueba   # URL temporal, no toca el sitio real
 firebase serve --only hosting            # o en local, en el navegador
 ```
 
-## 2. Los formularios son una Cloud Function
+## 2. El contacto y el agendamiento
 
-Firebase Hosting **no ejecuta PHP**. Los dos formularios que antes eran
-`enviar.php` y `agendar-teams.php` los atiende ahora una Cloud Function que vive
-en el repositorio `witown-cloud-functions`, en
-`functions/src/handlers/landing.js`:
+Las dos cosas pasan **dentro de la pagina**: ninguna manda al visitante a un
+sitio externo ni le abre su programa de correo. Firebase Hosting no ejecuta PHP,
+asi que las atienden tres Cloud Functions del repositorio
+`witown-cloud-functions`:
 
-| La página llama a | Lo atiende | Qué hace |
+| La pagina llama a | Lo atiende | Que hace |
 |---|---|---|
-| `POST /api/contacto` | `landingContacto` | guarda el lead en `LandingLeads` y encola el correo |
-| `POST /api/agendar-teams` | `landingAgendarTeams` | guarda en `LandingReuniones` y encola dos correos |
+| `POST /api/contacto` | `landingContacto` | guarda el lead en `LandingLeads`, avisa a `contacto@iwitown.com` y a `witownnetwork@gmail.com`, y le manda al visitante un correo de "gracias por contactarnos" |
+| `GET /api/horas` | `landingHoras` | devuelve los cupos libres de las proximas 3 semanas |
+| `POST /api/agendar` | `landingAgendar` | reserva el cupo y manda la invitacion por correo a las dos partes |
 
-Las dos rutas `/api/*` son **rewrites** declarados en `firebase.json`: la página
-y la función quedan en el mismo dominio, así que no hay CORS de por medio.
+Las rutas `/api/*` son **rewrites** declarados en `firebase.json`: la pagina y
+las funciones quedan en el mismo dominio, asi que no hay CORS de por medio.
+
+### El calendario es nuestro
+
+No se usa la pagina de citas de Google —la cobran— ni un iframe de nadie. El
+recuadro de "Reunion por Teams" pinta el calendario con `js/teams.js`: el
+visitante escoge dia, luego hora, deja nombre, correo, celular y colegio, y
+queda agendado.
+
+Cuatro cosas que hay que saber para no romperlo:
+
+- **Las horas libres se definen en el codigo**, en la constante `AGENDA` de
+  `functions/src/handlers/landingAgenda.js`. Hoy: lunes a viernes, 8:30 a 12:30
+  y 2:00 a 4:00 de la tarde, citas de 30 minutos (12 cupos por dia), hora de
+  Colombia, hasta 3 semanas adelante, y no se ofrece un cupo que empiece dentro
+  de menos de 3 horas. Cambiarlas es cambiar `AGENDA` y volver a desplegar.
+- **El id del documento de la reserva ES la hora** (`2026-09-22T09-30`), en
+  `LandingReuniones`. Eso es lo que impide que dos personas tomen el mismo cupo:
+  la reserva se hace en una transaccion sobre ese documento. Si se cambia el
+  formato de esa llave, se rompe la proteccion.
+- **La reunion llega a los calendarios como invitacion `.ics` adjunta** al
+  correo, no por la API de Calendar. Gmail la reconoce y la ofrece para aceptar,
+  tanto en la bandeja nuestra como en la del visitante. Por eso no hay que
+  compartir ningun calendario con una cuenta de servicio.
+- **La sala de Teams es fija**: `ENLACE_TEAMS`, en el mismo archivo. Todas las
+  reuniones caen en la misma sala, asi que dos citas a la misma hora se
+  pisarian; para eso esta la transaccion del cupo.
+
+Quien quiere hablar **ya** no agenda: usa el boton de WhatsApp. El boton de
+Teams ya no abre la sala directo, a proposito.
 
 El correo no sale por SMTP: la función escribe un documento en la colección
 `mail` y lo despacha la extensión *Trigger Email from Firestore*, la misma vía
@@ -75,12 +105,17 @@ ecosistema, **siempre desde `main`**:
 
 ```bash
 cd C:\Users\ASUS\StudioProjects\witown-cloud-functions
-firebase deploy --only functions:landingContacto,functions:landingAgendarTeams
+firebase deploy --only functions:landingContacto,functions:landingHoras,functions:landingAgendar
 ```
 
 > El sitio y las funciones se despliegan por separado. Si se publica el Hosting
 > antes que las funciones, los formularios devuelven 404 hasta que las funciones
-> estén arriba.
+> esten arriba.
+
+> **Queda desplegada una funcion que ya no se usa**: `landingAgendarTeams`, del
+> agendamiento viejo. Es un endpoint publico que escribe en Firestore y manda
+> correo, asi que conviene borrarla:
+> `firebase functions:delete landingAgendarTeams --region us-central1`
 
 ## 3. Se prueba en dos tiempos
 
@@ -90,9 +125,16 @@ existieron (el og-image, las tipografías, los audios del recorrido). La lista
 completa está en [`PENDIENTES.md`](PENDIENTES.md) §3 — **compárala antes de dar
 por hecho que algo se subió mal.**
 
-**Después los formularios**, y de verdad: se manda uno y se revisa la bandeja de
-`contacto@iwitown.com`, **incluida la carpeta de spam**. El botón dice "enviado"
-aunque el correo no haya salido.
+**Despues el formulario**, y de verdad: se manda uno y se revisan las dos bandejas
+(`contacto@iwitown.com` y `witownnetwork@gmail.com`), **incluida la carpeta de
+spam**, y que al visitante le llegue el correo de gracias. El boton dice
+"enviado" aunque el correo no haya salido.
+
+**Y el agendamiento**: abrir el recuadro de "Reunion por Teams", reservar una
+hora de prueba y comprobar tres cosas: que llega la invitacion a las dos partes,
+que al aceptarla el evento queda en el calendario con el enlace de la sala, y que
+ese cupo **ya no aparece** al volver a abrir el recuadro. Despues se borra el
+documento de `LandingReuniones` para liberarlo.
 
 Si el correo no llega, el lead **no se pierde**: queda en Firestore
 (`LandingLeads`), y el fallo queda en los registros de la función:
@@ -109,11 +151,18 @@ función deja el campo listo por si algún día se agregan.) Tres cosas que hay 
 tener presentes:
 
 - La función es **pública a propósito** (la llena un visitante sin cuenta). Las
-  guardas son la trampa anti-spam del campo oculto, un tope de 20 envíos por IP
-  **y por formulario** por hora (o sea hasta 40 entre los dos) y un tope global de
-  200 al día, que rota a medianoche de Bogotá. El global es el que importa: el
-  agendamiento le escribe a la dirección que teclee el visitante, y sale por la
-  misma extensión de correo que usan los colegios.
+  guardas son la trampa anti-spam del campo oculto y dos topes que rotan a
+  medianoche de Bogota: el contacto admite 20 envios por IP a la hora y 200 al
+  dia en total; el agendamiento, 10 por IP a la hora y 60 al dia. El agendamiento
+  los necesita igual que el contacto: que un cupo tomado no se pueda volver a
+  tomar no es un limite, porque **llenar la agenda entera es justamente el
+  ataque**, y cada reserva dispara dos correos.
+- **Cada envio manda mas de un correo.** El contacto manda dos (el aviso y el
+  gracias) y el agendamiento otros dos, asi que el techo de correos al dia es el
+  doble del numero de envios. Es lo que hay que mirar si se piensa en la
+  reputacion del remitente, que es compartido con los colegios. El global es el que importa: el
+  correo de gracias va a la direccion que teclee el visitante, y sale por la misma
+  extension de correo que usan los colegios.
 - Las reglas de Firestore del proyecto conceden lectura a cualquier usuario
   autenticado, así que **estas colecciones quedan legibles desde las apps**. Está
   anotado como pendiente. A partir de este despliegue hay datos personales de
@@ -176,14 +225,15 @@ no se nota; en datos móviles sí. El diseño está probado a 375 px.
 En este orden.
 
 - [ ] **Videos `solucion-1/2/3.mp4` regrabados sin datos reales** (§0) — bloqueante
-- [ ] Las dos Cloud Functions desplegadas desde `main` del repo de funciones (§2)
+- [ ] Las tres Cloud Functions desplegadas desde `main` del repo de funciones (§2)
+- [ ] Borrada la funcion vieja `landingAgendarTeams` (§2)
 - [ ] `firebase deploy --only hosting` desde este repositorio (§1)
 - [ ] La página se ve igual que en local, descontando lo de [`PENDIENTES.md`](PENDIENTES.md) §3
 - [ ] `firebase hosting:sites:list --project witcoins-network` muestra `ecosistema-iwitown` — si el sitio y las funciones no están en el mismo proyecto, los formularios dan 404
-- [ ] Formulario de contacto probado de verdad; correo recibido (revisada la carpeta de spam) y lead visible en `LandingLeads`
+- [ ] Formulario probado de verdad: el aviso llego a las DOS bandejas, al visitante le llego el correo de gracias, y el lead se ve en `LandingLeads`
 - [ ] Al darle **Responder** a ese correo, la respuesta va al visitante y no a un no-reply
 - [ ] En `firebase functions:log` se miró el `x-forwarded-for` de ese envío y el penúltimo valor es la IP pública propia, no una IP de borde de Google (si no, el tope por IP confundiría visitantes distintos — ver `landing.js`, `ipDe`)
-- [ ] Agendamiento probado de verdad; llegan los dos correos y queda el registro en `LandingReuniones`
+- [ ] Agendamiento probado de verdad: llegan las invitaciones, el evento queda en el calendario al aceptarlo, y el cupo tomado desaparece del recuadro
 - [ ] Los seis enlaces de redes del pie abren donde deben
 - [ ] Abierta en un celular con datos móviles
 - [ ] Subdominio propio decidido y conectado, si se va a usar
