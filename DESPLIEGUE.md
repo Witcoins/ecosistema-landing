@@ -160,8 +160,9 @@ Responsable de datos según esa política: **Gain Money Group SAS**, NIT
 cita el formulario. Son páginas **externas**: si ese dominio cambia o se cae, el
 consentimiento del formulario queda apuntando a la nada.
 
-El pie enlaza también las redes: Instagram, Facebook, TikTok, YouTube y el
-LinkedIn de Gain Money Group.
+El pie enlaza también las redes: Instagram, Facebook, TikTok, X, YouTube y el
+LinkedIn de Gain Money Group (ese último es la cuenta de la empresa, no de
+i'Witown).
 
 ## 8. Probarlo en un celular antes de anunciarlo
 
@@ -183,6 +184,6 @@ En este orden.
 - [ ] Al darle **Responder** a ese correo, la respuesta va al visitante y no a un no-reply
 - [ ] En `firebase functions:log` se miró el `x-forwarded-for` de ese envío y el penúltimo valor es la IP pública propia, no una IP de borde de Google (si no, el tope por IP confundiría visitantes distintos — ver `landing.js`, `ipDe`)
 - [ ] Agendamiento probado de verdad; llegan los dos correos y queda el registro en `LandingReuniones`
-- [ ] Los cinco enlaces de redes del pie abren donde deben
+- [ ] Los seis enlaces de redes del pie abren donde deben
 - [ ] Abierta en un celular con datos móviles
 - [ ] Subdominio propio decidido y conectado, si se va a usar
