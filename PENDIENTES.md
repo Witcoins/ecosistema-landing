@@ -50,6 +50,26 @@ define('CORREO_REMITENTE', 'no-responder@iwitown.com');   // <-- REEMPLAZAR
 
 ---
 
+## 2 bis. El archivo `.htaccess`
+
+Va en la misma carpeta que el `index.html`. Trae la compresión, la
+caché de imágenes y videos, y el bloqueo de los archivos que no
+deberían verse desde el navegador. Funciona solo, no hay que
+activar nada.
+
+**Lo único que hay que revisar es el primer bloque, el de HTTPS.**
+Está activo, y solo funciona si el dominio ya tiene certificado
+SSL instalado. Si todavía no lo tiene, hay que ponerle `#` al
+principio a esas cuatro líneas hasta que el certificado esté.
+
+Si al subirlo la página da **error 500**, es que el hosting no
+tiene alguno de los módulos: se le cambia el nombre a
+`.htaccess-apagado` y la página vuelve enseguida.
+
+En hosting con Nginx el archivo no hace nada y tampoco estorba.
+
+---
+
 ## 3. Archivos que la página busca y todavía no existen
 
 Ninguno rompe nada: la página los pide, no los encuentra y sigue.

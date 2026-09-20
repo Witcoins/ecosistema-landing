@@ -1,0 +1,153 @@
+# ============================================================
+#  i'Witown — Configuración del servidor
+# ============================================================
+#
+#  Este archivo solo sirve en hosting con Apache, que es el de
+#  casi todos los hostings compartidos (cPanel, Hostinger,
+#  Bluehost, GoDaddy). Se sube junto al index.html, en la misma
+#  carpeta, y funciona solo: no hay que activar nada.
+#
+#  En Nginx no hace nada. Ahí la configuración la pone el
+#  proveedor; no pasa nada por dejar el archivo subido.
+#
+#  ┌──────────────────────────────────────────────────────────┐
+#  │  SI LA PÁGINA DEJA DE ABRIR (ERROR 500)                  │
+#  │                                                          │
+#  │  Es este archivo: el hosting no tiene algún módulo.      │
+#  │  Se le cambia el nombre a ".htaccess-apagado" y la       │
+#  │  página vuelve enseguida. Después se van descomentando   │
+#  │  los bloques de a uno para ver cuál era.                 │
+#  └──────────────────────────────────────────────────────────┘
+# ============================================================
+
+
+# ------------------------------------------------------------
+#  1. TODO EN HTTPS
+#
+#  ¡OJO! Esto solo se activa CUANDO YA ESTÉ INSTALADO EL
+#  CERTIFICADO SSL del dominio (en cPanel es gratis, se llama
+#  Let's Encrypt o AutoSSL). Si se activa antes, el navegador
+#  muestra un error de seguridad y la página no abre.
+#
+#  Mientras no haya certificado: se le pone # al principio a
+#  las cuatro líneas de abajo.
+#
+#  Está en 302 (redirección temporal) a propósito: si algo sale
+#  mal, se quita y listo. Cuando se compruebe que la página
+#  abre bien en https, se cambia el 302 por 301 —que es la
+#  definitiva y la que cuenta para Google—.
+# ------------------------------------------------------------
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=302,L]
+</IfModule>
+
+
+# ------------------------------------------------------------
+#  2. QUE LOS ARCHIVOS VIAJEN COMPRIMIDOS
+#
+#  El index.html y los .js pesan bastante en texto. Comprimidos
+#  llegan a la tercera parte. Las imágenes y los videos no se
+#  comprimen: ya vienen comprimidos de fábrica.
+# ------------------------------------------------------------
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml
+  AddOutputFilterByType DEFLATE text/css
+  AddOutputFilterByType DEFLATE application/javascript application/x-javascript
+  AddOutputFilterByType DEFLATE application/json
+  AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+
+# ------------------------------------------------------------
+#  3. QUE EL NAVEGADOR GUARDE LO QUE NO CAMBIA
+#
+#  Las imágenes, los videos y las tipografías no cambian nunca:
+#  se guardan un año. Así, quien vuelve a la página no se baja
+#  otra vez los 8 MB de video.
+#
+#  El index.html NO se guarda: así cualquier cambio se ve de
+#  una. Los css y js se guardan una semana; si se cambia alguno
+#  antes, para eso está el número del "?v=" (ver PENDIENTES.md).
+# ------------------------------------------------------------
+<IfModule mod_expires.c>
+  ExpiresActive On
+
+  ExpiresByType image/webp              "access plus 1 year"
+  ExpiresByType image/jpeg              "access plus 1 year"
+  ExpiresByType image/png               "access plus 1 year"
+  ExpiresByType image/svg+xml           "access plus 1 year"
+  ExpiresByType video/mp4               "access plus 1 year"
+  ExpiresByType audio/mpeg              "access plus 1 year"
+  ExpiresByType font/woff2              "access plus 1 year"
+
+  ExpiresByType text/css                "access plus 1 week"
+  ExpiresByType application/javascript  "access plus 1 week"
+
+  ExpiresByType text/html               "access plus 0 seconds"
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+
+# ------------------------------------------------------------
+#  4. QUE NADIE SE ASOME A LO QUE NO ES SUYO
+#
+#  Por si algún día se suben por error los manuales, el archivo
+#  de la base de datos o los programas de la carpeta
+#  herramientas: desde el navegador no se van a poder abrir.
+# ------------------------------------------------------------
+#  (Apache 2.4 y 2.2 lo dicen distinto; van los dos, y cada
+#  servidor usa el que entiende.)
+<IfModule mod_authz_core.c>
+  <FilesMatch "\.(md|sql|py|log|bak|json|yml|yaml)$">
+    Require all denied
+  </FilesMatch>
+  <FilesMatch "^\.">
+    Require all denied
+  </FilesMatch>
+</IfModule>
+
+<IfModule !mod_authz_core.c>
+  <FilesMatch "\.(md|sql|py|log|bak|json|yml|yaml)$">
+    Order allow,deny
+    Deny from all
+  </FilesMatch>
+  <FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+  </FilesMatch>
+</IfModule>
+
+# Que no se vea el listado de archivos al entrar a una carpeta
+# que no tiene index.html (por ejemplo /assets/video/).
+Options -Indexes
+
+
+# ------------------------------------------------------------
+#  5. DETALLES
+# ------------------------------------------------------------
+
+# Que los acentos y las eñes se vean bien siempre.
+AddDefaultCharset utf-8
+
+# Hosting viejo que no reconoce el webp ni el woff2.
+<IfModule mod_mime.c>
+  AddType image/webp  .webp
+  AddType font/woff2  .woff2
+  AddType video/mp4   .mp4
+</IfModule>
+
+# Que los videos se puedan adelantar. Apache ya lo hace solo;
+# esto es para dejarlo dicho.
+<IfModule mod_headers.c>
+  <FilesMatch "\.(mp4|mp3)$">
+    Header set Accept-Ranges bytes
+  </FilesMatch>
+</IfModule>
