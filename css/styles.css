@@ -264,8 +264,10 @@ img { max-width: 100%; height: auto; display: block; }
 
    ┌──────────────────────────────────────────────────────────┐
    │  PARA CAMBIARLE EL TAMAÑO                                │
-   │  Se toca el "width" de .celular. Todo lo demás —el alto,  │
-   │  las esquinas, la isla— va en proporción.                 │
+   │  Se tocan el "height" Y el "width" de .celular, los dos,  │
+   │  y también en el @media de 900px. El ancho es el alto por │
+   │  9/18.6 (≈0,4839): no se puede dejar en "auto" porque en   │
+   │  iPhone se queda en cero. Lo demás va en proporción.      │
    └──────────────────────────────────────────────────────────┘
    ============================================================ */
 
@@ -294,10 +296,33 @@ img { max-width: 100%; height: auto; display: block; }
 
   /* Manda el ALTO, no el ancho: así el celular mide lo que mide el
      texto de al lado —título y bajada— y no llega a los botones.
-     El ancho sale solo, por la proporción. */
+
+     EL ANCHO VA ESCRITO, NO DERIVADO DE LA PROPORCIÓN. Antes esto era
+     "width: auto" + "aspect-ratio: 9 / 18.6", y en WebKit —o sea en todo
+     iPhone, Safari y Chrome incluidos— el celular entero no se pintaba:
+     ni el marco, ni el brillo, ni el video. La cadena era esta:
+
+       1. La columna de .portada__inner es "auto", así que su ancho lo
+          pone la contribución intrínseca de lo que hay dentro.
+       2. Ahi WebKit no traslada la proporción a un ancho, y el único
+          hijo en flujo es el <video>, que no aporta ancho intrínseco
+          hasta que carga su metadata. La columna quedaba en 0.
+       3. Y entonces el "max-width: 100%" de aquí abajo se resolvia
+          contra 0 y remataba el ancho en 0.
+
+     OJO: no es "porque es un elemento flex". Cambiar .portada__celular a
+     block NO arregla nada; los eslabones 1 y 3 siguen ahi. El celular de
+     la otra sección (.celsol) usa el mismo patrón y NO falla, porque su
+     contenido es un <img>, que sí aporta ancho intrínseco.
+
+     Los tres números del ancho son los del alto por 9/18.6 (≈0,4839):
+     250→121, 27vw→13,06vw, 330→159,7. Si se cambia el alto, hay que
+     rehacer esa cuenta y cambiar los dos. */
   height: clamp(250px, 27vw, 330px);
-  width: auto;
-  aspect-ratio: 9 / 18.6;
+  width: clamp(121px, 13.06vw, 159.7px);
+  flex: 0 0 auto;
+  /* Este max-width es parte del mecanismo del comentario de arriba: si el
+     ancho volviera a ser "auto", este es el que lo remata en 0. */
   max-width: 100%;
 
   padding: 8px;
@@ -442,7 +467,12 @@ img { max-width: 100%; height: auto; display: block; }
 
 @media (max-width: 900px) {
   .portada__inner { grid-template-columns: 1fr; justify-items: center; }
-  .celular { height: clamp(260px, 52vw, 340px); }
+  /* El ancho va con el alto por la misma cuenta (x 9/18.6): 260→125,8,
+     52vw→25,16vw, 340→164,5. Ver el comentario de .celular. */
+  .celular {
+    height: clamp(260px, 52vw, 340px);
+    width: clamp(125.8px, 25.16vw, 164.5px);
+  }
 }
 
 @media (max-width: 560px) {

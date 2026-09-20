@@ -13,3 +13,6 @@ desktop.ini
 # Si algún día se ponen las credenciales de verdad en un archivo
 # aparte, va aquí para que no suban al repositorio.
 config-local.php
+
+# Cache de despliegue de Firebase
+.firebase/
