@@ -1,0 +1,45 @@
+{
+  "hosting": {
+    "site": "ecosistema-iwitown",
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      ".firebaserc",
+      "**/.*",
+      "**/node_modules/**",
+      "*.md",
+      "herramientas/**",
+      "**/*.txt"
+    ],
+    "rewrites": [
+      {
+        "source": "/api/contacto",
+        "function": { "functionId": "landingContacto", "region": "us-central1" }
+      },
+      {
+        "source": "/api/agendar-teams",
+        "function": { "functionId": "landingAgendarTeams", "region": "us-central1" }
+      }
+    ],
+    "headers": [
+      {
+        "source": "**/*.@(jpg|jpeg|png|webp|svg|ico|mp4|mp3|woff2)",
+        "headers": [
+          { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        ]
+      },
+      {
+        "source": "**/*.@(css|js)",
+        "headers": [
+          { "key": "Cache-Control", "value": "public, max-age=604800" }
+        ]
+      },
+      {
+        "source": "**/*.html",
+        "headers": [
+          { "key": "Cache-Control", "value": "no-cache, must-revalidate" }
+        ]
+      }
+    ]
+  }
+}

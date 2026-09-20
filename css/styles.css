@@ -2534,7 +2534,7 @@ section[hidden] { display: none !important; }
    ============================================================ */
 
 .pie { background: #17101F; color: rgba(255,255,255,.7); padding: 56px 0 0; }
-.pie__inner { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; padding-bottom: 42px; }
+.pie__inner { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; padding-bottom: 42px; }
 /* El pie es oscuro. Este filtro vuelve blanco cualquier logo para que se lea.
    Si el logo ya tiene una versión en blanco, usa esa y borra la línea del filter. */
 .pie__logo { height: 38px; margin-bottom: 1.1rem; filter: brightness(0) invert(1); }

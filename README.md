@@ -10,7 +10,6 @@ Este paquete contiene una landing page completa, lista para subir a un hosting.
 ```
 landing-iwitown/
 ├── index.html          La página completa. La estructura de todo está aquí.
-├── enviar.php          Recibe el formulario, lo guarda en la BD y manda correo.
 ├── css/
 │   ├── styles.css        Estilos generales. Los colores están en las primeras 30 líneas.
 │   ├── presentacion.css  Estilos del video, los subtítulos y la frase.
@@ -27,8 +26,7 @@ landing-iwitown/
 │   ├── witutor.js        Las 6 pantallas del recorrido de I'Witutor.
 │   ├── simulador.js      Contenido y mecánica del simulador (los textos van aquí).
 │   └── actividades.js    Contenido de las pantallas de cada actividad.
-├── db/
-│   └── crear-tabla.sql   Script para crear la tabla de contactos en MySQL.
+├── firebase.json        Que se publica, la cache y las rutas /api/ de los formularios.
 └── assets/
     ├── img/              Logos e imágenes.
     ├── video/            Los videos de la presentación inicial.
@@ -39,23 +37,30 @@ landing-iwitown/
 > **Sobre el simulador:** la primera pantalla de la página no es una imagen,
 > es un simulador interactivo que reproduce la plataforma del docente.
 > Todo su contenido (el tema, la docente, las 16 modalidades y sus recursos)
-> está en `js/simulador.js`, no en el HTML. Ver la sección 9 de este documento.
+> está en `js/simulador.js`, no en el HTML. Ver la sección 7 de este documento.
 
 ---
 
-## 2. Montaje rápido — 5 pasos
+## 2. Como se publica
 
-### Paso 1 — Subir los archivos
+El sitio va a **Firebase Hosting** (sitio `ecosistema-iwitown`, proyecto
+`witcoins-network`). El procedimiento completo —que se publica, en que orden, los
+bloqueantes y el checklist— esta en [`DESPLIEGUE.md`](DESPLIEGUE.md), que es la
+fuente unica. Resumido:
 
-Por FTP o por el Administrador de archivos de cPanel, sube **todo el contenido**
-de la carpeta `landing-iwitown/` dentro de `public_html/`.
+```bash
+firebase deploy --only hosting
+```
 
-> Ojo: se sube el *contenido* de la carpeta, no la carpeta misma.
-> Debe quedar `public_html/index.html`, no `public_html/landing-iwitown/index.html`.
+> **Antes de publicar por primera vez, lee [`DESPLIEGUE.md`](DESPLIEGUE.md) §0.**
+> Hay videos con datos de personas reales que se tienen que regrabar primero.
 
-Con eso la página ya se ve. El formulario todavía no guarda nada — eso es el paso 4.
+Los formularios **ya no son PHP**: Firebase Hosting no ejecuta PHP, asi que los
+atiende una Cloud Function que vive en el repositorio `witown-cloud-functions`
+(ver [`DESPLIEGUE.md`](DESPLIEGUE.md) §2). En este repositorio no hay
+credenciales que llenar.
 
-### Paso 2 — Poner el número de WhatsApp
+### Lo unico que se configura aca: el numero de WhatsApp
 
 Abre `js/script.js`. En la línea 14 está esto:
 
@@ -74,49 +79,6 @@ Para Colombia va con el 57 adelante:
 Ese número alimenta los cuatro botones de WhatsApp de la página y el botón
 flotante de la esquina. Se cambia en un solo lugar.
 
-### Paso 3 — Crear la tabla en la base de datos
-
-1. cPanel → **Bases de datos MySQL** → crea una base de datos y un usuario,
-   y asigna el usuario a la base con **todos los privilegios**.
-   Anota los tres datos: nombre de la base, usuario y contraseña.
-2. cPanel → **phpMyAdmin** → selecciona esa base en el panel izquierdo.
-3. Pestaña **SQL** → pega todo el contenido de `db/crear-tabla.sql` → **Continuar**.
-
-Ya está creada la tabla `leads`.
-
-### Paso 4 — Conectar el formulario
-
-Abre `enviar.php`. Arriba del todo hay un bloque de configuración.
-Cambia estas seis líneas con los datos reales:
-
-```php
-define('CORREO_DESTINO',   'contacto@iwitown.com');       // a dónde llegan los leads
-define('CORREO_REMITENTE', 'no-responder@iwitown.com');   // debe ser del mismo dominio del hosting
-
-define('DB_HOST',    'localhost');            // casi siempre queda así
-define('DB_NOMBRE',  'nombre_de_la_base');    // el del paso 3
-define('DB_USUARIO', 'usuario_de_la_base');   // el del paso 3
-define('DB_CLAVE',   'clave_de_la_base');     // la del paso 3
-```
-
-**De ahí para abajo no se toca nada.**
-
-> El `CORREO_REMITENTE` tiene que ser una dirección del mismo dominio del hosting.
-> Si pones un Gmail ahí, los correos se van a spam o no salen. Es la causa
-> número uno de "el formulario no manda correos".
-
-### Paso 5 — Probar
-
-Entra a la página, llena el formulario y envíalo. Deberías ver un mensaje verde.
-Después revisa dos cosas:
-
-- Que llegó el correo a `CORREO_DESTINO`.
-- Que en phpMyAdmin, dentro de la tabla `leads`, apareció la fila nueva.
-
-Si algo falla, mira la sección 6 de este documento.
-
----
-
 ## 3. Los cambios que faltan (checklist)
 
 Todo lo que hay que reemplazar está marcado en el código con la palabra
@@ -125,22 +87,19 @@ Todo lo que hay que reemplazar está marcado en el código con la palabra
 | # | Qué | Dónde |
 |---|-----|-------|
 | 1 | Número de WhatsApp | `js/script.js`, arriba |
-| 2 | Correo, teléfono y ciudad de contacto | `index.html`, sección 9 |
+| 2 | Correo, teléfono y ciudad de contacto | `index.html`:1278-1280, bloque CONTACTO: LAS MANERAS DE HABLAR |
 | 3 | Logo de i'Witown | `assets/img/logo-iwitown.svg` |
 | 4 | Ícono del navegador | `assets/img/favicon.svg` |
 | 5 | Logo del Gimnasio Cordilleras | `assets/img/logo-cordilleras.svg` |
 | 6 | Captura de Wiwi Quest | `assets/img/wiwiquest.svg` |
 | 7 | Imagen para redes sociales | `assets/img/og-portada.jpg` (todavía no existe) |
-| 7c | **Subtítulos del tramo del medio** | `js/presentacion.js` (ver sección 10) |
-| 7f | **Capturas de I'Witutor con datos de ejemplo** | `assets/img/witutor/` (ver sección 10) |
-| 7d | **Enlace de la reunión de Teams** | `TEAMS` en `js/script.js` |
+| 7c | **Subtítulos del tramo del medio** | `js/presentacion.js` (ver sección 8) |
+| 7f | **Capturas de I'Witutor con datos de ejemplo** | `assets/img/witutor/` (ver sección 8) |
+| 7d | **Enlace de la reunión de Teams** | `TEAMS` en `js/script.js` **y** `ENLACE_TEAMS` en la Cloud Function |
 | 7e | **Revisar los textos de las 4 maquetas** | `js/ecosistema.js`, lista `ECO_APPS` |
 | 8 | Colores oficiales de i'Witown | `css/styles.css` líneas 15–27 |
 | 9 | Colores oficiales de WiTeacher | `css/simulador.css` líneas 10–17 |
 | 10 | Tipografías de marca | `assets/fonts/` + `css/styles.css` |
-| 11 | Página de política de datos | falta crear `politica-datos.html` |
-| 12 | Página de términos y condiciones | falta crear `terminos.html` |
-| 13 | Datos de la base de datos y correos | `enviar.php` arriba |
 | 14 | **Las 17 grabaciones que faltan** | `assets/audio/` (la de I'Witutor ya está) |
 | 14b | **Comprobar de oído las marcas de I'Witutor** | `js/witutor.js`, `WITUTOR_NARRACION` |
 
@@ -194,54 +153,15 @@ Mientras eso no se haga, la página usa la fuente del sistema y se ve bien igual
 
 ---
 
-## 4. Si no quieres usar base de datos todavía
-
-En `enviar.php`, deja `DB_HOST` como cadena vacía:
-
-```php
-define('DB_HOST', '');
-```
-
-El formulario va a seguir funcionando: solo manda el correo y no guarda nada.
-Después se activa la base de datos cuando esté lista, sin tocar nada más.
-
----
-
-## 5. Si el hosting no tiene PHP
-
-Poco probable, pero pasa con algunos hostings de solo archivos estáticos.
-En ese caso hay dos salidas:
-
-**a) Usar un servicio externo de formularios** (Formspree, Getform, Basin).
-Te dan una URL. En `index.html` cambias:
-
-```html
-<form id="formContacto" action="enviar.php" method="POST" novalidate>
-```
-
-por:
-
-```html
-<form id="formContacto" action="https://formspree.io/f/TU_CODIGO" method="POST" novalidate>
-```
-
-Y borras el archivo `enviar.php`. Todo lo demás sigue igual.
-
-**b) Dejar solo WhatsApp.** Borras el bloque `<div class="form-caja">` completo
-de `index.html`. Los botones de WhatsApp siguen funcionando sin ningún backend.
-
----
-
-## 6. Problemas comunes
+## 4. Problemas comunes
 
 | Síntoma | Causa más probable | Solución |
 |---|---|---|
 | **Cambiaste un archivo y la página sigue igual** | El navegador guardó la versión vieja | Ver "Al actualizar archivos" aquí abajo |
 | La página se ve sin estilos, texto plano | Se subió mal la estructura de carpetas | Verifica que exista `css/styles.css` al lado de `index.html` |
 | Los botones de WhatsApp no abren nada | Falta cambiar el número, o tiene `+` o espacios | `js/script.js` línea 14, solo dígitos |
-| El formulario dice que no pudo enviar | `enviar.php` no está en la misma carpeta que `index.html` | Súbelo al lado de `index.html` |
-| Se guarda en la BD pero no llega el correo | `CORREO_REMITENTE` no es del dominio del hosting | Crea una cuenta tipo `no-responder@tudominio.com` y úsala |
-| Llega el correo pero no se guarda en la BD | Datos de conexión mal escritos | Revisa las cuatro constantes `DB_` y que el usuario tenga privilegios |
+| El formulario dice que no pudo enviar | Las Cloud Functions no están desplegadas | Desplegarlas (`DESPLIEGUE.md` §2) y mirar `firebase functions:log` |
+| El lead queda guardado pero no llega el correo | La extensión Trigger Email no lo despachó | Revisar la colección `mail` en Firestore y los registros de la extensión |
 | Los acentos se ven como `Ã±` o `â€"` | El archivo se guardó en otra codificación | Guarda siempre en **UTF-8 sin BOM** |
 | El logo del pie de página no se ve | El pie es oscuro y el logo también | Ya hay un filtro que lo vuelve blanco. Si tienes versión blanca del logo, úsala y borra la línea `filter:` en `.pie__logo` |
 
@@ -254,40 +174,41 @@ ya entró puede seguir viendo el viejo durante días**.
 Por eso los enlaces de `index.html` llevan un número de versión:
 
 ```html
-<link rel="stylesheet" href="css/styles.css?v=2">
-<script src="js/presentacion.js?v=2"></script>
+<link rel="stylesheet" href="css/styles.css?v=304">
+<script src="js/presentacion.js?v=304"></script>
 ```
 
 **Cada vez que se cambie un CSS o un JS, hay que subirle ese número** a todos:
-`?v=2` pasa a `?v=3`, y así. Con eso el navegador entiende que es un archivo
+`?v=304` pasa a `?v=305`, y así. El número vigente está en `PENDIENTES.md` §5. Con eso el navegador entiende que es un archivo
 distinto y lo vuelve a bajar. Es un buscar-y-reemplazar de diez segundos, y se
 ahorra el clásico "a mí me sigue saliendo igual".
 
 Si estás probando en tu propio computador y no quieres tocar el número, sirve
 recargar con **Ctrl+F5** (o Cmd+Shift+R en Mac).
 
-### Para revisar los leads sin entrar a phpMyAdmin
+### Para revisar los leads
 
-Al final de `db/crear-tabla.sql` hay consultas ya escritas y comentadas:
-ver los últimos 50 contactos, filtrar solo rectores, contar por perfil y marcar
-un contacto como atendido. Se copian, se les quita el `--` del inicio y se pegan
-en la pestaña SQL de phpMyAdmin.
+Los contactos quedan en Firestore, en la coleccion `LandingLeads`, y las
+reuniones agendadas en `LandingReuniones`. Se ven desde la consola de Firebase
+del proyecto `witcoins-network`, sin necesidad de ninguna herramienta aparte.
 
 ---
 
-## 7. Datos personales — importante
+## 5. Datos personales — importante
 
 El formulario incluye una casilla de autorización de tratamiento de datos,
 como exige la **Ley 1581 de 2012** (Habeas Data) en Colombia. Esa casilla
-es obligatoria: sin marcarla el formulario no envía, y el `enviar.php`
+es obligatoria: sin marcarla el formulario no envía, y la Cloud Function
 también la valida del lado del servidor.
 
-Esa casilla enlaza a `politica-datos.html`, que **todavía hay que crear**.
-Mientras no exista, el enlace lleva a una página que no carga.
+Esa casilla enlaza a la política publicada en
+<https://www.politicasprivacidadwitcoins.com/>, y el pie enlaza además los
+términos. Son páginas externas ya vigentes: no hay nada que crear en este
+repositorio. Ver [`DESPLIEGUE.md`](DESPLIEGUE.md) §7.
 
 ---
 
-## 8. Notas de la página
+## 6. Notas de la página
 
 - Funciona en celular, tablet y computador. Está probada desde 320px de ancho.
 - Tiene navegación por teclado y etiquetas de accesibilidad en las pestañas.
@@ -301,7 +222,7 @@ Mientras no exista, el enlace lleva a una página que no carga.
 
 ---
 
-## 9. El simulador del recorrido
+## 7. El simulador del recorrido
 
 La primera pantalla de la página es un simulador interactivo. Reproduce la
 plataforma del docente (WiTeacher) para que el visitante **vea** que la profesora
@@ -554,7 +475,7 @@ cambia por dentro, el guion sigue sirviendo igual.
 
 **La voz es la misma de la frase de la apertura.** Se la presta
 `js/presentacion.js`, así que respeta lo mismo: habla con voz de hombre, y se
-calla si el visitante silenció el video. Vale lo dicho en la sección 10 sobre
+calla si el visitante silenció el video. Vale lo dicho en la sección 8 sobre
 grabar el audio de verdad.
 
 ### Sobre los pasos del recorrido
@@ -572,7 +493,7 @@ que marca el lugar exacto donde se conecta la Vista 2 cuando exista.
 
 ---
 
-## 10. La apertura: videos, frase y los tres caminos
+## 8. La apertura: videos, frase y los tres caminos
 
 Todo esto pasa **dentro del mismo contenedor**, uno detrás de otro, como una
 sola secuencia. No son secciones distintas: es un solo marco que va cambiando.

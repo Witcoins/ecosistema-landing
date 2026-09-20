@@ -4,7 +4,7 @@
 
    Antes de entrar a la reunión se piden cuatro datos. Al enviarlos,
    la reunión se abre DE UNA VEZ en otra pestaña y, por detrás,
-   agendar-teams.php manda dos correos: uno a nosotros y otro a la
+   /api/agendar-teams manda dos correos: uno a nosotros y otro a la
    persona, con el enlace.
 
    ┌──────────────────────────────────────────────────────────┐
@@ -22,9 +22,10 @@
    │  del servidor.                                           │
    └──────────────────────────────────────────────────────────┘
 
-   A dónde se mandan los datos: agendar-teams.php, en la raíz.
+   A dónde se mandan los datos: /api/agendar-teams (Cloud Function
+   landingAgendarTeams, en witown-cloud-functions).
    El enlace de la reunión está arriba de js/script.js (TEAMS) y
-   también dentro de ese PHP, para el correo.
+   también en `ENLACE_TEAMS` de functions/src/handlers/landing.js, en witown-cloud-functions, para el correo.
    ============================================================ */
 
 (function () {
@@ -121,7 +122,8 @@
       aviso.className = "teams__aviso es-bien";
     }
 
-    fetch("agendar-teams.php", { method: "POST", body: datos })
+    /* urlencoded, no FormData: la Cloud Function no parsea multipart. */
+    fetch("/api/agendar-teams", { method: "POST", body: new URLSearchParams(datos) })
       .then(function (r) { return r.json(); })
       .then(function (d) {
         if (aviso && d && d.mensaje) {
