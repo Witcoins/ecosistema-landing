@@ -1,72 +1,31 @@
 # Antes de poner la landing en línea
 
-Lista corta de lo que falta. La página funciona sin nada de esto
-—no se rompe—, pero conviene resolverlo antes de mostrarla.
+Lista corta de lo que falta. La página funciona sin nada de esto —no se
+rompe—, pero conviene resolverlo antes de mostrarla.
 
-El manual completo de montaje está en `README.md`.
+**Cómo se publica está en [`DESPLIEGUE.md`](DESPLIEGUE.md)**, que es la fuente
+única. El sitio va a **Firebase Hosting** (sitio `ecosistema-iwitown`), no a un
+hosting compartido por FTP.
 
 ---
 
-## 1. Lo que hay que llenar sí o sí
+## 1. Lo que bloquea la publicación
 
-### `enviar.php` — el formulario de "Conversemos"
-
-Líneas 29 a 33: las credenciales de la base de datos del hosting.
-
-```php
-define('DB_HOST',    'localhost');
-define('DB_NOMBRE',  'nombre_de_la_base');     // <-- REEMPLAZAR
-define('DB_USUARIO', 'usuario_de_la_base');    // <-- REEMPLAZAR
-define('DB_CLAVE',   'clave_de_la_base');      // <-- REEMPLAZAR
-```
-
-La tabla se crea con `db/crear-tabla.sql`.
-
-Si todavía no hay base de datos, se deja `DB_HOST` en `''`
-(comillas vacías) y el formulario solo manda el correo, sin guardar
-nada. Así funciona igual.
-
-### `agendar-teams.php` — el formulario antes de la reunión
-
-Línea 26: el remitente **debe ser una dirección del mismo dominio
-del hosting**, o los correos se van a spam (o no salen).
-
-```php
-define('CORREO_REMITENTE', 'no-responder@iwitown.com');   // <-- REEMPLAZAR
-```
+Los dos bloqueantes están en [`DESPLIEGUE.md`](DESPLIEGUE.md) §0. El más
+importante, resumido: **los videos `assets/video/solucion-1.mp4` y `-3.mp4`
+tienen datos de personas reales** y hay que regrabarlos. Ojo también con
+`solucion-2.mp4`: ninguna pantalla lo muestra, pero se publica igual porque
+viaja dentro de `assets/`.
 
 ---
 
 ## 2. Requisitos del hosting
 
-* **PHP 7.4 o más nuevo**, con `mail()` habilitado. Casi todos los
-  hostings compartidos lo traen.
-* **Soporte de rangos** (`Accept-Ranges: bytes`) para que los videos
-  puedan adelantarse. Apache y Nginx lo hacen solos; no hay que
-  configurar nada.
-* **No sirve GitHub Pages ni Netlify**: no ejecutan PHP, así que el
-  formulario y el correo de Teams no funcionarían. Todo lo demás sí
-  se vería bien.
+Ya no hay requisitos de hosting que cumplir: Firebase Hosting da HTTPS,
+compresión, caché y rangos de video sin configurar nada, y los dos formularios
+los atiende una Cloud Function (ver [`DESPLIEGUE.md`](DESPLIEGUE.md) §2).
 
----
-
-## 2 bis. El archivo `.htaccess`
-
-Va en la misma carpeta que el `index.html`. Trae la compresión, la
-caché de imágenes y videos, y el bloqueo de los archivos que no
-deberían verse desde el navegador. Funciona solo, no hay que
-activar nada.
-
-**Lo único que hay que revisar es el primer bloque, el de HTTPS.**
-Está activo, y solo funciona si el dominio ya tiene certificado
-SSL instalado. Si todavía no lo tiene, hay que ponerle `#` al
-principio a esas cuatro líneas hasta que el certificado esté.
-
-Si al subirlo la página da **error 500**, es que el hosting no
-tiene alguno de los módulos: se le cambia el nombre a
-`.htaccess-apagado` y la página vuelve enseguida.
-
-En hosting con Nginx el archivo no hace nada y tampoco estorba.
+Lo único que hay que tener instalado en la máquina es la CLI de Firebase.
 
 ---
 
@@ -76,14 +35,15 @@ Ninguno rompe nada: la página los pide, no los encuentra y sigue.
 
 | Archivo | Para qué es | Qué pasa si falta |
 |---|---|---|
-| `politica-datos.html` | Política de tratamiento de datos (Ley 1581) | El enlace del pie da error 404 |
-| `terminos.html` | Términos y condiciones | El enlace del pie da error 404 |
 | `assets/img/og-portada.jpg` | La imagen que se ve al compartir el enlace | Al compartir por WhatsApp no sale imagen |
 | `assets/fonts/*.woff2` | Las tipografías de la marca | Usa las del sistema, se ve bien igual |
 | `assets/audio/recorrido/01..16.mp3` | La voz del recorrido narrado | El recorrido va sin voz, con subtítulos |
+| `assets/audio/witutor/agenda.mp3` | Una de las marcas de voz de I'Witutor | Ese tramo va sin voz |
 
-Los dos primeros son los que más urgen: son enlaces visibles en el
-pie de página de todas las pestañas.
+Esta es **la lista completa**: si algo más no aparece después de publicar, es un
+problema de la subida, no un archivo que falte. Las páginas legales ya no están
+acá: los tres enlaces van a las páginas externas vigentes
+(ver [`DESPLIEGUE.md`](DESPLIEGUE.md) §7).
 
 ---
 
@@ -94,21 +54,25 @@ pie de página de todas las pestañas.
 * Los videos `assets/video/solucion-1.mp4`, `-2` y `-3` son
   grabaciones de pantalla con **datos de personas reales**
   (nombres de acudientes, de una docente y el estado de pagos de un
-  estudiante). Antes de publicar la página conviene volver a
+  estudiante). Antes de publicar la página hay que volver a
   grabarlos con datos de ejemplo, como se hizo con las capturas.
+  `-1` y `-3` se muestran en la página; `-2` no se muestra, pero se
+  publica igual.
 
 ---
 
 ## 5. Cuando se cambie cualquier archivo
 
-En `index.html` todos los archivos llevan `?v=` con un número al
-final:
+En `index.html` todos los archivos llevan `?v=` con un número al final:
 
 ```html
-<link rel="stylesheet" href="css/styles.css?v=303">
+<link rel="stylesheet" href="css/styles.css?v=304">
 ```
 
-Al cambiar un css, un js o una imagen, hay que **subirle el número a
-todos** (buscar y reemplazar `v=303` por `v=304`). Si no, los
-navegadores de quienes ya visitaron la página les siguen mostrando
-la versión vieja.
+El número vigente es **304**. Al cambiar un css, un js o una imagen hay que
+**subirle el número a todos** (buscar `v=304` y reemplazar por `v=305`). Si no,
+los navegadores de quienes ya visitaron la página les siguen mostrando la
+versión vieja.
+
+Este número es lo que hace que la caché de Firebase (un año para imágenes y
+video, una semana para css y js) no se convierta en un problema.

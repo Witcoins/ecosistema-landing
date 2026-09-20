@@ -297,7 +297,7 @@ var WIWI = "https://www.wiwiquest.iwitown.com";
 
     fetch(form.action, {
       method: "POST",
-      body: new FormData(form),
+      body: new URLSearchParams(new FormData(form)),
       headers: { "X-Requested-With": "XMLHttpRequest" }
     })
       .then(function (r) { return r.json(); })
@@ -310,7 +310,7 @@ var WIWI = "https://www.wiwiquest.iwitown.com";
         }
       })
       .catch(function () {
-        // Si el servidor no tiene PHP o falla la red, ofrecemos WhatsApp como salida.
+        // Si la funcion no responde o falla la red, ofrecemos WhatsApp como salida.
         mostrar("No pudimos enviar el formulario. Escríbenos por WhatsApp y lo resolvemos ahí mismo.", "falla");
       })
       .then(function () {

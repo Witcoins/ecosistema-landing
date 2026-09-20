@@ -18,12 +18,12 @@
 <meta name="theme-color" content="#5B21B6">
 
 <link rel="icon" href="assets/img/favicon.png" type="image/png">
-<link rel="stylesheet" href="css/styles.css?v=303">
-<link rel="stylesheet" href="css/simulador.css?v=303">
-<link rel="stylesheet" href="css/actividades.css?v=303">
-<link rel="stylesheet" href="css/presentacion.css?v=303">
-<link rel="stylesheet" href="css/apps.css?v=303">
-<link rel="stylesheet" href="css/consultoria.css?v=303">
+<link rel="stylesheet" href="css/styles.css?v=304">
+<link rel="stylesheet" href="css/simulador.css?v=304">
+<link rel="stylesheet" href="css/actividades.css?v=304">
+<link rel="stylesheet" href="css/presentacion.css?v=304">
+<link rel="stylesheet" href="css/apps.css?v=304">
+<link rel="stylesheet" href="css/consultoria.css?v=304">
 </head>
 <body>
 
@@ -35,7 +35,7 @@
     <div class="nav__marca">
       <a href="#marca" class="nav__sello" id="navSello"
          aria-label="Ver la animación de la marca">
-        <img src="assets/img/marca-circular.webp?v=303" alt="" class="nav__logo">
+        <img src="assets/img/marca-circular.webp?v=304" alt="" class="nav__logo">
       </a>
       <a href="#inicio" class="nav__nombre">i’Witown</a>
     </div>
@@ -88,7 +88,7 @@
 <section class="marca" id="marca" hidden>
   <div class="marca__escena" id="marcaEscena">
     <video class="marca__video" id="marcaVideo"
-           src="assets/video/marca.mp4?v=303"
+           src="assets/video/marca.mp4?v=304"
            muted playsinline preload="auto"></video>
   </div>
 </section>
@@ -141,7 +141,7 @@
         <span class="celular__isla" aria-hidden="true"></span>
         <video class="celular__video" id="celVideo" autoplay loop muted playsinline
                preload="auto" aria-label="Presentación de i'Witown">
-          <source src="assets/video/portada-vertical.mp4?v=303" type="video/mp4">
+          <source src="assets/video/portada-vertical.mp4?v=304" type="video/mp4">
         </video>
         <span class="celular__brillo" aria-hidden="true"></span>
 
@@ -842,7 +842,7 @@
           <!-- Cada tarjeta manda una pantalla al celular de su panel:
                "data-sol" dice cuál. La que se está viendo se marca sola. -->
           <div class="aspectos">
-            <article class="aspecto" data-sol="assets/video/solucion-4.mp4?v=303" data-sol-desde="0" data-sol-nombre="Secciones para seguimiento">
+            <article class="aspecto" data-sol="assets/video/solucion-4.mp4?v=304" data-sol-desde="0" data-sol-nombre="Secciones para seguimiento">
               <h3 class="aspecto__titulo">Secciones para seguimiento</h3>
               <p class="aspecto__texto">El acompañamiento al proceso del estudiante se respalda con datos en tiempo real.</p>
             </article>
@@ -852,7 +852,7 @@
               <p class="aspecto__texto">Ves en tiempo real quién leyó y quién firmó cada mensaje. Se acabaron las circulares perdidas en la mochila.</p>
             </article>
 
-            <article class="aspecto" data-sol="assets/video/solucion-1.mp4?v=303" data-sol-nombre="Trazabilidad real de uso">
+            <article class="aspecto" data-sol="assets/video/solucion-1.mp4?v=304" data-sol-nombre="Trazabilidad real de uso">
               <h3 class="aspecto__titulo">Trazabilidad real de uso</h3>
               <p class="aspecto__texto">Ves quién entra, qué usa y con qué frecuencia. No supones: verificas.</p>
             </article>
@@ -941,7 +941,7 @@
               <p class="aspecto__texto">Sin perderse entre cien mensajes de WhatsApp.</p>
             </article>
 
-            <article class="aspecto" data-sol="assets/video/solucion-3.mp4?v=303" data-sol-nombre="Los papás ven al día qué han pagado">
+            <article class="aspecto" data-sol="assets/video/solucion-3.mp4?v=304" data-sol-nombre="Los papás ven al día qué han pagado">
               <h3 class="aspecto__titulo">Los papás ven al día qué han pagado</h3>
               <p class="aspecto__texto">Entras y ves mes por mes qué está al día y qué no. Sin llamar a preguntar y sin reclamos por un recibo que nadie encuentra.</p>
             </article>
@@ -1076,7 +1076,7 @@
          └───────────────────────────────────────────────────────┘ -->
     <header class="seccion__head con-cabeza" id="conCabeza">
       <img class="con-cabeza__foto" id="conFoto" alt=""
-           src="assets/img/consultoria.webp?v=303">
+           src="assets/img/consultoria.webp?v=304">
 
       <div class="con-cabeza__texto">
         <h2 class="con-titulo">
@@ -1166,10 +1166,10 @@
         <!-- Sin "poster" a propósito: si no, lo primero que se vería
              sería la foto, y esta sección abre con el video. -->
         <video playsinline muted preload="auto">
-          <source src="assets/video/asesora.mp4?v=303" type="video/mp4">
+          <source src="assets/video/asesora.mp4?v=304" type="video/mp4">
         </video>
 
-        <img class="ctc-video__final" src="assets/img/asesora.webp?v=303"
+        <img class="ctc-video__final" src="assets/img/asesora.webp?v=304"
              alt="Asesora de i'Witown lista para atender" aria-hidden="true">
 
         <div class="ctc-video__mandos">
@@ -1298,7 +1298,7 @@
           <h3>Déjanos tus datos</h3>
           <p class="form-caja__sub">Te contactamos nosotros.</p>
 
-          <form id="formContacto" action="enviar.php" method="POST" novalidate>
+          <form id="formContacto" action="/api/contacto" method="POST" novalidate>
             <!-- Trampa anti-spam: si un robot la llena, el envío se descarta. No la borres. -->
             <div class="miel" aria-hidden="true">
               <label>No llenar este campo <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
@@ -1349,8 +1349,7 @@
                 <label>
                   <input type="checkbox" name="autoriza" value="si" required>
                   <span>Autorizo el tratamiento de mis datos personales conforme a la
-                  <!-- REEMPLAZAR: enlace a la política de datos real -->
-                  <a href="politica-datos.html" target="_blank" rel="noopener">política de tratamiento de datos</a>.</span>
+                  <a href="https://www.politicasprivacidadwitcoins.com/" target="_blank" rel="noopener">política de tratamiento de datos</a>.</span>
                 </label>
               </div>
             </div>
@@ -1368,10 +1367,10 @@
         <div class="ctc-video">
           <!-- Sin "poster": abre con el video, no con la foto -->
           <video playsinline muted preload="auto">
-            <source src="assets/video/asesor.mp4?v=303" type="video/mp4">
+            <source src="assets/video/asesor.mp4?v=304" type="video/mp4">
           </video>
 
-          <img class="ctc-video__final" src="assets/img/asesor.webp?v=303"
+          <img class="ctc-video__final" src="assets/img/asesor.webp?v=304"
                alt="Asesor de i'Witown listo para atender" aria-hidden="true">
 
           <div class="ctc-video__mandos">
@@ -1420,9 +1419,17 @@
       <a href="#acp">La A.C.P.</a>
     </div>
     <div class="pie__col">
+      <p class="pie__titulo">Síguenos</p>
+      <a href="https://www.instagram.com/iwitown" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.facebook.com/share/1MPWQTf7HE/" target="_blank" rel="noopener">Facebook</a>
+      <a href="https://www.tiktok.com/@iwitown_" target="_blank" rel="noopener">TikTok</a>
+      <a href="https://www.youtube.com/@iwitown" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://www.linkedin.com/company/gain-money-group/" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+    <div class="pie__col">
       <p class="pie__titulo">Legal</p>
-      <a href="politica-datos.html">Política de tratamiento de datos</a>
-      <a href="terminos.html">Términos y condiciones</a>
+      <a href="https://www.politicasprivacidadwitcoins.com/" target="_blank" rel="noopener">Política de tratamiento de datos</a>
+      <a href="https://www.politicasprivacidadwitcoins.com/terminos-y-condiciones" target="_blank" rel="noopener">Términos y condiciones</a>
     </div>
   </div>
   <div class="pie__base">
@@ -1442,7 +1449,7 @@
      ============================================================ -->
 <!-- =================== ANTES DE LA REUNIÓN ===================
      Cuatro datos y adentro. Al enviar, la reunión se abre en otra
-     pestaña y agendar-teams.php manda los dos correos.
+     pestaña y /api/agendar-teams manda los dos correos.
      Lo maneja js/teams.js.
      ============================================================ -->
 <div class="teams" id="teamsCaja" hidden>
@@ -1500,30 +1507,30 @@
   </figure>
 </div>
 
-<script src="js/lupa.js?v=303"></script>
-<script src="js/tableta.js?v=303"></script>
-<script src="js/solucion.js?v=303"></script>
-<script src="js/vistas.js?v=303"></script>
-<script src="js/portada.js?v=303"></script>
-<script src="js/script.js?v=303"></script>
-<script src="js/actividades.js?v=303"></script>
-<script src="js/simulador.js?v=303"></script>
-<script src="js/recorrido.js?v=303"></script>
-<script src="js/app-visor.js?v=303"></script>
-<script src="js/witutor-pantallas.js?v=303"></script>
-<script src="js/witutor.js?v=303"></script>
-<script src="js/witeacher.js?v=303"></script>
-<script src="js/iwitown.js?v=303"></script>
-<script src="js/admon.js?v=303"></script>
-<script src="js/mapa.js?v=303"></script>
-<script src="js/acp.js?v=303"></script>
-<script src="js/acp-red.js?v=303"></script>
-<script src="js/consultoria.js?v=303"></script>
-<script src="js/plataformas.js?v=303"></script>
-<script src="js/asesora.js?v=303"></script>
-<script src="js/teams.js?v=303"></script>
-<script src="js/marca.js?v=303"></script>
-<script src="js/ecosistema.js?v=303"></script>
-<script src="js/presentacion.js?v=303"></script>
+<script src="js/lupa.js?v=304"></script>
+<script src="js/tableta.js?v=304"></script>
+<script src="js/solucion.js?v=304"></script>
+<script src="js/vistas.js?v=304"></script>
+<script src="js/portada.js?v=304"></script>
+<script src="js/script.js?v=304"></script>
+<script src="js/actividades.js?v=304"></script>
+<script src="js/simulador.js?v=304"></script>
+<script src="js/recorrido.js?v=304"></script>
+<script src="js/app-visor.js?v=304"></script>
+<script src="js/witutor-pantallas.js?v=304"></script>
+<script src="js/witutor.js?v=304"></script>
+<script src="js/witeacher.js?v=304"></script>
+<script src="js/iwitown.js?v=304"></script>
+<script src="js/admon.js?v=304"></script>
+<script src="js/mapa.js?v=304"></script>
+<script src="js/acp.js?v=304"></script>
+<script src="js/acp-red.js?v=304"></script>
+<script src="js/consultoria.js?v=304"></script>
+<script src="js/plataformas.js?v=304"></script>
+<script src="js/asesora.js?v=304"></script>
+<script src="js/teams.js?v=304"></script>
+<script src="js/marca.js?v=304"></script>
+<script src="js/ecosistema.js?v=304"></script>
+<script src="js/presentacion.js?v=304"></script>
 </body>
 </html>
