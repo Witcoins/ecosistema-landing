@@ -95,7 +95,7 @@ Todo lo que hay que reemplazar está marcado en el código con la palabra
 | 7 | Imagen para redes sociales | `assets/img/og-portada.jpg` (todavía no existe) |
 | 7c | **Subtítulos del tramo del medio** | `js/presentacion.js` (ver sección 8) |
 | 7f | **Capturas de I'Witutor con datos de ejemplo** | `assets/img/witutor/` (ver sección 8) |
-| 7d | **Enlace de la reunión de Teams** | `TEAMS` en `js/script.js` **y** `ENLACE_TEAMS` en la Cloud Function |
+| 7d | **Enlace de la reunión de Teams** | `ENLACE_TEAMS` en `landingAgenda.js` (repo witown-cloud-functions) |
 | 7e | **Revisar los textos de las 4 maquetas** | `js/ecosistema.js`, lista `ECO_APPS` |
 | 8 | Colores oficiales de i'Witown | `css/styles.css` líneas 15–27 |
 | 9 | Colores oficiales de WiTeacher | `css/simulador.css` líneas 10–17 |
@@ -935,16 +935,17 @@ visitante pasa por encima. Los textos están en `ECO_PIE`, en el mismo archivo.
 
 Es la pantalla de la tercera tarjeta: tres botones, uno por canal.
 
-| Botón | De dónde saca el enlace |
+| Botón | A dónde lleva |
 |---|---|
-| Reunión virtual (Teams) | `TEAMS` en `js/script.js` |
+| Agendar reunión | abre el calendario del recuadro (`js/teams.js`) |
 | WhatsApp | `WHATSAPP` en `js/script.js` |
-| Correo | `CORREO` en `js/script.js` |
+| Correo | baja al formulario de la propia página (`#conversemos`) |
 
-**`TEAMS` está vacío.** Mientras lo esté, ese botón sale apagado y no se puede
-pinchar: es preferible a que alguien haga clic y no pase nada. Sirve cualquier
-enlace donde la persona agende: Microsoft Bookings, un calendario de citas o
-una reunión fija de Teams.
+Ninguno de los tres sale a un sitio externo. El de agendar pide los cupos a
+`/api/horas` y reserva con `/api/agendar`; el enlace de la sala de Teams vive en
+`ENLACE_TEAMS`, en `landingAgenda.js` del repo `witown-cloud-functions`, porque
+es el que va en la invitación que recibe el visitante. Ver
+[`DESPLIEGUE.md`](DESPLIEGUE.md) §2.
 
 ### La voz que dice la frase
 

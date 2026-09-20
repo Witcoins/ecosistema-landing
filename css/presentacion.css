@@ -948,11 +948,12 @@
   stroke-linecap: round;
   stroke-linejoin: round;
 }
-.ctc__boton--teams .ctc__ico { background: linear-gradient(150deg, #760467, #45023C); }
+/* Agendar es la accion principal, asi que lleva el morado de la marca: era el
+   del boton de Teams, que ya no existe. Se fueron con el las reglas de
+   --teams y --forma, cuyos botones se borraron. */
+.ctc__boton--cal .ctc__ico   { background: linear-gradient(150deg, #760467, #45023C); }
 .ctc__boton--wa .ctc__ico    { background: linear-gradient(150deg, #34D399, var(--whatsapp-oscuro)); }
 .ctc__boton--mail .ctc__ico  { background: linear-gradient(150deg, #38BDF8, #1D7FD4); }
-.ctc__boton--cal .ctc__ico   { background: linear-gradient(150deg, #FBBF24, #D97706); }
-.ctc__boton--forma .ctc__ico { background: linear-gradient(150deg, #A855F7, #6D28D9); }
 
 .ctc__texto { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
 .ctc__texto strong { font-size: .95rem; font-weight: 800; color: var(--tinta); }

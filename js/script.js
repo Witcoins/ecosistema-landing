@@ -11,44 +11,21 @@
 
 var WHATSAPP = "573236007819";
 
-/* ┌──────────────────────────────────────────────────────────┐
-   │  LOS OTROS DOS DATOS DE CONTACTO.                        │
-   │                                                          │
-   │  Los usa la pantalla "Contactar para recibir visita",    │
-   │  al final del recorrido de la página de inicio.          │
-   │                                                          │
-   │  TEAMS: el enlace donde la persona agenda la reunión.    │
-   │  Sirve un enlace de Microsoft Bookings, un calendario    │
-   │  de citas o una reunión fija de Teams.                   │
-   │                                                          │
-   │  Mientras esté vacío, el botón de Teams sale apagado y   │
-   │  no se puede pinchar: así nadie hace clic en un enlace   │
-   │  que no lleva a ninguna parte.                           │
-   └──────────────────────────────────────────────────────────┘ */
-
-var TEAMS  = "https://teams.microsoft.com/meet/2171674064633?p=43SvylWLRpzrCnfPHb";
-var CORREO = "contacto@iwitown.com";    // <-- REEMPLAZAR
-
-/* ┌──────────────────────────────────────────────────────────┐
-   │  EL CALENDARIO DE CITAS                                  │
-   │                                                          │
-   │  El enlace donde la persona escoge día y hora sola.      │
-   │                                                          │
-   │  OJO: NO sirve la dirección del calendario propio, esa   │
-   │  que empieza por calendar.google.com/calendar/u/0. Esa   │
-   │  abre el calendario de uno, y al visitante le pediría    │
-   │  iniciar sesión o le mostraría el suyo.                  │
-   │                                                          │
-   │  Lo que va aquí es la página de reservas: en Google se   │
-   │  crea con "Programa de citas" y el enlace que entrega     │
-   │  empieza por calendar.app.google/...                     │
-   │  También sirve uno de Microsoft Bookings o de Calendly.  │
-   │                                                          │
-   │  Mientras esté vacío, ese botón sale apagado y no se     │
-   │  puede pinchar, igual que el de Teams.                   │
-   └──────────────────────────────────────────────────────────┘ */
-
-var CALENDARIO = "https://calendar.app.google/fms8qTubGx4vmsWM8";
+/* ┌──────────────────────────────────────────────────────┐
+   │  LO QUE YA NO SE CONFIGURA AQUI                         │
+   │                                                        │
+   │  La direccion de correo se escribe a mano en los datos  │
+   │  de contacto del index.html. Aqui ya no hay constante,   │
+   │  para que no queden dos sitios donde cambiarla y uno se  │
+   │  quede viejo. El boton de correo baja al formulario de   │
+   │  la propia pagina.                                      │
+   │                                                        │
+   │  Tampoco hay TEAMS ni CALENDARIO: el boton de la        │
+   │  reunion abre el calendario del recuadro (js/teams.js),  │
+   │  y el enlace de la sala vive en ENLACE_TEAMS, en        │
+   │  landingAgenda.js del repo witown-cloud-functions,      │
+   │  porque es el que va en la invitacion del visitante.    │
+   └──────────────────────────────────────────────────────┘ */
 
 /* ┌──────────────────────────────────────────────────────────┐
    │  A DÓNDE LLEVA "INGRESAR", el botón de la barra de       │
@@ -92,11 +69,8 @@ var WIWI = "https://www.wiwiquest.iwitown.com";
    ============================================================ */
 
 (function () {
-  var correos = document.querySelectorAll("[data-correo]");
-  for (var i = 0; i < correos.length; i++) {
-    correos[i].href = "mailto:" + CORREO +
-      "?subject=" + encodeURIComponent("Quiero conocer i'Witown para mi colegio");
-  }
+  /* El boton de correo ya no abre el programa de correo del visitante: baja
+     al formulario de la propia pagina (href="#conversemos" en el HTML). */
 
   var entradas = document.querySelectorAll("[data-ingresar]");
   for (var k = 0; k < entradas.length; k++) {
@@ -111,8 +85,6 @@ var WIWI = "https://www.wiwiquest.iwitown.com";
     }
   }
 
-  enlazar("[data-teams]", TEAMS, "Falta pegar el enlace de la reunión en js/script.js");
-  enlazar("[data-calendario]", CALENDARIO, "Falta pegar el enlace del calendario en js/script.js");
   enlazar("[data-wiwi]", WIWI, "Falta pegar el enlace de Wiwi en js/script.js", "Falta enlace a esta página");
 
   /* Los botones que dependen de un enlace de la cabecera de este

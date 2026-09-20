@@ -17,8 +17,12 @@
         "function": { "functionId": "landingContacto", "region": "us-central1" }
       },
       {
-        "source": "/api/agendar-teams",
-        "function": { "functionId": "landingAgendarTeams", "region": "us-central1" }
+        "source": "/api/horas",
+        "function": { "functionId": "landingHoras", "region": "us-central1" }
+      },
+      {
+        "source": "/api/agendar",
+        "function": { "functionId": "landingAgendar", "region": "us-central1" }
       }
     ],
     "headers": [
