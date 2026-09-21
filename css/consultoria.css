@@ -31,10 +31,79 @@
 .con-bajada {
   max-width: 640px;
   margin: 0 auto 1.6rem;
+  /* ahora abre cada cuarto, así que no lleva nada encima */
   text-align: center;
   color: var(--tinta-suave);
   font-size: .98rem;
 }
+
+/* ---- Las cinco puertas ----
+
+   Lo primero de la sección: cinco entradas del mismo tamaño, y el
+   prospecto escoge por dónde entrar. Antes todo iba uno debajo del
+   otro y se le venía encima de una vez.
+
+   La abierta se pinta con el color de la unidad; las otras cuatro
+   quedan en blanco, esperando. */
+
+.con-puertas {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin: 0 0 26px;
+}
+
+.con-puerta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  min-width: 0;
+  text-align: left;
+  padding: 16px 16px 15px;
+  border: 1.5px solid var(--gris-borde);
+  border-radius: var(--radio);
+  background: var(--blanco);
+  font: inherit;
+  cursor: pointer;
+  box-shadow: var(--sombra);
+  transition: transform .2s ease, border-color .2s ease,
+              background .2s ease, box-shadow .2s ease;
+}
+.con-puerta:hover {
+  transform: translateY(-3px);
+  border-color: var(--morado-300);
+  box-shadow: var(--sombra-fuerte);
+}
+.con-puerta:focus-visible {
+  outline: 3px solid var(--morado-300);
+  outline-offset: 3px;
+}
+
+.con-puerta__nombre {
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.2;
+  color: var(--morado-700);
+  overflow-wrap: anywhere;
+}
+.con-puerta__gancho {
+  font-size: .84rem;
+  line-height: 1.4;
+  color: var(--tinta-suave);
+}
+
+.con-puerta.es-abierta {
+  background: var(--morado-700);
+  border-color: var(--morado-700);
+  transform: none;
+}
+.con-puerta.es-abierta .con-ico,
+.con-puerta.es-abierta .con-puerta__nombre { color: #fff; }
+.con-puerta.es-abierta .con-puerta__gancho { color: rgba(255, 255, 255, .82); }
+
+/* El cuarto que se abre entra con el mismo gesto que el resto */
+.con-cuarto.es-entra { animation: conEntra .34s ease both; }
 
 /* ---- 1. De qué partimos: ocho fichas ---- */
 
@@ -358,6 +427,17 @@
 }
 
 /* ---- En el teléfono ---- */
+
+@media (max-width: 1040px) {
+  .con-puertas { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 680px) {
+  .con-puertas { grid-template-columns: 1fr 1fr; gap: 9px; }
+  .con-puerta { padding: 12px 12px 11px; }
+  .con-puerta__nombre { font-size: .92rem; }
+  .con-puerta__gancho { display: none; }   /* en el teléfono estorba */
+}
 
 @media (max-width: 760px) {
   .con-bloque__cuerpo { grid-template-columns: 1fr; }

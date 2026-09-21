@@ -27,6 +27,35 @@
    ============================================================ */
 
 
+/* ---- 0. LAS CINCO PUERTAS -----------------------------------
+   Lo primero que ve el prospecto: cinco entradas del mismo
+   tamaño, y escoge por dónde entrar. El "cuarto" es el bloque
+   que abre cada una; tiene que coincidir con el atributo
+   data-cuarto del index.html. */
+
+var CON_PUERTAS = [
+  { cuarto: "identidad",  icono: "brujula",
+    nombre: "De dónde partimos",
+    gancho: "La identidad del colegio, antes que cualquier metodología." },
+
+  { cuarto: "innovacion", icono: "bombillo",
+    nombre: "Las dos innovaciones",
+    gancho: "La pedagógica y la tecnológica, empujando para el mismo lado." },
+
+  { cuarto: "propositos", icono: "diana",
+    nombre: "Para qué",
+    gancho: "Qué tiene que lograr la tecnología para valer la pena." },
+
+  { cuarto: "alcances",   icono: "capas",
+    nombre: "Hasta dónde llega",
+    gancho: "Ocho frentes de trabajo, del currículo a las familias." },
+
+  { cuarto: "proceso",    icono: "ramas",
+    nombre: "Cómo trabajamos",
+    gancho: "Diagnóstico, diseño, implementación y seguimiento." }
+];
+
+
 /* ---- 1. DE QUÉ PARTIMOS -------------------------------------
    Los ocho asuntos que se miran antes de proponer nada. */
 
@@ -482,7 +511,57 @@ var CON_PROCESO = [
   }
 
 
+  /* ---- Las cinco puertas ----
+
+     Se dibujan las entradas y se deja abierta la primera. Al tocar
+     una, se esconden los otros cuatro cuartos. */
+  function armarPuertas() {
+    var c = caja("conPuertas");
+    if (!c) return;
+
+    var h = "";
+    for (var i = 0; i < CON_PUERTAS.length; i++) {
+      var pu = CON_PUERTAS[i];
+      h += '<button type="button" class="con-puerta' + (i === 0 ? " es-abierta" : "") +
+           '" data-abre="' + pu.cuarto + '" aria-pressed="' + (i === 0) + '">' +
+             dibujo(pu.icono) +
+             '<span class="con-puerta__nombre">' + esc(pu.nombre) + '</span>' +
+             '<span class="con-puerta__gancho">' + esc(pu.gancho) + '</span>' +
+           '</button>';
+    }
+    c.innerHTML = h;
+
+    var puertas = c.querySelectorAll(".con-puerta");
+    var cuartos = raiz.querySelectorAll("[data-cuarto]");
+
+    function abrir(cual) {
+      for (var a = 0; a < puertas.length; a++) {
+        var suya = puertas[a].getAttribute("data-abre") === cual;
+        puertas[a].classList.toggle("es-abierta", suya);
+        puertas[a].setAttribute("aria-pressed", suya ? "true" : "false");
+      }
+      for (var b = 0; b < cuartos.length; b++) {
+        var mio = cuartos[b].getAttribute("data-cuarto") === cual;
+        cuartos[b].hidden = !mio;
+        if (mio) {
+          cuartos[b].classList.remove("es-entra");
+          /* jshint expr:true */
+          cuartos[b].offsetWidth;
+          cuartos[b].classList.add("es-entra");
+        }
+      }
+    }
+
+    for (var d = 0; d < puertas.length; d++) {
+      puertas[d].addEventListener("click", (function (cual) {
+        return function () { abrir(cual); };
+      })(puertas[d].getAttribute("data-abre")));
+    }
+  }
+
+
   prepararCabeza();
+  armarPuertas();
   armarIdentidad();
   armarInnovacion();
   armarPropositos();
