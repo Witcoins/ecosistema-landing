@@ -104,10 +104,10 @@
    otro. */
 
 .con-identidad {
-  display: grid;
-  grid-template-columns: minmax(230px, 300px) 1fr;
-  gap: 20px;
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  gap: 18px;
 }
 
 .con-rueda {
@@ -115,6 +115,7 @@
   flex-direction: column;
   align-items: stretch;
   gap: 4px;
+  width: min(100%, 360px);
 }
 
 .con-rueda__flecha {
@@ -198,6 +199,9 @@
 
 /* Lo que dice la que quedó en la ventana */
 .con-rueda__texto {
+  width: 100%;
+  max-width: 760px;
+  text-align: center;
   background: var(--blanco);
   border: 1px solid var(--gris-borde);
   border-radius: var(--radio);
@@ -513,7 +517,6 @@
 }
 
 @media (max-width: 760px) {
-  .con-identidad { grid-template-columns: 1fr; }
   .con-bloque__cuerpo { grid-template-columns: 1fr; }
   .con-detalle { min-height: 0; }
   .con-frase, .con-cierre { padding: 18px 18px; }
