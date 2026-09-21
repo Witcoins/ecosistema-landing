@@ -283,20 +283,125 @@ var CON_PROCESO = [
   function caja(id) { return document.getElementById(id); }
 
 
-  /* ---- 1. De qué partimos ---- */
+  /* ---- 1. De qué partimos: la rueda ----
+
+     Las ocho cosas no se muestran todas a la vez: van en una rueda
+     que gira, como la de una tragamonedas. La que queda en la
+     ventana del medio es la que se explica debajo.
+
+     Se mueve con las flechas, tocando el nombre de arriba o de
+     abajo, o con las teclas. Al abrir la puerta da una vuelta de
+     presentación. */
+
+  var RUEDA_ALTO = 46;          /* lo que mide cada renglón, en píxeles */
+
   function armarIdentidad() {
     var c = caja("conIdentidad");
     if (!c) return;
-    var h = "";
-    for (var i = 0; i < CON_IDENTIDAD.length; i++) {
-      var p = CON_IDENTIDAD[i];
-      h += '<article class="con-pieza">' +
-             dibujo(p.icono) +
-             '<h4>' + esc(p.nombre) + '</h4>' +
-             '<p>' + esc(p.texto) + '</p>' +
-           '</article>';
+
+    var total = CON_IDENTIDAD.length;
+    var enQue = 0;
+    var girando = false;
+
+    var h = '<div class="con-rueda">' +
+              '<button type="button" class="con-rueda__flecha" data-giro="-1"' +
+              ' aria-label="Anterior">' +
+                '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg>' +
+              '</button>' +
+              '<div class="con-rueda__ventana">' +
+                '<ul class="con-rueda__cinta" id="conCinta">';
+
+    /* La cinta lleva la última de primera y la primera de última:
+       así, en los extremos, arriba y abajo siempre se asoma la que
+       sigue, y la rueda se ve redonda. */
+    var orden = [total - 1];
+    for (var o = 0; o < total; o++) { orden.push(o); }
+    orden.push(0);
+
+    for (var i = 0; i < orden.length; i++) {
+      var cual = orden[i];
+      h += '<li class="con-rueda__item" data-va="' + cual + '">' +
+             dibujo(CON_IDENTIDAD[cual].icono) +
+             '<span>' + esc(CON_IDENTIDAD[cual].nombre) + '</span>' +
+           '</li>';
     }
+
+    h += '</ul><span class="con-rueda__marco" aria-hidden="true"></span></div>' +
+         '<button type="button" class="con-rueda__flecha" data-giro="1"' +
+         ' aria-label="Siguiente">' +
+           '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>' +
+         '</button>' +
+         '</div>' +
+         '<div class="con-rueda__texto" id="conRuedaTexto" aria-live="polite"></div>';
+
     c.innerHTML = h;
+
+    var cinta = caja("conCinta");
+    var texto = caja("conRuedaTexto");
+    var items = cinta.querySelectorAll(".con-rueda__item");
+
+    function pintar() {
+      /* La ventana muestra tres renglones: el de la mitad es el
+         escogido, así que la cinta se corre uno hacia arriba. */
+      cinta.style.transform = "translateY(" + (-enQue * RUEDA_ALTO) + "px)";
+      for (var a = 0; a < items.length; a++) {
+        items[a].classList.toggle("es-elegido", a === enQue + 1);
+      }
+      var p = CON_IDENTIDAD[enQue];
+      texto.innerHTML = "<h4>" + esc(p.nombre) + "</h4><p>" + esc(p.texto) + "</p>";
+      texto.classList.remove("es-entra");
+      /* jshint expr:true */
+      texto.offsetWidth;
+      texto.classList.add("es-entra");
+    }
+
+    function mover(cuanto) {
+      enQue = (enQue + cuanto + total) % total;
+      pintar();
+    }
+
+    /* La vuelta de presentación: arranca abajo y sube hasta la
+       primera, frenando de a poco. */
+    function girar() {
+      if (girando) return;
+      girando = true;
+      /* Da una vuelta entera y frena en la primera, sin importar
+         dónde hubiera quedado. */
+      var pasos = total + ((total - enQue) % total);
+      var espera = 55;
+      (function paso() {
+        mover(1);
+        pasos--;
+        if (pasos > 0) {
+          espera = espera + 18;
+          window.setTimeout(paso, espera);
+        } else {
+          girando = false;
+        }
+      })();
+    }
+
+    var flechas = c.querySelectorAll(".con-rueda__flecha");
+    for (var f = 0; f < flechas.length; f++) {
+      flechas[f].addEventListener("click", (function (cuanto) {
+        return function () { if (!girando) mover(cuanto); };
+      })(parseInt(flechas[f].getAttribute("data-giro"), 10)));
+    }
+
+    for (var k = 0; k < items.length; k++) {
+      items[k].addEventListener("click", (function (n) {
+        return function () { if (!girando) { enQue = n; pintar(); } };
+      })(parseInt(items[k].getAttribute("data-va"), 10)));
+    }
+
+    c.addEventListener("keydown", function (ev) {
+      if (girando) return;
+      if (ev.key === "ArrowDown") { ev.preventDefault(); mover(1); }
+      if (ev.key === "ArrowUp")   { ev.preventDefault(); mover(-1); }
+    });
+
+    pintar();
+    window.conGiraLaRueda = girar;
   }
 
 
@@ -547,6 +652,9 @@ var CON_PROCESO = [
         var mio = cuartos[b].getAttribute("data-cuarto") === cual;
         cuartos[b].hidden = !mio;
         if (mio) {
+          if (cual === "identidad" && typeof window.conGiraLaRueda === "function") {
+            window.conGiraLaRueda();
+          }
           cuartos[b].classList.remove("es-entra");
           /* jshint expr:true */
           cuartos[b].offsetWidth;

@@ -95,39 +95,127 @@
 /* El cuarto que se abre entra con el mismo gesto que el resto */
 .con-cuarto.es-entra { animation: conEntra .34s ease both; }
 
-/* ---- 1. De qué partimos: ocho fichas ---- */
+/* ---- 1. De qué partimos: la rueda ----
+
+   Las ocho cosas van en una rueda que gira, como la de una
+   tragamonedas: la que queda en la ventana del medio es la que se
+   explica al lado. El alto del renglón (46px) también está en
+   js/consultoria.js, en RUEDA_ALTO: si se cambia uno, se cambia el
+   otro. */
 
 .con-identidad {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: 14px;
+  grid-template-columns: minmax(230px, 300px) 1fr;
+  gap: 20px;
+  align-items: center;
 }
 
-.con-pieza {
+.con-rueda {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+}
+
+.con-rueda__flecha {
+  display: grid;
+  place-items: center;
+  height: 28px;
+  border: 0;
+  border-radius: var(--radio-chico);
+  background: transparent;
+  color: var(--morado-600);
+  cursor: pointer;
+  transition: background .18s ease;
+}
+.con-rueda__flecha:hover { background: var(--morado-050); }
+.con-rueda__flecha svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* La ventana: tres renglones, y lo demás se esconde arriba y abajo */
+.con-rueda__ventana {
+  position: relative;
+  height: 138px;            /* 3 renglones de 46 */
+  overflow: hidden;
+  border-radius: var(--radio);
+  background: var(--blanco);
+  border: 1px solid var(--gris-borde);
+  box-shadow: inset 0 10px 14px -12px rgba(0, 0, 0, .28),
+              inset 0 -10px 14px -12px rgba(0, 0, 0, .28);
+}
+
+.con-rueda__cinta {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  transition: transform .34s cubic-bezier(.22, .68, .35, 1.02);
+}
+
+.con-rueda__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 46px;
+  padding: 0 14px;
+  font-size: .92rem;
+  color: var(--tinta-suave);
+  cursor: pointer;
+  opacity: .55;
+  transition: opacity .2s ease, color .2s ease;
+}
+.con-rueda__item .con-ico { width: 20px; height: 20px; }
+.con-rueda__item:hover { opacity: .85; }
+
+.con-rueda__item.es-elegido {
+  opacity: 1;
+  color: var(--morado-700);
+  font-weight: 700;
+}
+.con-rueda__item.es-elegido .con-ico { color: var(--morado-600); }
+
+/* El marco que señala el renglón de la mitad */
+.con-rueda__marco {
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  top: 46px;
+  height: 46px;
+  border-radius: var(--radio-chico);
+  border: 1.5px solid var(--morado-300);
+  background: var(--morado-050);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Lo que dice la que quedó en la ventana */
+.con-rueda__texto {
   background: var(--blanco);
   border: 1px solid var(--gris-borde);
   border-radius: var(--radio);
-  padding: 18px 16px;
+  padding: 22px 24px;
   box-shadow: var(--sombra);
-  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
 }
-.con-pieza:hover {
-  transform: translateY(-3px);
-  border-color: var(--morado-300);
-  box-shadow: var(--sombra-fuerte);
-}
-.con-pieza h4 {
-  margin: .6rem 0 .3rem;
-  font-size: 1rem;
-  color: var(--morado-700);
+.con-rueda__texto h4 {
+  margin: 0 0 .5rem;
+  font-size: 1.14rem;
   line-height: 1.25;
+  color: var(--morado-700);
 }
-.con-pieza p {
+.con-rueda__texto p {
   margin: 0;
-  font-size: .9rem;
-  line-height: 1.45;
   color: var(--tinta-suave);
+  line-height: 1.6;
 }
+.con-rueda__texto.es-entra { animation: conEntra .3s ease both; }
 
 /* El dibujo, el mismo en toda la sección */
 .con-ico {
@@ -425,6 +513,7 @@
 }
 
 @media (max-width: 760px) {
+  .con-identidad { grid-template-columns: 1fr; }
   .con-bloque__cuerpo { grid-template-columns: 1fr; }
   .con-detalle { min-height: 0; }
   .con-frase, .con-cierre { padding: 18px 18px; }
