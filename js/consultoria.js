@@ -522,11 +522,14 @@ var CON_PROCESO = [
     var h = "";
     for (var i = 0; i < CON_PUERTAS.length; i++) {
       var pu = CON_PUERTAS[i];
+      /* El gancho no se pinta: la pastilla lleva solo el nombre, y
+         el gancho sale al dejar el mouse encima. Debajo de la fila,
+         cada cuarto ya trae su propia bajada. */
       h += '<button type="button" class="con-puerta' + (i === 0 ? " es-abierta" : "") +
-           '" data-abre="' + pu.cuarto + '" aria-pressed="' + (i === 0) + '">' +
+           '" data-abre="' + pu.cuarto + '" aria-pressed="' + (i === 0) + '"' +
+           ' title="' + esc(pu.gancho) + '">' +
              dibujo(pu.icono) +
-             '<span class="con-puerta__nombre">' + esc(pu.nombre) + '</span>' +
-             '<span class="con-puerta__gancho">' + esc(pu.gancho) + '</span>' +
+             '<span>' + esc(pu.nombre) + '</span>' +
            '</button>';
     }
     c.innerHTML = h;
