@@ -34,6 +34,12 @@
   --verde-suave-hondo: #A2D8B7;
   --verde-tinta:       #14472F;
 
+  /* El azul del botón "Consultoría": va delineado, no relleno,
+     para que el verde de Contacto siga siendo el que llama. */
+  --azul-linea:  #8FB4E3;
+  --azul-tinta:  #17417C;
+  --azul-suave:  #EEF4FC;
+
   --whatsapp:   #25D366;
   --whatsapp-oscuro: #1DA851;
 
@@ -614,6 +620,25 @@ section[hidden] { display: none !important; }
   transition: background .18s, border-color .18s;
 }
 .nav__wiwi:hover { background: var(--morado-050); border-color: var(--morado-600) !important; }
+
+/* "Consultoría": el servicio. Delineado en azul, entre el verde de
+   Contacto y el morado de Wiwi, para que se distinga de los dos sin
+   pelearles el protagonismo. */
+.nav__azul {
+  padding: .5em 1.15em !important;
+  border-radius: 999px;
+  border: 1.5px solid var(--azul-linea) !important;
+  border-bottom-width: 1.5px !important;
+  color: var(--azul-tinta) !important;
+  transition: background .18s, border-color .18s;
+}
+.nav__azul:hover { background: var(--azul-suave); border-color: var(--azul-tinta) !important; }
+
+/* Abierta, se pinta en vez de subrayarse, igual que la verde */
+.nav__azul.es-actual {
+  background: var(--azul-suave);
+  border-color: var(--azul-tinta) !important;
+}
 
 /* Mientras no haya enlace, se ve apagado y lo dice */
 .nav__wiwi.esta-apagado {
