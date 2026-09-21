@@ -2088,13 +2088,61 @@ section[hidden] { display: none !important; }
   background: #fff;
 }
 
+/* La barra del mes: flecha, mes, flecha. El mes al centro y las flechas
+   pegadas a los bordes, que es donde las busca el pulgar. */
+.agenda__calBarra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
 .agenda__calMes {
-  margin: 0 0 10px;
+  margin: 0;
+  flex: 1;
   text-align: center;
   font-size: .84rem;
   font-weight: 800;
   letter-spacing: .02em;
   color: var(--tinta);
+}
+
+.agenda__calFlecha {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  flex: 0 0 auto;
+  border: 1.5px solid var(--gris-borde);
+  border-radius: 9px;
+  background: #fff;
+  font-family: inherit;
+  font-size: 1.1rem;
+  line-height: 1;
+  color: var(--morado-600);
+  cursor: pointer;
+  transition: border-color .16s, background .16s;
+}
+.agenda__calFlecha:hover:not(:disabled) {
+  border-color: var(--morado-600);
+  background: var(--hueso);
+}
+/* Apagada, no escondida: si desaparece, el mes se descentra y el recuadro
+   parece que se movio solo. */
+.agenda__calFlecha:disabled {
+  opacity: .35;
+  cursor: default;
+}
+
+/* Cuando el mes que se mira no tiene ni un cupo. */
+.agenda__calNada {
+  margin: 10px 0 0;
+  text-align: center;
+  font-size: .82rem;
+  line-height: 1.5;
+  color: var(--tinta-suave);
 }
 
 .agenda__calRejilla {
@@ -2149,9 +2197,18 @@ section[hidden] { display: none !important; }
 }
 .agenda__calDia.es-vacio:hover { transform: none; box-shadow: none; }
 
+/* Los dias del mes de al lado que completan la primera y la ultima semana. Van
+   en blanco a proposito: con numero se leerian como dias de este mes. */
+.agenda__calDia.es-relleno {
+  background: transparent;
+  cursor: default;
+}
+.agenda__calDia.es-relleno:hover { transform: none; box-shadow: none; }
+
 /* El resto del sitio declara su propio anillo de foco; estos tambien, o quien
    navegue con teclado se queda sin nada visible sobre el fondo hueso. */
 .agenda__calDia:focus-visible,
+.agenda__calFlecha:focus-visible,
 .agenda__hora:focus-visible,
 .agenda__cambiar:focus-visible {
   outline: 3px solid var(--morado-600);
@@ -2260,8 +2317,8 @@ section[hidden] { display: none !important; }
 }
 
 /* En un telefono angosto de verdad (320 px) las siete celdas del calendario se
-   quedaban en 28 px y el "1 oct" del primero de mes no cabia. Se recupera ancho
-   apretando el marco y el hueco entre celdas, no la celda. */
+   quedaban en 28 px. Se recupera ancho apretando el marco y el hueco entre
+   celdas, no la celda. */
 @media (max-width: 360px) {
   .agenda__cal { padding: 12px 8px 10px; }
   .agenda__calRejilla { gap: 3px; }
