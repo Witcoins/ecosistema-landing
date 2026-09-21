@@ -16,3 +16,6 @@ config-local.php
 
 # Cache de despliegue de Firebase
 .firebase/
+
+# Carpeta de trabajo del asistente (no es del sitio)
+.claude/
