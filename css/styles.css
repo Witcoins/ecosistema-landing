@@ -2073,38 +2073,89 @@ section[hidden] { display: none !important; }
 }
 .agenda__paso:first-child { margin-top: 0; }
 
-/* Los dias, uno por renglon. Solo el dia: el contador de cupos se quito porque
-   confundia. */
-.agenda__dias { display: flex; flex-direction: column; gap: 7px; }
-.agenda__dia {
-  display: block;
-  font-weight: 600;
-  width: 100%;
-  padding: .72em .9em;
+/* ---- El calendario del paso 1 ----
+
+   Se ve como un calendario de pared y no como la lista de botones del camino
+   de Teams, para que los dos caminos se distingan de un golpe. La rejilla
+   cubre solo las semanas que el servidor ofrece; los dias sin cupo salen
+   apagados y no son botones, asi que el tabulador tampoco se detiene en
+   ellos. */
+
+.agenda__cal {
+  padding: 14px 12px 12px;
   border: 1.5px solid var(--gris-borde);
-  border-radius: 12px;
-  background: var(--hueso);
-  font-family: inherit;
-  font-size: .93rem;
-  color: var(--tinta);
-  text-align: left;
-  cursor: pointer;
-  transition: border-color .16s, background .16s;
+  border-radius: 14px;
+  background: #fff;
 }
-.agenda__dia:hover { border-color: var(--morado-600); background: #fff; }
+
+.agenda__calMes {
+  margin: 0 0 10px;
+  text-align: center;
+  font-size: .84rem;
+  font-weight: 800;
+  letter-spacing: .02em;
+  color: var(--tinta);
+}
+
+.agenda__calRejilla {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.agenda__calCabecera {
+  padding-bottom: 6px;
+  text-align: center;
+  font-size: .68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--tinta-suave);
+}
+
+/* Cuadradas: es lo que hace que se lea como calendario y no como lista. */
+.agenda__calDia {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  min-height: 34px;
+  padding: 2px;
+  border: 1.5px solid transparent;
+  border-radius: 9px;
+  background: var(--morado-600);
+  font-family: inherit;
+  font-size: .85rem;
+  font-weight: 700;
+  line-height: 1.1;
+  text-align: center;
+  color: #fff;
+  cursor: pointer;
+  transition: transform .14s, box-shadow .14s;
+}
+.agenda__calDia:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(118, 4, 103, .28);
+}
+
+/* Un dia sin cupos: se ve, para no perder la forma del mes, pero no invita.
+   El gris no puede ser el del borde (#E4E0EC): a 1,2:1 de contraste desaparece
+   al sol, y con el desapareceria la marca del primero de mes. */
+.agenda__calDia.es-vacio {
+  background: transparent;
+  color: #B9B2C7;
+  font-weight: 500;
+  cursor: default;
+}
+.agenda__calDia.es-vacio:hover { transform: none; box-shadow: none; }
 
 /* El resto del sitio declara su propio anillo de foco; estos tambien, o quien
    navegue con teclado se queda sin nada visible sobre el fondo hueso. */
-.agenda__dia:focus-visible,
+.agenda__calDia:focus-visible,
 .agenda__hora:focus-visible,
 .agenda__cambiar:focus-visible {
   outline: 3px solid var(--morado-600);
   outline-offset: 2px;
-}
-.agenda__dia.es-elegido {
-  border-color: var(--morado-600);
-  background: #fff;
-  box-shadow: 0 0 0 3px rgba(118, 4, 103, .12);
 }
 
 /* Las horas, en rejilla: entran cuatro por renglon en el ancho del
@@ -2206,6 +2257,15 @@ section[hidden] { display: none !important; }
   .teams__agenda { min-height: 0; }
   .agenda__campos { grid-template-columns: 1fr; }
   .agenda__horas { grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); }
+}
+
+/* En un telefono angosto de verdad (320 px) las siete celdas del calendario se
+   quedaban en 28 px y el "1 oct" del primero de mes no cabia. Se recupera ancho
+   apretando el marco y el hueco entre celdas, no la celda. */
+@media (max-width: 360px) {
+  .agenda__cal { padding: 12px 8px 10px; }
+  .agenda__calRejilla { gap: 3px; }
+  .agenda__calDia { font-size: .8rem; }
 }
 
 /* ---- Lista con palomita ---- */

@@ -330,32 +330,116 @@ var SALA_TEAMS = "https://teams.microsoft.com/meet/2171674064633?p=43SvylWLRpzrC
     hueco.appendChild(wa);
   }
 
-  /* Paso 1: el día. Si ya está elegido, este paso sale encogido. */
+  /* Paso 1: el día, en rejilla de calendario.
+
+     Se pinta como un calendario de verdad —semanas en filas, días en columnas—
+     y no como la lista de botones del camino de Teams, para que se vean
+     distintos de un golpe: uno es "entro ya", el otro es "escojo cuándo".
+
+     La rejilla cubre exactamente la ventana que ofrece el servidor: desde el
+     lunes de la semana del primer cupo hasta el domingo de la del último. Los
+     días sin cupo salen apagados y no se pueden tocar. */
+
+  var DIAS_CORTOS = ["lun", "mar", "mié", "jue", "vie", "sáb", "dom"];
+  var MESES_CORTOS = ["ene", "feb", "mar", "abr", "may", "jun",
+    "jul", "ago", "sep", "oct", "nov", "dic"];
+  var MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio",
+    "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+
+  /* Las fechas llegan como "2026-09-22". Se parten a mano en vez de usar
+     new Date("2026-09-22"): eso se interpreta como medianoche UTC y en Colombia
+     (UTC-5) devolvería el día anterior. */
+  function comoUtc(fecha) {
+    var p = String(fecha).split("-");
+    return new Date(Date.UTC(+p[0], +p[1] - 1, +p[2]));
+  }
+
+  function comoTexto(d) {
+    function dos(n) { return (n < 10 ? "0" : "") + n; }
+    return d.getUTCFullYear() + "-" + dos(d.getUTCMonth() + 1) + "-" + dos(d.getUTCDate());
+  }
+
+  /* Lunes = 0 … domingo = 6, que es como se leen los calendarios de por acá. */
+  function columnaDe(d) {
+    return (d.getUTCDay() + 6) % 7;
+  }
+
   function pintarDias() {
     vaciar();
     horaElegida = null;
-    encabezado("Escoge el día", "Estas son las horas libres de las próximas semanas.");
+    encabezado("Escoge el día", "Los días en morado son los que tienen horas libres.");
 
     hueco.appendChild(pasoHecho("Agendar:", "para después", pintarCaminos));
     hueco.appendChild(nuevo("p", "agenda__paso", "1. Escoge el día"));
 
-    var lista = nuevo("div", "agenda__dias");
+    var porFecha = {};
+    dias.forEach(function (dia) { porFecha[dia.fecha] = dia; });
 
-    dias.forEach(function (dia) {
-      var b = nuevo("button", "agenda__dia");
-      b.type = "button";
-      /* Solo el dia. El contador de cupos ("4 horas") confundia: parecia la
-         duracion de la reunion, o un cupo limitado. Las horas se ven en el
-         paso siguiente, que es donde importan. */
-      b.textContent = dia.rotulo;
-      b.addEventListener("click", function () {
-        diaElegido = dia;
-        pintarHoras();
-      });
-      lista.appendChild(b);
+    var primera = comoUtc(dias[0].fecha);
+    var ultima  = comoUtc(dias[dias.length - 1].fecha);
+
+    var desde = new Date(primera.getTime() - columnaDe(primera) * 86400000);
+    var hasta = new Date(ultima.getTime() + (6 - columnaDe(ultima)) * 86400000);
+
+    var cal = nuevo("div", "agenda__cal");
+
+    /* El mes, o los dos meses que cruce la ventana. */
+    var mesInicio = primera.getUTCMonth();
+    var mesFin = ultima.getUTCMonth();
+    /* El año va pegado a cada mes cuando la ventana cruza de diciembre a enero:
+       con un solo año al final, ese diciembre saldria con el año del enero. */
+    var anioInicio = primera.getUTCFullYear();
+    var anioFin = ultima.getUTCFullYear();
+    var rotuloMes;
+
+    if (mesFin === mesInicio) {
+      rotuloMes = MESES[mesInicio] + " de " + anioFin;
+    } else if (anioFin === anioInicio) {
+      rotuloMes = MESES[mesInicio] + " y " + MESES[mesFin] + " de " + anioFin;
+    } else {
+      rotuloMes = MESES[mesInicio] + " de " + anioInicio + " y " + MESES[mesFin] + " de " + anioFin;
+    }
+    cal.appendChild(nuevo("p", "agenda__calMes", rotuloMes));
+
+    var rejilla = nuevo("div", "agenda__calRejilla");
+
+    DIAS_CORTOS.forEach(function (d) {
+      var c = nuevo("span", "agenda__calCabecera", d);
+      c.setAttribute("aria-hidden", "true");
+      rejilla.appendChild(c);
     });
 
-    hueco.appendChild(lista);
+    for (var t = desde.getTime(); t <= hasta.getTime(); t += 86400000) {
+      var d = new Date(t);
+      var fecha = comoTexto(d);
+      var dia = porFecha[fecha];
+      var numero = String(d.getUTCDate());
+
+      /* El primero de cada mes lleva el mes al lado, para que no haya que
+         adivinar dónde empieza octubre. */
+      if (d.getUTCDate() === 1) numero += " " + MESES_CORTOS[d.getUTCMonth()];
+
+      if (!dia) {
+        var vacio = nuevo("span", "agenda__calDia es-vacio", numero);
+        vacio.setAttribute("aria-hidden", "true");
+        rejilla.appendChild(vacio);
+        continue;
+      }
+
+      var b = nuevo("button", "agenda__calDia", numero);
+      b.type = "button";
+      b.setAttribute("aria-label", dia.rotulo);
+      b.addEventListener("click", (function (elDia) {
+        return function () {
+          diaElegido = elDia;
+          pintarHoras();
+        };
+      })(dia));
+      rejilla.appendChild(b);
+    }
+
+    cal.appendChild(rejilla);
+    hueco.appendChild(cal);
   }
 
   /* Paso 2: la hora. El día ya elegido queda encogido arriba. */
