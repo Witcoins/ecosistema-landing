@@ -31,44 +31,195 @@
 .con-bajada {
   max-width: 640px;
   margin: 0 auto 1.6rem;
+  /* ahora abre cada cuarto, así que no lleva nada encima */
   text-align: center;
   color: var(--tinta-suave);
   font-size: .98rem;
 }
 
-/* ---- 1. De qué partimos: ocho fichas ---- */
+/* ---- Las cinco puertas ----
 
-.con-identidad {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: 14px;
+   Lo primero de la sección: cinco entradas del mismo tamaño, y el
+   prospecto escoge por dónde entrar. Antes todo iba uno debajo del
+   otro y se le venía encima de una vez.
+
+   La abierta se pinta con el color de la unidad; las otras cuatro
+   quedan en blanco, esperando. */
+
+.con-puertas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 0 0 24px;
 }
 
-.con-pieza {
+/* La misma pastilla de los ocho frentes, pero con más cuerpo:
+   estas mandan sobre las de adentro. */
+.con-puerta {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 20px;
+  border: 1.5px solid var(--gris-borde);
+  border-radius: 999px;
   background: var(--blanco);
-  border: 1px solid var(--gris-borde);
-  border-radius: var(--radio);
-  padding: 18px 16px;
+  color: var(--morado-700);
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
   box-shadow: var(--sombra);
-  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+  transition: transform .18s ease, border-color .18s ease,
+              background .18s ease, box-shadow .18s ease;
 }
-.con-pieza:hover {
-  transform: translateY(-3px);
+.con-puerta .con-ico { width: 22px; height: 22px; }
+.con-puerta:hover {
+  transform: translateY(-2px);
   border-color: var(--morado-300);
   box-shadow: var(--sombra-fuerte);
 }
-.con-pieza h4 {
-  margin: .6rem 0 .3rem;
-  font-size: 1rem;
-  color: var(--morado-700);
-  line-height: 1.25;
+.con-puerta:focus-visible {
+  outline: 3px solid var(--morado-300);
+  outline-offset: 3px;
 }
-.con-pieza p {
+
+.con-puerta.es-abierta {
+  background: var(--morado-700);
+  border-color: var(--morado-700);
+  color: #fff;
+  transform: none;
+}
+.con-puerta.es-abierta .con-ico { color: #fff; }
+
+/* El cuarto que se abre entra con el mismo gesto que el resto */
+.con-cuarto.es-entra { animation: conEntra .34s ease both; }
+
+/* ---- 1. De qué partimos: la rueda ----
+
+   Las ocho cosas van en una rueda que gira, como la de una
+   tragamonedas: la que queda en la ventana del medio es la que se
+   explica al lado. El alto del renglón (46px) también está en
+   js/consultoria.js, en RUEDA_ALTO: si se cambia uno, se cambia el
+   otro. */
+
+.con-identidad {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.con-rueda {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  width: min(100%, 360px);
+}
+
+.con-rueda__flecha {
+  display: grid;
+  place-items: center;
+  height: 28px;
+  border: 0;
+  border-radius: var(--radio-chico);
+  background: transparent;
+  color: var(--morado-600);
+  cursor: pointer;
+  transition: background .18s ease;
+}
+.con-rueda__flecha:hover { background: var(--morado-050); }
+.con-rueda__flecha svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* La ventana: tres renglones, y lo demás se esconde arriba y abajo */
+.con-rueda__ventana {
+  position: relative;
+  height: 138px;            /* 3 renglones de 46 */
+  overflow: hidden;
+  border-radius: var(--radio);
+  background: var(--blanco);
+  border: 1px solid var(--gris-borde);
+  box-shadow: inset 0 10px 14px -12px rgba(0, 0, 0, .28),
+              inset 0 -10px 14px -12px rgba(0, 0, 0, .28);
+}
+
+.con-rueda__cinta {
+  position: relative;
+  z-index: 1;
   margin: 0;
-  font-size: .9rem;
-  line-height: 1.45;
-  color: var(--tinta-suave);
+  padding: 0;
+  list-style: none;
+  transition: transform .34s cubic-bezier(.22, .68, .35, 1.02);
 }
+
+.con-rueda__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 46px;
+  padding: 0 14px;
+  font-size: .92rem;
+  color: var(--tinta-suave);
+  cursor: pointer;
+  opacity: .55;
+  transition: opacity .2s ease, color .2s ease;
+}
+.con-rueda__item .con-ico { width: 20px; height: 20px; }
+.con-rueda__item:hover { opacity: .85; }
+
+.con-rueda__item.es-elegido {
+  opacity: 1;
+  color: var(--morado-700);
+  font-weight: 700;
+}
+.con-rueda__item.es-elegido .con-ico { color: var(--morado-600); }
+
+/* El marco que señala el renglón de la mitad */
+.con-rueda__marco {
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  top: 46px;
+  height: 46px;
+  border-radius: var(--radio-chico);
+  border: 1.5px solid var(--morado-300);
+  background: var(--morado-050);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Lo que dice la que quedó en la ventana */
+.con-rueda__texto {
+  width: 100%;
+  max-width: 760px;
+  text-align: center;
+  background: var(--blanco);
+  border: 1px solid var(--gris-borde);
+  border-radius: var(--radio);
+  padding: 22px 24px;
+  box-shadow: var(--sombra);
+}
+.con-rueda__texto h4 {
+  margin: 0 0 .5rem;
+  font-size: 1.14rem;
+  line-height: 1.25;
+  color: var(--morado-700);
+}
+.con-rueda__texto p {
+  margin: 0;
+  color: var(--tinta-suave);
+  line-height: 1.6;
+}
+.con-rueda__texto.es-entra { animation: conEntra .3s ease both; }
 
 /* El dibujo, el mismo en toda la sección */
 .con-ico {
@@ -359,6 +510,12 @@
 
 /* ---- En el teléfono ---- */
 
+@media (max-width: 680px) {
+  .con-puerta { padding: 10px 15px; font-size: .92rem; }
+  .con-puerta .con-ico { width: 19px; height: 19px; }
+  .con-puertas { gap: 8px; }
+}
+
 @media (max-width: 760px) {
   .con-bloque__cuerpo { grid-template-columns: 1fr; }
   .con-detalle { min-height: 0; }
@@ -513,3 +670,56 @@
 @media (prefers-reduced-motion: reduce) {
   .con-flota { animation: none; }
 }
+
+/* ============================================================
+   CONSULTORÍA SE VE COMO LO QUE ES: OTRA UNIDAD DE NEGOCIO
+   ============================================================
+
+   El resto de la landing va en morado sobre fondo hueso. Esta
+   sección va en azul sobre un fondo claro azulado, el mismo azul
+   del botón que la abre en el menú. Misma tipografía, mismas
+   formas, mismos espacios: se nota que es la misma casa, pero
+   otra puerta.
+
+   ┌──────────────────────────────────────────────────────────┐
+   │  CÓMO SE CAMBIA EL COLOR DE TODA LA SECCIÓN              │
+   │                                                          │
+   │  Con los siete tonos de aquí abajo, y nada más. La       │
+   │  sección entera está escrita con los nombres del morado  │
+   │  (--morado-600, --morado-700…); aquí se les da otro      │
+   │  valor y todo lo de adentro cambia de color: títulos,    │
+   │  iconos, botones, la franja de las frases y el botón     │
+   │  flotante.                                               │
+   │                                                          │
+   │  El de la marca es el --morado-700 del styles.css; este  │
+   │  azul no lo toca: solo vale dentro de esta sección.      │
+   └──────────────────────────────────────────────────────────┘
+   ============================================================ */
+
+#consultoria {
+  --morado-900: #0B2547;
+  --morado-800: #113864;
+  --morado-700: #17417C;   /* el azul principal de la unidad */
+  --morado-600: #1F5AA8;   /* botones y acentos */
+  --morado-300: #8FB4E3;
+  --morado-100: #DCE8F7;
+  --morado-050: #EEF4FC;
+
+  /* El fondo: claro arriba, para que el título respire, y un
+     azul apenas más hondo abajo. */
+  background:
+    radial-gradient(90% 55% at 50% 0%, #FFFFFF, transparent 72%),
+    linear-gradient(180deg, #F2F7FD, #E6EFFA);
+  border-top: 1px solid rgba(23, 65, 124, .12);
+  border-bottom: 1px solid rgba(23, 65, 124, .12);
+}
+
+/* Estas cuatro sombras llevaban el morado escrito a mano, así que
+   no las alcanzan los tonos de arriba. */
+#consultoria .con-frase,
+#consultoria .con-cierre { box-shadow: 0 18px 44px rgba(11, 37, 71, .22); }
+
+#consultoria .con-cabeza__pista { background: rgba(17, 65, 124, .72); }
+
+#consultoria .con-flota { box-shadow: 0 10px 30px rgba(31, 90, 168, .42); }
+#consultoria .con-flota:hover { box-shadow: 0 14px 36px rgba(11, 37, 71, .5); }

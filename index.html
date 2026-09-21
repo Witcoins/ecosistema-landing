@@ -45,8 +45,8 @@
       <a href="#solucion">La solución</a>
       <a href="#ecosistema">El ecosistema</a>
       <a href="#acp">La A.C.P.</a>
-      <a href="#consultoria">Consultoría</a>
       <a href="#contacto" class="nav__verde">Contacto</a>
+      <a href="#consultoria" class="nav__azul">Consultoría</a>
       <!-- A dónde lleva se pone en js/script.js, en WIWI -->
       <a href="#" class="nav__wiwi" data-wiwi>Wiwi</a>
     </nav>
@@ -1078,7 +1078,7 @@
 
       <div class="con-cabeza__texto">
         <h2 class="con-titulo">
-          Consultoría en <span class="con-titulo__fuerte">Innovación Educativa</span>
+          Contrata Consultoría en <span class="con-titulo__fuerte">Innovación Educativa</span>
         </h2>
         <p class="seccion__intro">
           Transformamos la experiencia educativa conectando la identidad del colegio con su
@@ -1091,38 +1091,58 @@
       </button>
     </header>
 
-    <!-- 1. De qué partimos -->
-    <h3 class="con-paso">Partimos de la identidad del colegio</h3>
-    <p class="con-bajada">
-      Para diseñar innovación no partimos de una metodología de moda. Primero entendemos
-      estas ocho cosas.
-    </p>
-    <div class="con-identidad" id="conIdentidad"></div>
+    <!-- Las cinco puertas. Los rótulos y los ganchos están en
+         CON_PUERTAS, arriba de js/consultoria.js; aquí solo va la
+         caja donde se dibujan. -->
+    <div class="con-puertas" id="conPuertas"></div>
 
-    <p class="con-frase">
-      No llevamos una innovación para que el colegio se adapte a ella.
-      <strong>Diseñamos la innovación para que tenga sentido en el colegio.</strong>
-    </p>
+    <!-- Cada puerta abre uno de estos bloques. El que esté abierto
+         se muestra y los otros cuatro se esconden: lo hace
+         js/consultoria.js con el atributo "hidden". -->
+
+    <!-- 1. De qué partimos -->
+    <div class="con-cuarto" data-cuarto="identidad">
+      <p class="con-bajada">
+        Para diseñar innovación no partimos de una metodología de moda. Primero entendemos
+        estas ocho cosas.
+      </p>
+      <div class="con-identidad" id="conIdentidad"></div>
+
+      <p class="con-frase">
+        No llevamos una innovación para que el colegio se adapte a ella.
+        <strong>Diseñamos la innovación para que tenga sentido en el colegio.</strong>
+      </p>
+    </div>
 
     <!-- 2. Las dos innovaciones -->
-    <h3 class="con-paso">Dos innovaciones, una sola dirección</h3>
-    <div class="con-innovacion" id="conInnovacion"></div>
+    <div class="con-cuarto" data-cuarto="innovacion" hidden>
+      <p class="con-bajada">
+        Una pregunta cada una, y las dos empujan para el mismo lado.
+      </p>
+      <div class="con-innovacion" id="conInnovacion"></div>
+    </div>
 
     <!-- 3. Para qué -->
-    <h3 class="con-paso con-paso--chico">Para qué sirve esa tecnología</h3>
-    <div class="con-propositos" id="conPropositos"></div>
+    <div class="con-cuarto" data-cuarto="propositos" hidden>
+      <p class="con-bajada">
+        Tres propósitos, para que la tecnología no entre solo porque está de moda.
+      </p>
+      <div class="con-propositos" id="conPropositos"></div>
+    </div>
 
     <!-- 4. Hasta dónde llega -->
-    <h3 class="con-paso">Hasta dónde llega la innovación</h3>
-    <p class="con-bajada">Ocho frentes de trabajo. Toca uno para ver qué incluye.</p>
-    <div class="con-alcances" id="conAlcances"></div>
+    <div class="con-cuarto" data-cuarto="alcances" hidden>
+      <p class="con-bajada">Ocho frentes de trabajo. Toca uno para ver qué incluye.</p>
+      <div class="con-alcances" id="conAlcances"></div>
+    </div>
 
     <!-- 5. El proceso -->
-    <h3 class="con-paso">Cómo trabajamos</h3>
-    <p class="con-bajada">
-      No es una asesoría suelta: es un proceso completo de transformación del colegio.
-    </p>
-    <div class="con-proceso" id="conProceso"></div>
+    <div class="con-cuarto" data-cuarto="proceso" hidden>
+      <p class="con-bajada">
+        No es una asesoría suelta: es un proceso completo de transformación del colegio.
+      </p>
+      <div class="con-proceso" id="conProceso"></div>
+    </div>
 
     <!-- Cierre -->
     <p class="con-cierre">
