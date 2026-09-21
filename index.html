@@ -18,12 +18,12 @@
 <meta name="theme-color" content="#5B21B6">
 
 <link rel="icon" href="assets/img/favicon.png" type="image/png">
-<link rel="stylesheet" href="css/styles.css?v=307">
-<link rel="stylesheet" href="css/simulador.css?v=307">
-<link rel="stylesheet" href="css/actividades.css?v=307">
-<link rel="stylesheet" href="css/presentacion.css?v=307">
-<link rel="stylesheet" href="css/apps.css?v=307">
-<link rel="stylesheet" href="css/consultoria.css?v=307">
+<link rel="stylesheet" href="css/styles.css?v=309">
+<link rel="stylesheet" href="css/simulador.css?v=309">
+<link rel="stylesheet" href="css/actividades.css?v=309">
+<link rel="stylesheet" href="css/presentacion.css?v=309">
+<link rel="stylesheet" href="css/apps.css?v=309">
+<link rel="stylesheet" href="css/consultoria.css?v=309">
 </head>
 <body>
 
@@ -35,7 +35,7 @@
     <div class="nav__marca">
       <a href="#marca" class="nav__sello" id="navSello"
          aria-label="Ver la animación de la marca">
-        <img src="assets/img/marca-circular.webp?v=307" alt="" class="nav__logo">
+        <img src="assets/img/marca-circular.webp?v=309" alt="" class="nav__logo">
       </a>
       <a href="#inicio" class="nav__nombre">i’Witown</a>
     </div>
@@ -88,7 +88,7 @@
 <section class="marca" id="marca" hidden>
   <div class="marca__escena" id="marcaEscena">
     <video class="marca__video" id="marcaVideo"
-           src="assets/video/marca.mp4?v=307"
+           src="assets/video/marca.mp4?v=309"
            muted playsinline preload="auto"></video>
   </div>
 </section>
@@ -141,7 +141,7 @@
         <span class="celular__isla" aria-hidden="true"></span>
         <video class="celular__video" id="celVideo" autoplay loop muted playsinline
                preload="auto" aria-label="Presentación de i'Witown">
-          <source src="assets/video/portada-vertical.mp4?v=307" type="video/mp4">
+          <source src="assets/video/portada-vertical.mp4?v=309" type="video/mp4">
         </video>
         <span class="celular__brillo" aria-hidden="true"></span>
 
@@ -626,9 +626,9 @@
 
     <!-- ============================================================
          PASO 4-C: CONTACTO
-         Los tres botones para pedir la visita. El número y el correo
-         se cambian arriba de js/script.js; el de agendar abre el
-         calendario del recuadro (js/teams.js).
+         Los tres botones para pedir la visita. El número se cambia
+         arriba de js/script.js; el de Teams abre el recuadro de la
+         reunión (js/teams.js), que ofrece entrar ya o agendar.
          ============================================================ -->
     <div class="ctc" id="pasoContacto" hidden>
 
@@ -641,16 +641,16 @@
 
         <div class="ctc__botones">
 
-          <a class="ctc__boton ctc__boton--cal" href="#contacto" data-teams>
+          <a class="ctc__boton ctc__boton--teams" href="#contacto" data-teams>
             <span class="ctc__ico">
               <svg viewBox="0 0 24 24" aria-hidden="true">
-                <rect x="3" y="5" width="18" height="16" rx="2"/>
-                <path d="M3 10h18M8 3v4M16 3v4"/>
+                <rect x="2" y="6" width="13" height="12" rx="2"/>
+                <path d="M15 10l6-3.5v11L15 14"/>
               </svg>
             </span>
             <span class="ctc__texto">
-              <strong>Agendar reunión</strong>
-              <em>Escoge tú el día y la hora</em>
+              <strong>Reunión por Teams</strong>
+              <em>Ahora mismo o cuando te sirva</em>
             </span>
           </a>
 
@@ -676,8 +676,8 @@
               </svg>
             </span>
             <span class="ctc__texto">
-              <strong>Correo</strong>
-              <em>Escríbenos aquí mismo y te respondemos</em>
+              <strong>Escríbenos</strong>
+              <em>Déjanos un mensaje y te respondemos</em>
             </span>
           </a>
 
@@ -843,7 +843,7 @@
           <!-- Cada tarjeta manda una pantalla al celular de su panel:
                "data-sol" dice cuál. La que se está viendo se marca sola. -->
           <div class="aspectos">
-            <article class="aspecto" data-sol="assets/video/solucion-4.mp4?v=307" data-sol-desde="0" data-sol-nombre="Secciones para seguimiento">
+            <article class="aspecto" data-sol="assets/video/solucion-4.mp4?v=309" data-sol-desde="0" data-sol-nombre="Secciones para seguimiento">
               <h3 class="aspecto__titulo">Secciones para seguimiento</h3>
               <p class="aspecto__texto">El acompañamiento al proceso del estudiante se respalda con datos en tiempo real.</p>
             </article>
@@ -853,7 +853,7 @@
               <p class="aspecto__texto">Ves en tiempo real quién leyó y quién firmó cada mensaje. Se acabaron las circulares perdidas en la mochila.</p>
             </article>
 
-            <article class="aspecto" data-sol="assets/video/solucion-1.mp4?v=307" data-sol-nombre="Trazabilidad real de uso">
+            <article class="aspecto" data-sol="assets/video/solucion-1.mp4?v=309" data-sol-nombre="Trazabilidad real de uso">
               <h3 class="aspecto__titulo">Trazabilidad real de uso</h3>
               <p class="aspecto__texto">Ves quién entra, qué usa y con qué frecuencia. No supones: verificas.</p>
             </article>
@@ -942,7 +942,7 @@
               <p class="aspecto__texto">Sin perderse entre cien mensajes de WhatsApp.</p>
             </article>
 
-            <article class="aspecto" data-sol="assets/video/solucion-3.mp4?v=307" data-sol-nombre="Los papás ven al día qué han pagado">
+            <article class="aspecto" data-sol="assets/video/solucion-3.mp4?v=309" data-sol-nombre="Los papás ven al día qué han pagado">
               <h3 class="aspecto__titulo">Los papás ven al día qué han pagado</h3>
               <p class="aspecto__texto">Entras y ves mes por mes qué está al día y qué no. Sin llamar a preguntar y sin reclamos por un recibo que nadie encuentra.</p>
             </article>
@@ -1077,7 +1077,7 @@
          └───────────────────────────────────────────────────────┘ -->
     <header class="seccion__head con-cabeza" id="conCabeza">
       <img class="con-cabeza__foto" id="conFoto" alt=""
-           src="assets/img/consultoria.webp?v=307">
+           src="assets/img/consultoria.webp?v=309">
 
       <div class="con-cabeza__texto">
         <h2 class="con-titulo">
@@ -1170,10 +1170,10 @@
              preload="auto" el celular se bajaba sus 0,7 MB al abrir, peleando
              banda con lo que si se ve. Lo carga js/asesora.js al llegar. -->
         <video playsinline muted preload="metadata">
-          <source src="assets/video/asesora.mp4?v=307" type="video/mp4">
+          <source src="assets/video/asesora.mp4?v=309" type="video/mp4">
         </video>
 
-        <img class="ctc-video__final" src="assets/img/asesora.webp?v=307"
+        <img class="ctc-video__final" src="assets/img/asesora.webp?v=309"
              alt="Asesora de i'Witown lista para atender" aria-hidden="true">
 
         <div class="ctc-video__mandos">
@@ -1205,6 +1205,18 @@
              datos de la cabecera de ese archivo (WHATSAPP, CORREO). -->
         <div class="ctc__botones ctc__botones--fila">
 
+          <a class="ctc__boton ctc__boton--teams" href="#contacto" data-teams>
+            <span class="ctc__ico">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="2" y="6" width="13" height="12" rx="2"/>
+                <path d="M15 10l6-3.5v11L15 14"/>
+              </svg>
+            </span>
+            <span class="ctc__texto">
+              <strong>Reunión por Teams</strong>
+              <em>Ahora mismo o cuando te sirva</em>
+            </span>
+          </a>
 
           <a class="ctc__boton ctc__boton--wa" data-wa
              data-wa-msg="Hola, quiero hablar sobre i'Witown para mi colegio.">
@@ -1228,12 +1240,12 @@
               </svg>
             </span>
             <span class="ctc__texto">
-              <strong>Correo</strong>
-              <em>Escríbenos aquí mismo y te respondemos</em>
+              <strong>Escríbenos</strong>
+              <em>Déjanos un mensaje y te respondemos</em>
             </span>
           </a>
 
-          <a class="ctc__boton ctc__boton--cal" href="#conversemos" data-teams>
+          <a class="ctc__boton ctc__boton--cal" href="#conversemos" data-teams="calendario">
             <span class="ctc__ico">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <rect x="3" y="5" width="18" height="16" rx="2"/>
@@ -1241,7 +1253,7 @@
               </svg>
             </span>
             <span class="ctc__texto">
-              <strong>Agendar reunión</strong>
+              <strong>Calendario</strong>
               <em>Escoge tú el día y la hora</em>
             </span>
           </a>
@@ -1273,8 +1285,8 @@
              Ocupa el ancho entero y reparte los campos en tres columnas.
              En pantallas angostas se apilan solos. -->
         <div class="form-caja form-caja--ancha">
-          <h3>Déjanos tus datos</h3>
-          <p class="form-caja__sub">Te contactamos nosotros.</p>
+          <h3>Deja tu mensaje y te contactamos</h3>
+          <p class="form-caja__sub">Cuéntanos qué necesitas y te respondemos nosotros.</p>
 
           <form id="formContacto" action="/api/contacto" method="POST" novalidate>
             <!-- Trampa anti-spam: si un robot la llena, el envío se descarta. No la borres. -->
@@ -1333,7 +1345,7 @@
             </div>
 
             <div class="form-enviar">
-              <button type="submit" class="btn btn--morado" id="btnEnviar">Enviar mis datos</button>
+              <button type="submit" class="btn btn--morado" id="btnEnviar">Enviar mensaje</button>
             </div>
 
             <p class="form-msg" id="formMsg" role="status" aria-live="polite"></p>
@@ -1347,10 +1359,10 @@
           <!-- preload="metadata": son 2,7 MB al final de la pagina. Antes se
                bajaban al abrir aunque nadie llegara hasta aca. -->
           <video playsinline muted preload="metadata">
-            <source src="assets/video/asesor.mp4?v=307" type="video/mp4">
+            <source src="assets/video/asesor.mp4?v=309" type="video/mp4">
           </video>
 
-          <img class="ctc-video__final" src="assets/img/asesor.webp?v=307"
+          <img class="ctc-video__final" src="assets/img/asesor.webp?v=309"
                alt="Asesor de i'Witown listo para atender" aria-hidden="true">
 
           <div class="ctc-video__mandos">
@@ -1428,13 +1440,17 @@
      Se abre al tocar una tarjeta de "El problema". Lo maneja
      js/lupa.js; la imagen de cada tarjeta es su "data-foto".
      ============================================================ -->
-<!-- =================== AGENDAR LA REUNIÓN ===================
-     Calendario propio: el visitante escoge dia y hora entre los cupos libres
-     que da /api/horas, deja cuatro datos y /api/agendar reserva el cupo y
-     manda la invitacion por correo. No se va de la pagina.
+<!-- =================== LA REUNIÓN ===================
+     Dos caminos, los dos dentro de este recuadro:
+
+       - Entrar ahora: deja nombre, celular y correo, se le abre la sala de
+         Teams en otra pestaña y /api/sala nos avisa de que está esperando.
+       - Calendario: escoge día y hora entre los cupos que da /api/horas,
+         deja sus datos y /api/agendar reserva y manda la invitación.
 
      Las horas libres se definen en AGENDA, en landingAgenda.js del repo
-     witown-cloud-functions. Lo pinta js/teams.js.
+     witown-cloud-functions. Lo pinta js/teams.js, y el título y la bajada
+     de aquí abajo los reescribe según el paso.
      ============================================================ -->
 <div class="teams" id="teamsCaja" hidden>
   <div class="teams__tarjeta" role="dialog" aria-modal="true" aria-labelledby="teamsTitulo">
@@ -1444,12 +1460,12 @@
     </button>
 
     <p class="teams__ojo">Reunión por Teams</p>
-    <h3 class="teams__titulo" id="teamsTitulo">Elige el día y la hora que te sirva</h3>
-    <p class="teams__bajada">Al reservar, te llega la invitación al correo con el enlace de la
-      reunión y queda en tu calendario. Nosotros la vemos en el nuestro.</p>
+    <h3 class="teams__titulo" id="teamsTitulo">¿Hablamos ahora o lo agendamos?</h3>
+    <p class="teams__bajada" id="teamsBajada">Si entras ahora, te avisamos a nosotros y alguien
+      se conecta contigo en un momento. Si prefieres, escoge el día y la hora que te sirva.</p>
 
-    <!-- Acá lo pinta js/teams.js cuando se abre el recuadro: los dias, las
-         horas y el formulario, uno tras otro. -->
+    <!-- Acá lo pinta js/teams.js: primero los dos caminos, y después el que
+         se escoja —entrar ya o el calendario, paso por paso—. -->
     <div class="teams__agenda" id="teamsAgenda"></div>
 
     <p class="teams__aviso" id="teamsAviso" role="status" aria-live="polite"></p>
@@ -1466,30 +1482,30 @@
   </figure>
 </div>
 
-<script src="js/lupa.js?v=307"></script>
-<script src="js/tableta.js?v=307"></script>
-<script src="js/solucion.js?v=307"></script>
-<script src="js/vistas.js?v=307"></script>
-<script src="js/portada.js?v=307"></script>
-<script src="js/script.js?v=307"></script>
-<script src="js/actividades.js?v=307"></script>
-<script src="js/simulador.js?v=307"></script>
-<script src="js/recorrido.js?v=307"></script>
-<script src="js/app-visor.js?v=307"></script>
-<script src="js/witutor-pantallas.js?v=307"></script>
-<script src="js/witutor.js?v=307"></script>
-<script src="js/witeacher.js?v=307"></script>
-<script src="js/iwitown.js?v=307"></script>
-<script src="js/admon.js?v=307"></script>
-<script src="js/mapa.js?v=307"></script>
-<script src="js/acp.js?v=307"></script>
-<script src="js/acp-red.js?v=307"></script>
-<script src="js/consultoria.js?v=307"></script>
-<script src="js/plataformas.js?v=307"></script>
-<script src="js/asesora.js?v=307"></script>
-<script src="js/teams.js?v=307"></script>
-<script src="js/marca.js?v=307"></script>
-<script src="js/ecosistema.js?v=307"></script>
-<script src="js/presentacion.js?v=307"></script>
+<script src="js/lupa.js?v=309"></script>
+<script src="js/tableta.js?v=309"></script>
+<script src="js/solucion.js?v=309"></script>
+<script src="js/vistas.js?v=309"></script>
+<script src="js/portada.js?v=309"></script>
+<script src="js/script.js?v=309"></script>
+<script src="js/actividades.js?v=309"></script>
+<script src="js/simulador.js?v=309"></script>
+<script src="js/recorrido.js?v=309"></script>
+<script src="js/app-visor.js?v=309"></script>
+<script src="js/witutor-pantallas.js?v=309"></script>
+<script src="js/witutor.js?v=309"></script>
+<script src="js/witeacher.js?v=309"></script>
+<script src="js/iwitown.js?v=309"></script>
+<script src="js/admon.js?v=309"></script>
+<script src="js/mapa.js?v=309"></script>
+<script src="js/acp.js?v=309"></script>
+<script src="js/acp-red.js?v=309"></script>
+<script src="js/consultoria.js?v=309"></script>
+<script src="js/plataformas.js?v=309"></script>
+<script src="js/asesora.js?v=309"></script>
+<script src="js/teams.js?v=309"></script>
+<script src="js/marca.js?v=309"></script>
+<script src="js/ecosistema.js?v=309"></script>
+<script src="js/presentacion.js?v=309"></script>
 </body>
 </html>

@@ -1979,6 +1979,90 @@ section[hidden] { display: none !important; }
 
 .teams__agenda { min-height: 220px; }
 
+/* ---- Los dos caminos: entrar ya, o agendar ---- */
+
+.agenda__caminos { display: flex; flex-direction: column; gap: 10px; }
+
+.agenda__camino {
+  display: block;
+  width: 100%;
+  padding: 1em 1.1em;
+  border: 1.5px solid var(--gris-borde);
+  border-radius: 14px;
+  background: var(--hueso);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color .16s, background .16s, transform .16s;
+}
+.agenda__camino:hover {
+  border-color: var(--morado-600);
+  background: #fff;
+  transform: translateY(-1px);
+}
+.agenda__camino:focus-visible {
+  outline: 3px solid var(--morado-600);
+  outline-offset: 2px;
+}
+.agenda__camino strong {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--tinta);
+}
+.agenda__camino em {
+  display: block;
+  font-size: .87rem;
+  font-style: normal;
+  line-height: 1.45;
+  color: var(--tinta-suave);
+}
+
+/* El de entrar ya es el que empuja: va con el morado de la marca. */
+.agenda__camino--ya {
+  border-color: var(--morado-600);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(118, 4, 103, .1);
+}
+
+/* ---- Un paso ya resuelto: se encoge a un renglon ---- */
+
+.agenda__hecho {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding: .58em .8em;
+  margin-bottom: 8px;
+  border-radius: 11px;
+  background: var(--hueso);
+  font-size: .88rem;
+  color: var(--tinta-suave);
+}
+.agenda__hechoTexto strong { color: var(--tinta); font-weight: 700; }
+
+/* ---- El aviso de la sala ---- */
+
+.agenda__sala {
+  margin: 0 0 16px;
+  padding: .9em 1em;
+  border-radius: 12px;
+  border: 1.5px solid var(--gris-borde);
+  background: #fff;
+}
+.agenda__sala p {
+  margin: 0;
+  font-size: .92rem;
+  line-height: 1.55;
+  color: var(--tinta);
+}
+.agenda__sala .agenda__salaNota {
+  margin-top: .5em;
+  font-size: .85rem;
+  color: var(--tinta-suave);
+}
+
 .agenda__paso {
   margin: 18px 0 10px;
   font-size: .78rem;
@@ -2052,15 +2136,6 @@ section[hidden] { display: none !important; }
   color: #fff;
 }
 
-.agenda__elegido {
-  margin: 0 0 16px;
-  padding: .8em .9em;
-  border-radius: 12px;
-  background: var(--hueso);
-  font-size: .9rem;
-  line-height: 1.5;
-  color: var(--tinta-suave);
-}
 .agenda__cambiar {
   padding: 0;
   border: 0;

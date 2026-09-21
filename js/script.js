@@ -21,10 +21,11 @@ var WHATSAPP = "573236007819";
    │  la propia pagina.                                      │
    │                                                        │
    │  Tampoco hay TEAMS ni CALENDARIO: el boton de la        │
-   │  reunion abre el calendario del recuadro (js/teams.js),  │
-   │  y el enlace de la sala vive en ENLACE_TEAMS, en        │
-   │  landingAgenda.js del repo witown-cloud-functions,      │
-   │  porque es el que va en la invitacion del visitante.    │
+   │  reunion abre el recuadro de js/teams.js, y el enlace   │
+   │  de la sala vive en TRES sitios: SALA_TEAMS de          │
+   │  js/teams.js (abre la pestaña) y ENLACE_TEAMS de        │
+   │  landingAgenda.js y landingSala.js (van en la           │
+   │  invitacion y en el aviso).                             │
    └──────────────────────────────────────────────────────┘ */
 
 /* ┌──────────────────────────────────────────────────────────┐
@@ -63,9 +64,10 @@ var WIWI = "https://www.wiwiquest.iwitown.com";
 })();
 
 /* ============================================================
-   1b. Los otros dos botones de contacto
-   El de Teams solo se activa si hay enlace. Si no lo hay, queda
-   apagado y avisa, en vez de llevar a una página en blanco.
+   1b. Los enlaces que se arman solos
+   WhatsApp y los botones que dependen de un enlace de la cabecera
+   de este archivo. El de la reunión no pasa por aquí: lo abre
+   js/teams.js.
    ============================================================ */
 
 (function () {
