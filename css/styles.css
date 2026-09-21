@@ -2073,14 +2073,12 @@ section[hidden] { display: none !important; }
 }
 .agenda__paso:first-child { margin-top: 0; }
 
-/* Los dias, uno por renglon: el rotulo a la izquierda y cuantas horas
-   quedan a la derecha. */
+/* Los dias, uno por renglon. Solo el dia: el contador de cupos se quito porque
+   confundia. */
 .agenda__dias { display: flex; flex-direction: column; gap: 7px; }
 .agenda__dia {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  display: block;
+  font-weight: 600;
   width: 100%;
   padding: .72em .9em;
   border: 1.5px solid var(--gris-borde);
@@ -2108,8 +2106,6 @@ section[hidden] { display: none !important; }
   background: #fff;
   box-shadow: 0 0 0 3px rgba(118, 4, 103, .12);
 }
-.agenda__diaRotulo { font-weight: 600; }
-.agenda__diaCupos { font-size: .8rem; color: var(--tinta-suave); }
 
 /* Las horas, en rejilla: entran cuatro por renglon en el ancho del
    recuadro y dos en un telefono angosto. */

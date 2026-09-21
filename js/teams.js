@@ -116,7 +116,7 @@ var SALA_TEAMS = "https://teams.microsoft.com/meet/2171674064633?p=43SvylWLRpzrC
 
     var rotulos = {
       nombre:  ["Nombre", "text", "name"],
-      celular: ["Celular", "tel", "tel"],
+      celular: ["Celular / WhatsApp", "tel", "tel"],
       correo:  ["Correo", "email", "email"],
       colegio: ["Colegio", "text", "organization"]
     };
@@ -200,7 +200,7 @@ var SALA_TEAMS = "https://teams.microsoft.com/meet/2171674064633?p=43SvylWLRpzrC
     vaciar();
     decir("");
     encabezado("Entras a la reunión ahora mismo",
-      "Déjanos cómo llamarte y con qué ubicarte, y te abrimos la sala.");
+      "Déjanos tu nombre y cómo podemos contactarte. Te abrimos la sala.");
 
     hueco.appendChild(pasoHecho("Vas a entrar:", "ahora mismo", pintarCaminos));
 
@@ -208,8 +208,8 @@ var SALA_TEAMS = "https://teams.microsoft.com/meet/2171674064633?p=43SvylWLRpzrC
     caja2.innerHTML =
       "<p><strong>Al confirmar se abre la sala de Teams en otra pestaña</strong>, y " +
       "nos llega un aviso de que estás esperando. Alguien se conecta contigo en un momento.</p>" +
-      "<p class=\"agenda__salaNota\">Si nadie alcanza a entrar, te buscamos por el celular " +
-      "o el correo que dejes aquí.</p>";
+      "<p class=\"agenda__salaNota\">Estaremos atentos. Si la conexión falla, te " +
+      "contactamos por WhatsApp o el correo que dejes aquí.</p>";
     hueco.appendChild(caja2);
 
     var forma = nuevo("form", "agenda__forma");
@@ -270,7 +270,8 @@ var SALA_TEAMS = "https://teams.microsoft.com/meet/2171674064633?p=43SvylWLRpzrC
           /* La sala ya está abierta: no se le muestra un error técnico, pero
              tampoco se le promete un aviso que no sabemos si salió. */
           pintarListo("Estás en la sala.",
-            "Si nadie entra en un par de minutos, escríbenos por WhatsApp.",
+            "Si en un par de minutos no ves a nadie, escríbenos por WhatsApp y te " +
+            "atendemos de una.",
             !pestana, true);
         });
     });
@@ -343,9 +344,10 @@ var SALA_TEAMS = "https://teams.microsoft.com/meet/2171674064633?p=43SvylWLRpzrC
     dias.forEach(function (dia) {
       var b = nuevo("button", "agenda__dia");
       b.type = "button";
-      b.innerHTML = '<span class="agenda__diaRotulo">' + dia.rotulo + "</span>" +
-                    '<span class="agenda__diaCupos">' + dia.horas.length +
-                    (dia.horas.length === 1 ? " hora" : " horas") + "</span>";
+      /* Solo el dia. El contador de cupos ("4 horas") confundia: parecia la
+         duracion de la reunion, o un cupo limitado. Las horas se ven en el
+         paso siguiente, que es donde importan. */
+      b.textContent = dia.rotulo;
       b.addEventListener("click", function () {
         diaElegido = dia;
         pintarHoras();
