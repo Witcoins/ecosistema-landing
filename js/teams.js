@@ -168,6 +168,7 @@ var SALA_TEAMS = "https://teams.microsoft.com/meet/2171674064633?p=43SvylWLRpzrC
   function pintarCaminos() {
     vaciar();
     decir("");
+    mesVisible = 0;
     encabezado("¿Hablamos ahora o lo agendamos?",
       "Si entras ahora, te avisamos a nosotros y alguien se conecta contigo en un " +
       "momento. Si prefieres, escoge el día y la hora que te sirva.");
@@ -336,15 +337,20 @@ var SALA_TEAMS = "https://teams.microsoft.com/meet/2171674064633?p=43SvylWLRpzrC
      y no como la lista de botones del camino de Teams, para que se vean
      distintos de un golpe: uno es "entro ya", el otro es "escojo cuándo".
 
-     La rejilla cubre exactamente la ventana que ofrece el servidor: desde el
-     lunes de la semana del primer cupo hasta el domingo de la del último. Los
-     días sin cupo salen apagados y no se pueden tocar. */
+     Se muestran DOS meses: el que corre y el siguiente, uno a la vez, y se pasa
+     de uno a otro con las flechas. Cada mes sale completo, con sus días sin
+     cupo apagados, porque un mes al que le faltan días no se lee como un mes.
+
+     Los cupos los pone el servidor y hoy alcanzan tres semanas: el mes
+     siguiente casi siempre tendrá pocos días disponibles, o ninguno, y por eso
+     su flecha se apaga cuando no hay nada que mirar allá. */
 
   var DIAS_CORTOS = ["lun", "mar", "mié", "jue", "vie", "sáb", "dom"];
-  var MESES_CORTOS = ["ene", "feb", "mar", "abr", "may", "jun",
-    "jul", "ago", "sep", "oct", "nov", "dic"];
   var MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio",
     "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+
+  /* Qué mes se está mirando: 0 = el del primer cupo, 1 = el siguiente. */
+  var mesVisible = 0;
 
   /* Las fechas llegan como "2026-09-22". Se parten a mano en vez de usar
      new Date("2026-09-22"): eso se interpreta como medianoche UTC y en Colombia
@@ -364,6 +370,16 @@ var SALA_TEAMS = "https://teams.microsoft.com/meet/2171674064633?p=43SvylWLRpzrC
     return (d.getUTCDay() + 6) % 7;
   }
 
+  /* Los dos meses que se pueden mirar, a partir del primer cupo que haya. */
+  function mesesDelCalendario() {
+    var base = comoUtc(dias[0].fecha);
+    return [
+      { anio: base.getUTCFullYear(), mes: base.getUTCMonth() },
+      { anio: base.getUTCMonth() === 11 ? base.getUTCFullYear() + 1 : base.getUTCFullYear(),
+        mes: (base.getUTCMonth() + 1) % 12 }
+    ];
+  }
+
   function pintarDias() {
     vaciar();
     horaElegida = null;
@@ -371,35 +387,73 @@ var SALA_TEAMS = "https://teams.microsoft.com/meet/2171674064633?p=43SvylWLRpzrC
 
     hueco.appendChild(pasoHecho("Agendar:", "para después", pintarCaminos));
     hueco.appendChild(nuevo("p", "agenda__paso", "1. Escoge el día"));
+    hueco.appendChild(armarCalendario());
+  }
 
+  /* Tras cambiar de mes se repinta todo y el foco se caeria al body. Se pone en
+     la flecha que quedo habilitada —la contraria, porque la que se pulso queda
+     apagada al llegar— para poder ir y volver entre los dos meses sin tabular
+     el dialogo entero. */
+  function enfocarFlecha() {
+    var f = hueco.querySelector(".agenda__calFlecha:not([disabled])");
+    if (f) f.focus();
+  }
+
+  function armarCalendario() {
     var porFecha = {};
     dias.forEach(function (dia) { porFecha[dia.fecha] = dia; });
 
-    var primera = comoUtc(dias[0].fecha);
-    var ultima  = comoUtc(dias[dias.length - 1].fecha);
+    var meses = mesesDelCalendario();
+    var cual = meses[mesVisible];
 
-    var desde = new Date(primera.getTime() - columnaDe(primera) * 86400000);
-    var hasta = new Date(ultima.getTime() + (6 - columnaDe(ultima)) * 86400000);
+    var primeroDelMes = new Date(Date.UTC(cual.anio, cual.mes, 1));
+    var ultimoDelMes  = new Date(Date.UTC(cual.anio, cual.mes + 1, 0));
+
+    /* La rejilla siempre arranca en lunes y termina en domingo, o las columnas
+       no cuadrarían con la cabecera. */
+    var desde = new Date(primeroDelMes.getTime() - columnaDe(primeroDelMes) * 86400000);
+    var hasta = new Date(ultimoDelMes.getTime() + (6 - columnaDe(ultimoDelMes)) * 86400000);
 
     var cal = nuevo("div", "agenda__cal");
 
-    /* El mes, o los dos meses que cruce la ventana. */
-    var mesInicio = primera.getUTCMonth();
-    var mesFin = ultima.getUTCMonth();
-    /* El año va pegado a cada mes cuando la ventana cruza de diciembre a enero:
-       con un solo año al final, ese diciembre saldria con el año del enero. */
-    var anioInicio = primera.getUTCFullYear();
-    var anioFin = ultima.getUTCFullYear();
-    var rotuloMes;
+    /* ---- La cabecera: flecha, mes, flecha ---- */
 
-    if (mesFin === mesInicio) {
-      rotuloMes = MESES[mesInicio] + " de " + anioFin;
-    } else if (anioFin === anioInicio) {
-      rotuloMes = MESES[mesInicio] + " y " + MESES[mesFin] + " de " + anioFin;
-    } else {
-      rotuloMes = MESES[mesInicio] + " de " + anioInicio + " y " + MESES[mesFin] + " de " + anioFin;
-    }
-    cal.appendChild(nuevo("p", "agenda__calMes", rotuloMes));
+    var barra = nuevo("div", "agenda__calBarra");
+
+    var atras = nuevo("button", "agenda__calFlecha", "‹");
+    atras.type = "button";
+    atras.setAttribute("aria-label", "Mes anterior");
+    atras.disabled = mesVisible === 0;
+    atras.addEventListener("click", function () {
+      mesVisible = 0;
+      pintarDias();
+      enfocarFlecha();
+    });
+    barra.appendChild(atras);
+
+    barra.appendChild(nuevo("p", "agenda__calMes", MESES[cual.mes] + " de " + cual.anio));
+
+    /* Si el mes siguiente no tiene ni un cupo, la flecha se apaga: mandar a
+       alguien a un mes vacío es hacerle perder el viaje. */
+    var haySiguiente = dias.some(function (dia) {
+      var d = comoUtc(dia.fecha);
+      return d.getUTCFullYear() === meses[1].anio && d.getUTCMonth() === meses[1].mes;
+    });
+
+    var adelante = nuevo("button", "agenda__calFlecha", "›");
+    adelante.type = "button";
+    adelante.setAttribute("aria-label", "Mes siguiente");
+    adelante.disabled = mesVisible === 1 || !haySiguiente;
+    adelante.addEventListener("click", function () {
+      mesVisible = 1;
+      pintarDias();
+      enfocarFlecha();
+    });
+    barra.appendChild(adelante);
+
+    cal.appendChild(barra);
+
+    /* ---- La rejilla ---- */
 
     var rejilla = nuevo("div", "agenda__calRejilla");
 
@@ -411,22 +465,27 @@ var SALA_TEAMS = "https://teams.microsoft.com/meet/2171674064633?p=43SvylWLRpzrC
 
     for (var t = desde.getTime(); t <= hasta.getTime(); t += 86400000) {
       var d = new Date(t);
-      var fecha = comoTexto(d);
-      var dia = porFecha[fecha];
-      var numero = String(d.getUTCDate());
+      var delMes = d.getUTCMonth() === cual.mes && d.getUTCFullYear() === cual.anio;
+      var dia = delMes ? porFecha[comoTexto(d)] : null;
 
-      /* El primero de cada mes lleva el mes al lado, para que no haya que
-         adivinar dónde empieza octubre. */
-      if (d.getUTCDate() === 1) numero += " " + MESES_CORTOS[d.getUTCMonth()];
+      /* Los días de relleno —los del mes de al lado que completan la primera y
+         la última semana— van en blanco: si llevaran número se leerían como
+         días de este mes. */
+      if (!delMes) {
+        var relleno = nuevo("span", "agenda__calDia es-relleno");
+        relleno.setAttribute("aria-hidden", "true");
+        rejilla.appendChild(relleno);
+        continue;
+      }
 
       if (!dia) {
-        var vacio = nuevo("span", "agenda__calDia es-vacio", numero);
+        var vacio = nuevo("span", "agenda__calDia es-vacio", String(d.getUTCDate()));
         vacio.setAttribute("aria-hidden", "true");
         rejilla.appendChild(vacio);
         continue;
       }
 
-      var b = nuevo("button", "agenda__calDia", numero);
+      var b = nuevo("button", "agenda__calDia", String(d.getUTCDate()));
       b.type = "button";
       b.setAttribute("aria-label", dia.rotulo);
       b.addEventListener("click", (function (elDia) {
@@ -439,7 +498,16 @@ var SALA_TEAMS = "https://teams.microsoft.com/meet/2171674064633?p=43SvylWLRpzrC
     }
 
     cal.appendChild(rejilla);
-    hueco.appendChild(cal);
+
+    if (!dias.some(function (dia) {
+      var d = comoUtc(dia.fecha);
+      return d.getUTCFullYear() === cual.anio && d.getUTCMonth() === cual.mes;
+    })) {
+      cal.appendChild(nuevo("p", "agenda__calNada",
+        "Este mes ya no tiene horas libres. Mira el mes anterior con la flecha."));
+    }
+
+    return cal;
   }
 
   /* Paso 2: la hora. El día ya elegido queda encogido arriba. */
@@ -580,6 +648,12 @@ var SALA_TEAMS = "https://teams.microsoft.com/meet/2171674064633?p=43SvylWLRpzrC
   function abrir(desde, destino) {
     deDonde = desde || null;
     caja.hidden = false;
+
+    /* El calendario siempre se abre en el primer mes. Va aqui y no dentro de
+       `abrirCalendario()` a proposito: cuando un cupo se lo lleva otro, esa
+       funcion se vuelve a llamar para recargar y ahi hay que dejar a la persona
+       en el mes que estaba mirando, no devolverla al principio. */
+    mesVisible = 0;
     document.body.classList.add("con-lupa");     // la misma llave que usa el visor
 
     /* El boton que dice "Calendario" entra directo al calendario: preguntarle

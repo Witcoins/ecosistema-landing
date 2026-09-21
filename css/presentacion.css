@@ -913,14 +913,26 @@
   max-width: 440px;
 }
 
+/* Ojo: los de la reunion son <button>, no <a>. Tienen que serlo: js/vistas.js
+   escucha los clics en `a[href^="#"]` para cambiar de seccion, asi que con un
+   enlace el boton abria el recuadro Y te sacaba de la pagina. De ahi los
+   reinicios de aqui abajo, que en un <a> no hacen falta. */
 .ctc__boton {
   display: flex;
   align-items: center;
   gap: 14px;
+  width: 100%;
   padding: 13px 16px;
   background: #fff;
   border: 1.5px solid var(--gris-borde);
   border-radius: 14px;
+  font-family: inherit;
+  font-size: inherit;
+  /* Sin esto los tres <button> quedan ~10 px mas bajos que los <a> de al lado:
+     el navegador le aplica a los controles la abreviatura `font`, que reinicia
+     el interlineado a `normal`, y heredar la familia y el tamaño no lo repone. */
+  line-height: inherit;
+  text-align: left;
   text-decoration: none;
   cursor: pointer;
   box-shadow: 0 2px 10px rgba(26,21,35,.06);
