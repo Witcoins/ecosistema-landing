@@ -78,3 +78,34 @@ versión vieja.
 
 Este número es lo que hace que la caché de Firebase (un año para imágenes y
 video, una semana para css y js) no se convierta en un problema.
+
+---
+
+## La vista previa al compartir el enlace
+
+Está lista: las etiquetas Open Graph y la imagen
+`assets/img/og-portada.jpg` (1200×630). Con eso, al pegar la
+dirección en **WhatsApp, LinkedIn, Teams, Slack, X, Facebook o
+Telegram** sale la tarjeta con el titular y la imagen.
+
+**El correo es otra cosa.** Gmail y Outlook no arman esa tarjeta
+solos: ahí un enlace pegado se ve como texto azul y ya. Para que en
+un correo se vea la imagen, hay que meterla en el mensaje y ponerle
+el enlace encima —la imagen está en
+<https://www.ecosistema.iwitown.com/assets/img/og-portada.jpg>—, o
+mandarlo con una herramienta de campañas.
+
+**Si se cambia la imagen o el titular**, los que ya leyeron la
+página tienen guardada la versión vieja y hay que pedirles que la
+vuelvan a leer:
+
+* Facebook y WhatsApp: <https://developers.facebook.com/tools/debug/>
+  → pegar la dirección → "Scrape Again".
+* LinkedIn: <https://www.linkedin.com/post-inspector/>
+* X: <https://cards-dev.twitter.com/validator>
+
+WhatsApp lee la de Facebook, así que con esa basta para los dos.
+
+**Si algún día cambia el dominio**, hay que cambiarlo en las cuatro
+direcciones completas que están arriba del `index.html`, en el bloque
+de la tarjeta.
