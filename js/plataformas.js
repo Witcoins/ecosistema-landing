@@ -30,7 +30,7 @@ var ECO_PLATAFORMAS = [
     imagen: "assets/img/apps/admon.webp",
     para: "Rectores y administrativos",
     icono: "colegio",
-    frase: "El colegio entero, desde una sola consola.",
+    frase: "Desde aquí el colegio decide, y ve si lo que decidió está pasando.",
     piezas: [
       { nombre: "Comunicación", icono: "agenda",
         texto: "Con los padres, y con confirmación de lectura en tiempo real." },
@@ -50,7 +50,7 @@ var ECO_PLATAFORMAS = [
     imagen: "assets/img/apps/witeacher.webp",
     para: "Docentes",
     icono: "teachers",
-    frase: "Libertad pedagógica real: arma lo que quiere, como quiere.",
+    frase: "Libertad pedagógica real: el docente arma lo suyo, no escoge de un catálogo.",
     piezas: [
       { nombre: "Nivel cognitivo", icono: "grafico",
         texto: "El de cada estudiante, tema por tema." },
@@ -66,7 +66,7 @@ var ECO_PLATAFORMAS = [
     imagen: "assets/img/apps/witutor.webp",
     para: "Padres de familia",
     icono: "familia",
-    frase: "Lo de sus hijos, todos los días y en un solo canal.",
+    frase: "El papá ve el colegio de su hijo, no un boletín cada dos meses.",
     piezas: [
       { nombre: "Tareas", icono: "tareas",
         texto: "Le avisa cuáles tienen sus hijos." },
@@ -84,7 +84,7 @@ var ECO_PLATAFORMAS = [
     imagen: "assets/img/apps/iwitown.webp",
     para: "Estudiantes",
     icono: "juego",
-    frase: "Esta es la cara que ve el niño. Y es la que hace que quiera entrar.",
+    frase: "La cara que ve el niño. Y la que hace que quiera entrar.",
     piezas: [
       { nombre: "Work", icono: "tareas",
         texto: "Sus tareas asignadas." },
