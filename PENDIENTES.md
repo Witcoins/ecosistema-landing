@@ -68,11 +68,11 @@ acá: los tres enlaces van a las páginas externas vigentes
 En `index.html` todos los archivos llevan `?v=` con un número al final:
 
 ```html
-<link rel="stylesheet" href="css/styles.css?v=309">
+<link rel="stylesheet" href="css/styles.css?v=310">
 ```
 
-El número vigente es **309**. Al cambiar un css, un js o una imagen hay que
-**subirle el número a todos** (buscar `v=309` y reemplazar por `v=310`). Si no,
+El número vigente es **310**. Al cambiar un css, un js o una imagen hay que
+**subirle el número a todos** (buscar `v=310` y reemplazar por `v=311`). Si no,
 los navegadores de quienes ya visitaron la página les siguen mostrando la
 versión vieja.
 
