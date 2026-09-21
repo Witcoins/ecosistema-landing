@@ -948,10 +948,11 @@
   stroke-linecap: round;
   stroke-linejoin: round;
 }
-/* Agendar es la accion principal, asi que lleva el morado de la marca: era el
-   del boton de Teams, que ya no existe. Se fueron con el las reglas de
-   --teams y --forma, cuyos botones se borraron. */
-.ctc__boton--cal .ctc__ico   { background: linear-gradient(150deg, #760467, #45023C); }
+/* Un color por canal, para que se distingan de un vistazo: Teams con el morado
+   de Teams, Calendario en ambar, WhatsApp verde y el correo azul. Sin la regla
+   del canal, el icono queda blanco sobre transparente: invisible. */
+.ctc__boton--teams .ctc__ico { background: linear-gradient(150deg, #6264A7, #3B3D6B); }
+.ctc__boton--cal .ctc__ico   { background: linear-gradient(150deg, #FBBF24, #D97706); }
 .ctc__boton--wa .ctc__ico    { background: linear-gradient(150deg, #34D399, var(--whatsapp-oscuro)); }
 .ctc__boton--mail .ctc__ico  { background: linear-gradient(150deg, #38BDF8, #1D7FD4); }
 

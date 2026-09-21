@@ -53,26 +53,56 @@ firebase serve --only hosting            # o en local, en el navegador
 
 ## 2. El contacto y el agendamiento
 
-Las dos cosas pasan **dentro de la pagina**: ninguna manda al visitante a un
-sitio externo ni le abre su programa de correo. Firebase Hosting no ejecuta PHP,
-asi que las atienden tres Cloud Functions del repositorio
-`witown-cloud-functions`:
+El formulario y el calendario pasan **dentro de la pagina**: no le abren al
+visitante su programa de correo ni lo mandan a llenar nada afuera. Lo unico que
+sale del sitio es la sala de Teams, cuando el visitante escoge entrar ahora.
+Firebase Hosting no ejecuta PHP, asi que todo lo atienden cuatro Cloud Functions
+del repositorio `witown-cloud-functions`:
 
 | La pagina llama a | Lo atiende | Que hace |
 |---|---|---|
 | `POST /api/contacto` | `landingContacto` | guarda el lead en `LandingLeads`, avisa a `contacto@iwitown.com` y a `witownnetwork@gmail.com`, y le manda al visitante un correo de "gracias por contactarnos" |
 | `GET /api/horas` | `landingHoras` | devuelve los cupos libres de las proximas 3 semanas |
 | `POST /api/agendar` | `landingAgendar` | reserva el cupo y manda la invitacion por correo a las dos partes |
+| `POST /api/sala` | `landingSala` | avisa de que **hay alguien esperando en la sala AHORA**: no reserva nada |
 
 Las rutas `/api/*` son **rewrites** declarados en `firebase.json`: la pagina y
 las funciones quedan en el mismo dominio, asi que no hay CORS de por medio.
 
+### El recuadro tiene dos caminos
+
+El boton "Reunion por Teams" abre un recuadro que pregunta primero que quiere
+hacer el visitante, y cada paso resuelto se encoge a un renglon con su boton de
+"Cambiar", para que vea donde va y pueda devolverse:
+
+- **Entrar a la reunion ahora.** Se le avisa de que lo mandamos a la sala en este
+  momento, deja nombre, celular y correo, y al confirmar se abre Teams en otra
+  pestaña. Por detras, `/api/sala` **nos avisa de que esta esperando**.
+- **Agendar para despues.** Dia, hora y sus datos (nombre, celular, correo y
+  colegio). Es el calendario de mas abajo.
+
+La sala se abre **antes** de que responda el servidor, a proposito: los
+navegadores solo dejan abrir una pestaña mientras la persona esta tocando algo,
+asi que si se esperara la respuesta la pestaña saldria bloqueada. Si el aviso
+falla, la persona igual entra, que es lo que vino a hacer.
+
+### El aviso de "hay alguien en la sala"
+
+Sale por **correo** a `contacto@iwitown.com` y a `witownnetwork@gmail.com`, con
+asunto `AHORA: <nombre> esta esperando en la sala de Teams` y con el celular y el
+correo que dejo, por si nadie alcanza a entrar y hay que devolverle el contacto.
+La visita queda tambien en la coleccion `LandingSala`.
+
+**Se descarto avisar por WhatsApp** (decision del 2026-09-21). Desde un servidor
+no se puede: exige la API de WhatsApp Business de Meta, con cuenta aparte, la
+empresa verificada y una plantilla aprobada por cada mensaje que inicia el
+negocio. Si algun dia se quiere un aviso al celular sin ese costo, el camino
+corto es un bot de Telegram.
+
 ### El calendario es nuestro
 
-No se usa la pagina de citas de Google —la cobran— ni un iframe de nadie. El
-recuadro de "Reunion por Teams" pinta el calendario con `js/teams.js`: el
-visitante escoge dia, luego hora, deja nombre, correo, celular y colegio, y
-queda agendado.
+No se usa la pagina de citas de Google —la cobran— ni un iframe de nadie. Lo
+pinta `js/teams.js` con los cupos que da `/api/horas`.
 
 Cuatro cosas que hay que saber para no romperlo:
 
@@ -89,12 +119,15 @@ Cuatro cosas que hay que saber para no romperlo:
   correo, no por la API de Calendar. Gmail la reconoce y la ofrece para aceptar,
   tanto en la bandeja nuestra como en la del visitante. Por eso no hay que
   compartir ningun calendario con una cuenta de servicio.
-- **La sala de Teams es fija**: `ENLACE_TEAMS`, en el mismo archivo. Todas las
-  reuniones caen en la misma sala, asi que dos citas a la misma hora se
-  pisarian; para eso esta la transaccion del cupo.
+- **La sala de Teams es fija**, y su enlace vive en **tres** sitios: `SALA_TEAMS`
+  en `js/teams.js` (porque la pestaña la abre el navegador) y `ENLACE_TEAMS` en
+  `landingAgenda.js` y `landingSala.js` (porque es el que va en la invitacion y
+  en el aviso). Si se cambia la sala, se cambia en los tres. Todas las reuniones
+  caen en la misma sala, asi que dos citas a la misma hora se pisarian; para eso
+  esta la transaccion del cupo.
 
-Quien quiere hablar **ya** no agenda: usa el boton de WhatsApp. El boton de
-Teams ya no abre la sala directo, a proposito.
+Quien quiere hablar **ya** tiene dos caminos: el de "entrar ahora" del recuadro,
+o el boton de WhatsApp.
 
 El correo no sale por SMTP: la función escribe un documento en la colección
 `mail` y lo despacha la extensión *Trigger Email from Firestore*, la misma vía
@@ -105,7 +138,7 @@ ecosistema, **siempre desde `main`**:
 
 ```bash
 cd C:\Users\ASUS\StudioProjects\witown-cloud-functions
-firebase deploy --only functions:landingContacto,functions:landingHoras,functions:landingAgendar
+firebase deploy --only functions:landingContacto,functions:landingHoras,functions:landingAgendar,functions:landingSala
 ```
 
 > El sitio y las funciones se despliegan por separado, y el orden importa: **las
@@ -161,9 +194,11 @@ función deja el campo listo por si algún día se agregan.) Tres cosas que hay 
 tener presentes:
 
 - La función es **pública a propósito** (la llena un visitante sin cuenta). Las
-  guardas son la trampa anti-spam del campo oculto y dos topes que rotan a
+  guardas son la trampa anti-spam del campo oculto y unos topes que rotan a
   medianoche de Bogota: el contacto admite 20 envios por IP a la hora y 200 al
-  dia en total; el agendamiento, 10 por IP a la hora y 60 al dia. El agendamiento
+  dia en total; el agendamiento, 10 y 60; el aviso de la sala, 5 y 40. En la sala
+  el tope frena **el aviso, no la captura**: la visita se guarda igual, para no
+  perder el celular de quien quedo esperando. El agendamiento
   los necesita igual que el contacto: que un cupo tomado no se pueda volver a
   tomar no es un limite, porque **llenar la agenda entera es justamente el
   ataque**, y cada reserva dispara dos correos.
@@ -175,9 +210,9 @@ tener presentes:
   extension de correo que usan los colegios.
 - Las reglas de Firestore del proyecto conceden lectura a cualquier usuario
   autenticado, así que **estas colecciones quedan legibles desde las apps**. Está
-  anotado como pendiente. A partir de este despliegue hay datos personales de
-  visitantes externos dentro de ese comodín; si se quiere cerrar, va una regla
-  explícita para `LandingLeads` y `LandingReuniones` antes del comodín final.
+  anotado como pendiente. Hay datos personales de visitantes externos dentro de
+  ese comodín; si se quiere cerrar, va una regla explícita para `LandingLeads`,
+  `LandingReuniones` y `LandingSala` antes del comodín final.
 - La colección `LandingIntentos` (la de los topes) crece un documento por IP y no
   tiene TTL. Sus documentos traen `ultimo_en`, así que se puede declarar una
   política TTL sobre ese campo cuando estorbe.
@@ -237,7 +272,7 @@ vez (un subdominio nuevo, otro sitio), no como tareas pendientes: lo que sigue
 abierto esta en [`PENDIENTES.md`](PENDIENTES.md).
 
 - [ ] **Videos `solucion-1/2/3.mp4` regrabados sin datos reales** (§0) — bloqueante
-- [x] Las tres Cloud Functions desplegadas desde `main` del repo de funciones (§2)
+- [ ] Las **cuatro** Cloud Functions desplegadas desde `main` del repo de funciones (§2) — `landingSala` es nueva y **no esta desplegada**
 - [x] `firebase deploy --only hosting` desde este repositorio (§1)
 - [ ] La página se ve igual que en local, descontando lo de [`PENDIENTES.md`](PENDIENTES.md) §3
 - [ ] `firebase hosting:sites:list --project witcoins-network` muestra `ecosistema-iwitown` — si el sitio y las funciones no están en el mismo proyecto, los formularios dan 404
@@ -246,5 +281,6 @@ abierto esta en [`PENDIENTES.md`](PENDIENTES.md).
 - [ ] En `firebase functions:log` se miró el `x-forwarded-for` de ese envío y el penúltimo valor es la IP pública propia, no una IP de borde de Google (si no, el tope por IP confundiría visitantes distintos — ver `landing.js`, `ipDe`)
 - [ ] Agendamiento probado de verdad: llegan las invitaciones, el evento queda en el calendario al aceptarlo, y el cupo tomado desaparece del recuadro
 - [ ] Los seis enlaces de redes del pie abren donde deben
+- [ ] Probado "entrar a la reunion ahora": se abre la sala en otra pestaña y llega el correo de aviso a las dos bandejas
 - [ ] Abierta en un celular con datos móviles
 - [ ] Subdominio propio decidido y conectado, si se va a usar
