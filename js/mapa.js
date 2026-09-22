@@ -155,7 +155,12 @@ window.crearMapa = function (cfg) {
          dentro de una variable de CSS se cuenta desde la carpeta del
          archivo .css, no desde la página, y la foto no aparecería. */
       var donde = p.imagen;
-      try { donde = new URL(p.imagen, window.location.href).href; } catch (e) {}
+      /* Contra document.baseURI y no contra location.href: la pagina se sirve
+         tambien en /ecosistema/ (con barra final), y ahi location.href haria
+         buscar la foto en /ecosistema/assets/... La foto entra por una variable
+         de CSS, asi que un 404 no daria error: las tarjetas saldrian sin foto y
+         nadie se enteraria. */
+      try { donde = new URL(p.imagen, document.baseURI).href; } catch (e) {}
       panel.style.setProperty("--mapa-foto", "url('" + donde + "')");
       panel.classList.add("con-foto");
     } else {

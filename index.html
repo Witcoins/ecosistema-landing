@@ -3,6 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Los css, los js y los assets se piden con rutas relativas, y ahora la
+     pagina se sirve tambien en /solucion, /acp... Sin esta base, una direccion
+     con barra final (/solucion/) los buscaria en /solucion/css/ y la pagina
+     saldria sin estilos. Una linea evita tener que volver absolutas las 42
+     rutas del documento. -->
+<base href="/">
+
 <title>i'Witown — Que el colegio muestre su propia identidad</title>
 <meta name="description" content="i'Witown es la plataforma EdTech colombiana que personaliza el aprendizaje de cada estudiante de primaria con la Arquitectura Cognitiva Personalizada. Un ecosistema completo para rectores, docentes, padres y estudiantes.">
 
@@ -18,12 +26,12 @@
 <meta name="theme-color" content="#5B21B6">
 
 <link rel="icon" href="assets/img/favicon.png" type="image/png">
-<link rel="stylesheet" href="css/styles.css?v=311">
-<link rel="stylesheet" href="css/simulador.css?v=311">
-<link rel="stylesheet" href="css/actividades.css?v=311">
-<link rel="stylesheet" href="css/presentacion.css?v=311">
-<link rel="stylesheet" href="css/apps.css?v=311">
-<link rel="stylesheet" href="css/consultoria.css?v=311">
+<link rel="stylesheet" href="css/styles.css?v=312">
+<link rel="stylesheet" href="css/simulador.css?v=312">
+<link rel="stylesheet" href="css/actividades.css?v=312">
+<link rel="stylesheet" href="css/presentacion.css?v=312">
+<link rel="stylesheet" href="css/apps.css?v=312">
+<link rel="stylesheet" href="css/consultoria.css?v=312">
 </head>
 <body>
 
@@ -33,20 +41,20 @@
     <!-- El sello y el nombre llevan a sitios distintos: el sello
          abre la animación de la marca, el nombre va al inicio. -->
     <div class="nav__marca">
-      <a href="#marca" class="nav__sello" id="navSello"
+      <a href="/marca" class="nav__sello" id="navSello"
          aria-label="Ver la animación de la marca">
-        <img src="assets/img/marca-circular.webp?v=311" alt="" class="nav__logo">
+        <img src="assets/img/marca-circular.webp?v=312" alt="" class="nav__logo">
       </a>
-      <a href="#inicio" class="nav__nombre">i’Witown</a>
+      <a href="/" class="nav__nombre">i’Witown</a>
     </div>
 
     <nav class="nav__links" id="menu">
-      <a href="#problema">El problema</a>
-      <a href="#solucion">La solución</a>
-      <a href="#ecosistema">El ecosistema</a>
-      <a href="#acp">La A.C.P.</a>
-      <a href="#contacto" class="nav__verde">Contacto</a>
-      <a href="#consultoria" class="nav__azul">Consultoría</a>
+      <a href="/problema">El problema</a>
+      <a href="/solucion">La solución</a>
+      <a href="/ecosistema">El ecosistema</a>
+      <a href="/acp">La A.C.P.</a>
+      <a href="/contacto" class="nav__verde">Contacto</a>
+      <a href="/consultoria" class="nav__azul">Consultoría</a>
       <!-- A dónde lleva se pone en js/script.js, en WIWI -->
       <a href="#" class="nav__wiwi" data-wiwi>Wiwi</a>
     </nav>
@@ -88,7 +96,7 @@
 <section class="marca" id="marca" hidden>
   <div class="marca__escena" id="marcaEscena">
     <video class="marca__video" id="marcaVideo"
-           src="assets/video/marca.mp4?v=311"
+           src="assets/video/marca.mp4?v=312"
            muted playsinline preload="auto"></video>
   </div>
 </section>
@@ -141,7 +149,7 @@
         <span class="celular__isla" aria-hidden="true"></span>
         <video class="celular__video" id="celVideo" autoplay loop muted playsinline
                preload="auto" aria-label="Presentación de i'Witown">
-          <source src="assets/video/portada-vertical.mp4?v=311" type="video/mp4">
+          <source src="assets/video/portada-vertical.mp4?v=312" type="video/mp4">
         </video>
         <span class="celular__brillo" aria-hidden="true"></span>
 
@@ -180,11 +188,11 @@
        centrados con la página entera y no con la columna del texto. -->
   <div class="contenedor">
     <div class="portada__botones">
-      <a href="#contacto" class="btn btn--morado btn--grande">Agendar cita</a>
+      <a href="/contacto" class="btn btn--morado btn--grande">Agendar cita</a>
 
       <!-- "data-reinicia" hace que la presentación vuelva a empezar
            desde el primer video. Lo maneja js/presentacion.js. -->
-      <a href="#presentacion" class="btn btn--linea btn--grande" data-reinicia>
+      <a href="/#presentacion" class="btn btn--linea btn--grande" data-reinicia>
         <svg viewBox="0 0 24 24" aria-hidden="true" class="portada__play">
           <path d="M8 5.6v12.8L19 12z"/>
         </svg>
@@ -668,7 +676,7 @@
             </span>
           </a>
 
-          <a class="ctc__boton ctc__boton--mail" href="#conversemos">
+          <a class="ctc__boton ctc__boton--mail" href="/conversemos">
             <span class="ctc__ico">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <rect x="2" y="4" width="20" height="16" rx="2"/>
@@ -725,7 +733,7 @@
 
         <!-- El mismo botón de la portada: la invitación a la demo no
              queda solo arriba del todo, sino también aquí. -->
-        <a href="#contacto" class="btn btn--morado btn--grande prob__boton">Agendar cita</a>
+        <a href="/contacto" class="btn btn--morado btn--grande prob__boton">Agendar cita</a>
       </div>
 
       <!-- La tableta. El marco es la foto assets/img/tablet.webp, que
@@ -846,7 +854,7 @@
               <p class="aspecto__donde">i'Witeacher (asignación de tareas sin banco cerrado) · Work en la plataforma del estudiante</p>
             </article>
 
-            <article class="aspecto" data-sol="assets/video/solucion-4.mp4?v=311" data-sol-desde="0" data-sol-nombre="Secciones para seguimiento">
+            <article class="aspecto" data-sol="assets/video/solucion-4.mp4?v=312" data-sol-desde="0" data-sol-nombre="Secciones para seguimiento">
               <h3 class="aspecto__titulo">Secciones para seguimiento</h3>
               <p class="aspecto__texto">Cada estudiante tiene su sección, con el historial de su proceso a la vista. Nadie tiene que pedir un informe para saber cómo va.</p>
             </article>
@@ -856,7 +864,7 @@
               <p class="aspecto__texto">Ves en tiempo real quién leyó y quién firmó cada mensaje. Se acabaron las circulares perdidas en la mochila.</p>
             </article>
 
-            <article class="aspecto" data-sol="assets/video/solucion-1.mp4?v=311" data-sol-nombre="Trazabilidad real de uso">
+            <article class="aspecto" data-sol="assets/video/solucion-1.mp4?v=312" data-sol-nombre="Trazabilidad real de uso">
               <h3 class="aspecto__titulo">Trazabilidad real de uso</h3>
               <p class="aspecto__texto">Ves quién entra, qué usa y con qué frecuencia. No supones: verificas.</p>
             </article>
@@ -939,7 +947,7 @@
               <p class="aspecto__texto">Sin perderse entre cien mensajes de WhatsApp.</p>
             </article>
 
-            <article class="aspecto" data-sol="assets/video/solucion-3.mp4?v=311" data-sol-nombre="Los papás ven al día qué han pagado">
+            <article class="aspecto" data-sol="assets/video/solucion-3.mp4?v=312" data-sol-nombre="Los papás ven al día qué han pagado">
               <h3 class="aspecto__titulo">Los papás ven al día qué han pagado</h3>
               <p class="aspecto__texto">Entras y ves mes por mes qué está al día y qué no. Sin llamar a preguntar y sin reclamos por un recibo que nadie encuentra.</p>
             </article>
@@ -1074,7 +1082,7 @@
          └───────────────────────────────────────────────────────┘ -->
     <header class="seccion__head con-cabeza" id="conCabeza">
       <img class="con-cabeza__foto" id="conFoto" alt=""
-           src="assets/img/consultoria.webp?v=311">
+           src="assets/img/consultoria.webp?v=312">
 
       <div class="con-cabeza__texto">
         <h2 class="con-titulo">
@@ -1153,7 +1161,7 @@
     <!-- "Agendar cita", fijo abajo mientras se lee la sección.
          Vive dentro de la sección, así que solo se ve en esta
          pestaña y desaparece al cambiar de pestaña. -->
-    <a href="#contacto" class="con-flota">
+    <a href="/contacto" class="con-flota">
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <rect x="3.5" y="5" width="17" height="15.5" rx="2"/>
         <path d="M3.5 10h17M8 3v4M16 3v4"/>
@@ -1187,10 +1195,10 @@
              preload="auto" el celular se bajaba sus 0,7 MB al abrir, peleando
              banda con lo que si se ve. Lo carga js/asesora.js al llegar. -->
         <video playsinline muted preload="metadata">
-          <source src="assets/video/asesora.mp4?v=311" type="video/mp4">
+          <source src="assets/video/asesora.mp4?v=312" type="video/mp4">
         </video>
 
-        <img class="ctc-video__final" src="assets/img/asesora.webp?v=311"
+        <img class="ctc-video__final" src="assets/img/asesora.webp?v=312"
              alt="Asesora de i'Witown lista para atender" aria-hidden="true">
 
         <div class="ctc-video__mandos">
@@ -1249,7 +1257,7 @@
             </span>
           </a>
 
-          <a class="ctc__boton ctc__boton--mail" href="#conversemos">
+          <a class="ctc__boton ctc__boton--mail" href="/conversemos">
             <span class="ctc__ico">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <rect x="2" y="4" width="20" height="16" rx="2"/>
@@ -1376,10 +1384,10 @@
           <!-- preload="metadata": son 2,7 MB al final de la pagina. Antes se
                bajaban al abrir aunque nadie llegara hasta aca. -->
           <video playsinline muted preload="metadata">
-            <source src="assets/video/asesor.mp4?v=311" type="video/mp4">
+            <source src="assets/video/asesor.mp4?v=312" type="video/mp4">
           </video>
 
-          <img class="ctc-video__final" src="assets/img/asesor.webp?v=311"
+          <img class="ctc-video__final" src="assets/img/asesor.webp?v=312"
                alt="Asesor de i'Witown listo para atender" aria-hidden="true">
 
           <div class="ctc-video__mandos">
@@ -1423,9 +1431,9 @@
     </div>
     <div class="pie__col">
       <p class="pie__titulo">Navegación</p>
-      <a href="#problema">El problema</a>
-      <a href="#ecosistema">El ecosistema</a>
-      <a href="#acp">La A.C.P.</a>
+      <a href="/problema">El problema</a>
+      <a href="/ecosistema">El ecosistema</a>
+      <a href="/acp">La A.C.P.</a>
     </div>
     <div class="pie__col">
       <p class="pie__titulo">Síguenos</p>
@@ -1499,30 +1507,30 @@
   </figure>
 </div>
 
-<script src="js/lupa.js?v=311"></script>
-<script src="js/tableta.js?v=311"></script>
-<script src="js/solucion.js?v=311"></script>
-<script src="js/vistas.js?v=311"></script>
-<script src="js/portada.js?v=311"></script>
-<script src="js/script.js?v=311"></script>
-<script src="js/actividades.js?v=311"></script>
-<script src="js/simulador.js?v=311"></script>
-<script src="js/recorrido.js?v=311"></script>
-<script src="js/app-visor.js?v=311"></script>
-<script src="js/witutor-pantallas.js?v=311"></script>
-<script src="js/witutor.js?v=311"></script>
-<script src="js/witeacher.js?v=311"></script>
-<script src="js/iwitown.js?v=311"></script>
-<script src="js/admon.js?v=311"></script>
-<script src="js/mapa.js?v=311"></script>
-<script src="js/acp.js?v=311"></script>
-<script src="js/acp-red.js?v=311"></script>
-<script src="js/consultoria.js?v=311"></script>
-<script src="js/plataformas.js?v=311"></script>
-<script src="js/asesora.js?v=311"></script>
-<script src="js/teams.js?v=311"></script>
-<script src="js/marca.js?v=311"></script>
-<script src="js/ecosistema.js?v=311"></script>
-<script src="js/presentacion.js?v=311"></script>
+<script src="js/lupa.js?v=312"></script>
+<script src="js/tableta.js?v=312"></script>
+<script src="js/solucion.js?v=312"></script>
+<script src="js/vistas.js?v=312"></script>
+<script src="js/portada.js?v=312"></script>
+<script src="js/script.js?v=312"></script>
+<script src="js/actividades.js?v=312"></script>
+<script src="js/simulador.js?v=312"></script>
+<script src="js/recorrido.js?v=312"></script>
+<script src="js/app-visor.js?v=312"></script>
+<script src="js/witutor-pantallas.js?v=312"></script>
+<script src="js/witutor.js?v=312"></script>
+<script src="js/witeacher.js?v=312"></script>
+<script src="js/iwitown.js?v=312"></script>
+<script src="js/admon.js?v=312"></script>
+<script src="js/mapa.js?v=312"></script>
+<script src="js/acp.js?v=312"></script>
+<script src="js/acp-red.js?v=312"></script>
+<script src="js/consultoria.js?v=312"></script>
+<script src="js/plataformas.js?v=312"></script>
+<script src="js/asesora.js?v=312"></script>
+<script src="js/teams.js?v=312"></script>
+<script src="js/marca.js?v=312"></script>
+<script src="js/ecosistema.js?v=312"></script>
+<script src="js/presentacion.js?v=312"></script>
 </body>
 </html>
