@@ -49,6 +49,19 @@ acá: los tres enlaces van a las páginas externas vigentes
 
 ---
 
+## 3 bis. La medición: lo que falta y no es técnico
+
+La medición de visitas ya está montada (GA4, con aviso de cookies; ver
+[`DESPLIEGUE.md`](DESPLIEGUE.md) §2 ter). Lo que falta no es código:
+
+- **La política de `politicasprivacidadwitcoins.com` tiene que nombrar a Google
+  como encargado del tratamiento** y mencionar las cookies analíticas. Mientras
+  no lo diga, el aviso promete algo que la política no respalda.
+- **En la consola de Analytics:** apagar Google Signals y bajar la retención de
+  datos. Son los dos ajustes que más amplían lo que se recoge.
+
+---
+
 ## 4. Contenido pendiente
 
 * **WiwiQuest** no está en el recorrido del ecosistema: faltan las
@@ -68,11 +81,11 @@ acá: los tres enlaces van a las páginas externas vigentes
 En `index.html` todos los archivos llevan `?v=` con un número al final:
 
 ```html
-<link rel="stylesheet" href="css/styles.css?v=312">
+<link rel="stylesheet" href="css/styles.css?v=313">
 ```
 
-El número vigente es **312**. Al cambiar un css, un js o una imagen hay que
-**subirle el número a todos** (buscar `v=312` y reemplazar por `v=313`). Si no,
+El número vigente es **313**. Al cambiar un css, un js o una imagen hay que
+**subirle el número a todos** (buscar `v=313` y reemplazar por `v=314`). Si no,
 los navegadores de quienes ya visitaron la página les siguen mostrando la
 versión vieja.
 

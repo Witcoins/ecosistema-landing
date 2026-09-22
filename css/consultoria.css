@@ -652,6 +652,15 @@
   stroke-linejoin: round;
 }
 
+/* El aviso de cookies ocupa la franja de abajo, y esta pastilla tiene z-index
+   190 contra los 60 del aviso: se pintaria encima y, al estar encima, se
+   quedaria con los toques de "Aceptar" y "Rechazar" en el telefono. Se sube lo
+   que mida el aviso, igual que .wa-flotante en styles.css. */
+body.con-cookies .con-flota {
+  bottom: calc(var(--alto-cookies, 86px) + 20px);
+  transition: background .2s ease, box-shadow .2s ease, bottom .2s ease;
+}
+
 @keyframes conFlotaEntra {
   from { opacity: 0; transform: translateY(14px); }
   to   { opacity: 1; transform: none; }
@@ -665,6 +674,7 @@
     padding: 12px 16px;
     font-size: .9rem;
   }
+  body.con-cookies .con-flota { bottom: calc(var(--alto-cookies, 140px) + 14px); }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -2908,6 +2908,137 @@ section[hidden] { display: none !important; }
 }
 .pie__col a { color: rgba(255,255,255,.7); text-decoration: none; font-size: .94rem; }
 .pie__col a:hover { color: #fff; }
+/* El boton "Cookies" del pie: parece un enlace mas de la columna, pero es un
+   <button> porque abre un aviso, no lleva a ninguna parte. */
+.pie__boton {
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: inherit;
+  font-size: .94rem;
+  line-height: inherit;
+  text-align: left;
+  color: rgba(255,255,255,.7);
+  cursor: pointer;
+}
+.pie__boton:hover { color: #fff; }
+.pie__boton:focus-visible { outline: 3px solid rgba(255,255,255,.7); outline-offset: 2px; }
+
+/* ---- El aviso de cookies ----
+
+   Abajo y a lo ancho, por encima de todo pero sin tapar la pagina: es un
+   aviso, no un peaje. Si bloqueara el contenido para pedir permiso de medir,
+   estariamos cambiando una visita por un dato. */
+
+.cookies {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 60;
+  padding: 14px 0;
+  background: #17101F;
+  border-top: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 -8px 24px rgba(20, 2, 18, .25);
+  animation: cookiesEntra .22s ease;
+}
+
+@keyframes cookiesEntra { from { transform: translateY(100%); } to { transform: none; } }
+
+/* El resto del sitio apaga a mano cada animacion; esta no iba a ser la excepcion. */
+@media (prefers-reduced-motion: reduce) {
+  .cookies { animation: none; }
+}
+
+/* El aviso es fijo: sin esto tapa el final del documento, y ahi vive la columna
+   "Legal" del pie con el propio boton que lo vuelve a abrir.
+
+   La transicion no es adorno: al aceptar desde el pie el padding desaparece, el
+   documento se acorta y quien estaba abajo del todo veia el pie dar un tiron de
+   golpe. Animado, el contenido se acomoda a la par del boton flotante, que usa
+   los mismos .2s. */
+body {
+  transition: padding-bottom .2s ease;
+}
+body.con-cookies {
+  padding-bottom: var(--alto-cookies, 86px);
+}
+
+/* Reparte a lo ancho: el texto a un lado, los botones al otro, dentro del mismo
+   ancho que usa el resto del sitio (.contenedor). Antes era un bloque estrecho
+   centrado, que en pantalla grande dejaba la barra medio vacia. */
+.cookies__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 32px;
+}
+
+.cookies__texto {
+  margin: 0;
+  flex: 0 1 72ch;
+  font-size: .88rem;
+  line-height: 1.5;
+  color: rgba(255,255,255,.75);
+}
+.cookies__texto a { color: #fff; }
+
+/* El aviso recibe el foco al reabrirlo desde el pie (tiene tabindex="-1"), y ahi
+   el recuadro sobraria: se le lee la etiqueta y el parrafo. Si el foco llego con
+   el teclado, :focus-visible si lo dibuja. */
+.cookies:focus:not(:focus-visible) { outline: none; }
+
+/* El margen automatico es para cuando la linea se parte (entre 621 y 800 px los
+   botones caen a una segunda fila): sin el, space-between con un solo elemento
+   en la fila lo deja a la izquierda, y quedarian al lado contrario del que
+   tienen en escritorio. */
+.cookies__botones { display: flex; gap: 8px; flex-shrink: 0; margin-left: auto; }
+
+.cookies__boton {
+  padding: .58em 1.15em;
+  border: 1.5px solid rgba(255,255,255,.35);
+  border-radius: 999px;
+  background: none;
+  font-family: inherit;
+  font-size: .88rem;
+  font-weight: 700;
+  line-height: inherit;
+  color: #fff;
+  cursor: pointer;
+  transition: border-color .16s, background .16s;
+}
+.cookies__boton:hover { border-color: #fff; }
+.cookies__boton:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+
+/* Aceptar es la accion principal, pero rechazar no esta escondido: los dos
+   botones tienen el mismo tamaño y estan uno al lado del otro. */
+.cookies__boton--si {
+  border-color: var(--morado-600);
+  background: var(--morado-600);
+}
+.cookies__boton--si:hover { border-color: #fff; background: #8c0a7b; }
+
+/* El boton flotante de WhatsApp queda justo encima del aviso: se sube lo que
+   mida el aviso mientras este puesto. El alto lo escribe js/analitica.js, que
+   lo mide de verdad; el valor de reserva es por si el JS no alcanzo a medir. */
+body.con-cookies .wa-flotante {
+  bottom: calc(var(--alto-cookies, 86px) + 20px);
+  transition: bottom .2s ease;
+}
+
+@media (max-width: 620px) {
+  .cookies__inner { flex-direction: column; align-items: stretch; text-align: center; }
+  /* El margin-left: auto de arriba hay que apagarlo: en columna es un margen del
+     eje transversal, y un margen automatico ahi le gana al align-items: stretch,
+     asi que los botones se irian a la derecha en vez de quedar centrados. */
+  .cookies__botones { justify-content: center; margin-left: 0; }
+  /* En columna el eje principal es el vertical, asi que el flex-basis de arriba
+     seria un ALTO de 72 caracteres: 323 px de barra con un hueco vacio debajo
+     del texto, igual en todos los telefonos. El alto lo manda el texto. */
+  .cookies__texto { flex: 0 1 auto; }
+}
+
 .pie__base { border-top: 1px solid rgba(255,255,255,.1); padding: 20px 24px; text-align: center; }
 .pie__base p { margin: 0; font-size: .86rem; color: rgba(255,255,255,.45); }
 .pie__base strong { color: rgba(255,255,255,.7); }
@@ -3157,6 +3288,8 @@ body.con-lupa { overflow: hidden; }
   .logos-clientes { gap: 26px; }
 
   .wa-flotante { width: 52px; height: 52px; right: 14px; bottom: 14px; }
+  body.con-cookies .wa-flotante { bottom: calc(var(--alto-cookies, 140px) + 14px); }
+  body.con-cookies { padding-bottom: var(--alto-cookies, 140px); }
   .wa-flotante svg { width: 28px; height: 28px; }
 }
 
