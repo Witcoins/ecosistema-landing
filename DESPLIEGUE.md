@@ -7,8 +7,8 @@ siguiendo lo de acá.
 - Copia local: `C:\Users\ASUS\StudioProjects\ecosistema-landing`
 - **Firebase Hosting**, sitio `ecosistema-iwitown`, proyecto `witcoins-network`
 - URL por omisión: <https://ecosistema-iwitown.web.app>
-- Subdominio propio: `_______________` ← llenar cuando se decida
-- Comprobado contra el repo el **2026-09-20**
+- Subdominio propio: **www.ecosistema.iwitown.com** (con el `www.`: el enlace solo funciona asi). Pendiente de conectar
+- Comprobado contra el repo el **2026-09-22**
 
 Este archivo no repite lo que ya está escrito en otra parte: lo que falta y el
 número del `?v=` viven en [`PENDIENTES.md`](PENDIENTES.md).
@@ -206,6 +206,38 @@ segunda pasada y sin garantias. Y a WhatsApp, que arma la vista previa sin
 ejecutar nada, no le llega nunca: ahi seguira viendo el titulo y la imagen del
 inicio para cualquier ruta. Para cambiar eso hay que servir un html distinto por
 ruta, y eso ya es otro trabajo.
+
+## 2 ter. La medicion de visitas
+
+La miden **Google Analytics 4** y nada mas: no hay mapa de calor ni grabacion de
+sesiones. El identificador esta en `MEDICION`, arriba de `js/analitica.js`, y
+sale de la consola de Analytics (Administrar -> Flujos de datos).
+
+**No se mide a nadie sin permiso.** El script de Google ni siquiera se descarga
+hasta que la persona acepta el aviso de cookies: la Ley 1581 pide permiso antes,
+no despues. Rechazar no carga nada, y si alguien acepta y luego se arrepiente,
+el boton "Cookies" del pie vuelve a preguntar y rechazar **apaga los envios y
+borra las cookies en el acto** (el script sigue en memoria, pero con la bandera
+`ga-disable-<ID>` puesta no manda nada: sin eso, la medicion mejorada disparaba
+sola su primer evento y volvia a escribir las cookies).
+
+Si `MEDICION` se deja vacio, no hay medicion **ni aviso de cookies**: seria
+absurdo pedir permiso para algo que no va a pasar.
+
+Tres cosas que conviene saber antes de mirar los informes:
+
+- **Las nueve rutas se cuentan solas.** Por eso `js/analitica.js` NO manda
+  eventos de pagina a mano: la "medicion mejorada" de GA4 ya los dispara con
+  cada cambio de direccion, y mandarlos tambien contaria cada visita dos veces.
+- **Entre el 20 % y el 30 % de los visitantes no apareceran**, porque los
+  bloqueadores frenan a Google. Los numeros son un piso, no la verdad.
+- **Las horas del dia no vienen en ningun informe estandar**: hay que armar una
+  exploracion con la dimension Hora. Se hace una vez y queda guardada.
+
+Queda una cosa que no es tecnica y sin la cual el aviso promete algo que no
+esta respaldado: la politica de politicasprivacidadwitcoins.com tiene que
+nombrar a **Google como encargado del tratamiento**. Esta anotado en
+[`PENDIENTES.md`](PENDIENTES.md) §3 bis, junto con los dos ajustes de consola.
 
 ## 3. Se prueba en dos tiempos
 
