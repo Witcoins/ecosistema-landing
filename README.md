@@ -89,7 +89,7 @@ Todo lo que hay que reemplazar está marcado en el código con la palabra
 | 1 | Número de WhatsApp | `js/script.js`, arriba |
 | 2 | Correo, teléfono y ciudad de contacto | `index.html`:1278-1280, bloque CONTACTO: LAS MANERAS DE HABLAR |
 | 3 | Logo de i'Witown | `assets/img/logo-iwitown.svg` |
-| 4 | Ícono del navegador | `assets/img/favicon.svg` |
+| 4 | Ícono del navegador | `assets/img/favicon-32.png`, `-48`, `-96` y `-180` (los cuatro, del mismo logo) |
 | 5 | Logo del Gimnasio Cordilleras | `assets/img/logo-cordilleras.svg` |
 | 6 | Captura de Wiwi Quest | `assets/img/wiwiquest.svg` |
 | 7 | Imagen para redes sociales | `assets/img/og-portada.jpg` (todavía no existe) |
