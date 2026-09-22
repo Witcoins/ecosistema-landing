@@ -27,6 +27,15 @@
       {
         "source": "/api/sala",
         "function": { "functionId": "landingSala", "region": "us-central1" }
+      },
+      {
+        "//": "Una ruta por vista. NO se usa un comodin /** a proposito: taparia los 404 y una imagen que falte devolveria la pagina entera con codigo 200. Se listan las ocho vistas; el inicio es la raiz. Van DESPUES de las de /api/.",
+        "source": "/@(marca|problema|solucion|ecosistema|acp|consultoria|contacto|conversemos)",
+        "destination": "/index.html"
+      },
+      {
+        "source": "/@(marca|problema|solucion|ecosistema|acp|consultoria|contacto|conversemos)/",
+        "destination": "/index.html"
       }
     ],
     "headers": [

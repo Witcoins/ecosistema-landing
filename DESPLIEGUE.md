@@ -160,6 +160,53 @@ firebase deploy --only functions:landingContacto,functions:landingHoras,function
 > Un 404 ahi significa que falta el deploy de las funciones; un 422 significa que
 > estan arriba y validando.
 
+## 2 bis. Una ruta por vista
+
+El sitio es un solo `index.html` con nueve vistas que `js/vistas.js` intercambia,
+pero **cada vista tiene su propia direccion**: `/`, `/marca`, `/problema`,
+`/solucion`, `/ecosistema`, `/acp`, `/consultoria`, `/contacto` y `/conversemos`.
+Se pueden compartir, guardar en favoritos e indexar.
+
+Cinco cosas que hay que saber para no romperlo:
+
+- **Las ocho rutas estan listadas una por una en los `rewrites` de
+  `firebase.json`**, no con un comodin `/**`. Es a proposito: el comodin taparia
+  los 404 y una imagen que falte devolveria la pagina entera con codigo 200,
+  dejando a quien depura a ciegas.
+- **Agregar una vista son CUATRO sitios, no uno**: `VISTAS`, `TITULOS` y
+  `DESCRIPCIONES` en `js/vistas.js`, y los **dos** `rewrites` de `firebase.json`
+  (el de la ruta y el de la ruta con barra final). Si falta el rewrite, la
+  direccion da 404 al entrar directo aunque funcione al navegar por dentro; si
+  falta el titulo o la descripcion, la ruta hereda los de la vista anterior.
+- **Un `<a href="#">` vivo ya no es inofensivo.** Con el `<base href="/">`, ese
+  enlace resuelve a la raiz, o sea a OTRO documento: recargaria la pagina entera
+  hasta la portada. Los cuatro que quedan los reescribe `js/script.js` al cargar,
+  pero si alguna de sus constantes (`WHATSAPP`, `INGRESAR`, `WIWI`) se deja
+  vacia, el `href="#"` sobrevive y el boton apagado se lleva al visitante a la
+  portada.
+- **El `<base href="/">` del `<head>` no se puede quitar.** Los css, los js y los
+  assets se piden con rutas relativas; sin esa base, una direccion con barra
+  final (`/solucion/`) los buscaria en `/solucion/css/` y la pagina saldria sin
+  estilos.
+- **Los enlaces viejos con `#` siguen funcionando.** Si alguien mando por correo
+  `.../#acp`, el router lo entiende y abre esa vista. El `#` se usa ahora solo
+  para las secciones de adentro de una vista, como `/#presentacion`.
+
+**El titulo, la descripcion y la etiqueta canonica cambian con la vista**, y los
+pone `js/vistas.js` (`TITULOS`, `DESCRIPCIONES` y `ponerLosDatosDeLaVista`). La
+canonica se **crea** desde el JavaScript en vez de venir escrita en el html: una
+etiqueta estatica diria `/` en las nueve rutas, y un rastreador que no ejecute
+JavaScript leeria que las ocho rutas nuevas son duplicados del inicio, que es
+peor que no poner ninguna.
+
+Lo que **falta** para que esto rinda en buscadores: las nueve rutas sirven el
+**mismo html**, con todas las secciones dentro. A un visitante le llega todo bien
+siempre. A Google le llega solo cuando ejecuta el JavaScript, que lo hace en una
+segunda pasada y sin garantias. Y a WhatsApp, que arma la vista previa sin
+ejecutar nada, no le llega nunca: ahi seguira viendo el titulo y la imagen del
+inicio para cualquier ruta. Para cambiar eso hay que servir un html distinto por
+ruta, y eso ya es otro trabajo.
+
 ## 3. Se prueba en dos tiempos
 
 **Primero la página.** Que se vea igual que en local. Pero **no todo lo que falte
@@ -275,6 +322,8 @@ abierto esta en [`PENDIENTES.md`](PENDIENTES.md).
 - [ ] Las **cuatro** Cloud Functions desplegadas desde `main` del repo de funciones (§2) — `landingSala` es nueva y **no esta desplegada**
 - [x] `firebase deploy --only hosting` desde este repositorio (§1)
 - [ ] La página se ve igual que en local, descontando lo de [`PENDIENTES.md`](PENDIENTES.md) §3
+- [ ] En un canal de vista previa (`firebase hosting:channel:deploy prueba`): las nueve rutas responden 200, `/acp/` también, y una imagen inexistente sigue dando 404
+- [ ] `curl -I` a `/acp` en ese canal: comprobar que el html sale con `no-cache`. Las rutas no llevan extension, asi que podrian escaparse del patron `**/*.html` de los `headers` y quedar cacheadas
 - [ ] `firebase hosting:sites:list --project witcoins-network` muestra `ecosistema-iwitown` — si el sitio y las funciones no están en el mismo proyecto, los formularios dan 404
 - [ ] Formulario probado de verdad: el aviso llego a las DOS bandejas, al visitante le llego el correo de gracias, y el lead se ve en `LandingLeads`
 - [ ] Al darle **Responder** a ese correo, la respuesta va al visitante y no a un no-reply
