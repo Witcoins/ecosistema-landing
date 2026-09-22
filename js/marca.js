@@ -139,11 +139,14 @@ var MARCA_ESPERA_MS = 180;
 
     function alInicio() {
       apagar();
+      /* La direccion del inicio es "/", no "#inicio": cada vista tiene su
+         ruta desde que se hizo el cambio de rutas. Dejar el "#" aqui hacia que
+         la barra de direcciones dijera una cosa y la pantalla mostrara otra. */
       if (window.history && window.history.replaceState) {
-        window.history.replaceState(null, "", "#inicio");
+        window.history.replaceState(null, "", "/");
       }
       if (typeof window.vistaAlInicio === "function") window.vistaAlInicio();
-      else window.location.hash = "inicio";
+      else window.location.href = "/";
     }
 
     if (quieto) { alInicio(); return; }

@@ -3,6 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Los css, los js y los assets se piden con rutas relativas, y ahora la
+     pagina se sirve tambien en /solucion, /acp... Sin esta base, una direccion
+     con barra final (/solucion/) los buscaria en /solucion/css/ y la pagina
+     saldria sin estilos. Una linea evita tener que volver absolutas las 42
+     rutas del documento. -->
+<base href="/">
+
 <title>i'Witown — Que el colegio muestre su propia identidad</title>
 <meta name="description" content="i'Witown es la plataforma EdTech colombiana que personaliza el aprendizaje de cada estudiante de primaria con la Arquitectura Cognitiva Personalizada. Un ecosistema completo para rectores, docentes, padres y estudiantes.">
 
@@ -41,20 +49,20 @@
     <!-- El sello y el nombre llevan a sitios distintos: el sello
          abre la animación de la marca, el nombre va al inicio. -->
     <div class="nav__marca">
-      <a href="#marca" class="nav__sello" id="navSello"
+      <a href="/marca" class="nav__sello" id="navSello"
          aria-label="Ver la animación de la marca">
         <img src="assets/img/marca-circular.webp?v=312" alt="" class="nav__logo">
       </a>
-      <a href="#inicio" class="nav__nombre">i’Witown</a>
+      <a href="/" class="nav__nombre">i’Witown</a>
     </div>
 
     <nav class="nav__links" id="menu">
-      <a href="#problema">El problema</a>
-      <a href="#solucion">La solución</a>
-      <a href="#ecosistema">El ecosistema</a>
-      <a href="#acp">La A.C.P.</a>
-      <a href="#contacto" class="nav__verde">Contacto</a>
-      <a href="#consultoria" class="nav__azul">Consultoría</a>
+      <a href="/problema">El problema</a>
+      <a href="/solucion">La solución</a>
+      <a href="/ecosistema">El ecosistema</a>
+      <a href="/acp">La A.C.P.</a>
+      <a href="/contacto" class="nav__verde">Contacto</a>
+      <a href="/consultoria" class="nav__azul">Consultoría</a>
       <!-- A dónde lleva se pone en js/script.js, en WIWI -->
       <a href="#" class="nav__wiwi" data-wiwi>Wiwi</a>
     </nav>
@@ -188,11 +196,11 @@
        centrados con la página entera y no con la columna del texto. -->
   <div class="contenedor">
     <div class="portada__botones">
-      <a href="#contacto" class="btn btn--morado btn--grande">Agendar cita</a>
+      <a href="/contacto" class="btn btn--morado btn--grande">Agendar cita</a>
 
       <!-- "data-reinicia" hace que la presentación vuelva a empezar
            desde el primer video. Lo maneja js/presentacion.js. -->
-      <a href="#presentacion" class="btn btn--linea btn--grande" data-reinicia>
+      <a href="/#presentacion" class="btn btn--linea btn--grande" data-reinicia>
         <svg viewBox="0 0 24 24" aria-hidden="true" class="portada__play">
           <path d="M8 5.6v12.8L19 12z"/>
         </svg>
@@ -676,7 +684,7 @@
             </span>
           </a>
 
-          <a class="ctc__boton ctc__boton--mail" href="#conversemos">
+          <a class="ctc__boton ctc__boton--mail" href="/conversemos">
             <span class="ctc__ico">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <rect x="2" y="4" width="20" height="16" rx="2"/>
@@ -733,7 +741,7 @@
 
         <!-- El mismo botón de la portada: la invitación a la demo no
              queda solo arriba del todo, sino también aquí. -->
-        <a href="#contacto" class="btn btn--morado btn--grande prob__boton">Agendar cita</a>
+        <a href="/contacto" class="btn btn--morado btn--grande prob__boton">Agendar cita</a>
       </div>
 
       <!-- La tableta. El marco es la foto assets/img/tablet.webp, que
@@ -1161,7 +1169,7 @@
     <!-- "Agendar cita", fijo abajo mientras se lee la sección.
          Vive dentro de la sección, así que solo se ve en esta
          pestaña y desaparece al cambiar de pestaña. -->
-    <a href="#contacto" class="con-flota">
+    <a href="/contacto" class="con-flota">
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <rect x="3.5" y="5" width="17" height="15.5" rx="2"/>
         <path d="M3.5 10h17M8 3v4M16 3v4"/>
@@ -1257,7 +1265,7 @@
             </span>
           </a>
 
-          <a class="ctc__boton ctc__boton--mail" href="#conversemos">
+          <a class="ctc__boton ctc__boton--mail" href="/conversemos">
             <span class="ctc__ico">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <rect x="2" y="4" width="20" height="16" rx="2"/>
@@ -1431,9 +1439,9 @@
     </div>
     <div class="pie__col">
       <p class="pie__titulo">Navegación</p>
-      <a href="#problema">El problema</a>
-      <a href="#ecosistema">El ecosistema</a>
-      <a href="#acp">La A.C.P.</a>
+      <a href="/problema">El problema</a>
+      <a href="/ecosistema">El ecosistema</a>
+      <a href="/acp">La A.C.P.</a>
     </div>
     <div class="pie__col">
       <p class="pie__titulo">Síguenos</p>
