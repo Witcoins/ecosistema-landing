@@ -162,14 +162,15 @@ firebase deploy --only functions:landingContacto,functions:landingHoras,function
 
 ## 2 bis. Una ruta por vista
 
-El sitio es un solo `index.html` con nueve vistas que `js/vistas.js` intercambia,
+El sitio es un solo `index.html` con diez vistas que `js/vistas.js` intercambia,
 pero **cada vista tiene su propia direccion**: `/`, `/marca`, `/problema`,
-`/solucion`, `/ecosistema`, `/acp`, `/consultoria`, `/contacto` y `/conversemos`.
+`/solucion`, `/ecosistema`, `/logbooks`, `/acp`, `/consultoria`, `/contacto` y
+`/conversemos`.
 Se pueden compartir, guardar en favoritos e indexar.
 
 Cinco cosas que hay que saber para no romperlo:
 
-- **Las ocho rutas estan listadas una por una en los `rewrites` de
+- **Las nueve rutas estan listadas una por una en los `rewrites` de
   `firebase.json`**, no con un comodin `/**`. Es a proposito: el comodin taparia
   los 404 y una imagen que falte devolveria la pagina entera con codigo 200,
   dejando a quien depura a ciegas.
@@ -195,11 +196,11 @@ Cinco cosas que hay que saber para no romperlo:
 **El titulo, la descripcion y la etiqueta canonica cambian con la vista**, y los
 pone `js/vistas.js` (`TITULOS`, `DESCRIPCIONES` y `ponerLosDatosDeLaVista`). La
 canonica se **crea** desde el JavaScript en vez de venir escrita en el html: una
-etiqueta estatica diria `/` en las nueve rutas, y un rastreador que no ejecute
-JavaScript leeria que las ocho rutas nuevas son duplicados del inicio, que es
+etiqueta estatica diria `/` en las diez rutas, y un rastreador que no ejecute
+JavaScript leeria que las nueve rutas nuevas son duplicados del inicio, que es
 peor que no poner ninguna.
 
-Lo que **falta** para que esto rinda en buscadores: las nueve rutas sirven el
+Lo que **falta** para que esto rinda en buscadores: las diez rutas sirven el
 **mismo html**, con todas las secciones dentro. A un visitante le llega todo bien
 siempre. A Google le llega solo cuando ejecuta el JavaScript, que lo hace en una
 segunda pasada y sin garantias. Y a WhatsApp, que arma la vista previa sin
@@ -226,7 +227,7 @@ absurdo pedir permiso para algo que no va a pasar.
 
 Tres cosas que conviene saber antes de mirar los informes:
 
-- **Las nueve rutas se cuentan solas.** Por eso `js/analitica.js` NO manda
+- **Las diez rutas se cuentan solas.** Por eso `js/analitica.js` NO manda
   eventos de pagina a mano: la "medicion mejorada" de GA4 ya los dispara con
   cada cambio de direccion, y mandarlos tambien contaria cada visita dos veces.
 - **Entre el 20 % y el 30 % de los visitantes no apareceran**, porque los
@@ -354,7 +355,7 @@ abierto esta en [`PENDIENTES.md`](PENDIENTES.md).
 - [ ] Las **cuatro** Cloud Functions desplegadas desde `main` del repo de funciones (§2) — `landingSala` es nueva y **no esta desplegada**
 - [x] `firebase deploy --only hosting` desde este repositorio (§1)
 - [ ] La página se ve igual que en local, descontando lo de [`PENDIENTES.md`](PENDIENTES.md) §3
-- [ ] En un canal de vista previa (`firebase hosting:channel:deploy prueba`): las nueve rutas responden 200, `/acp/` también, y una imagen inexistente sigue dando 404
+- [ ] En un canal de vista previa (`firebase hosting:channel:deploy prueba`): las diez rutas responden 200, `/acp/` también, y una imagen inexistente sigue dando 404
 - [ ] `curl -I` a `/acp` en ese canal: comprobar que el html sale con `no-cache`. Las rutas no llevan extension, asi que podrian escaparse del patron `**/*.html` de los `headers` y quedar cacheadas
 - [ ] `firebase hosting:sites:list --project witcoins-network` muestra `ecosistema-iwitown` — si el sitio y las funciones no están en el mismo proyecto, los formularios dan 404
 - [ ] Formulario probado de verdad: el aviso llego a las DOS bandejas, al visitante le llego el correo de gracias, y el lead se ve en `LandingLeads`

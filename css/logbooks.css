@@ -1,0 +1,417 @@
+/* ============================================================
+   i'Witown — Logbooks
+
+   Dos lugares:
+
+   - La página /logbooks: el video y el botón a la izquierda, las
+     tarjetas a la derecha. Solo la tarjeta resaltada muestra su
+     texto. En el teléfono se apila: video vertical, todas las
+     tarjetas abiertas (para que la página no brinque cada 15 s)
+     y el botón al final.
+   - La pestaña "Logbooks" de "Así se ve por dentro" (.apxlog):
+     solo el video y una línea, dentro del marco fijo.
+
+   Los textos de las tarjetas y el video están en js/logbooks.js.
+   ============================================================ */
+
+/* ---- Las dos pestañas, en la fila de arriba ---- */
+
+.apx__vistas {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 999px;
+  background: var(--morado-050);
+  box-shadow: inset 0 0 0 1px var(--gris-borde);
+}
+.apx__vista {
+  padding: .42em 1.1em;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--tinta-suave);
+  font-family: var(--fuente-titulos);
+  font-size: .8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .18s, color .18s, box-shadow .18s;
+}
+.apx__vista:hover { color: var(--morado-700); }
+.apx__vista.es-actual {
+  background: var(--morado-700);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(82, 3, 72, .25);
+}
+.apx__vista:focus-visible { outline: 2px solid var(--morado-600); outline-offset: 2px; }
+
+.apx__marco[hidden],
+.apx__pasos[hidden],
+.apxlog[hidden] { display: none !important; }
+
+/* Los colores de las cuatro áreas: portadas y etiquetas */
+.logb,
+.apxlog {
+  --area-1: #2F8A57;   /* Ciencias Naturales */
+  --area-2: #C26A12;   /* Ciencias Sociales */
+  --area-3: #2459A6;   /* Matemáticas */
+  --area-4: #B0244B;   /* Lengua Castellana */
+}
+
+/* ---- La pestaña de "Así se ve por dentro": solo el video ---- */
+
+.apxlog {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+.apxlog__pantalla { max-width: 660px; }
+.apxlog__texto { max-width: 600px; text-align: center; }
+.apxlog__titulo {
+  margin: 0 0 .3rem;
+  font-family: var(--fuente-titulos);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--morado-700);
+}
+.apxlog__bajada {
+  margin: 0;
+  font-size: .9rem;
+  line-height: 1.45;
+  color: var(--tinta-suave);
+}
+
+/* ---- La página /logbooks ---- */
+
+.logb {
+  max-width: 1040px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
+  gap: 48px;
+  align-items: center;
+}
+
+.logb__lado {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  min-width: 0;
+}
+
+/* ---- El celular de la página ----
+   La foto es la misma de "La solución" (.celsol en styles.css), y la
+   pantalla va en el mismo hueco: si se cambia la foto, se cambian
+   estas cuatro medidas igual que allá. */
+.logb__cel {
+  position: relative;
+  width: 100%;
+  max-width: 340px;
+  aspect-ratio: 658 / 1027;      /* la proporción de la foto */
+}
+.logb__cel-marco {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.logb__cel-pantalla {
+  position: absolute;
+  left: 21.13%;
+  top: 2.82%;
+  width: 56.53%;
+  height: 78.87%;
+  z-index: 2;
+  border-radius: 7.5% / 3.5%;
+  overflow: hidden;
+  background: #000;
+}
+/* La pantalla del celular es más alargada que un 9:16. El video va
+   completo ("contain"), porque los cuadernos abiertos llegan casi al
+   borde y con "cover" se cortarían. Las franjas que sobran arriba y
+   abajo se pintan con el mismo morado del borde del video, así no se
+   notan. Si se cambia el video, se ajustan estos dos colores. */
+.logb__cel-pantalla .logb__video {
+  object-fit: contain;
+  background: linear-gradient(#917DBF 50%, #7963A8 50%);
+}
+
+/* Las portadas, mientras no haya video: de dos en dos */
+.logb__cel-pantalla .logb__portadas {
+  flex-wrap: wrap;
+  align-content: center;
+  gap: 14px 0;
+  padding: 0 8%;
+}
+.logb__cel-pantalla .logb__libro {
+  flex-basis: 42%;
+  margin: 0 2%;
+  padding: 5cqw 3cqw 5cqw 7cqw;
+}
+.logb__cel-pantalla .logb__libro em { font-size: 3.6cqw; }
+.logb__cel-pantalla .logb__libro b  { font-size: 5.8cqw; overflow-wrap: normal; }
+
+/* ---- El video, o las portadas mientras llega ---- */
+
+.logb__pantalla {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--morado-900);
+  box-shadow: 0 14px 34px rgba(54, 2, 47, .22);
+}
+.logb__pantalla--vertical {
+  aspect-ratio: 9 / 16;
+  width: auto;
+  height: 300px;
+  margin: 0 auto;
+}
+.logb__video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  object-fit: contain;
+  background: #000;
+}
+
+.logb__portadas {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6%;
+  container-type: inline-size;
+  background:
+    radial-gradient(120% 90% at 50% 110%, rgba(214, 146, 206, .35), transparent 60%),
+    linear-gradient(135deg, var(--morado-700), var(--morado-900));
+}
+.logb__libro {
+  position: relative;
+  box-sizing: border-box;
+  flex: 0 0 23%;
+  aspect-ratio: 3 / 4;
+  margin: 0 .5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+  padding: 1.6cqw 1.2cqw 1.6cqw 2.6cqw;
+  border-radius: 4px 9px 9px 4px;
+  color: #fff;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, .35);
+  transform: rotate(var(--giro, 0deg)) translateY(var(--alto, 0));
+}
+/* el lomo */
+.logb__libro::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 8%;
+  border-radius: 4px 0 0 4px;
+  background: rgba(0, 0, 0, .22);
+}
+.logb__libro em {
+  font-style: normal;
+  font-size: 1.7cqw;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  opacity: .85;
+}
+.logb__libro b {
+  font-family: var(--fuente-titulos);
+  font-size: 2.7cqw;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+.logb__libro--1 { background: var(--area-1); --giro: -6deg; --alto: 6px; }
+.logb__libro--2 { background: var(--area-2); --giro: -2deg; z-index: 1; }
+.logb__libro--3 { background: var(--area-3); --giro: 2deg; z-index: 1; }
+.logb__libro--4 { background: var(--area-4); --giro: 6deg; --alto: 6px; }
+
+/* ---- Las tarjetas ---- */
+
+.logb__proceso { min-width: 0; }
+
+.logb__rotulo {
+  margin: 0 0 10px;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #8B7FA6;
+}
+.logb__tarjetas {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+.logb__tarjeta {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--gris-borde);
+  border-radius: 12px;
+  background: #fff;
+  transition: border-color .25s, box-shadow .25s, background .25s;
+}
+.logb__tarjeta.es-activa {
+  border-color: var(--morado-300);
+  background: var(--morado-050);
+  box-shadow: 0 8px 20px rgba(82, 3, 72, .1);
+}
+
+.logb__boton {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 13px 16px;
+  border: 0;
+  background: none;
+  font: inherit;
+  text-align: left;
+  color: var(--tinta);
+  cursor: pointer;
+}
+.logb__boton:focus-visible {
+  outline: 3px solid var(--morado-300);
+  outline-offset: -3px;
+  border-radius: 10px;
+}
+
+.logb__num {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--morado-100);
+  color: var(--morado-700);
+  font-size: .8rem;
+  font-weight: 800;
+  transition: background .25s, color .25s;
+}
+.logb__tarjeta.es-activa .logb__num { background: var(--morado-600); color: #fff; }
+
+.logb__cuerpo { flex: 1; min-width: 0; padding-top: 2px; }
+.logb__nombre {
+  display: block;
+  font-family: var(--fuente-titulos);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.logb__tarjeta.es-activa .logb__nombre { color: var(--morado-700); }
+
+/* El texto se abre solo en la resaltada. Se anima con la fila de
+   la grilla (de 0fr a 1fr) para que abra suave sin calcular alturas. */
+.logb__mas {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows .35s ease;
+}
+.logb__tarjeta.es-activa .logb__mas { grid-template-rows: 1fr; }
+
+.logb__mas-dentro { display: block; min-height: 0; overflow: hidden; }
+.logb__texto {
+  display: block;
+  padding-top: 6px;
+  font-size: .92rem;
+  line-height: 1.5;
+  color: var(--tinta-suave);
+}
+.logb__quien {
+  display: block;
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--morado-600);
+}
+.logb__tarjeta.es-activa .logb__quien { padding-top: 8px; }
+
+.logb__areas { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+.logb__area {
+  padding: .2em .6em;
+  border-radius: 999px;
+  font-style: normal;
+  font-size: .76rem;
+  font-weight: 700;
+  color: #fff;
+}
+.logb__area--1 { background: var(--area-1); }
+.logb__area--2 { background: var(--area-2); }
+.logb__area--3 { background: var(--area-3); }
+.logb__area--4 { background: var(--area-4); }
+
+/* La barrita de los 15 segundos, pegada abajo de la resaltada.
+   La mueve js/logbooks.js; si el visitante tocó una tarjeta, se
+   esconde: ya no hay reloj. */
+.logb__barra {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  opacity: 0;
+}
+.logb__barra i {
+  display: block;
+  height: 100%;
+  background: var(--morado-600);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.logb__tarjeta.es-activa .logb__barra { opacity: 1; }
+.logb.es-manual .logb__barra { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .logb__mas { transition: none; }
+}
+
+/* ---- Pantallas medianas: se apila ---- */
+
+@media (max-width: 860px) {
+  .logb {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .logb__cel { max-width: 300px; }
+}
+
+/* ---- Teléfono ---- */
+
+@media (max-width: 720px) {
+  .apx__vistas { margin: 0 auto; }
+
+  /* La pestaña: video vertical y la línea debajo */
+  .apxlog { justify-content: flex-start; }
+  .apxlog__titulo { font-size: 1.05rem; }
+
+  /* La página: video, tarjetas y el botón al final */
+  .logb { display: flex; flex-direction: column; gap: 20px; }
+  .logb__lado { display: contents; }
+  .logb__cel      { order: 1; align-self: center; width: 78%; }
+  .logb__proceso  { order: 2; }
+  .logb__cta      { order: 3; width: 100%; }
+
+  .logb__pantalla--vertical {
+    height: auto;
+    width: min(100%, 320px);
+  }
+
+  /* Todas abiertas: así la página no cambia de alto cada 15 s */
+  .logb__mas { grid-template-rows: 1fr; }
+  .logb__quien { padding-top: 8px; }
+}

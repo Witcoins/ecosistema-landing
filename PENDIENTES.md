@@ -81,11 +81,11 @@ La medición de visitas ya está montada (GA4, con aviso de cookies; ver
 En `index.html` todos los archivos llevan `?v=` con un número al final:
 
 ```html
-<link rel="stylesheet" href="css/styles.css?v=313">
+<link rel="stylesheet" href="css/styles.css?v=320">
 ```
 
-El número vigente es **313**. Al cambiar un css, un js o una imagen hay que
-**subirle el número a todos** (buscar `v=313` y reemplazar por `v=314`). Si no,
+El número vigente es **320**. Al cambiar un css, un js o una imagen hay que
+**subirle el número a todos** (buscar `v=320` y reemplazar por `v=321`). Si no,
 los navegadores de quienes ya visitaron la página les siguen mostrando la
 versión vieja.
 
