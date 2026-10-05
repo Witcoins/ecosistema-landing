@@ -220,6 +220,9 @@ var PRES_SECUENCIA = [
 
     /* El fondo musical */
     if (typeof window.presAmbienteDetener === "function") window.presAmbienteDetener();
+
+    /* El video de los logbooks, en "Así se ve por dentro" */
+    if (typeof window.logbooksDetener === "function") window.logbooksDetener();
   }
 
   function irAlPaso(i) {

@@ -535,6 +535,9 @@ img { max-width: 100%; height: auto; display: block; }
   text-decoration: none;
 }
 .nav__logo { height: 38px; width: auto; display: block; }
+/* La marca nunca se encoge: si falta ancho, que se aprieten los
+   enlaces, no que el logo desaparezca. */
+.nav__marca { flex-shrink: 0; }
 
 .nav__nombre {
   font-family: "Arial Narrow", "Avenir Next Condensed",
@@ -578,6 +581,20 @@ img { max-width: 100%; height: auto; display: block; }
 .nav__links a.es-actual {
   color: var(--morado-700);
   border-bottom-color: var(--morado-700);
+}
+
+/* Portátiles e iPad acostado (981 a 1180 px): con "Logbooks" el menú
+   ya no cabía en una línea. Aquí se aprieta un poco; por debajo de
+   981 px entra la hamburguesa. */
+@media (min-width: 981px) and (max-width: 1180px) {
+  .nav__inner { gap: 14px; }
+  .nav__links { gap: 14px; }
+  .nav__links a { font-size: .88rem; }
+}
+@media (min-width: 981px) and (max-width: 1060px) {
+  .nav__inner { gap: 10px; }
+  .nav__links { gap: 11px; }
+  .nav__links a { font-size: .85rem; }
 }
 
 /* ============================================================

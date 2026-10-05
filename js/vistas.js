@@ -29,6 +29,7 @@ var VISTAS = {
   "solucion":   ["solucion"],
   "ecosistema": ["ecosistema"],
   "acp":        ["acp"],
+  "logbooks":   ["logbooks"],
   "consultoria":["consultoria"],
   "contacto":   ["contacto"],
   "conversemos":["conversemos"]
@@ -47,6 +48,7 @@ var DESCRIPCIONES = {
   "solucion":   "Cómo i'Witown convierte cada tarea en información útil para el docente, sin trabajo extra.",
   "ecosistema": "Las cuatro aplicaciones de i'Witown: estudiantes, docentes, acudientes y el colegio, conectadas entre sí.",
   "acp":        "La Arquitectura Cognitiva Personalizada: cómo se construye comprensión en vez de solo evaluar.",
+  "logbooks":   "Logbooks: diarios de aprendizaje de Ciencias Naturales, Ciencias Sociales, Matemáticas y Lengua Castellana, diseñados con la metodología de tu colegio e integrados a la plataforma.",
   "consultoria":"Acompañamos al colegio para que la innovación tenga sentido dentro de su proyecto educativo.",
   "contacto":   "Habla con i'Witown: reunión por Teams, WhatsApp o déjanos un mensaje.",
   "conversemos":"Déjanos tu mensaje y te contactamos para conocer i'Witown en tu colegio."
@@ -54,7 +56,7 @@ var DESCRIPCIONES = {
 
 /* El título de cada vista. Lo ve quien comparte el enlace o lo guarda en
    favoritos, y es el nombre con el que la vista aparece en cualquier informe de
-   analítica. Sin esto, las nueve rutas saldrían con el mismo nombre y el
+   analítica. Sin esto, las diez rutas saldrían con el mismo nombre y el
    informe no se podría leer. */
 var TITULOS = {
   "inicio":     "i'Witown — Que el colegio muestre su propia identidad",
@@ -63,6 +65,7 @@ var TITULOS = {
   "solucion":   "La solución — i'Witown",
   "ecosistema": "El ecosistema — i'Witown",
   "acp":        "La A.C.P. — i'Witown",
+  "logbooks":   "Logbooks — i'Witown",
   "consultoria":"Consultoría — i'Witown",
   "contacto":   "Contacto — i'Witown",
   "conversemos":"Conversemos — i'Witown"
@@ -171,7 +174,7 @@ var TITULOS = {
      del navegador, la descripción que sale en los resultados de búsqueda, y la
      dirección "buena" de lo que se está viendo.
 
-     OJO con lo que esto NO resuelve: las nueve rutas sirven el MISMO html, y
+     OJO con lo que esto NO resuelve: las diez rutas sirven el MISMO html, y
      estos tres datos los pone el JavaScript después. A un visitante le llegan
      bien siempre; a Google le llegan solo cuando ejecuta el JavaScript, que lo
      hace en una segunda pasada y sin garantías. Y a WhatsApp, que arma la vista
@@ -187,8 +190,8 @@ var TITULOS = {
     }
 
     /* La canónica se crea aquí y no se deja escrita en el html a propósito.
-       Una etiqueta estática diría `/` en las nueve rutas, y un rastreador que no
-       ejecute JavaScript leería que las ocho rutas nuevas son duplicados del
+       Una etiqueta estática diría `/` en las diez rutas, y un rastreador que no
+       ejecute JavaScript leería que las nueve rutas nuevas son duplicados del
        inicio: peor que no poner ninguna, y justo lo contrario de lo que se
        busca. Sin etiqueta, Google escoge por su cuenta, que es el camino
        honesto mientras el html servido sea el mismo para todas. */

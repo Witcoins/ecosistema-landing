@@ -492,9 +492,81 @@ var ECO_APPS = {
     programar();
   }
 
+  /* ============================================================
+     LAS DOS PESTAÑAS: PLATAFORMA Y LOGBOOKS
+
+     Mientras se ven los logbooks, el recorrido de las apps queda
+     quieto, y al volver sigue en la app donde iba (desde la primera
+     pantalla de esa app). Lo de adentro
+     de los logbooks lo maneja js/logbooks.js.
+     ============================================================ */
+
+  var tabs = document.querySelectorAll("[data-apx-vista]");
+  var logb = document.getElementById("apxLogbooks");
+  var vista = "plataforma";
+
+  /* Solo pinta: qué pestaña se ve y qué se esconde */
+  function pintarVista(cual) {
+    vista = cual;
+    var enLogbooks = cual === "logbooks";
+
+    for (var t = 0; t < tabs.length; t++) {
+      var esta = tabs[t].getAttribute("data-apx-vista") === cual;
+      tabs[t].classList.toggle("es-actual", esta);
+      tabs[t].setAttribute("aria-selected", esta ? "true" : "false");
+      tabs[t].tabIndex = esta ? 0 : -1;
+    }
+
+    marco.hidden = enLogbooks;
+    if (pasos) pasos.hidden = enLogbooks;
+    if (logb) logb.hidden = !enLogbooks;
+  }
+
+  function verVista(cual) {
+    if (!logb) return;
+    pintarVista(cual);
+
+    if (cual === "logbooks") {
+      pararReloj();
+      apagarVisores();
+      if (typeof window.logbooksArrancar === "function") window.logbooksArrancar();
+    } else {
+      if (typeof window.logbooksDetener === "function") window.logbooksDetener();
+      /* Se vuelve a dibujar la app antes de arrancarla: así el visor
+         arranca sobre un marco nuevo y no le suma otro juego de
+         oyentes al de antes. Vuelve a la primera pantalla de esa app. */
+      if (abierta) pintar();
+      var arrancar = abierta ? visorDe(ECO_APPS[abierta], "Arrancar") : null;
+      if (arrancar) arrancar();
+      programar();
+    }
+  }
+
+  for (var t0 = 0; t0 < tabs.length; t0++) {
+    tabs[t0].addEventListener("click", function () {
+      var cual = this.getAttribute("data-apx-vista");
+      if (cual !== vista) verVista(cual);
+    });
+    /* Con el teclado, las flechas pasan de una pestaña a la otra */
+    tabs[t0].addEventListener("keydown", function (e) {
+      if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+      e.preventDefault();
+      var otra = vista === "plataforma" ? "logbooks" : "plataforma";
+      verVista(otra);
+      for (var k = 0; k < tabs.length; k++) {
+        if (tabs[k].getAttribute("data-apx-vista") === otra) tabs[k].focus();
+      }
+    });
+  }
+
   /* ---- Empezar el recorrido ----
-     Lo llama js/presentacion.js cuando se entra a esta pantalla. */
+     Lo llama js/presentacion.js cuando se entra a esta pantalla.
+     Siempre arranca en la pestaña de la plataforma. */
   window.ecosistemaAlInicio = function () {
+    if (vista !== "plataforma") {
+      if (typeof window.logbooksDetener === "function") window.logbooksDetener();
+      pintarVista("plataforma");
+    }
     apagarVisores();
     pararReloj();
     manual = false;

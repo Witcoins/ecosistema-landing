@@ -237,7 +237,7 @@ var MEDICION = "G-R4YCFT0JLP";
 
     /* Primero en el <body> y no al final: se pinta igual abajo (es fixed), pero
        quien navega con el teclado lo alcanza en dos tabuladas en vez de
-       atravesar la navegación y las nueve secciones. */
+       atravesar la navegación y las diez secciones. */
     document.body.insertBefore(caja, document.body.firstChild);
 
     cajaPuesta = caja;
