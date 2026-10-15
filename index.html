@@ -15,15 +15,96 @@
 <meta name="description" content="i'Witown es la plataforma EdTech colombiana que personaliza el aprendizaje de cada estudiante de primaria con la Arquitectura Cognitiva Personalizada. Un ecosistema completo para rectores, docentes, padres y estudiantes.">
 
 <!-- ============================================================
-     REDES SOCIALES (Open Graph) — REEMPLAZAR la URL del dominio
-     y la imagen de portada cuando estén listas.
+     REDES SOCIALES (Open Graph) — la imagen og-portada.jpg todavía
+     no existe (ver PENDIENTES.md §3). La dirección va
+     completa: WhatsApp y Facebook no entienden rutas relativas. No
+     hay og:url a propósito: así cada red usa la dirección que se
+     compartió (/contacto, /acp...) y no la manda siempre al inicio.
      ============================================================ -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="i'Witown — Que el colegio muestre su propia identidad">
 <meta property="og:description" content="Plataforma EdTech colombiana para colegios de primaria. Personaliza el aprendizaje de cada estudiante.">
-<meta property="og:image" content="assets/img/og-portada.jpg">
-<meta property="og:url" content="https://iwitown.com">
+<meta property="og:image" content="https://www.ecosistema.iwitown.com/assets/img/og-portada.jpg">
+<meta property="og:locale" content="es_CO">
 <meta name="theme-color" content="#5B21B6">
+
+<!-- ============================================================
+     DATOS PARA BUSCADORES Y ASISTENTES DE IA (schema.org)
+
+     Lo leen Google y los asistentes (ChatGPT, Claude, Perplexity)
+     sin ejecutar JavaScript. Solo dice lo que la página ya dice:
+     si aquí aparece algo que la página no muestra, sobra.
+
+     LOS PRECIOS NO VAN AQUÍ, A PROPÓSITO. Viven solo en llms.txt:
+     la página no los muestra al público, y Google castiga los
+     datos estructurados que dicen algo que el visitante no ve.
+     ============================================================ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://www.ecosistema.iwitown.com/#organizacion",
+      "name": "i'Witown",
+      "url": "https://www.ecosistema.iwitown.com/",
+      "logo": "https://www.ecosistema.iwitown.com/assets/img/logo-iwitown.png",
+      "email": "contacto@iwitown.com",
+      "telephone": "+57 323 600 7819",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Cra 16 No 80 - 74, Oficina 502",
+        "addressLocality": "Bogotá",
+        "postalCode": "111411",
+        "addressCountry": "CO"
+      },
+      "parentOrganization": {
+        "@type": "Organization",
+        "name": "GMG-LATAM"
+      },
+      "sameAs": [
+        "https://www.instagram.com/iwitown",
+        "https://www.tiktok.com/@iwitown_",
+        "https://www.youtube.com/@iwitown",
+        "https://www.linkedin.com/company/gain-money-group/"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.ecosistema.iwitown.com/#sitio",
+      "url": "https://www.ecosistema.iwitown.com/",
+      "name": "i'Witown",
+      "inLanguage": "es-CO",
+      "publisher": { "@id": "https://www.ecosistema.iwitown.com/#organizacion" }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "i'Witown",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Web",
+      "inLanguage": "es-CO",
+      "description": "Plataforma EdTech colombiana para colegios de primaria. Cuatro aplicaciones conectadas —rectoría (AdmonWitown), docentes (i'Witeacher), familias (i'Witutor) y estudiantes— que personalizan el aprendizaje de cada estudiante con la Arquitectura Cognitiva Personalizada (A.C.P.). El contenido y las tareas salen del currículo del colegio, no del catálogo de una editorial.",
+      "audience": {
+        "@type": "EducationalAudience",
+        "educationalRole": ["administrator", "teacher", "parent", "student"]
+      },
+      "featureList": [
+        "Contenido y tareas creados por los docentes con el currículo del colegio",
+        "Seguimiento por tema, no por promedio",
+        "Agenda digital con confirmación de lectura y firma",
+        "Trazabilidad de uso por usuario",
+        "Asignaciones académicas y cupos por curso",
+        "Ranking docente con calificación de padres y estudiantes",
+        "Calendario institucional con recordatorio automático",
+        "Simulacros de pruebas estandarizadas",
+        "Estado de pagos visible para las familias",
+        "Agentes de IA entrenados en la A.C.P."
+      ],
+      "provider": { "@id": "https://www.ecosistema.iwitown.com/#organizacion" }
+    }
+  ]
+}
+</script>
 
 <!-- El icono de la pestaña, en cuatro tamaños. El navegador escoge el que le
      sirve: 32 px para la pestaña y 96 px para esa misma pestaña en pantallas

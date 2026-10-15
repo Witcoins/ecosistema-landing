@@ -1,0 +1,28 @@
+# Todo el sitio es público. Se nombran los rastreadores de IA para dejar
+# explícito que pueden leerlo: así i'Witown puede aparecer en las respuestas
+# de ChatGPT, Claude, Perplexity y Gemini.
+User-agent: *
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://www.ecosistema.iwitown.com/sitemap.xml

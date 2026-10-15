@@ -6,10 +6,11 @@
       "firebase.json",
       ".firebaserc",
       "**/.*",
+      "**/.*/**",
       "**/node_modules/**",
       "*.md",
       "herramientas/**",
-      "**/*.txt"
+      "assets/**/*.txt"
     ],
     "rewrites": [
       {
