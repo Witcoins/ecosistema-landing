@@ -72,7 +72,45 @@ La medición de visitas ya está montada (GA4, con aviso de cookies; ver
   estudiante). Antes de publicar la página hay que volver a
   grabarlos con datos de ejemplo, como se hizo con las capturas.
   `-1` y `-3` se muestran en la página; `-2` no se muestra, pero se
-  publica igual.
+  publica igual. **Ojo: el sitio ya está en línea y el 2026-10-14 los
+  tres respondían 200** en `ecosistema-iwitown.web.app`.
+* Confirmar que **"Nicolas Alberto Páez López"** (`js/simulador.js` e
+  `index.html`, el saludo del simulador) es un nombre inventado. Si es de
+  un estudiante real, se cambia como los videos.
+
+---
+
+## 4 bis. Que la IA y los buscadores encuentren a i'Witown
+
+Ya está: `robots.txt` (deja pasar a los rastreadores de IA), `sitemap.xml`,
+`llms.txt` (resumen en texto plano para asistentes) y los datos de schema.org
+en el `<head>` de `index.html`. **Todo dice solo lo que la página ya dice**, salvo los precios de `llms.txt` (ver abajo):
+si se cambia un texto de la página que también está ahí, se cambia en los dos.
+
+Falta, y no es código:
+
+* **Los precios están SOLO en `llms.txt`, a propósito** (decisión del
+  2026-10-15): los leen los asistentes de IA, pero la página no los muestra.
+  Son los de lista de los correos comerciales (`Documents\GMG`) **más un 10 %**
+  para tener margen de negociación. Ojo: `llms.txt` no está enlazado, pero es
+  público — cualquiera que escriba `/llms.txt` lo ve. **No van en el
+  schema.org del `<head>`**: Google castiga los datos estructurados que
+  dicen algo que el visitante no ve. Si cambian los precios de los correos,
+  se recalculan aquí.
+* **Ficha para colegios** con los datos que se comparan: grados exactos,
+  tiempo de implementación, qué incluye cada aplicación, cómo se tratan los
+  datos de menores y un caso real (Gimnasio Cordilleras, con su permiso).
+* **Preguntas frecuentes** de rectores, escritas en el HTML (no en JS).
+* **El título** ("Que el colegio muestre su propia identidad") no dice qué es
+  i'Witown. Una opción: "i'Witown — Plataforma educativa para colegios de
+  primaria en Colombia".
+* **Decidir si un asistente puede agendar la demo solo**: `/api/horas` y
+  `/api/agendar` ya existen; documentarlos en `llms.txt` lo permite, pero
+  también abre la puerta a citas basura.
+* **Dominio:** `www.iwitown.com` sirve la aplicación (login), no esta página.
+  Por ahora la landing se queda en `www.ecosistema.iwitown.com`.
+* Al publicar: dar de alta el sitio en Google Search Console y enviarle el
+  `sitemap.xml`.
 
 ---
 

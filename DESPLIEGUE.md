@@ -41,8 +41,18 @@ HTTPS, compresión y caché por su cuenta.
 
 **Qué se publica y qué no** lo decide la lista `ignore` de `firebase.json`, no la
 memoria de quien sube. Hoy quedan fuera: los `.md`, `herramientas/`, los `.txt`
-de trabajo, y todo lo que empieza por punto — incluida la carpeta `.git`. Si se
-agrega un archivo que no debe ser público, va a esa lista.
+de trabajo (los de `assets/`), y todo lo que empieza por punto — incluida la
+carpeta `.git`. Si se agrega un archivo que no debe ser público, va a esa lista.
+
+**`.git` necesita dos líneas, no una.** `"**/.*"` solo saca la entrada `.git`,
+no lo que tiene adentro; por eso existe `"**/.*/**"`. Hasta el 2026-10-14 solo
+estaba la primera y el sitio publicaba `/.git/` completo (historial incluido).
+Para comprobarlo después de publicar: `https://www.ecosistema.iwitown.com/.git/HEAD`
+tiene que dar 404.
+
+Los `.txt` de la raíz **sí se publican**, a propósito: son `robots.txt` y
+`llms.txt`, que leen los buscadores y los asistentes de IA. Una nota de trabajo
+en `.txt` no va en la raíz.
 
 Para ver el sitio antes de publicarlo de verdad:
 

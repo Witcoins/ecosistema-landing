@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Las vistas que sirve firebase.json. /marca no va: es solo la animación
+     del logo. Si se agrega o se quita una vista, se cambia aquí también. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://www.ecosistema.iwitown.com/</loc><lastmod>2026-10-14</lastmod></url>
+  <url><loc>https://www.ecosistema.iwitown.com/problema</loc><lastmod>2026-10-14</lastmod></url>
+  <url><loc>https://www.ecosistema.iwitown.com/solucion</loc><lastmod>2026-10-14</lastmod></url>
+  <url><loc>https://www.ecosistema.iwitown.com/ecosistema</loc><lastmod>2026-10-14</lastmod></url>
+  <url><loc>https://www.ecosistema.iwitown.com/acp</loc><lastmod>2026-10-14</lastmod></url>
+  <url><loc>https://www.ecosistema.iwitown.com/logbooks</loc><lastmod>2026-10-14</lastmod></url>
+  <url><loc>https://www.ecosistema.iwitown.com/consultoria</loc><lastmod>2026-10-14</lastmod></url>
+  <url><loc>https://www.ecosistema.iwitown.com/contacto</loc><lastmod>2026-10-14</lastmod></url>
+  <url><loc>https://www.ecosistema.iwitown.com/conversemos</loc><lastmod>2026-10-14</lastmod></url>
+</urlset>

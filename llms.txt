@@ -1,0 +1,70 @@
+# i'Witown
+
+> Plataforma EdTech colombiana para colegios de primaria. Personaliza el aprendizaje de cada estudiante con la Arquitectura Cognitiva Personalizada (A.C.P.). Cuatro aplicaciones conectadas: rectoría, docentes, familias y estudiantes. El contenido y las tareas salen del currículo del colegio, no del catálogo de una editorial.
+
+i'Witown se vende a colegios (rectores, dueños y coordinadores académicos). Las familias la usan a través de su colegio. Es un producto de GMG-LATAM, en Bogotá, Colombia.
+
+## Qué resuelve
+
+- Las plataformas comerciales traen su propio contenido y su orden; el colegio se acomoda a ellas.
+- Los textos de editorial se pagan, pero no se usan.
+- Las notas dicen qué memorizó el estudiante, no qué comprendió. Un boletín dice "le fue mal en Ciencias", pero no qué no entendió.
+
+## Las cuatro aplicaciones
+
+- **AdmonWitown** (rectoría y administración): asignaciones académicas, cupos por curso, ranking docente, calendario institucional, trazabilidad de uso, estado de pagos.
+- **i'Witeacher** (docentes): los docentes arman temas y tareas con el currículo del colegio, sin banco cerrado; reportes por tema.
+- **i'Witutor** (familias): agenda digital con firma, mensajes del colegio en tiempo real, tareas del hijo, comunicación en un solo canal, estado de pagos mes a mes.
+- **Plataforma del estudiante**: tareas, WiPlan (calendario) y, en el plan Completo, WiwiQuest (práctica personalizada y simulacros de pruebas estandarizadas).
+
+## La A.C.P. (Arquitectura Cognitiva Personalizada)
+
+Marco pedagógico que muestra en qué punto de la comprensión está cada estudiante, tema por tema, y propone qué sigue a su ritmo. Trabaja en un ciclo de Incitación → Verificación → Ratificación. Distingue el Área Óptima (lo que el estudiante ya comprende de forma consolidada) del Área de Interés (lo que le atrae, aunque aún no lo domine). Los agentes de IA de la plataforma están entrenados en la A.C.P.
+
+## Otros servicios
+
+- **Logbooks**: diarios de aprendizaje de Ciencias Naturales, Ciencias Sociales, Matemáticas y Lengua Castellana, hechos con la metodología de cada colegio e integrados a la plataforma.
+- **Consultoría en innovación educativa**: acompañamiento para que la innovación tenga sentido dentro del proyecto educativo (PEI) del colegio.
+
+## Precio
+
+Precios de lista de referencia, en pesos colombianos (COP), por estudiante y por año, antes de IVA. Los paga la familia, no el colegio. Son de referencia: el valor final se cotiza con cada colegio según el número de estudiantes y lo que escoja.
+
+Plataforma (las cuatro aplicaciones están en los tres planes; lo que cambia es qué funciones trae cada uno):
+
+| Plan | Incluye | Por estudiante al año |
+|---|---|---|
+| Básico | Las cuatro plataformas, comunicación con las familias, tareas y actividades para armar la clase | $99.000 |
+| Medio | Lo del Básico + anuncios a la comunidad y cafetería escolar | $121.000 |
+| Completo | Lo del Medio + refuerzo personalizado (WiwiQuest), lectura y comprensión, e informes de cómo va cada estudiante | $176.000 |
+
+Textos escolares impresos (Logbooks): $132.000 por estudiante al año por los cuatro (Matemáticas, Lenguaje, Ciencias Sociales y Ciencias Naturales), hechos con la metodología y el nombre del colegio. Son opcionales y se suman a cualquier plan:
+
+| Plan con los cuatro textos | Por estudiante al año |
+|---|---|
+| Básico + textos | $231.000 |
+| Medio + textos | $253.000 |
+| Completo + textos | $308.000 |
+
+## Cómo contactar o pedir una demostración
+
+- Reunión por Teams o agendar día y hora: https://www.ecosistema.iwitown.com/contacto
+- Formulario: https://www.ecosistema.iwitown.com/conversemos
+- WhatsApp y teléfono: +57 323 600 7819
+- Correo: contacto@iwitown.com
+- Oficina: Cra 16 No 80 - 74, Oficina 502, Bogotá 111411, Colombia
+
+## Páginas
+
+- [El problema](https://www.ecosistema.iwitown.com/problema)
+- [La solución](https://www.ecosistema.iwitown.com/solucion)
+- [El ecosistema](https://www.ecosistema.iwitown.com/ecosistema)
+- [La A.C.P.](https://www.ecosistema.iwitown.com/acp)
+- [Logbooks](https://www.ecosistema.iwitown.com/logbooks)
+- [Consultoría](https://www.ecosistema.iwitown.com/consultoria)
+- [Contacto](https://www.ecosistema.iwitown.com/contacto)
+
+## Legal
+
+- Política de tratamiento de datos (Ley 1581 de 2012): https://www.politicasprivacidadwitcoins.com/
+- Términos y condiciones: https://www.politicasprivacidadwitcoins.com/terminos-y-condiciones
