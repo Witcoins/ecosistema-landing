@@ -204,7 +204,7 @@ es obligatoria: sin marcarla el formulario no envía, y la Cloud Function
 también la valida del lado del servidor.
 
 Esa casilla enlaza a la política publicada en
-<https://www.politicasprivacidadwitcoins.com/>, y el pie enlaza además los
+<https://politicas.iwitown.com/>, y el pie enlaza además los
 términos. Son páginas externas ya vigentes: no hay nada que crear en este
 repositorio. Ver [`DESPLIEGUE.md`](DESPLIEGUE.md) §7.
 

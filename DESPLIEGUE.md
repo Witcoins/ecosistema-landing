@@ -245,10 +245,10 @@ Tres cosas que conviene saber antes de mirar los informes:
 - **Las horas del dia no vienen en ningun informe estandar**: hay que armar una
   exploracion con la dimension Hora. Se hace una vez y queda guardada.
 
-Queda una cosa que no es tecnica y sin la cual el aviso promete algo que no
-esta respaldado: la politica de politicasprivacidadwitcoins.com tiene que
-nombrar a **Google como encargado del tratamiento**. Esta anotado en
-[`PENDIENTES.md`](PENDIENTES.md) §3 bis, junto con los dos ajustes de consola.
+La politica de tratamiento de datos (https://politicas.iwitown.com/) ya nombra a
+**Google como encargado del tratamiento** (numeral 4.4) y describe estas cookies
+analiticas (numeral 4.15), asi que el aviso esta respaldado. Quedan los dos
+ajustes de consola anotados en [`PENDIENTES.md`](PENDIENTES.md) §3 bis.
 
 ## 3. Se prueba en dos tiempos
 
@@ -335,9 +335,9 @@ eran 404 visibles. Los tres enlaces apuntan ahora a las páginas vivas:
 
 | Enlace | Destino |
 |---|---|
-| consentimiento del formulario | https://www.politicasprivacidadwitcoins.com/ |
-| pie → Política de tratamiento de datos | https://www.politicasprivacidadwitcoins.com/ |
-| pie → Términos y condiciones | https://www.politicasprivacidadwitcoins.com/terminos-y-condiciones |
+| consentimiento del formulario | https://politicas.iwitown.com/ |
+| pie → Política de tratamiento de datos | https://politicas.iwitown.com/ |
+| pie → Términos y condiciones | https://politicas.iwitown.com/terminos-y-condiciones |
 
 Responsable de datos según esa política: **Gain Money Group SAS**, NIT
 901.101.774-4, `contacto@iwitown.com` — es lo que exige la Ley 1581 de 2012 que
