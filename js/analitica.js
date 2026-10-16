@@ -46,7 +46,7 @@ var MEDICION = "G-R4YCFT0JLP";
   }
 
   var LLAVE = "iwitown-cookies";
-  var POLITICA = "https://www.politicasprivacidadwitcoins.com/";
+  var POLITICA = "https://politicas.iwitown.com/";
 
   var puesto = false;
 

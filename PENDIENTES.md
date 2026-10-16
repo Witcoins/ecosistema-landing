@@ -54,9 +54,9 @@ acá: los tres enlaces van a las páginas externas vigentes
 La medición de visitas ya está montada (GA4, con aviso de cookies; ver
 [`DESPLIEGUE.md`](DESPLIEGUE.md) §2 ter). Lo que falta no es código:
 
-- **La política de `politicasprivacidadwitcoins.com` tiene que nombrar a Google
-  como encargado del tratamiento** y mencionar las cookies analíticas. Mientras
-  no lo diga, el aviso promete algo que la política no respalda.
+- ~~La política tiene que nombrar a Google como encargado del tratamiento y
+  mencionar las cookies analíticas.~~ **Hecho el 2026-10-15:** la política, ahora
+  en <https://politicas.iwitown.com/>, lo dice en los numerales 4.4 y 4.15.
 - **En la consola de Analytics:** apagar Google Signals y bajar la retención de
   datos. Son los dos ajustes que más amplían lo que se recoge.
 
@@ -119,11 +119,11 @@ Falta, y no es código:
 En `index.html` todos los archivos llevan `?v=` con un número al final:
 
 ```html
-<link rel="stylesheet" href="css/styles.css?v=320">
+<link rel="stylesheet" href="css/styles.css?v=321">
 ```
 
-El número vigente es **320**. Al cambiar un css, un js o una imagen hay que
-**subirle el número a todos** (buscar `v=320` y reemplazar por `v=321`). Si no,
+El número vigente es **321**. Al cambiar un css, un js o una imagen hay que
+**subirle el número a todos** (buscar `v=321` y reemplazar por `v=322`). Si no,
 los navegadores de quienes ya visitaron la página les siguen mostrando la
 versión vieja.
 
