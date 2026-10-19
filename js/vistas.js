@@ -58,7 +58,7 @@ var DESCRIPCIONES = {
 
 /* El título de cada vista. Lo ve quien comparte el enlace o lo guarda en
    favoritos, y es el nombre con el que la vista aparece en cualquier informe de
-   analítica. Sin esto, las diez rutas saldrían con el mismo nombre y el
+   analítica. Sin esto, las once rutas saldrían con el mismo nombre y el
    informe no se podría leer. */
 var TITULOS = {
   "inicio":     "i'Witown — Que el colegio muestre su propia identidad",
@@ -177,7 +177,7 @@ var TITULOS = {
      del navegador, la descripción que sale en los resultados de búsqueda, y la
      dirección "buena" de lo que se está viendo.
 
-     OJO con lo que esto NO resuelve: las diez rutas sirven el MISMO html, y
+     OJO con lo que esto NO resuelve: las once rutas sirven el MISMO html, y
      estos tres datos los pone el JavaScript después. A un visitante le llegan
      bien siempre; a Google le llegan solo cuando ejecuta el JavaScript, que lo
      hace en una segunda pasada y sin garantías. Y a WhatsApp, que arma la vista
@@ -193,8 +193,8 @@ var TITULOS = {
     }
 
     /* La canónica se crea aquí y no se deja escrita en el html a propósito.
-       Una etiqueta estática diría `/` en las diez rutas, y un rastreador que no
-       ejecute JavaScript leería que las nueve rutas nuevas son duplicados del
+       Una etiqueta estática diría `/` en las once rutas, y un rastreador que no
+       ejecute JavaScript leería que las diez rutas nuevas son duplicados del
        inicio: peor que no poner ninguna, y justo lo contrario de lo que se
        busca. Sin etiqueta, Google escoge por su cuenta, que es el camino
        honesto mientras el html servido sea el mismo para todas. */
@@ -286,4 +286,28 @@ var TITULOS = {
   };
 
   alCambiarLaDireccion();
+
+  /* Al ENTRAR con un enlace a una sección de más abajo (por ejemplo
+     /alianzas-educativas#alianzas-formulario, el de los correos), el
+     desplazamiento de arriba se pierde: la página todavía está cargando
+     imágenes y videos, el alto cambia y el navegador lo cancela. Se repite
+     cuando termina de cargar, sin animación, salvo que la persona ya se
+     haya movido por su cuenta. */
+  var alEntrar = laDeLaDireccion();
+  if (alEntrar.seccion && VISTAS[alEntrar.vista][0] !== alEntrar.seccion) {
+    var yaSeMovio = false;
+    var marcar = function () { yaSeMovio = true; };
+    window.addEventListener("wheel", marcar, { passive: true, once: true });
+    window.addEventListener("touchmove", marcar, { passive: true, once: true });
+    window.addEventListener("keydown", marcar, { once: true });
+
+    window.addEventListener("load", function () {
+      var el = seccion(alEntrar.seccion);
+      if (!yaSeMovio && el && !el.hidden && actual === alEntrar.vista) {
+        /* "instant" y no "auto": el html tiene scroll-behavior: smooth, y con
+           "auto" se anima igual y se vuelve a cancelar. */
+        el.scrollIntoView({ behavior: "instant", block: "start" });
+      }
+    });
+  }
 })();

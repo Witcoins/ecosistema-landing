@@ -304,7 +304,7 @@
 .ali-final__inner { max-width: 800px; }
 .ali-final h2 { color: #fff; }
 .ali-final p { color: rgba(255, 255, 255, .86); font-size: 1.05rem; }
-.ali-final__nota { margin-top: 14px; font-size: .9rem !important; color: rgba(255, 255, 255, .7) !important; }
+.ali-final .ali-final__nota { margin-top: 14px; font-size: .9rem; color: rgba(255, 255, 255, .7); }
 
 /* ---- 11. Formulario ---- */
 
@@ -330,7 +330,9 @@
   display: flex;
   gap: 10px;
   align-items: flex-start;
+  margin: 0;
   font-size: .93rem;
+  font-weight: 400;   /* .campo label las pondría en negrilla, como títulos */
   color: var(--tinta-suave);
   cursor: pointer;
 }
@@ -350,7 +352,10 @@
 }
 .ali-enlace:hover { color: var(--morado-800); }
 
-/* Tras enviar con éxito, el formulario se esconde y queda el gracias */
+/* Tras enviar con éxito, los campos se esconden y queda solo el gracias:
+   así nadie lo manda dos veces creyendo que no salió. */
+#formAlianza.is-enviado .form-rejilla,
+#formAlianza.is-enviado .form-enviar { display: none; }
 .form-msg.ali-gracias {
   padding: 22px;
   border-radius: var(--radio-chico);

@@ -26,6 +26,7 @@
    │    ali_cta_clic   { boton: "portada" | "final" | ... }   │
    │    generate_lead  { origen: "alianzas-educativas", pais, │
    │                     tipo_organizacion, colegios }        │
+   │    (con "Otro", pais es el país que escribió)            │
    │  Para verlos como conversión: GA4 → Administrar →        │
    │  Eventos → marcar generate_lead como evento clave.       │
    └──────────────────────────────────────────────────────────┘
@@ -193,12 +194,17 @@ var ALI_FALLA = "No pudimos enviar la solicitud. Escríbanos a contacto@iwitown.
         if (data && data.ok) {
           medir("generate_lead", {
             origen: "alianzas-educativas",
-            pais: datos.get("pais"),
+            /* Con "Otro", el país que escribió: si no, en GA4 todos
+               los de fuera de México y Perú saldrían como "otro". */
+            pais: datos.get("pais") === "otro"
+              ? (datos.get("pais_otro") || "otro").trim().slice(0, 60)
+              : datos.get("pais"),
             tipo_organizacion: datos.get("tipo_organizacion"),
             colegios: datos.get("colegios")
           });
           form.reset();
           alCambiarPais();
+          form.classList.add("is-enviado");     // esconde los campos (css/alianzas.css)
           mostrar(ALI_GRACIAS, "ok ali-gracias");
           msg.scrollIntoView({ behavior: "smooth", block: "center" });
         } else {

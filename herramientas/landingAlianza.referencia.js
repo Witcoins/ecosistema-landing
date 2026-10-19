@@ -29,6 +29,9 @@ const db = admin.firestore();
 
 const AVISAR_A = ["contacto@iwitown.com", "witownnetwork@gmail.com"];
 
+/* Lo que ve la persona si falla Firestore. La página lo muestra tal cual. */
+const NO_SE_PUDO = { ok: false, mensaje: "No pudimos registrar su solicitud en este momento. Intente de nuevo en unos minutos o escríbanos a contacto@iwitown.com." };
+
 /* Los valores que manda el formulario. Si se cambian en el index.html,
    se cambian aquí también. */
 const PAISES = { MX: "México", PE: "Perú", otro: "Otro" };
@@ -72,13 +75,18 @@ async function cabeEnElTope(ip) {
   const refIp = db.collection("LandingTopes").doc(`alianza_ip_${llaveIp}_${hora}`);
   const refDia = db.collection("LandingTopes").doc(`alianza_dia_${dia}`);
 
+  /* `expira`: para la política TTL de Firestore sobre LandingTopes
+     (consola → Firestore → TTL → campo "expira"). Sin ella, se acumula un
+     documento por IP y por hora para siempre. */
+  const expira = admin.firestore.Timestamp.fromMillis(Date.now() + 2 * 24 * 3600 * 1000);
+
   return db.runTransaction(async (t) => {
     const [sIp, sDia] = await Promise.all([t.get(refIp), t.get(refDia)]);
     const nIp = (sIp.exists && sIp.data().n) || 0;
     const nDia = (sDia.exists && sDia.data().n) || 0;
     if (nIp >= TOPE_IP_HORA || nDia >= TOPE_DIA) return false;
-    t.set(refIp, { n: nIp + 1, hora }, { merge: true });
-    t.set(refDia, { n: nDia + 1, dia }, { merge: true });
+    t.set(refIp, { n: nIp + 1, hora, expira }, { merge: true });
+    t.set(refDia, { n: nDia + 1, dia, expira }, { merge: true });
     return true;
   });
 }
@@ -127,11 +135,22 @@ exports.landingAlianza = onRequest({ region: "us-central1" }, async (req, res) =
 
   /* Topes: sin ellos, cualquiera puede usar el correo de confirmación para
      mandar mensajes a direcciones ajenas desde el remitente de i'Witown. */
-  if (!(await cabeEnElTope(ipDe(req)))) {
+  /* Si el contador mismo falla (Firestore caído, contención), se responde
+     con un mensaje claro en vez de un 500 vacío, y queda en el log. */
+  let cabe;
+  try {
+    cabe = await cabeEnElTope(ipDe(req));
+  } catch (err) {
+    console.error("landingAlianza: fallo el tope", err);
+    return res.status(503).json(NO_SE_PUDO);
+  }
+  if (!cabe) {
     return res.status(429).json({ ok: false, mensaje: "Recibimos demasiadas solicitudes. Intente más tarde o escríbanos a contacto@iwitown.com." });
   }
 
-  const ref = await db.collection("LandingAlianzas").add({
+  let ref;
+  try {
+    ref = await db.collection("LandingAlianzas").add({
     ...d,
     /* Estado comercial, para medir "reuniones efectivamente agendadas":
        nuevo → contactado → reunion-agendada → reunion-hecha → piloto / descartado.
@@ -139,7 +158,11 @@ exports.landingAlianza = onRequest({ region: "us-central1" }, async (req, res) =
     estado: "nuevo",
     creado: admin.firestore.FieldValue.serverTimestamp(),
     autoriza_en: admin.firestore.FieldValue.serverTimestamp()
-  });
+    });
+  } catch (err) {
+    console.error("landingAlianza: no se guardo el lead", err);
+    return res.status(503).json(NO_SE_PUDO);
+  }
 
   const paisTxt = d.pais === "otro" ? d.pais_otro : PAISES[d.pais];
   const filas = [
@@ -171,7 +194,13 @@ exports.landingAlianza = onRequest({ region: "us-central1" }, async (req, res) =
         "contacto para explorar los siguientes pasos.</p><p>Equipo i’Witown · GMG-LATAM</p>"
     }
   });
-  await lote.commit();
+  /* El lead ya quedó guardado: si los correos fallan, se le dice que sí a la
+     persona (su solicitud existe) y el fallo queda en el log para revisarlo. */
+  try {
+    await lote.commit();
+  } catch (err) {
+    console.error("landingAlianza: lead " + ref.id + " guardado, pero no salieron los correos", err);
+  }
 
   return res.json({ ok: true });
 });

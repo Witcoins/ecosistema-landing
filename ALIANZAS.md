@@ -116,6 +116,7 @@ serán menores que los de Firestore: **la cifra de verdad de formularios es
       la A.C.P., los logbooks de las cuatro áreas, mensajes, agenda y asignaciones.
 - [ ] Probada en teléfono: el formulario se apila en una columna y los botones ocupan el ancho.
 - [ ] `generate_lead` marcado como evento clave en GA4.
+- [ ] Política TTL de Firestore activada en `LandingTopes`, campo `expira` (consola → Firestore → TTL), para que los contadores de los topes se borren solos.
 
 ## Algo que esta ruta no resuelve
 
