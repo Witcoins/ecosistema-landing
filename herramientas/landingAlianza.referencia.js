@@ -10,7 +10,8 @@
 
    Qué hace:
      POST /api/alianza  (application/x-www-form-urlencoded)
-     → valida, descarta robots (campo "website"),
+     → valida, descarta robots (campo "website") y aplica topes
+       (20 por IP a la hora, 200 al día; colección LandingTopes),
      → guarda en Firestore, colección LandingAlianzas,
      → avisa a contacto@iwitown.com y witownnetwork@gmail.com,
      → le manda al visitante el correo de confirmación,
@@ -46,6 +47,41 @@ const INTERESES = {
   convenio: "Explorar un convenio de colaboración",
   otra: "Otra posibilidad"
 };
+
+/* ---- Topes de envío ----
+   Mismos números que landingContacto: 20 por IP a la hora y 200 al día en
+   total, con el día cortado a medianoche de Bogotá. Si allá ya existe un
+   helper de topes, usar ese en vez de este. */
+const TOPE_IP_HORA = 20;
+const TOPE_DIA = 200;
+
+/* Como en landing.js (`ipDe`): el penúltimo valor de x-forwarded-for es el
+   del visitante; el último lo pone el borde de Google. Comprobarlo con
+   `firebase functions:log` antes de confiar en él (ver DESPLIEGUE.md). */
+function ipDe(req) {
+  const xff = String(req.headers["x-forwarded-for"] || "").split(",").map((s) => s.trim()).filter(Boolean);
+  return xff.length >= 2 ? xff[xff.length - 2] : (xff[0] || req.ip || "desconocida");
+}
+
+async function cabeEnElTope(ip) {
+  const bogota = new Date(Date.now() - 5 * 3600 * 1000).toISOString();   // UTC-5, sin horario de verano
+  const dia = bogota.slice(0, 10);
+  const hora = bogota.slice(0, 13);
+  const llaveIp = require("crypto").createHash("sha256").update(ip).digest("hex").slice(0, 24);
+
+  const refIp = db.collection("LandingTopes").doc(`alianza_ip_${llaveIp}_${hora}`);
+  const refDia = db.collection("LandingTopes").doc(`alianza_dia_${dia}`);
+
+  return db.runTransaction(async (t) => {
+    const [sIp, sDia] = await Promise.all([t.get(refIp), t.get(refDia)]);
+    const nIp = (sIp.exists && sIp.data().n) || 0;
+    const nDia = (sDia.exists && sDia.data().n) || 0;
+    if (nIp >= TOPE_IP_HORA || nDia >= TOPE_DIA) return false;
+    t.set(refIp, { n: nIp + 1, hora }, { merge: true });
+    t.set(refDia, { n: nDia + 1, dia }, { merge: true });
+    return true;
+  });
+}
 
 function texto(v, max) { return String(v || "").trim().slice(0, max); }
 function esc(s) { return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
@@ -89,7 +125,11 @@ exports.landingAlianza = onRequest({ region: "us-central1" }, async (req, res) =
 
   if (faltan) return res.status(422).json({ ok: false, mensaje: "Revise los campos obligatorios." });
 
-  /* AQUÍ: los mismos topes por IP y diarios que landingContacto. */
+  /* Topes: sin ellos, cualquiera puede usar el correo de confirmación para
+     mandar mensajes a direcciones ajenas desde el remitente de i'Witown. */
+  if (!(await cabeEnElTope(ipDe(req)))) {
+    return res.status(429).json({ ok: false, mensaje: "Recibimos demasiadas solicitudes. Intente más tarde o escríbanos a contacto@iwitown.com." });
+  }
 
   const ref = await db.collection("LandingAlianzas").add({
     ...d,

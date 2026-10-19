@@ -62,11 +62,11 @@ de familias y colegios. Hay que crear la función en **`witown-cloud-functions`*
 | `utm_source`, `utm_medium`, `utm_campaign` | — | los del enlace del correo, si venían |
 
 **Respuesta:** `200 { "ok": true }` si se guardó; `422 { "ok": false, "mensaje": "..." }`
-si falta algo (el `mensaje` se le muestra tal cual al visitante). Cualquier otra cosa
+si falta algo (el `mensaje` se le muestra tal cual al visitante); `429 { "ok": false, "mensaje": "..." }` si se pasó del tope. Cualquier otra cosa
 (404, 500, red) hace que la página muestre "escríbanos a contacto@iwitown.com o por
 WhatsApp".
 
-**Debe:** guardar en la colección `LandingAlianzas` con `estado: "nuevo"`, avisar a
+**Debe:** aplicar topes de envío (la referencia usa 20 por IP a la hora y 200 al día, en `LandingTopes`; si `landingContacto` ya tiene un helper, usar ese) —**sin topes no se puede desplegar**: el correo de confirmación va a la dirección que escriba cualquiera—, guardar en la colección `LandingAlianzas` con `estado: "nuevo"`, avisar a
 `contacto@iwitown.com` y `witownnetwork@gmail.com`, y mandarle al visitante el correo de
 confirmación (el texto está en la referencia).
 
