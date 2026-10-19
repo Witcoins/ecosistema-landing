@@ -306,7 +306,11 @@ var TITULOS = {
       if (!yaSeMovio && el && !el.hidden && actual === alEntrar.vista) {
         /* "instant" y no "auto": el html tiene scroll-behavior: smooth, y con
            "auto" se anima igual y se vuelve a cancelar. */
-        el.scrollIntoView({ behavior: "instant", block: "start" });
+        try {
+          el.scrollIntoView({ behavior: "instant", block: "start" });
+        } catch (e) {
+          el.scrollIntoView(true);   // navegadores que no conocen "instant"
+        }
       }
     });
   }
