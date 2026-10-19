@@ -16,7 +16,8 @@ landing-iwitown/
 │   ├── simulador.css     Estilos del simulador del recorrido.
 │   ├── actividades.css   Estilos de las pantallas de cada actividad.
 │   ├── apps.css          Estilos de las maquetas de las cuatro apps.
-│   └── logbooks.css      Estilos de la página /logbooks y de su pestaña.
+│   ├── logbooks.css      Estilos de la página /logbooks y de su pestaña.
+│   └── alianzas.css      Estilos de /alianzas-educativas (ver ALIANZAS.md).
 ├── js/
 │   ├── script.js         Menú, pestañas, animaciones y envío del formulario.
 │   │                     El WhatsApp, el correo y el enlace de Teams,
@@ -27,7 +28,8 @@ landing-iwitown/
 │   ├── witutor.js        Las 6 pantallas del recorrido de I'Witutor.
 │   ├── simulador.js      Contenido y mecánica del simulador (los textos van aquí).
 │   ├── actividades.js    Contenido de las pantallas de cada actividad.
-│   └── logbooks.js       El video y las tarjetas de los logbooks.
+│   ├── logbooks.js       El video y las tarjetas de los logbooks.
+│   └── alianzas.js       Formulario y medición de /alianzas-educativas.
 ├── firebase.json        Que se publica, la cache y las rutas /api/ de los formularios.
 └── assets/
     ├── img/              Logos e imágenes.
