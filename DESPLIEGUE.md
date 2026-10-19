@@ -75,6 +75,7 @@ del repositorio `witown-cloud-functions`:
 | `GET /api/horas` | `landingHoras` | devuelve los cupos libres de las proximas 3 semanas |
 | `POST /api/agendar` | `landingAgendar` | reserva el cupo y manda la invitacion por correo a las dos partes |
 | `POST /api/sala` | `landingSala` | avisa de que **hay alguien esperando en la sala AHORA**: no reserva nada |
+| `POST /api/alianza` | `landingAlianza` | el formulario de `/alianzas-educativas`: guarda en `LandingAlianzas` y avisa. **Pendiente de crear**; el contrato está en [`ALIANZAS.md`](ALIANZAS.md) |
 
 Las rutas `/api/*` son **rewrites** declarados en `firebase.json`: la pagina y
 las funciones quedan en el mismo dominio, asi que no hay CORS de por medio.

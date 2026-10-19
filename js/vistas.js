@@ -30,6 +30,7 @@ var VISTAS = {
   "ecosistema": ["ecosistema"],
   "acp":        ["acp"],
   "logbooks":   ["logbooks"],
+  "alianzas-educativas": ["alianzas-educativas", "alianzas-formulario"],
   "consultoria":["consultoria"],
   "contacto":   ["contacto"],
   "conversemos":["conversemos"]
@@ -48,6 +49,7 @@ var DESCRIPCIONES = {
   "solucion":   "Cómo i'Witown convierte cada tarea en información útil para el docente, sin trabajo extra.",
   "ecosistema": "Las cuatro aplicaciones de i'Witown: estudiantes, docentes, acudientes y el colegio, conectadas entre sí.",
   "acp":        "La Arquitectura Cognitiva Personalizada: cómo se construye comprensión en vez de solo evaluar.",
+  "alianzas-educativas": "Alianzas educativas para asociaciones y redes de colegios de Latinoamérica: conozca i'Witown, solicite una demostración o explore un piloto institucional.",
   "logbooks":   "Logbooks: diarios de aprendizaje de Ciencias Naturales, Ciencias Sociales, Matemáticas y Lengua Castellana, diseñados con la metodología de tu colegio e integrados a la plataforma.",
   "consultoria":"Acompañamos al colegio para que la innovación tenga sentido dentro de su proyecto educativo.",
   "contacto":   "Habla con i'Witown: reunión por Teams, WhatsApp o déjanos un mensaje.",
@@ -66,6 +68,7 @@ var TITULOS = {
   "ecosistema": "El ecosistema — i'Witown",
   "acp":        "La A.C.P. — i'Witown",
   "logbooks":   "Logbooks — i'Witown",
+  "alianzas-educativas": "i'Witown | Alianzas educativas",
   "consultoria":"Consultoría — i'Witown",
   "contacto":   "Contacto — i'Witown",
   "conversemos":"Conversemos — i'Witown"
