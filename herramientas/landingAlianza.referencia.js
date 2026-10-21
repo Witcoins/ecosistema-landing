@@ -8,6 +8,11 @@
    `ipDe`, la plantilla de los correos) en vez de copiar esto tal
    cual. El contrato completo está en ALIANZAS.md.
 
+   YA EXISTE la función real: witown-cloud-functions,
+   functions/src/handlers/landingAlianza.js. Allá los topes van en
+   LandingIntentos (no en LandingTopes) y sin `expira`. Si algo de aquí
+   no coincide con ese archivo, manda ese archivo.
+
    Qué hace:
      POST /api/alianza  (application/x-www-form-urlencoded)
      → valida, descarta robots (campo "website") y aplica topes
