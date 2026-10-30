@@ -119,11 +119,11 @@ Falta, y no es código:
 En `index.html` todos los archivos llevan `?v=` con un número al final:
 
 ```html
-<link rel="stylesheet" href="css/styles.css?v=321">
+<link rel="stylesheet" href="css/styles.css?v=323">
 ```
 
-El número vigente es **321**. Al cambiar un css, un js o una imagen hay que
-**subirle el número a todos** (buscar `v=321` y reemplazar por `v=322`). Si no,
+El número vigente es **323**. Al cambiar un css, un js o una imagen hay que
+**subirle el número a todos** (buscar `v=323` y reemplazar por `v=324`). Si no,
 los navegadores de quienes ya visitaron la página les siguen mostrando la
 versión vieja.
 

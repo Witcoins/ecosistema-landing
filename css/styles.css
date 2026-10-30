@@ -583,18 +583,19 @@ img { max-width: 100%; height: auto; display: block; }
   border-bottom-color: var(--morado-700);
 }
 
-/* Portátiles e iPad acostado (981 a 1180 px): con "Logbooks" el menú
-   ya no cabía en una línea. Aquí se aprieta un poco; por debajo de
+/* Portátiles e iPad acostado (981 a 1230 px): con "Logbooks" y "Demo"
+   el menú ya no cabía en una línea (el margen cubre la barra de
+   desplazamiento de Windows, que la media query sí cuenta). Aquí se aprieta un poco; por debajo de
    981 px entra la hamburguesa. */
-@media (min-width: 981px) and (max-width: 1180px) {
+@media (min-width: 981px) and (max-width: 1230px) {
   .nav__inner { gap: 14px; }
   .nav__links { gap: 14px; }
   .nav__links a { font-size: .88rem; }
 }
-@media (min-width: 981px) and (max-width: 1060px) {
+@media (min-width: 981px) and (max-width: 1090px) {
   .nav__inner { gap: 10px; }
-  .nav__links { gap: 11px; }
-  .nav__links a { font-size: .85rem; }
+  .nav__links { gap: 8px; }
+  .nav__links a { font-size: .82rem; }
 }
 
 /* ============================================================

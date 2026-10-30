@@ -63,6 +63,7 @@ Textos escolares impresos (Logbooks): $132.000 por estudiante al año por los cu
 - [Logbooks](https://www.ecosistema.iwitown.com/logbooks)
 - [Alianzas educativas para asociaciones y redes de colegios](https://www.ecosistema.iwitown.com/alianzas-educativas)
 - [Consultoría](https://www.ecosistema.iwitown.com/consultoria)
+- [Demo para directivos: responder tres preguntas como estudiante y verlo en el panel real de un colegio de prueba](https://www.ecosistema.iwitown.com/demo-directivos)
 - [Contacto](https://www.ecosistema.iwitown.com/contacto)
 
 ## Legal
