@@ -54,5 +54,5 @@ este archivo no se publica.
 - `DESPLIEGUE.md`: cómo se publica y qué revisar antes.
 - `PENDIENTES.md`: lo que falta y lo que nunca existió (no confundirlo con
   errores de publicación).
-- `ALIANZAS.md`: la página `/alianzas-educativas` y la función `landingAlianza`
-  que falta crear.
+- `ALIANZAS.md`: la página `/alianzas-educativas` y el contrato de la función
+  `landingAlianza` (vive en `witown-cloud-functions`).
