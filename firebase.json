@@ -35,12 +35,17 @@
         "function": { "functionId": "landingAlianza", "region": "us-central1" }
       },
       {
-        "//": "Una ruta por vista. NO se usa un comodin /** a proposito: taparia los 404 y una imagen que falte devolveria la pagina entera con codigo 200. Se listan las diez vistas; el inicio es la raiz. Van DESPUES de las de /api/.",
-        "source": "/@(marca|problema|solucion|ecosistema|acp|logbooks|alianzas-educativas|consultoria|contacto|conversemos)",
+        "//": "La demo para directivos (/demo-directivos): las 3 preguntas y las respuestas. La funcion vive en witown-cloud-functions.",
+        "source": "/api/demo-jugar",
+        "function": { "functionId": "landingDemoJugar", "region": "us-central1" }
+      },
+      {
+        "//": "Una ruta por vista. NO se usa un comodin /** a proposito: taparia los 404 y una imagen que falte devolveria la pagina entera con codigo 200. Se listan las once vistas; el inicio es la raiz. Van DESPUES de las de /api/.",
+        "source": "/@(marca|problema|solucion|ecosistema|acp|logbooks|alianzas-educativas|consultoria|contacto|conversemos|demo-directivos)",
         "destination": "/index.html"
       },
       {
-        "source": "/@(marca|problema|solucion|ecosistema|acp|logbooks|alianzas-educativas|consultoria|contacto|conversemos)/",
+        "source": "/@(marca|problema|solucion|ecosistema|acp|logbooks|alianzas-educativas|consultoria|contacto|conversemos|demo-directivos)/",
         "destination": "/index.html"
       }
     ],

@@ -1,0 +1,283 @@
+/* ============================================================
+   i'Witown — La demo para directivos
+
+   La página /demo-directivos. Usa los colores, botones y
+   encabezados que ya existen en css/styles.css; aquí solo está lo
+   propio de esta página, todo con el prefijo .demo-dir.
+
+   En escritorio va dividida: el juego a la izquierda (~40 %) y el
+   panel real a la derecha (~60 %). En el celular, uno debajo del
+   otro.
+   ============================================================ */
+
+/* El panel admin necesita ancho: el contenedor de esta vista es
+   más ancho que el del resto de la página. */
+.demo-dir__contenedor { max-width: 1440px; }
+
+.demo-dir__head { margin-bottom: 28px; }
+
+.demo-dir__rotulo,
+.demo-dir-juego__rotulo {
+  margin: 0 0 .6rem;
+  font-family: var(--fuente-titulos);
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--morado-600);
+}
+
+/* ---- La ⓘ con su globo (al pasar el ratón o al tocarla) ---- */
+
+.demo-dir-info {
+  position: relative;
+  display: inline-block;
+  color: var(--morado-600);
+  cursor: help;
+  font-weight: 700;
+}
+.demo-dir-info:focus-visible { outline: 2px solid var(--morado-300); outline-offset: 2px; border-radius: 4px; }
+.demo-dir-info__globo {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(260px, 80vw);
+  padding: 10px 12px;
+  border-radius: var(--radio-chico);
+  background: var(--tinta);
+  color: #fff;
+  font-size: .85rem;
+  font-weight: 400;
+  line-height: 1.4;
+  text-align: left;
+  box-shadow: var(--sombra-fuerte);
+  /* display y no visibility: escondido con visibility igual ocupa
+     espacio, y en el celular abría scroll horizontal. */
+  display: none;
+  z-index: 5;
+}
+.demo-dir-info:hover .demo-dir-info__globo,
+.demo-dir-info:focus .demo-dir-info__globo { display: block; }
+
+/* ---- Las dos columnas ---- */
+
+.demo-dir__dos {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  gap: 28px;
+  align-items: start;
+}
+
+/* ---- El juego ---- */
+
+.demo-dir-juego {
+  background: #fff;
+  border: 1px solid var(--gris-borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  padding: 26px 24px;
+  min-width: 0;
+}
+.demo-dir-juego h3 { color: var(--morado-700); margin-bottom: .5rem; }
+.demo-dir-juego__sub { color: var(--tinta-suave); }
+
+/* Las imágenes y los botones traen su propio "display" en
+   css/styles.css, y eso le gana al atributo hidden. */
+.demo-dir [hidden] { display: none !important; }
+
+.demo-dir-cargando { text-align: center; padding: 30px 0; }
+.demo-dir-cargando__txt { font-weight: 700; color: var(--morado-700); margin: 14px 0 4px; }
+.demo-dir-cargando__rueda {
+  display: inline-block;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 4px solid var(--morado-100);
+  border-top-color: var(--morado-600);
+  animation: demo-dir-gira 0.9s linear infinite;
+}
+@keyframes demo-dir-gira { to { transform: rotate(360deg); } }
+
+.demo-dir-error { color: #9B1C1C; font-weight: 600; }
+
+/* Quién está jugando */
+.demo-dir-quien { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.demo-dir-quien__foto {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--morado-100);
+  flex-shrink: 0;
+}
+.demo-dir-quien__nombre { margin: 0; font-weight: 700; color: var(--tinta); }
+.demo-dir-quien__tema { margin: 0; font-size: .88rem; color: var(--tinta-suave); }
+
+.demo-dir-barra {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+  font-size: .85rem;
+  font-weight: 700;
+}
+.demo-dir-barra__num { color: var(--morado-700); }
+.demo-dir-barra__aciertos { color: var(--tinta-suave); }
+.demo-dir-barra__valor {
+  margin-left: auto;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--morado-100);
+  color: var(--morado-700);
+}
+
+.demo-dir-texto { font-size: 1.05rem; font-weight: 600; color: var(--tinta); overflow-wrap: anywhere; }
+.demo-dir-latex {
+  margin: 0 0 1rem;
+  padding: 10px 12px;
+  border-radius: var(--radio-chico);
+  background: var(--morado-050);
+  font-family: Consolas, "Courier New", monospace;
+  font-size: .9rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.demo-dir-imagen { max-height: 260px; width: auto; margin: 0 auto 1rem; border-radius: var(--radio-chico); }
+
+/* Las opciones: la misma forma que en la app del estudiante */
+.demo-dir-opciones { display: flex; flex-direction: column; gap: 10px; }
+.demo-dir-opcion {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 14px;
+  min-height: 54px;
+  border-radius: 16px;
+  border: 2px solid #E6E6E6;
+  background: #F1F1F1;
+  text-align: left;
+  font: inherit;
+  color: var(--tinta);
+  cursor: pointer;
+  transition: transform .15s, box-shadow .15s, opacity .2s;
+}
+.demo-dir-opcion:hover:not(:disabled) { transform: scale(1.015); border-color: var(--morado-300); }
+.demo-dir-opcion:focus-visible { outline: 3px solid var(--morado-300); outline-offset: 2px; }
+.demo-dir-opcion:disabled { cursor: default; }
+.demo-dir-opcion__letra {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #F5E6D3;
+  color: #333;
+  font-weight: 700;
+  font-size: .85rem;
+}
+.demo-dir-opcion__txt { font-size: .95rem; font-weight: 500; align-self: center; overflow-wrap: anywhere; }
+.demo-dir-opcion.es-elegida { border-color: var(--morado-600); }
+.demo-dir-opcion.es-correcta { background: #32D65D; border-color: #32D65D; color: #fff; }
+.demo-dir-opcion.es-errada { background: #E53935; border-color: #E53935; color: #fff; }
+.demo-dir-opcion.es-gris { opacity: .5; }
+
+.demo-dir-aviso { margin: 10px 0 0; min-height: 1.2em; font-size: .9rem; color: var(--tinta-suave); }
+
+.demo-dir-retro {
+  margin: 8px 0 14px;
+  padding: 12px 14px;
+  border-radius: var(--radio-chico);
+  border: 2px solid rgba(229, 57, 53, .35);
+  background: #FFF4F3;
+}
+.demo-dir-retro.es-bien { border-color: rgba(50, 214, 93, .5); background: #EAFFF1; }
+.demo-dir-retro p { margin: 0; font-size: .92rem; }
+.demo-dir-retro__titulo { font-weight: 700; margin-bottom: 4px !important; }
+
+/* El resumen */
+.demo-dir-final { text-align: center; }
+.demo-dir-final__num {
+  margin: 0 0 .4rem;
+  font-family: var(--fuente-titulos);
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--morado-700);
+  line-height: 1;
+}
+.demo-dir-final__mira { font-weight: 700; color: var(--morado-700); }
+.demo-dir-final__botones { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+
+/* ---- El panel ---- */
+
+.demo-dir-panel { min-width: 0; }
+.demo-dir-panel__busca { color: var(--tinta-suave); margin-bottom: 10px; }
+
+.demo-dir-panel__mandos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.demo-dir-pestana {
+  padding: .45em 1em;
+  border-radius: 999px;
+  border: 1.5px solid var(--gris-borde);
+  background: #fff;
+  color: var(--tinta-suave);
+  font: inherit;
+  font-size: .85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.demo-dir-pestana:hover { border-color: var(--morado-300); }
+.demo-dir-pestana[aria-pressed="true"] {
+  background: var(--morado-100);
+  border-color: var(--morado-600);
+  color: var(--morado-700);
+}
+.demo-dir-pestana:focus-visible { outline: 3px solid var(--morado-300); outline-offset: 2px; }
+.demo-dir-panel__completa { margin-left: auto; font-size: .85rem; font-weight: 600; }
+
+.demo-dir-panel__marco {
+  display: block;
+  width: 100%;
+  height: 80vh;
+  min-height: 520px;
+  border: 1px solid var(--gris-borde);
+  border-radius: var(--radio);
+  background: #fff;
+  box-shadow: var(--sombra);
+}
+
+/* El botón "Ver la demo" de la sección del ecosistema */
+.demo-dir-cta { margin: 32px 0 0; }
+
+/* ---- Celular y tableta: uno debajo del otro ---- */
+
+@media (max-width: 980px) {
+  .demo-dir__dos { grid-template-columns: 1fr; }
+  .demo-dir-panel__marco { height: 75vh; min-height: 440px; }
+}
+
+@media (max-width: 620px) {
+  /* La ⓘ queda a la derecha del centro: el globo crece hacia la
+     izquierda para no salirse de la pantalla. */
+  .demo-dir-info__globo { left: auto; right: -6px; transform: none; width: min(240px, calc(100vw - 48px)); }
+  .demo-dir-juego { padding: 20px 16px; }
+  .demo-dir-panel__completa { margin-left: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo-dir-cargando__rueda { animation-duration: 2.4s; }
+  .demo-dir-opcion { transition: none; }
+}
+
+/* Al enunciado y al resultado se les pasa el foco para el lector de
+   pantalla; no hace falta el contorno. */
+#demoDirTexto:focus,
+#demoDirResultado:focus { outline: none; }

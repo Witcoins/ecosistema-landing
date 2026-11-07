@@ -33,7 +33,8 @@ var VISTAS = {
   "alianzas-educativas": ["alianzas-educativas", "alianzas-formulario"],
   "consultoria":["consultoria"],
   "contacto":   ["contacto"],
-  "conversemos":["conversemos"]
+  "conversemos":["conversemos"],
+  "demo-directivos": ["demo-directivos"]
 };
 
 /* La pestaña con la que abre la página */
@@ -53,12 +54,13 @@ var DESCRIPCIONES = {
   "logbooks":   "Logbooks: diarios de aprendizaje de Ciencias Naturales, Ciencias Sociales, Matemáticas y Lengua Castellana, diseñados con la metodología de tu colegio e integrados a la plataforma.",
   "consultoria":"Acompañamos al colegio para que la innovación tenga sentido dentro de su proyecto educativo.",
   "contacto":   "Habla con i'Witown: reunión por Teams, WhatsApp o déjanos un mensaje.",
-  "conversemos":"Déjanos tu mensaje y te contactamos para conocer i'Witown en tu colegio."
+  "conversemos":"Déjanos tu mensaje y te contactamos para conocer i'Witown en tu colegio.",
+  "demo-directivos": "Demo para rectores y coordinadores: responda tres preguntas como estudiante y véalo en el panel real de un colegio de prueba."
 };
 
 /* El título de cada vista. Lo ve quien comparte el enlace o lo guarda en
    favoritos, y es el nombre con el que la vista aparece en cualquier informe de
-   analítica. Sin esto, las once rutas saldrían con el mismo nombre y el
+   analítica. Sin esto, las doce rutas saldrían con el mismo nombre y el
    informe no se podría leer. */
 var TITULOS = {
   "inicio":     "i'Witown — Que el colegio muestre su propia identidad",
@@ -71,7 +73,8 @@ var TITULOS = {
   "alianzas-educativas": "i'Witown | Alianzas educativas",
   "consultoria":"Consultoría — i'Witown",
   "contacto":   "Contacto — i'Witown",
-  "conversemos":"Conversemos — i'Witown"
+  "conversemos":"Conversemos — i'Witown",
+  "demo-directivos": "Demo para directivos — i'Witown"
 };
 
 /* ============================================================
@@ -163,6 +166,14 @@ var TITULOS = {
 
     ponerLosDatosDeLaVista(vista);
 
+    /* Avisa qué vista quedó a la vista, para lo que tiene que arrancar o
+       detenerse al entrar o salir (la demo para directivos carga su panel y
+       mide la apertura, en js/demo-directivos.js). Los enlaces usan
+       pushState, que no dispara ningún evento propio del navegador. */
+    try {
+      document.dispatchEvent(new CustomEvent("vista-cambio", { detail: { vista: vista } }));
+    } catch (e) {}
+
     /* Si el enlace apuntaba a una sección de más abajo dentro de la
        misma vista, se baja hasta ella; si no, se sube al principio. */
     var destinoEl = haciaDonde ? seccion(haciaDonde) : null;
@@ -177,7 +188,7 @@ var TITULOS = {
      del navegador, la descripción que sale en los resultados de búsqueda, y la
      dirección "buena" de lo que se está viendo.
 
-     OJO con lo que esto NO resuelve: las once rutas sirven el MISMO html, y
+     OJO con lo que esto NO resuelve: las doce rutas sirven el MISMO html, y
      estos tres datos los pone el JavaScript después. A un visitante le llegan
      bien siempre; a Google le llegan solo cuando ejecuta el JavaScript, que lo
      hace en una segunda pasada y sin garantías. Y a WhatsApp, que arma la vista
@@ -193,8 +204,8 @@ var TITULOS = {
     }
 
     /* La canónica se crea aquí y no se deja escrita en el html a propósito.
-       Una etiqueta estática diría `/` en las once rutas, y un rastreador que no
-       ejecute JavaScript leería que las diez rutas nuevas son duplicados del
+       Una etiqueta estática diría `/` en las doce rutas, y un rastreador que no
+       ejecute JavaScript leería que las once rutas nuevas son duplicados del
        inicio: peor que no poner ninguna, y justo lo contrario de lo que se
        busca. Sin etiqueta, Google escoge por su cuenta, que es el camino
        honesto mientras el html servido sea el mismo para todas. */

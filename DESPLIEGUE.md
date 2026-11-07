@@ -75,6 +75,7 @@ del repositorio `witown-cloud-functions`:
 | `GET /api/horas` | `landingHoras` | devuelve los cupos libres de las proximas 3 semanas |
 | `POST /api/agendar` | `landingAgendar` | reserva el cupo y manda la invitacion por correo a las dos partes |
 | `POST /api/sala` | `landingSala` | avisa de que **hay alguien esperando en la sala AHORA**: no reserva nada |
+| `POST /api/demo-jugar` | `landingDemoJugar` | la partida de `/demo-directivos`: `{accion:"empezar"}` da 3 preguntas de un estudiante ficticio; `{accion:"responder",...}` corrige una. Tiene topes (429) |
 | `POST /api/alianza` | `landingAlianza` | el formulario de `/alianzas-educativas`: guarda en `LandingAlianzas` y avisa. Contrato en [`ALIANZAS.md`](ALIANZAS.md) |
 
 Las rutas `/api/*` son **rewrites** declarados en `firebase.json`: la pagina y
@@ -173,16 +174,16 @@ firebase deploy --only functions:landingContacto,functions:landingHoras,function
 
 ## 2 bis. Una ruta por vista
 
-El sitio es un solo `index.html` con once vistas que `js/vistas.js` intercambia,
+El sitio es un solo `index.html` con doce vistas que `js/vistas.js` intercambia,
 pero **cada vista tiene su propia direccion**: `/`, `/marca`, `/problema`,
 `/solucion`, `/ecosistema`, `/logbooks`, `/acp`, `/alianzas-educativas`,
-`/consultoria`, `/contacto` y
-`/conversemos`.
+`/consultoria`, `/contacto`, `/conversemos` y
+`/demo-directivos`.
 Se pueden compartir, guardar en favoritos e indexar.
 
 Cinco cosas que hay que saber para no romperlo:
 
-- **Las diez rutas estan listadas una por una en los `rewrites` de
+- **Las once rutas estan listadas una por una en los `rewrites` de
   `firebase.json`**, no con un comodin `/**`. Es a proposito: el comodin taparia
   los 404 y una imagen que falte devolveria la pagina entera con codigo 200,
   dejando a quien depura a ciegas.
@@ -201,6 +202,17 @@ Cinco cosas que hay que saber para no romperlo:
   assets se piden con rutas relativas; sin esa base, una direccion con barra
   final (`/solucion/`) los buscaria en `/solucion/css/` y la pagina saldria sin
   estilos.
+- **`/demo-directivos` llama a su propia funcion.** Ademas de su ruta, tiene el
+  rewrite `/api/demo-jugar` -> `landingDemoJugar` (repo `witown-cloud-functions`),
+  declarado ANTES de los de las vistas. El panel que se ve al lado es el admin
+  real servido desde `https://directivos-iwitown.web.app` (constante
+  `DEMO_PANEL` en `js/demo-directivos.js`); al terminar la partida la pagina le
+  manda `postMessage({tipo: "demo-jugada", uid})` para que se refresque.
+  **Orden al publicar** (las funciones y las reglas, desde `main`): 1) las
+  reglas de Firestore, que cierran `LandingDemoPartidas`; 2) las funciones
+  `landingDemoApi` y `landingDemoJugar`; 3) el sitio del panel demo (repo
+  admin); 4) la landing. Al reves, la vista sale con el juego caido y el
+  iframe en "Site Not Found", o las partidas quedan legibles antes de tiempo.
 - **Los enlaces viejos con `#` siguen funcionando.** Si alguien mando por correo
   `.../#acp`, el router lo entiende y abre esa vista. El `#` se usa ahora solo
   para las secciones de adentro de una vista, como `/#presentacion`.
