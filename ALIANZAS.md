@@ -36,12 +36,13 @@ Los botones:
 > Logbooks) y esta página es de campaña, se llega por el enlace del correo. Si se quiere
 > en el menú, es un `<a href="/alianzas-educativas">` en `#menu`.
 
-## Lo que falta: la función `landingAlianza`
+## La función `landingAlianza`
 
 El formulario **no** usa `/api/contacto`, para que estos contactos no se mezclen con los
-de familias y colegios. Hay que crear la función en **`witown-cloud-functions`**
-(partiendo de `herramientas/landingAlianza.referencia.js` y reutilizando lo de
-`landingContacto`: topes por IP, `ipDe`, plantilla de correo).
+de familias y colegios. La función vive en **`witown-cloud-functions`**
+(`functions/src/handlers/landingAlianza.js`, PR Witcoins/witown-cloud-functions#29),
+hecha con los mismos helpers que `landingContacto`. Lo que manda es ese archivo:
+`herramientas/landingAlianza.referencia.js` queda solo como el borrador de partida.
 
 **Contrato:** `POST /api/alianza`, `application/x-www-form-urlencoded`.
 
@@ -66,16 +67,26 @@ si falta algo (el `mensaje` se le muestra tal cual al visitante); `429 { "ok": f
 (404, 500, red) hace que la página muestre "escríbanos a contacto@iwitown.com o por
 WhatsApp".
 
-**Debe:** aplicar topes de envío (la referencia usa 20 por IP a la hora y 200 al día, en `LandingTopes`; si `landingContacto` ya tiene un helper, usar ese) —**sin topes no se puede desplegar**: el correo de confirmación va a la dirección que escriba cualquiera—, guardar en la colección `LandingAlianzas` con `estado: "nuevo"`, avisar a
-`contacto@iwitown.com` y `witownnetwork@gmail.com`, y mandarle al visitante el correo de
-confirmación (el texto está en la referencia).
+**Hace:** aplica topes de envío —20 por IP a la hora y 200 al día, en `LandingIntentos`
+como el resto de las funciones de la landing, con prefijos propios (`alianza_`,
+`_alianza-global-`)—, guarda en la colección `LandingAlianzas` con `estado: "nuevo"`,
+avisa a `contacto@iwitown.com` y `witownnetwork@gmail.com` (con `replyTo` del visitante)
+y le manda al visitante el correo de confirmación. `LandingAlianzas` queda fuera del
+comodín de `firestore.rules`: ningún cliente la lee ni la escribe; entran la función
+(Admin SDK) y el equipo desde la consola, para mover el `estado`. Ojo: los dos correos
+quedan también en `mail`, que **sigue** dentro del comodín.
 
 **Orden de despliegue** (igual que el resto, ver `DESPLIEGUE.md`): **primero la función,
 después el Hosting**. Si se publica el Hosting antes, el formulario responde 404.
 
+`firestore:rules` publica el `firestore.rules` **entero** de `main`, no solo la línea de
+`LandingAlianzas`. Antes de desplegar, comparar con las reglas activas (consola →
+Firestore → Reglas → historial). El 2026-10-21 la única diferencia eran las
+colecciones `Landing*` fuera del comodín, que ningún cliente usa.
+
 ```bash
-# en witown-cloud-functions, desde main
-firebase deploy --only functions:landingAlianza
+# en witown-cloud-functions, desde main (las reglas van con la función)
+firebase deploy --only firestore:rules,functions:landingAlianza
 
 # en este repositorio
 firebase deploy --only hosting
@@ -87,7 +98,10 @@ Comprobar que la función está arriba, sin desplegar nada:
 curl -s -X POST https://ecosistema-iwitown.web.app/api/alianza -d "x=1"
 ```
 
-Un 404 = falta desplegar la función. Un 422 = está arriba y validando.
+Un 422 = está arriba y validando. Un 404 puede ser cualquiera de las dos cosas: el
+rewrite `/api/alianza` solo existe cuando ya se publicó el Hosting con este
+`firebase.json`. Para probar la función **antes** del Hosting, usar su URL directa
+(la da `firebase functions:list` o la consola de Cloud Run).
 
 ## Medición
 
@@ -116,7 +130,6 @@ serán menores que los de Firestore: **la cifra de verdad de formularios es
       la A.C.P., los logbooks de las cuatro áreas, mensajes, agenda y asignaciones.
 - [ ] Probada en teléfono: el formulario se apila en una columna y los botones ocupan el ancho.
 - [ ] `generate_lead` marcado como evento clave en GA4.
-- [ ] Política TTL de Firestore activada en `LandingTopes`, campo `expira` (consola → Firestore → TTL), para que los contadores de los topes se borren solos.
 
 ## Algo que esta ruta no resuelve
 

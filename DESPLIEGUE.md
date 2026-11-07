@@ -66,7 +66,7 @@ firebase serve --only hosting            # o en local, en el navegador
 El formulario y el calendario pasan **dentro de la pagina**: no le abren al
 visitante su programa de correo ni lo mandan a llenar nada afuera. Lo unico que
 sale del sitio es la sala de Teams, cuando el visitante escoge entrar ahora.
-Firebase Hosting no ejecuta PHP, asi que todo lo atienden cuatro Cloud Functions
+Firebase Hosting no ejecuta PHP, asi que todo lo atienden cinco Cloud Functions
 del repositorio `witown-cloud-functions`:
 
 | La pagina llama a | Lo atiende | Que hace |
@@ -75,7 +75,7 @@ del repositorio `witown-cloud-functions`:
 | `GET /api/horas` | `landingHoras` | devuelve los cupos libres de las proximas 3 semanas |
 | `POST /api/agendar` | `landingAgendar` | reserva el cupo y manda la invitacion por correo a las dos partes |
 | `POST /api/sala` | `landingSala` | avisa de que **hay alguien esperando en la sala AHORA**: no reserva nada |
-| `POST /api/alianza` | `landingAlianza` | el formulario de `/alianzas-educativas`: guarda en `LandingAlianzas` y avisa. **Pendiente de crear**; el contrato está en [`ALIANZAS.md`](ALIANZAS.md) |
+| `POST /api/alianza` | `landingAlianza` | el formulario de `/alianzas-educativas`: guarda en `LandingAlianzas` y avisa. Contrato en [`ALIANZAS.md`](ALIANZAS.md) |
 
 Las rutas `/api/*` son **rewrites** declarados en `firebase.json`: la pagina y
 las funciones quedan en el mismo dominio, asi que no hay CORS de por medio.
@@ -300,11 +300,11 @@ tener presentes:
   reputacion del remitente, que es compartido con los colegios. El global es el que importa: el
   correo de gracias va a la direccion que teclee el visitante, y sale por la misma
   extension de correo que usan los colegios.
-- Las reglas de Firestore del proyecto conceden lectura a cualquier usuario
-  autenticado, así que **estas colecciones quedan legibles desde las apps**. Está
-  anotado como pendiente. Hay datos personales de visitantes externos dentro de
-  ese comodín; si se quiere cerrar, va una regla explícita para `LandingLeads`,
-  `LandingReuniones` y `LandingSala` antes del comodín final.
+- `LandingLeads`, `LandingReuniones`, `LandingSala`, `LandingAlianzas` y
+  `LandingIntentos` están **fuera del comodín** de `firestore.rules` (en `main`
+  de `witown-cloud-functions`): ningún cliente las lee ni las escribe. Lo que
+  sigue abierto es `mail`: el aviso de cada envío, con los datos del visitante,
+  queda legible para cualquier usuario autenticado.
 - La colección `LandingIntentos` (la de los topes) crece un documento por IP y no
   tiene TTL. Sus documentos traen `ultimo_en`, así que se puede declarar una
   política TTL sobre ese campo cuando estorbe.
