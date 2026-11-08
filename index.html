@@ -1,6 +1,22 @@
 <!DOCTYPE html>
 <html lang="es-CO">
 <head>
+<script>
+  /* /demo-directivos?e=<token>: el token es privado. Se quita de la barra antes de
+     que cargue la medición y queda solo en memoria (ver js/configurador.js). */
+  (function () {
+    try {
+      var u = new URL(location.href), e = u.searchParams.get("e");
+      if (e !== null) {
+        /* Se quita siempre, válido o no: nunca debe llegar a la medición. */
+        u.searchParams.delete("e");
+        history.replaceState(null, "", u.pathname + u.search + u.hash);
+        e = e.trim().replace(/[^A-Za-z0-9_-]+$/, "");
+        if (/^[A-Za-z0-9_-]{20,40}$/.test(e)) window.__configuradorE = e;
+      }
+    } catch (err) { /* sin almacenamiento: se queda en la URL */ }
+  })();
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -146,7 +162,6 @@
       <a href="/ecosistema">El ecosistema</a>
       <a href="/logbooks">Logbooks</a>
       <a href="/acp">La A.C.P.</a>
-      <a href="/demo-directivos">Demo</a>
       <a href="/contacto" class="nav__verde">Contacto</a>
       <a href="/consultoria" class="nav__azul">Consultoría</a>
       <!-- A dónde lleva se pone en js/script.js, en WIWI -->
@@ -1106,11 +1121,6 @@
          js/plataformas.js, y ahí mismo se cambian los textos. -->
     <div id="ecoMapa"></div>
 
-    <!-- Para el rector o el coordinador: el panel real, con un
-         colegio de prueba. Lleva a /demo-directivos. -->
-    <p class="centro demo-dir-cta">
-      <a href="/demo-directivos" class="btn btn--morado">Ver la demo</a>
-    </p>
 
   </div>
 </section>
@@ -2106,127 +2116,25 @@
 </section>
 
 <!-- ============================================================
-     LA DEMO PARA DIRECTIVOS
+     LA DEMO PARA DIRECTIVOS (PRIVADA): EL CONFIGURADOR I'WITOWN
 
-     La página /demo-directivos, para rectores y coordinadores. A la
-     izquierda juegan como un estudiante (3 preguntas reales de
-     WiwiQuest) y a la derecha ven el panel admin REAL, embebido, con
-     los informes de un colegio de prueba. Al terminar, el panel se
-     refresca solo y muestra lo que se acaba de responder.
-
-     ┌──────────────────────────────────────────────────────────┐
-     │  LA DIRECCIÓN DEL PANEL Y LA MECÁNICA                    │
-     │                                                          │
-     │  Todo en js/demo-directivos.js (DEMO_PANEL arriba). El   │
-     │  iframe no lleva src aquí a propósito: se carga la       │
-     │  primera vez que se abre esta vista. Las preguntas las   │
-     │  da /api/demo-jugar (función landingDemoJugar).          │
-     └──────────────────────────────────────────────────────────┘
+     /demo-directivos ya no es pública: se abre solo con el enlace
+     que crea la asesora desde founders (…/demo-directivos?e=<token>).
+     Con enlace, lleva al Configurador (repo witown_configurador,
+     sitio directivos-iwitown) como página principal, no dentro de un
+     iframe: así sus vistas previas funcionan aunque el navegador
+     bloquee el almacenamiento de terceros. Sin enlace, un aviso. El
+     token se quita de la barra apenas carga (script al inicio de la
+     página), antes de la medición. Ver js/configurador.js.
      ============================================================ -->
 <section class="seccion seccion--claro demo-dir" id="demo-directivos" hidden>
-  <div class="contenedor demo-dir__contenedor">
-    <header class="seccion__head demo-dir__head">
+  <div class="contenedor" id="configuradorSinEnlace" hidden>
+    <header class="seccion__head">
       <p class="demo-dir__rotulo">Demo para directivos</p>
-      <h2>Juegue como estudiante y véalo en el panel del colegio</h2>
-      <p class="seccion__intro">
-        Lo que ve es la plataforma real
-        <span class="demo-dir-info" tabindex="0" role="note"
-              aria-label="Colegio de prueba con estudiantes ficticios. Ningún dato es de una persona real.">
-          <span aria-hidden="true">ⓘ</span>
-          <span class="demo-dir-info__globo" aria-hidden="true">Colegio de prueba con estudiantes ficticios. Ningún dato es de una persona real.</span>
-        </span>
-      </p>
+      <h2>Esta demo es privada</h2>
+      <p class="seccion__intro">Se abre con el enlace que le envía su asesora. Si aún no lo tiene, conversemos.</p>
     </header>
-
-    <div class="demo-dir__dos">
-
-      <!-- ---- EL JUEGO ---- -->
-      <div class="demo-dir-juego">
-
-        <div class="demo-dir-paso" id="demoDirInicio">
-          <p class="demo-dir-juego__rotulo">1. Juegue como estudiante</p>
-          <h3>Tres preguntas reales de WiwiQuest</h3>
-          <p class="demo-dir-juego__sub">Le toca un estudiante ficticio del colegio de prueba.</p>
-          <button type="button" class="btn btn--morado btn--grande" id="demoDirEmpezar">Empezar</button>
-        </div>
-
-        <div class="demo-dir-paso demo-dir-cargando" id="demoDirCargando" hidden>
-          <span class="demo-dir-cargando__rueda" aria-hidden="true"></span>
-          <p class="demo-dir-cargando__txt" id="demoDirEstado">Preparando…</p>
-          <p class="demo-dir-juego__sub">Puede tardar unos segundos.</p>
-        </div>
-
-        <div class="demo-dir-paso" id="demoDirError" hidden>
-          <p class="demo-dir-error" id="demoDirErrorTxt" role="alert"></p>
-          <button type="button" class="btn btn--linea" id="demoDirReintentar">Intentar de nuevo</button>
-        </div>
-
-        <div class="demo-dir-paso" id="demoDirPregunta" hidden>
-          <div class="demo-dir-quien">
-            <img class="demo-dir-quien__foto" id="demoDirAvatar" alt="" hidden>
-            <div>
-              <p class="demo-dir-quien__nombre"><span id="demoDirNombre"></span> · <span id="demoDirCurso"></span></p>
-              <p class="demo-dir-quien__tema" id="demoDirTema"></p>
-            </div>
-          </div>
-
-          <div class="demo-dir-barra">
-            <span class="demo-dir-barra__num" id="demoDirNumero"></span>
-            <span class="demo-dir-barra__aciertos" id="demoDirAciertos"></span>
-            <span class="demo-dir-barra__valor" id="demoDirValor" title="Witkis que vale la pregunta"></span>
-          </div>
-
-          <p class="demo-dir-texto" id="demoDirTexto" tabindex="-1"></p>
-          <pre class="demo-dir-latex" id="demoDirLatex" hidden></pre>
-          <img class="demo-dir-imagen" id="demoDirImagen" alt="Imagen de la pregunta" hidden>
-
-          <div class="demo-dir-opciones" id="demoDirOpciones"></div>
-
-          <p class="demo-dir-aviso" id="demoDirAviso" role="status"></p>
-
-          <div class="demo-dir-retro" id="demoDirRetro" hidden>
-            <p class="demo-dir-retro__titulo" id="demoDirRetroTitulo"></p>
-            <p id="demoDirRetroTxt"></p>
-          </div>
-
-          <button type="button" class="btn btn--morado" id="demoDirSiguiente" hidden>Siguiente</button>
-        </div>
-
-        <div class="demo-dir-paso demo-dir-final" id="demoDirFinal" hidden>
-          <p class="demo-dir-juego__rotulo">Resultado</p>
-          <p class="demo-dir-final__num" id="demoDirResultado" tabindex="-1"></p>
-          <p class="demo-dir-juego__sub" id="demoDirLectura"></p>
-          <p class="demo-dir-final__mira">Ya está en el panel de al lado.</p>
-
-          <div class="demo-dir-final__botones">
-            <!-- Abre el mismo calendario de "Contacto" (js/teams.js) -->
-            <button type="button" class="btn btn--morado" data-teams="calendario">Agendar una reunión</button>
-            <a class="btn btn--wa" data-wa
-               data-wa-msg="Hola, vi la demo para directivos y quiero hablar sobre i'Witown para mi colegio.">WhatsApp</a>
-            <button type="button" class="btn btn--linea" id="demoDirOtraVez">Jugar otra vez</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- ---- EL PANEL REAL ---- -->
-      <div class="demo-dir-panel">
-        <p class="demo-dir-juego__rotulo">2. Véalo en el panel del colegio</p>
-        <p class="demo-dir-panel__busca">
-          Busque a <strong id="demoDirBuscaNombre">quien juegue</strong>
-          (<span id="demoDirBuscaCurso">Cuarto A</span>) en el reporte.
-        </p>
-
-        <div class="demo-dir-panel__mandos">
-          <button type="button" class="demo-dir-pestana" data-demo-panel="reportes" aria-pressed="true">Reportes WiwiQuest</button>
-          <button type="button" class="demo-dir-pestana" data-demo-panel="uso" aria-pressed="false">Informe de uso</button>
-          <a class="demo-dir-panel__completa" id="demoDirCompleta" target="_blank" rel="noopener">Pantalla completa ↗</a>
-        </div>
-
-        <iframe class="demo-dir-panel__marco" id="demoDirMarco"
-                title="Panel del colegio de prueba"></iframe>
-      </div>
-
-    </div>
+    <p class="centro"><a href="/conversemos" class="btn btn--morado">Pedir mi enlace</a></p>
   </div>
 </section>
 
@@ -2352,6 +2260,6 @@
 <!-- Después de analitica.js a propósito: al entrar directo a
      /demo-directivos mide la apertura al cargar, y window.gtag ya
      tiene que existir para eso. -->
-<script src="js/demo-directivos.js?v=323"></script>
+<script src="js/configurador.js?v=324"></script>
 </body>
 </html>
