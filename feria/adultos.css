@@ -1,17 +1,29 @@
 /* ┌──────────────────────────────────────────────────────────────────────┐
    │ Feria I'witown — Instructivos para adultos (familias, docentes y     │
-   │ administrativos). Mismo diseño de la portada (/feria): fondo oscuro  │
-   │ en la cabecera, una sola letra para los títulos y un solo acento.    │
-   │ El contenido no se recorta: lo largo va en "Ver detalle".            │
+   │ administrativos). Misma esencia de la portada (/feria) en TODA la    │
+   │ página:                                                              │
+   │  · Minimalismo: fondo oscuro, una letra, un solo color de acento.    │
+   │  · Impacto: el rol en letras enormes y los números en contorno.      │
+   │  · Interactividad: la luz sigue el cursor, la cinta, los números     │
+   │    que se llenan y las preguntas que se abren.                       │
+   │                                                                      │
+   │ Cada instructivo tiene solo dos partes, para que sea sencillo:       │
+   │  1. "Lo básico": tres pasos grandes (el mismo diseño de la portada). │
+   │  2. "Preguntas frecuentes": cada tema es una pregunta que se abre.   │
+   │     El contenido no se recorta: lo largo va en "Ver detalle".        │
    │                                                                      │
    │ Lo que se cambia está aquí:                                          │
    │  · Colores ............. :root (los mismos de portada.css y          │
    │                          ninos.css: si cambia uno, cambian los tres) │
-   │  · Ancho de la barra ... --ancho-side                                │
+   │  · Tamaño del rol ...... .fa-h1-rol (y .fa-h1--largo si el nombre    │
+   │                          es una sola palabra larga)                  │
+   │  · Velocidad de cinta .. .fa-cinta-pista (animation)                 │
    │                                                                      │
-   │ Barra lateral de contenido:                                          │
-   │  · computador: fija a la izquierda; se oculta y se vuelve a mostrar. │
-   │  · celular: el botón "Contenido" la abre desde el lado.              │
+   │ Las serpentinas, el sonido, los textos animados, los marcos de foto  │
+   │ y de celular, las formas y los dibujos de feria están en fiesta.css  │
+   │ y fiesta.js, que comparten los cuatro instructivos.                  │
+   │                                                                      │
+   │ Al imprimir todo vuelve a papel blanco (ver @media print, al final). │
    └──────────────────────────────────────────────────────────────────────┘ */
 
 /* La letra de los títulos se sirve desde el propio sitio (feria/fuentes/), no
@@ -32,264 +44,270 @@
   --morado-700: #520348;
   --morado-600: #760467;
   --morado-300: #D692CE;
-  --morado-100: #F7E6F5;
-  --morado-050: #FBF3FA;
   --acento:     #FFC93A;   /* el único color de acento */
   --crema:      #FFF7EA;
-  --ambar-suave:#FFF4DC;
-  --tinta:      #1A1523;
-  --tinta-suave:#4A4458;
-  --gris-borde: #E7E2EE;
-  --blanco:     #FFFFFF;
-  --fondo:      #FBF8F4;
-  --linea-oscura: rgba(255, 247, 234, .16);
+  --crema-suave: rgba(255, 247, 234, .72);
+  --linea:      rgba(255, 247, 234, .16);
   --titulos: "Bricolage Grotesque", "Arial Narrow", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
   --fuente: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
-  --radio: 22px;
-  --ancho-side: 300px;
+  --borde: 16px;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 76px; }
-body { margin: 0; background: var(--fondo); color: var(--tinta); font-family: var(--fuente); font-size: 17px; line-height: 1.6; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 16px; }
+body { margin: 0; background: var(--noche); color: var(--crema); font-family: var(--fuente); font-size: 17px; line-height: 1.6; }
 img { display: block; max-width: 100%; height: auto; }
 b, strong { font-weight: 700; }
 button { font: inherit; }
+a { color: inherit; }
+[hidden] { display: none !important; }
+:focus-visible { outline: 3px solid var(--acento); outline-offset: 3px; border-radius: 6px; }
 
-/* ---------- Barra superior (botón Contenido + imprimir + avance) ---------- */
-.fa-barra {
-  position: sticky; top: 0; z-index: 30; display: flex; align-items: center; gap: 10px;
-  padding: 10px 16px; background: var(--noche); color: var(--crema);
+/* La luz: el mismo resplandor de la portada, aquí detrás de toda la página.
+   adultos.js lo mueve con el cursor (--x, --y). Sin cursor (celular) se queda
+   arriba, quieto. */
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(520px circle at var(--x, 72%) var(--y, 16%), rgba(118, 4, 103, .6), transparent 70%),
+    radial-gradient(900px circle at 8% 100%, rgba(82, 3, 72, .55), transparent 70%);
 }
-.fa-barra-titulo { font-family: var(--titulos); font-weight: 700; font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; flex: 1; }
-.fa-boton {
-  appearance: none; border: 1.5px solid var(--morado-300); background: var(--blanco); color: var(--morado-700);
-  font-weight: 700; font-size: 14px; padding: 8px 14px; border-radius: 999px; cursor: pointer;
-  display: inline-flex; align-items: center; gap: 7px; flex: none; transition: background .15s, transform .15s;
-}
-.fa-boton:hover { background: var(--morado-050); }
-.fa-boton:active { transform: scale(.96); }
-.fa-boton:focus-visible, .fa-det > summary:focus-visible { outline: 3px solid var(--morado-600); outline-offset: 2px; }
-.fa-boton svg { width: 18px; height: 18px; }
-/* Sobre fondo oscuro (barra superior y barra lateral) los botones van en claro. */
-.fa-barra .fa-boton, .fa-side .fa-boton { background: transparent; color: var(--crema); border-color: var(--linea-oscura); }
-.fa-barra .fa-boton:hover, .fa-side .fa-boton:hover { background: rgba(255, 247, 234, .1); }
-.fa-barra .fa-boton:focus-visible, .fa-side .fa-boton:focus-visible, .fa-volver:focus-visible { outline-color: var(--acento); }
-/* Avance: cuánto del instructivo se ha recorrido (lo mueve adultos.js). */
-.fa-avance { position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: rgba(255, 247, 234, .12); }
-.fa-avance span { display: block; height: 100%; width: 0; background: var(--acento); transition: width .35s ease; }
 
-/* ---------- Barra lateral ---------- */
-.fa-side {
-  position: fixed; z-index: 40; top: 0; bottom: 0; left: 0; width: min(86vw, var(--ancho-side));
-  background: var(--noche); color: var(--crema); overflow-y: auto;
-  transform: translateX(-100%); visibility: hidden; transition: transform .25s ease, visibility 0s linear .25s; padding: 14px 14px 30px;
-}
-.fa-side-cab { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
-.fa-side-cab h2 { margin: 0; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--acento); }
-.fa-side ul { list-style: none; margin: 0; padding: 0; }
-/* Volver a la portada de la feria */
+/* Avance: la raya amarilla de arriba se llena al bajar (la mueve adultos.js). */
+.fa-avance { position: fixed; z-index: 20; top: 0; left: 0; right: 0; height: 5px; background: rgba(255, 247, 234, .12); }
+.fa-avance span { display: block; height: 100%; width: 0; background: var(--acento); border-radius: 0 5px 5px 0; }
+
+/* ---------- Portada ---------- */
+.fa-portada { position: relative; color: var(--crema); overflow: hidden; background: var(--noche); isolation: isolate; }
+.fa-portada > img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; opacity: .34; }
+.fa-portada::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(27, 1, 24, .2), var(--noche) 96%); }
+/* Arriba: volver a la portada de la feria e imprimir */
+.fa-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 22px var(--borde) 0; }
 .fa-volver {
-  display: flex; align-items: center; gap: 8px; margin: 4px 0 14px; padding: 10px 12px; border-radius: 12px; text-decoration: none;
-  font-family: var(--titulos); font-weight: 700; font-size: 15px; color: var(--noche); background: var(--acento);
+  display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px 8px 12px; border-radius: 999px; text-decoration: none;
+  background: var(--acento); color: var(--noche); font-family: var(--titulos); font-weight: 800; font-size: 16px;
 }
 .fa-volver svg { width: 18px; height: 18px; flex: none; transition: transform .2s; }
 .fa-volver:hover svg { transform: translateX(-3px); }
-
-/* Partes: botón que se despliega y muestra sus botones */
-.fa-grupo { margin: 8px 0; }
-.fa-grupo-btn {
-  appearance: none; width: 100%; display: flex; align-items: center; gap: 8px; text-align: left; cursor: pointer;
-  border: 0; border-bottom: 1px solid var(--linea-oscura); padding: 10px 4px; background: transparent; color: var(--crema);
-  font-family: var(--titulos); font-weight: 700; font-size: 15px; line-height: 1.3;
+.fa-volver:focus-visible { outline-color: var(--crema); }
+.fa-boton {
+  appearance: none; border: 1.5px solid var(--crema-suave); background: rgba(27, 1, 24, .35); color: var(--crema);
+  font-weight: 700; font-size: 14px; padding: 8px 14px; border-radius: 999px; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 7px; flex: none; transition: background .15s, transform .15s;
 }
-.fa-grupo-btn:hover { color: var(--acento); }
-.fa-grupo-btn svg { width: 18px; height: 18px; flex: none; transition: transform .2s; }
-.fa-grupo-btn[aria-expanded="false"] svg { transform: rotate(-90deg); }
-.fa-grupo-btn:focus-visible { outline: 3px solid var(--acento); outline-offset: 2px; }
-.fa-grupo-lista { padding: 8px 0 2px !important; display: grid; gap: 4px; }
-.fa-grupo-btn[aria-expanded="false"] + .fa-grupo-lista { display: none; }
-.fa-side > nav > ul { display: grid; gap: 4px; }
-
-/* Botones de cada sección */
-.fa-nav-btn {
-  display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 12px; text-decoration: none;
-  color: rgba(255, 247, 234, .82); font-size: 15px; line-height: 1.3; border: 1.5px solid transparent;
-  transition: background .15s, color .15s, transform .15s;
+.fa-boton:hover { background: rgba(255, 247, 234, .14); }
+.fa-boton:active { transform: scale(.96); }
+.fa-boton svg { width: 18px; height: 18px; }
+.fa-top-botones { display: flex; gap: 8px; }
+/* En celular los dos botones de arriba quedan solo con su dibujo. */
+@media (max-width: 480px) {
+  .fa-top-botones span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .fa-top-botones button { padding: 9px 11px; }
 }
-.fa-nav-btn:hover { background: rgba(255, 247, 234, .08); color: var(--crema); transform: translateX(3px); }
-.fa-nav-ico { flex: none; width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; background: rgba(255, 247, 234, .1); color: var(--crema); }
-.fa-nav-ico svg { width: 17px; height: 17px; }
-.fa-nav-btn.activo { background: var(--acento); color: var(--noche); font-weight: 700; }
-.fa-nav-btn.activo .fa-nav-ico { background: rgba(27, 1, 24, .14); color: var(--noche); }
-.fa-nav-btn:focus-visible { outline: 3px solid var(--acento); outline-offset: 2px; }
-.fa-velo { position: fixed; inset: 0; z-index: 35; background: rgba(27, 1, 24, .55); opacity: 0; pointer-events: none; transition: opacity .25s; }
+/* La rueda de la feria gira despacio detrás del título (dibujo de img/elementos.svg). */
+.fa-deco-rueda { position: absolute; z-index: -1; right: -70px; bottom: -40px; width: clamp(230px, 38vw, 480px); height: clamp(250px, 41vw, 520px); opacity: .5; transform-origin: 50% 43%; }
 
-/* Abierta en celular: encima del contenido, con velo */
-body.fa-side-abierta .fa-side { transform: none; visibility: visible; transition: transform .25s ease; box-shadow: 0 0 40px rgba(0,0,0,.3); }
-body.fa-side-abierta .fa-velo { opacity: 1; pointer-events: auto; }
-
-/* Computador: la barra empuja el contenido en vez de taparlo */
-@media (min-width: 1024px) {
-  .fa-velo { display: none; }
-  body.fa-side-abierta .fa-side { box-shadow: none; }
-  body.fa-side-abierta .fa-pagina { margin-left: var(--ancho-side); }
-  .fa-pagina { transition: margin-left .25s ease; }
-}
-
-/* ---------- Portada ---------- */
-/* container-type: el título se mide contra el ancho de la portada y no el de la
-   ventana, porque en computador la barra lateral le quita 300 px. */
-.fa-portada { position: relative; color: var(--crema); overflow: hidden; background: var(--noche); isolation: isolate; container-type: inline-size; }
-.fa-portada img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; opacity: .38; }
-.fa-portada::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(27, 1, 24, .2), var(--noche) 96%); }
-.fa-portada-txt { padding: clamp(70px, 14vw, 150px) 20px 30px; max-width: 900px; margin: 0 auto; }
-.fa-eyebrow { margin: 0 0 8px; font-size: 13px; letter-spacing: .16em; text-transform: uppercase; color: var(--acento); font-weight: 700; }
+/* container-type: el título se mide contra el ancho de este bloque. */
+.fa-portada-txt { padding: clamp(46px, 9vw, 100px) 0 34px; width: min(100% - 32px, 1100px); margin: 0 auto; container-type: inline-size; }
+.fa-eyebrow { margin: 0 0 14px; font-size: 13px; letter-spacing: .16em; text-transform: uppercase; color: var(--acento); font-weight: 700; }
 .fa-eyebrow a { color: inherit; text-decoration: none; }
 .fa-eyebrow a:hover { text-decoration: underline; }
-.fa-portada h1 { margin: 0 0 12px; font-family: var(--titulos); font-weight: 800; font-stretch: 75%; text-transform: uppercase; font-size: clamp(40px, 9vw, 96px); font-size: clamp(40px, 9cqw, 96px); line-height: .9; letter-spacing: -.015em; overflow-wrap: break-word; }
-.fa-portada p.lead { margin: 0; max-width: 52ch; color: rgba(255, 247, 234, .8); font-size: 18px; }
+/* El título va en dos renglones: "Instructivo para" pequeño y el rol enorme,
+   en amarillo, como "I'WITOWN" en la portada. */
+.fa-portada h1 { margin: 0 0 20px; font-family: var(--titulos); font-weight: 800; font-stretch: 75%; text-transform: uppercase; letter-spacing: -.015em; }
+.fa-h1-sobre { display: block; margin-bottom: .12em; font-size: clamp(24px, 6vw, 46px); font-size: clamp(24px, 5.4cqw, 46px); line-height: 1; }
+.fa-h1-rol { display: block; color: var(--acento); font-size: clamp(60px, 22vw, 230px); font-size: clamp(60px, 25cqw, 230px); line-height: .84; letter-spacing: -.02em; }
+/* Una sola palabra larga (ADMINISTRATIVOS) no se puede partir: va más pequeña. */
+.fa-h1--largo .fa-h1-rol { font-size: clamp(34px, 13vw, 170px); font-size: clamp(34px, 14.6cqw, 170px); }
+.fa-portada p.lead { margin: 0; max-width: 52ch; color: var(--crema-suave); font-size: clamp(18px, 2.2vw, 21px); }
 .fa-fecha {
-  display: inline-flex; align-items: center; gap: 8px; margin-top: 18px; padding: 8px 16px; border-radius: 999px;
-  background: var(--acento); color: var(--noche); font-family: var(--titulos); font-weight: 800; font-size: 16px;
+  display: inline-flex; align-items: center; gap: 8px; margin-top: 20px; padding: 9px 18px; border-radius: 999px;
+  background: var(--acento); color: var(--noche); font-family: var(--titulos); font-weight: 800; font-size: 17px;
 }
 .fa-fecha svg { width: 18px; height: 18px; }
 
-/* ---------- Contenido ---------- */
-.fa-main { max-width: 900px; margin: 0 auto; padding: 22px 16px 60px; }
-.fa-parte { margin: 40px 0 4px; font-family: var(--titulos); font-weight: 800; font-size: 28px; line-height: 1.1; color: var(--morado-700); }
-.fa-parte:first-child { margin-top: 10px; }
-.fa-parte + p { margin: 0 0 6px; color: var(--tinta-suave); }
+/* ---------- Cinta ---------- */
+/* La misma cinta amarilla de la portada. Es adorno (la fecha ya está arriba):
+   va oculta a los lectores de pantalla. La caja recorta lo que sobra al
+   inclinarla: sin ella la página quedaría con scroll horizontal. */
+.fa-cinta-caja { overflow: hidden; padding: 14px 0; }
+.fa-cinta { background: var(--acento); color: var(--noche); overflow: hidden; transform: rotate(-1.2deg); margin: 0 -12px; }
+.fa-cinta-pista { display: flex; width: max-content; }
+.fa-cinta p { margin: 0; padding: 10px 0; white-space: nowrap; font-family: var(--titulos); font-weight: 800; font-stretch: 75%; text-transform: uppercase; font-size: clamp(18px, 2.6vw, 28px); }
+.fa-cinta i { font-style: normal; margin: 0 .55em; }
 
-.fa-card {
-  display: grid; background: var(--blanco); border: 1px solid var(--gris-borde); border-radius: var(--radio);
-  overflow: hidden; margin: 18px 0;
+/* ---------- Secciones ---------- */
+.fa-main { counter-reset: pregunta; }
+.fa-seccion { max-width: 1132px; margin: 0 auto; padding: clamp(50px, 8vw, 100px) var(--borde) 0; }
+.fa-sobre { margin: 0 0 6px; font-size: 13px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--acento); }
+/* El título de cada sección con un dibujo de feria que flota al lado. */
+.fa-seccion-cab { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; }
+.fa-deco-titulo { flex: none; width: clamp(46px, 8vw, 84px); height: clamp(80px, 14vw, 140px); margin: 0 clamp(0px, 3vw, 40px) clamp(22px, 4vw, 40px) 0; }
+/* La feria en tres datos (las formas están en fiesta.css) */
+.fa-datos { padding-top: clamp(30px, 5vw, 60px); font-family: var(--titulos); font-weight: 700; font-size: clamp(15px, 2vw, 20px); line-height: 1.25; }
+.fa-h2 { margin: 0 0 clamp(22px, 4vw, 40px); font-family: var(--titulos); font-weight: 800; font-stretch: 75%; text-transform: uppercase; font-size: clamp(40px, 8vw, 96px); line-height: .92; letter-spacing: -.015em; }
+
+/* ---------- Lo básico: tres pasos (el diseño de la portada) ---------- */
+.fa-tres { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; border-top: 1px solid var(--linea); }
+.fa-tres li { position: relative; padding: 26px 0 26px 92px; border-bottom: 1px solid var(--linea); min-height: 116px; }
+.fa-tres-num { position: absolute; left: 0; top: 14px; font-family: var(--titulos); font-weight: 800; font-stretch: 75%; font-size: 88px; line-height: 1; color: transparent; -webkit-text-stroke: 2px var(--acento); transition: color .3s ease; }
+.fa-tres li:hover .fa-tres-num { color: var(--acento); }
+.fa-tres h3 { margin: 0 0 4px; font-family: var(--titulos); font-weight: 800; font-size: clamp(24px, 3vw, 32px); line-height: 1.1; }
+.fa-tres p { margin: 0; color: var(--crema-suave); max-width: 34ch; }
+@media (min-width: 860px) {
+  .fa-tres { grid-template-columns: repeat(3, 1fr); border-top: 0; gap: 14px; }
+  .fa-tres li { padding: 150px 26px 30px; border: 1px solid var(--linea); border-radius: 24px; }
+  .fa-tres-num { left: 24px; top: 22px; font-size: 120px; }
 }
+
+/* ---------- Preguntas frecuentes ---------- */
+.fa-grupo-t { margin: 44px 0 2px; font-family: var(--titulos); font-weight: 800; font-size: clamp(24px, 3.4vw, 34px); line-height: 1.1; color: var(--acento); }
+.fa-h2 + .fa-grupo-t { margin-top: 0; }
+.fa-grupo-txt { margin: 0 0 14px; color: var(--crema-suave); }
+.fa-faqs { border-top: 1px solid var(--linea); }
+.fa-faq { counter-increment: pregunta; border-bottom: 1px solid var(--linea); scroll-margin-top: 16px; }
+.fa-faq > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: clamp(12px, 2.4vw, 24px); padding: 18px 2px; }
+.fa-faq > summary::-webkit-details-marker { display: none; }
+/* El número de la pregunta, en contorno: se llena al pasar o al abrirla. */
+.fa-faq > summary::before {
+  content: counter(pregunta, decimal-leading-zero); flex: none; min-width: 1.35em;
+  font-family: var(--titulos); font-weight: 800; font-stretch: 75%; font-size: clamp(38px, 5.6vw, 58px); line-height: 1;
+  color: transparent; -webkit-text-stroke: 1.5px var(--acento); transition: color .3s ease;
+}
+.fa-faq[open] > summary::before { color: var(--acento); }
+@media (hover: hover) {
+  .fa-faq > summary:hover::before { color: var(--acento); }
+  .fa-faq > summary:hover .fa-faq-mas { background: var(--acento); color: var(--noche); }
+}
+.fa-faq-q { flex: 1; min-width: 0; font-family: var(--titulos); font-weight: 800; font-size: clamp(20px, 2.8vw, 30px); line-height: 1.15; }
+/* El "+" que gira y se vuelve "×" al abrir */
+.fa-faq-mas { position: relative; flex: none; width: 42px; height: 42px; border-radius: 50%; border: 1.5px solid var(--acento); color: var(--acento); transition: transform .35s cubic-bezier(.2, .8, .2, 1.4), background .2s, color .2s; }
+.fa-faq-mas::before, .fa-faq-mas::after { content: ""; position: absolute; left: 50%; top: 50%; width: 16px; height: 2.4px; margin: -1.2px 0 0 -8px; border-radius: 2px; background: currentColor; }
+.fa-faq-mas::after { transform: rotate(90deg); }
+.fa-faq[open] .fa-faq-mas { background: var(--acento); color: var(--noche); transform: rotate(45deg); }
+.fa-faq > summary:focus-visible { outline: 3px solid var(--acento); outline-offset: 2px; border-radius: 10px; }
+
+/* La respuesta */
+.fa-resp { display: grid; gap: 18px; padding: 2px 2px 30px; }
 @media (min-width: 760px) {
-  .fa-card.con-foto { grid-template-columns: 42% 1fr; }
-  .fa-card.con-foto .fa-media img { height: 100%; aspect-ratio: auto; min-height: 260px; }
+  .fa-resp.con-foto { grid-template-columns: 38% 1fr; gap: 28px; align-items: start; }
 }
-.fa-media { overflow: hidden; }
-.fa-media img { width: 100%; aspect-ratio: 2 / 1; object-fit: cover; transition: transform .8s cubic-bezier(.2, .8, .2, 1); }
-.fa-card:hover .fa-media img { transform: scale(1.04); }
-.fa-cuerpo { padding: 22px 22px 24px; min-width: 0; }
-.fa-cab { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
-.fa-ico {
-  flex: none; width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center;
-  background: var(--noche); color: var(--acento);
-}
-.fa-ico svg { width: 23px; height: 23px; }
-.fa-card h2 { margin: 0; font-family: var(--titulos); font-weight: 800; font-size: clamp(26px, 4.4vw, 36px); line-height: 1.05; letter-spacing: -.01em; color: var(--noche); }
+/* La imagen va en un marco de foto o de celular (están en fiesta.css). */
+.fa-media { padding: 14px 6px 0; }
+.fa-media img { width: 100%; aspect-ratio: 2 / 1; object-fit: cover; }
+.fa-cuerpo .fx-cel--alto { margin: 12px 0; }
+.fa-cuerpo .fx-cel--alto .fa-pantalla { margin: 0; max-width: none; background: var(--noche); }
+.fa-cuerpo { min-width: 0; max-width: 72ch; }
+.fa-cuerpo > :first-child { margin-top: 0; }
 .fa-tag { display: inline-block; margin-bottom: 8px; font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--noche); background: var(--acento); padding: 3px 11px; border-radius: 999px; }
 .fa-cuerpo p { margin: 10px 0; }
 .fa-cuerpo ul { margin: 10px 0; padding-left: 20px; }
 .fa-cuerpo li { margin: 6px 0; }
-.fa-cuerpo li::marker { color: var(--morado-600); }
-.fa-cuerpo h3 { margin: 16px 0 4px; font-family: var(--titulos); font-size: 18px; color: var(--morado-700); }
+.fa-cuerpo li::marker { color: var(--acento); }
+.fa-cuerpo h3 { margin: 18px 0 4px; font-family: var(--titulos); font-weight: 800; font-size: 20px; line-height: 1.2; color: var(--crema); }
 
 /* Pasos numerados */
 .fa-pasos { list-style: none; counter-reset: paso; padding: 0 !important; margin: 12px 0; }
-.fa-pasos > li { counter-increment: paso; position: relative; padding-left: 42px; margin: 12px 0; min-height: 30px; }
+.fa-pasos > li { counter-increment: paso; position: relative; padding-left: 44px; margin: 12px 0; min-height: 30px; }
 .fa-pasos > li::before {
   content: counter(paso); position: absolute; left: 0; top: 0; width: 30px; height: 30px; border-radius: 50%;
-  background: var(--noche); color: var(--acento); font-family: var(--titulos); font-weight: 800; font-size: 15px; display: grid; place-items: center;
+  background: var(--acento); color: var(--noche); font-family: var(--titulos); font-weight: 800; font-size: 15px; display: grid; place-items: center;
 }
 
 /* Botones dibujados como en las apps */
-.fa-btn { display: inline; padding: 1px 9px; border-radius: 8px; background: var(--morado-600); color: var(--blanco); font-weight: 700; font-size: .9em; -webkit-box-decoration-break: clone; box-decoration-break: clone; line-height: 1.9; }
-.fa-btn.claro { background: var(--blanco); color: var(--morado-700); border: 1.5px solid var(--morado-300); }
-.fa-texto { font-weight: 700; color: var(--morado-700); }
+.fa-btn { display: inline; padding: 1px 9px; border-radius: 8px; background: var(--morado-600); color: #fff; font-weight: 700; font-size: .9em; -webkit-box-decoration-break: clone; box-decoration-break: clone; line-height: 1.9; }
+.fa-btn.claro { background: transparent; color: var(--crema); box-shadow: inset 0 0 0 1.5px var(--morado-300); }
+/* Textos que se leen en la pantalla de la app */
+.fa-texto { font-weight: 700; padding: 1px 7px; border-radius: 7px; background: rgba(255, 247, 234, .1); -webkit-box-decoration-break: clone; box-decoration-break: clone; }
 
 /* Avisos */
 .fa-nota, .fa-alerta { border-radius: 14px; padding: 12px 15px; margin: 12px 0; }
-.fa-nota { background: var(--morado-050); border: 1px solid var(--morado-100); }
-.fa-alerta { background: var(--ambar-suave); border: 1px solid #F2DDAA; color: #3D2A00; }
-.fa-alerta b { color: inherit; }
+.fa-nota { background: rgba(255, 247, 234, .05); border: 1px solid var(--linea); }
+.fa-alerta { background: rgba(255, 201, 58, .1); border: 1px solid var(--acento); }
+.fa-alerta b { color: var(--acento); }
 
-/* Ver detalle */
-.fa-det { margin-top: 14px; border-top: 1px solid var(--gris-borde); padding-top: 10px; }
+/* Ver detalle (lo largo de cada respuesta) */
+.fa-det { margin-top: 16px; }
 .fa-det > summary {
-  list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-weight: 700; color: var(--morado-600);
-  padding: 6px 14px; border-radius: 999px; border: 1.5px solid var(--morado-300); transition: background .15s;
+  list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-weight: 700; color: var(--acento);
+  padding: 7px 16px; border-radius: 999px; border: 1.5px solid var(--acento); transition: background .15s, color .15s;
 }
-.fa-det > summary:hover { background: var(--morado-050); }
+.fa-det > summary:hover, .fa-det[open] > summary { background: var(--acento); color: var(--noche); }
+.fa-det > summary:focus-visible { outline: 3px solid var(--crema); outline-offset: 2px; }
 .fa-det > summary::-webkit-details-marker { display: none; }
 .fa-det > summary::after { content: ""; width: 8px; height: 8px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg); margin-top: -3px; transition: transform .2s; }
 .fa-det[open] > summary::after { transform: rotate(-135deg); margin-top: 3px; }
+.fa-det[open] > summary { margin-bottom: 6px; }
 .fa-det .ocultar { display: none; }
 .fa-det[open] .ver { display: none; }
 .fa-det[open] .ocultar { display: inline; }
 
 /* Lista de definiciones (mensajes, secciones) */
 .fa-lista { list-style: none; padding: 0 !important; margin: 8px 0; }
-.fa-lista li { padding: 10px 0; border-bottom: 1px solid var(--gris-borde); margin: 0; }
+.fa-lista li { padding: 10px 0; border-bottom: 1px solid var(--linea); margin: 0; color: var(--crema-suave); }
 .fa-lista li:last-child { border-bottom: 0; }
-.fa-lista .t { display: block; font-weight: 700; color: var(--noche); }
+.fa-lista .t { display: block; font-weight: 700; color: var(--crema); }
 
 /* Ejemplo de pantalla (productos) */
-.fa-pantalla { border: 1px solid var(--gris-borde); border-radius: 14px; overflow: hidden; margin: 12px 0; max-width: 340px; font-size: 15px; }
-.fa-pantalla .cab { background: var(--morado-050); padding: 8px 12px; font-weight: 700; }
-.fa-pantalla .fila { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 8px 12px; border-top: 1px solid var(--gris-borde); }
+.fa-pantalla { border: 1px solid var(--linea); border-radius: 14px; overflow: hidden; margin: 12px 0; max-width: 340px; font-size: 15px; }
+.fa-pantalla .cab { background: rgba(255, 247, 234, .1); padding: 8px 12px; font-weight: 700; }
+.fa-pantalla .fila { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 8px 12px; border-top: 1px solid var(--linea); }
 .fa-pantalla .cant { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; }
-.fa-pantalla .cant span { width: 24px; height: 24px; border: 1px solid var(--gris-borde); border-radius: 7px; display: grid; place-items: center; }
-.fa-pantalla .tot { text-align: right; font-weight: 700; border-top: 1px solid var(--gris-borde); padding: 8px 12px; }
+.fa-pantalla .cant span { width: 24px; height: 24px; border: 1px solid var(--linea); border-radius: 7px; display: grid; place-items: center; }
+.fa-pantalla .tot { text-align: right; font-weight: 700; border-top: 1px solid var(--linea); padding: 8px 12px; color: var(--acento); }
 
-.fa-pie { text-align: center; color: var(--tinta-suave); font-size: 14px; margin-top: 30px; }
-.fa-pie a { color: var(--morado-600); font-weight: 700; }
+.fa-pie { text-align: center; color: var(--crema-suave); font-size: 14px; margin: clamp(50px, 8vw, 90px) 0 0; padding: 22px var(--borde) 34px; border-top: 1px solid var(--linea); }
+.fa-pie a { color: var(--acento); font-weight: 700; }
 
-/* ---------- Una sección a la vez (lo activa adultos.js) ---------- */
-.fa-card-parte { display: none; }
-.fa-pager { display: none; }
-body.fa-una .fa-card { display: none; }
-body.fa-una .fa-card.actual { display: grid; }
-body.fa-una .fa-parte, body.fa-una .fa-parte-txt { display: none; }
-body.fa-una .fa-card-parte {
-  display: block; grid-column: 1 / -1; margin: 0; padding: 10px 22px; font-size: 12px; font-weight: 700;
-  letter-spacing: .1em; text-transform: uppercase; color: var(--crema); background: var(--noche);
-}
-body.fa-una:not(.fa-en-inicio) .fa-portada { display: none; }
-body.fa-una .fa-pager { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 16px; }
-.fa-pager .fa-boton { text-decoration: none; padding: 12px 20px; font-family: var(--titulos); font-size: 16px; }
-.fa-pager .fa-boton[aria-disabled="true"] { visibility: hidden; }
-.fa-pager .fa-sig { background: var(--noche); border-color: var(--noche); color: var(--acento); }
-.fa-pager .fa-sig:hover { background: var(--morado-900); }
-.fa-pager .fa-sig svg { transition: transform .2s; }
-.fa-pager .fa-sig:hover svg { transform: translateX(3px); }
-.fa-pos { font-size: 14px; color: var(--tinta-suave); font-weight: 600; }
-
-/* ---------- Animación suave ---------- */
+/* ---------- Movimiento ---------- */
 @media (prefers-reduced-motion: no-preference) {
-  .js .fa-anim { opacity: 0; transform: translateY(18px); transition: opacity .5s ease, transform .5s ease; }
+  .fa-cinta-pista { animation: fa-cinta 26s linear infinite; }
+  .fa-cinta:hover .fa-cinta-pista { animation-play-state: paused; }
+  .js .fa-anim { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s cubic-bezier(.2, .8, .2, 1); }
   .js .fa-anim.visible { opacity: 1; transform: none; }
-  body.fa-una .fa-card.actual { animation: fa-entra .4s cubic-bezier(.2, .8, .2, 1) both; }
-  .fa-portada h1 { animation: fa-sube .8s cubic-bezier(.2, .8, .2, 1) both; }
+  .fa-tres .fa-anim:nth-child(2) { transition-delay: .1s; }
+  .fa-tres .fa-anim:nth-child(3) { transition-delay: .2s; }
+  .fa-faq[open] > .fa-resp { animation: fa-abre .4s cubic-bezier(.2, .8, .2, 1) both; }
+  .fa-h1-sobre, .fa-h1-rol { animation: fa-sube .9s cubic-bezier(.2, .8, .2, 1) both; }
+  .fa-h1-rol { animation-delay: .12s; }
+  .fa-portada p.lead, .fa-fecha { animation: fa-sube .9s cubic-bezier(.2, .8, .2, 1) backwards .3s; }
 }
-@keyframes fa-entra { from { opacity: 0; transform: translateX(22px); } to { opacity: 1; transform: none; } }
+@keyframes fa-cinta { to { transform: translateX(-50%); } }
+@keyframes fa-abre { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: none; } }
 @keyframes fa-sube { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .fa-side, .fa-velo, .fa-pagina, .fa-avance span, .fa-media img { transition: none; }
+  .fa-faq-mas, .fa-boton { transition: none; }
 }
 
 /* ---------- Impresión / PDF ---------- */
+/* adultos.js abre todas las preguntas y los detalles antes de imprimir. */
 @media print {
-  body { background: #fff; font-size: 12pt; }
-  .fa-barra, .fa-side, .fa-velo, .fa-pager, .fa-card-parte { display: none !important; }
-  body.fa-una .fa-card { display: block !important; animation: none !important; }
-  body.fa-una .fa-parte, body.fa-una .fa-parte-txt, body.fa-una .fa-portada { display: block !important; }
-  .fa-pagina { margin: 0 !important; }
-  .fa-portada { background: none; color: var(--tinta); }
-  .fa-portada::after { display: none; }
-  .fa-portada img { display: none; }
-  .fa-portada-txt { padding: 0 0 10px; border-bottom: 2px solid var(--morado-700); }
-  .fa-portada h1 { font-size: 26pt; animation: none; }
-  .fa-eyebrow { color: var(--morado-700); }
-  .fa-portada p.lead { color: var(--tinta-suave); }
-  .fa-fecha { background: none; border: 1px solid var(--morado-300); color: var(--tinta); }
+  /* En papel no hay fondo oscuro: los textos claros y amarillos pasan a tinta. */
+  :root { --crema: #1A1523; --crema-suave: #4A4458; --acento: #520348; --linea: #D9D3E0; }
+  body { background: #fff; color: #1A1523; font-size: 12pt; }
+  body::before, .fa-avance, .fa-top, .fa-cinta-caja, .fa-faq-mas, .fa-media, .fa-datos, .fa-portada > img, .fa-portada::after { display: none !important; }
+  .fa-portada { background: none; color: #1A1523; }
+  .fa-portada-txt { width: auto; padding: 0 0 10px; border-bottom: 2px solid #520348; }
+  .fa-h1-sobre, .fa-h1-rol, .fa-h1--largo .fa-h1-rol { display: inline; font-size: 26pt; line-height: 1.1; animation: none; }
+  .fa-portada p.lead, .fa-fecha, .fa-resp { animation: none !important; }
+  .fa-fecha { background: none; border: 1px solid #D692CE; color: #1A1523; }
   .fa-anim { opacity: 1 !important; transform: none !important; }
-  .fa-card { break-inside: avoid-page; display: block; }
-  .fa-media { display: none; }
+  .fa-seccion { max-width: none; padding: 18pt 0 0; }
+  .fa-h2 { font-size: 22pt; margin-bottom: 8pt; }
+  .fa-tres { display: block; border: 0; }
+  .fa-tres li { border: 0; border-bottom: 1px solid #D9D3E0; border-radius: 0; padding: 8pt 0 8pt 40pt; min-height: 0; break-inside: avoid; }
+  .fa-tres-num { left: 0; top: 4pt; font-size: 26pt; -webkit-text-stroke: 0; color: #520348; }
+  .fa-faq { break-inside: avoid-page; }
+  .fa-faq > summary { padding: 8pt 0 4pt; }
+  .fa-faq > summary::before { font-size: 16pt; -webkit-text-stroke: 0; color: #520348; }
+  .fa-faq-q { font-size: 14pt; }
+  .fa-resp { display: block; padding-bottom: 8pt; }
+  .fa-cuerpo { max-width: none; }
   .fa-det > summary { display: none; }
-  /* En papel los fondos no salen: lo que era amarillo sobre oscuro pasa a morado con borde. */
-  .fa-pasos > li::before, .fa-ico, .fa-tag { background: none; color: var(--morado-700); border: 1.5px solid var(--morado-700); }
+  .fa-pie { margin-top: 18pt; }
+  /* En papel los fondos no salen: lo que era oscuro sobre amarillo, o blanco
+     sobre morado, pasa a morado con borde. */
+  .fa-pasos > li::before, .fa-tag, .fa-btn, .fa-btn.claro { background: none; color: #520348; border: 1.5px solid #520348; box-shadow: none; }
+  .fa-texto, .fa-nota, .fa-alerta, .fa-pantalla .cab, .fa-cuerpo .fx-cel--alto .fa-pantalla { background: none; }
 }

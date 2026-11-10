@@ -1,113 +1,91 @@
-/* Feria I'witown — instructivos para adultos.
-   - Barra lateral con botones: cada parte se despliega y muestra los botones de
-     sus secciones. Al elegir uno se muestra SOLO esa sección, con
-     "Anterior / Siguiente". La dirección cambia (#seccion): el botón atrás funciona.
-   - En computador la barra se oculta / muestra y recuerda cómo la dejaron;
-     en celular se abre con "Contenido" y se cierra al elegir.
-   - La raya amarilla de la barra de arriba muestra cuánto se ha recorrido.
-   - Imprimir / Guardar PDF: imprime todo el instructivo con los detalles abiertos.
-   Sin JavaScript se ven todas las secciones seguidas. */
+/* ┌──────────────────────────────────────────────────────────────────────┐
+   │ Feria I'witown — instructivos para adultos (familias, docentes y     │
+   │ administrativos).                                                    │
+   │                                                                      │
+   │  1. La raya amarilla de arriba se llena a medida que se baja.        │
+   │  2. Las secciones aparecen al llegar a la pantalla.                  │
+   │  3. Abrir una pregunta suena a caja registradora y lanza             │
+   │     serpentinas (las dos cosas son de fiesta.js, que va antes).      │
+   │  4. Un link con #tema (por ejemplo ...#cobrar) abre esa pregunta.    │
+   │  5. Imprimir / Guardar PDF: imprime todo, con las preguntas y los    │
+   │     detalles abiertos, y después los deja como estaban.              │
+   │                                                                      │
+   │ La luz que sigue el cursor, las serpentinas, el sonido y los textos  │
+   │ animados están en fiesta.js.                                         │
+   │                                                                      │
+   │ Las preguntas se abren solas (son <details>): sin JavaScript la      │
+   │ página funciona completa.                                            │
+   └──────────────────────────────────────────────────────────────────────┘ */
 (function () {
-  var body = document.body;
-  var esComputador = window.matchMedia("(min-width: 1024px)");
-  var CLAVE = "feria-instructivo-barra";
+  // La clase "js" la pone ESTE archivo y no un script en la página: es la que
+  // esconde las secciones para animarlas. Si este archivo no llega a cargar,
+  // nadie las esconde y la página se ve completa.
+  document.documentElement.classList.add("js");
 
-  /* ---------- Barra lateral: abrir / ocultar ---------- */
-  var botonesBarra = document.querySelectorAll("[data-barra]");
-  function leer() { try { return localStorage.getItem(CLAVE); } catch (e) { return null; } }
-  function guardar(v) { try { localStorage.setItem(CLAVE, v); } catch (e) { /* sin almacenamiento */ } }
-  function ponerBarra(abierta, recordar) {
-    body.classList.toggle("fa-side-abierta", abierta);
-    botonesBarra.forEach(function (b) { if (b.getAttribute("data-barra") === "alternar") b.setAttribute("aria-expanded", abierta ? "true" : "false"); });
-    if (recordar && esComputador.matches) guardar(abierta ? "abierta" : "oculta");
-  }
-  ponerBarra(esComputador.matches && leer() !== "oculta", false);
-  if (esComputador.addEventListener) {
-    esComputador.addEventListener("change", function () { ponerBarra(esComputador.matches && leer() !== "oculta", false); });
-  }
-  botonesBarra.forEach(function (b) {
-    b.addEventListener("click", function () {
-      var accion = b.getAttribute("data-barra");
-      var abrir = accion === "abrir" ? true : accion === "cerrar" ? false : !body.classList.contains("fa-side-abierta");
-      ponerBarra(abrir, true);
-    });
-  });
-  var velo = document.querySelector(".fa-velo");
-  if (velo) velo.addEventListener("click", function () { ponerBarra(false, false); });
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape" && !esComputador.matches && body.classList.contains("fa-side-abierta")) ponerBarra(false, false);
-  });
+  var reducir = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* ---------- Partes que se despliegan ---------- */
-  document.querySelectorAll(".fa-grupo-btn").forEach(function (b) {
-    b.addEventListener("click", function () {
-      b.setAttribute("aria-expanded", b.getAttribute("aria-expanded") === "true" ? "false" : "true");
-    });
-  });
-
-  /* ---------- Una sección a la vez ---------- */
-  var tarjetas = Array.prototype.slice.call(document.querySelectorAll(".fa-card[id]"));
-  var botones = Array.prototype.slice.call(document.querySelectorAll(".fa-nav-btn"));
-  var ant = document.querySelector(".fa-ant");
-  var sig = document.querySelector(".fa-sig");
-  var pos = document.querySelector(".fa-pos");
+  /* ---------- 1. Avance ---------- */
   var avance = document.querySelector(".fa-avance span");
-  if (!tarjetas.length) return;
-  body.classList.add("fa-una");
+  if (avance) {
+    var pendiente = false;
+    var medir = function () {
+      pendiente = false;
+      var d = document.documentElement;
+      var total = d.scrollHeight - window.innerHeight;
+      var y = window.pageYOffset || d.scrollTop || 0;
+      avance.style.width = (total > 0 ? Math.min(100, Math.max(0, y / total * 100)) : 0) + "%";
+    };
+    var pedir = function () { if (!pendiente) { pendiente = true; requestAnimationFrame(medir); } };
+    window.addEventListener("scroll", pedir, { passive: true });
+    window.addEventListener("resize", pedir);
+    medir();
+  }
 
-  function indiceDe(id) {
-    for (var i = 0; i < tarjetas.length; i++) if (tarjetas[i].id === id) return i;
-    return -1;
+  /* ---------- 2. Aparecer al llegar ---------- */
+  var animados = document.querySelectorAll(".fa-anim");
+  function verTodo() { animados.forEach(function (el) { el.classList.add("visible"); }); }
+  if (reducir || !("IntersectionObserver" in window)) {
+    verTodo();
+  } else {
+    var obs = new IntersectionObserver(function (entradas) {
+      entradas.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add("visible"); obs.unobserve(e.target); }
+      });
+    }, { rootMargin: "0px 0px -6% 0px", threshold: 0.1 });
+    animados.forEach(function (el) { obs.observe(el); });
   }
-  function enlace(a, i) {
-    if (i < 0 || i >= tarjetas.length) { a.setAttribute("aria-disabled", "true"); a.setAttribute("tabindex", "-1"); a.removeAttribute("href"); return; }
-    a.removeAttribute("aria-disabled"); a.removeAttribute("tabindex"); a.setAttribute("href", "#" + tarjetas[i].id);
-  }
-  function mostrar(id, desplazar) {
-    var i = indiceDe(id);
-    if (i < 0) i = 0;
-    var t = tarjetas[i];
-    tarjetas.forEach(function (x) { x.classList.toggle("actual", x === t); });
-    t.classList.add("visible");
-    body.classList.toggle("fa-en-inicio", i === 0);
-    botones.forEach(function (b) {
-      var es = b.getAttribute("href") === "#" + t.id;
-      b.classList.toggle("activo", es);
-      if (es) {
-        b.setAttribute("aria-current", "location");
-        // Abre la parte donde está el botón elegido.
-        var grupo = b.closest(".fa-grupo");
-        var gb = grupo && grupo.querySelector(".fa-grupo-btn");
-        if (gb) gb.setAttribute("aria-expanded", "true");
-      } else {
-        b.removeAttribute("aria-current");
-      }
+
+  /* ---------- 3. Abrir una pregunta: caja registradora y serpentinas ---------- */
+  // Se escucha el toque en la pregunta (y no el evento "toggle") para que no
+  // suene cuando la abre un link o la impresión.
+  var Feria = window.Feria;
+  document.querySelectorAll(".fa-faq > summary").forEach(function (s) {
+    s.addEventListener("click", function () {
+      if (!Feria || s.parentNode.open) return;   // se está cerrando: en silencio
+      Feria.caja();
+      Feria.serpentinasEn(s.querySelector(".fa-faq-mas") || s, 14);
     });
-    enlace(ant, i - 1);
-    enlace(sig, i + 1);
-    if (pos) pos.textContent = (i + 1) + " de " + tarjetas.length;
-    if (avance) avance.style.width = ((i + 1) / tarjetas.length * 100) + "%";
-    if (desplazar) window.scrollTo({ top: 0, behavior: "auto" });
-  }
-
-  function desdeDireccion(desplazar) {
-    var h = location.hash.slice(1);
-    try { h = decodeURIComponent(h); } catch (e) { /* link mal formado: se usa tal cual */ }
-    mostrar(h, desplazar);
-  }
-  window.addEventListener("hashchange", function () { desdeDireccion(true); });
-  desdeDireccion(false);
-
-  // Elegir una sección en celular cierra la barra.
-  botones.forEach(function (b) {
-    b.addEventListener("click", function () { if (!esComputador.matches) ponerBarra(false, false); });
   });
 
-  /* ---------- Imprimir: todo el instructivo, con los detalles abiertos ---------- */
+  /* ---------- 4. Un link con #tema abre esa pregunta ---------- */
+  function abrirDesdeDireccion() {
+    var h = location.hash.slice(1);
+    if (!h) return;
+    try { h = decodeURIComponent(h); } catch (e) { /* link mal formado: se usa tal cual */ }
+    var el = document.getElementById(h);
+    if (!el || !el.classList.contains("fa-faq")) return;
+    el.open = true;
+    el.classList.add("visible");
+    el.scrollIntoView({ block: "start" });
+  }
+  window.addEventListener("hashchange", abrirDesdeDireccion);
+  abrirDesdeDireccion();
+
+  /* ---------- 5. Imprimir: todo abierto ---------- */
   var cerrados = [];
   function abrirTodo() {
-    document.querySelectorAll(".fa-anim").forEach(function (t) { t.classList.add("visible"); });
-    document.querySelectorAll("details.fa-det").forEach(function (d) {
+    verTodo();
+    document.querySelectorAll("details.fa-faq, details.fa-det").forEach(function (d) {
       if (!d.open) { cerrados.push(d); d.open = true; }
     });
   }
@@ -115,5 +93,8 @@
   window.addEventListener("beforeprint", abrirTodo);
   window.addEventListener("afterprint", restaurar);
   var imprimir = document.querySelector(".fa-imprimir");
-  if (imprimir) imprimir.addEventListener("click", function () { abrirTodo(); window.print(); });
+  if (imprimir) {
+    imprimir.hidden = false;   // el botón solo sirve con JavaScript: por eso llega oculto
+    imprimir.addEventListener("click", function () { abrirTodo(); window.print(); });
+  }
 })();

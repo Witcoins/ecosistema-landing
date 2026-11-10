@@ -292,14 +292,31 @@ Lo que hay que saber para no romperla:
   (`data-inicio` y `data-fin` de `#cuenta`, en hora de Colombia). Pasada la
   feria, la portada dice sola "¡Gracias por venir!".
 - **El `?v=` de la feria va por archivo**: si cambia `portada.css`,
-  `portada.js`, `adultos.css`, `adultos.js`, `ninos.css` o `ninos.js`, se sube
-  su `?v=` en **todas** las páginas de `feria/` que lo cargan (los tres
-  instructivos de adultos comparten `adultos.css` y `adultos.js`).
+  `portada.js`, `adultos.css`, `adultos.js`, `ninos.css`, `ninos.js`,
+  `fiesta.css` o `fiesta.js`, se sube su `?v=` en **todas** las páginas de
+  `feria/` que lo cargan (los tres instructivos de adultos comparten
+  `adultos.css` y `adultos.js`; los cuatro instructivos comparten `fiesta.css`
+  y `fiesta.js`).
+- **Los instructivos de adultos tienen dos partes**: "Lo básico" (tres pasos)
+  y "Preguntas frecuentes" (cada tema es una pregunta que se abre). Un link
+  terminado en `#tema` (por ejemplo `/feria/docentes-urmagt#cobrar`) abre esa
+  pregunta: los `id` de las preguntas no se cambian.
+- **El instructivo de estudiantes es un carrusel** (lo arma `ninos.js`). Para
+  agregar una tarjeta se copia un `<article class="nf-paso">` completo.
+- **`fiesta.js` y `fiesta.css`** traen lo que comparten los cuatro
+  instructivos: serpentinas, sonido de caja registradora, textos que aparecen
+  palabra por palabra, marcos de foto y de celular, y tarjetas en círculos,
+  cuadrados y rectángulos. El sonido **no es un archivo**: se fabrica en la
+  página, solo suena cuando la persona toca algo y tiene botón para apagarlo.
+  Los dibujos de feria (rueda, carpa, globo…) están en
+  `feria/img/elementos.svg`.
 - **La letra de los títulos está en `feria/fuentes/`** (Bricolage Grotesque,
   licencia OFL) y se sirve desde el propio sitio. Solo el instructivo de
   estudiantes pide además Baloo 2 a Google Fonts, como ya lo hacía.
 - **Los colores son los mismos en los tres `.css`** (`--noche`, `--acento` y los
   morados en `:root`): si cambia uno, se cambian los tres.
+  `fiesta.css` no tiene colores propios: usa los de la página. (Las serpentinas
+  llevan los suyos en `fiesta.js`, arriba, en `COLORES`.)
 - **El video** es de YouTube y solo se carga cuando la persona toca reproducir
   (desde `youtube-nocookie.com`). La carátula es `feria/img/video-feria.webp`.
 - **Para probarla en el computador** sin permisos del proyecto:

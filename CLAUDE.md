@@ -70,6 +70,10 @@ este archivo no se publica.
   algo que responda al usuario. Los colores viven en el `:root` de
   `feria/portada.css`, `adultos.css` y `ninos.css`: si cambia uno, cambian los
   tres.
+- **Sencillo para todos los roles.** Adultos: "Lo básico" en tres pasos y
+  "Preguntas frecuentes" que se abren. Estudiantes: un carrusel que no avanza
+  solo. Lo festivo (serpentinas, sonido de caja, marcos, formas, dibujos) vive
+  en `feria/fiesta.css` y `fiesta.js`; el sonido siempre con botón para apagarlo.
 - **El `?v=` de la feria va por archivo** y se sube en todas las páginas de
   `feria/` que lo cargan. Ver `DESPLIEGUE.md` §2 quater.
 
