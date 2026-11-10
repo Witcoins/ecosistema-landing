@@ -47,7 +47,25 @@
       {
         "source": "/@(marca|problema|solucion|ecosistema|acp|logbooks|alianzas-educativas|consultoria|contacto|conversemos|demo-directivos)/",
         "destination": "/index.html"
-      }
+      },
+      {
+        "//": "Instructivos de la Feria I'witown: un link por tipo de usuario, con un codigo para que no se adivinen entre si. No salen en el menu, ni en el sitemap, ni en buscadores, y ninguno enlaza a los otros.",
+        "source": "/feria/estudiantes-nh6pjj",
+        "destination": "/feria/estudiantes-nh6pjj.html"
+      },
+      { "source": "/feria/familias-uvuhma", "destination": "/feria/familias-uvuhma.html" },
+      { "source": "/feria/docentes-urmagt", "destination": "/feria/docentes-urmagt.html" },
+      { "source": "/feria/administrativos-874q6n", "destination": "/feria/administrativos-874q6n.html" },
+      { "source": "/feria/estudiantes-nh6pjj/", "destination": "/feria/estudiantes-nh6pjj.html" },
+      { "source": "/feria/familias-uvuhma/", "destination": "/feria/familias-uvuhma.html" },
+      { "source": "/feria/docentes-urmagt/", "destination": "/feria/docentes-urmagt.html" },
+      { "source": "/feria/administrativos-874q6n/", "destination": "/feria/administrativos-874q6n.html" },
+      {
+        "//": "/feria sola o un link equivocado: al inicio (no hay pagina que liste los instructivos). Los archivos reales de /feria/ se sirven antes que esta regla.",
+        "source": "/feria",
+        "destination": "/feria/volver.html"
+      },
+      { "source": "/feria/**", "destination": "/feria/volver.html" }
     ],
     "headers": [
       {
@@ -60,6 +78,15 @@
         "source": "**/*.@(css|js)",
         "headers": [
           { "key": "Cache-Control", "value": "public, max-age=604800" }
+        ]
+      },
+      {
+        "//": "Instructivos de la Feria: fuera de buscadores.",
+        "source": "/feria/**",
+        "headers": [
+          { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" },
+          { "key": "Referrer-Policy", "value": "no-referrer" },
+          { "key": "Cache-Control", "value": "no-cache, must-revalidate" }
         ]
       },
       {

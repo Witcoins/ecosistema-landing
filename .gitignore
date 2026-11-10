@@ -19,3 +19,6 @@ config-local.php
 
 # Carpeta de trabajo del asistente (no es del sitio)
 .claude/
+# Registro del emulador local de Firebase
+firebase-debug.log
+*-debug.log

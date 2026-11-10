@@ -1,0 +1,244 @@
+/* ============================================================
+   Feria I'witown — Instructivos para adultos (familias, docentes
+   y administrativos). Mismo sentido que el de estudiantes (fotos,
+   tarjetas, pasos), pero sobrio y con toda la información.
+
+   Barra lateral de contenido:
+   - computador: fija a la izquierda; se oculta y se vuelve a mostrar.
+   - celular: el botón "Contenido" la abre desde el lado.
+   ============================================================ */
+
+:root {
+  --morado-900: #36022F;
+  --morado-700: #520348;
+  --morado-600: #760467;
+  --morado-300: #D692CE;
+  --morado-100: #F7E6F5;
+  --morado-050: #FBF3FA;
+  --ambar-suave:#FFF4DC;
+  --verde-suave:#E3F5EA;
+  --tinta:      #1A1523;
+  --tinta-suave:#4A4458;
+  --gris-borde: #E7E2EE;
+  --blanco:     #FFFFFF;
+  --fondo:      #F8F6FB;
+  --fuente: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --radio: 18px;
+  --ancho-side: 290px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 76px; }
+body { margin: 0; background: var(--fondo); color: var(--tinta); font-family: var(--fuente); font-size: 17px; line-height: 1.6; }
+img { display: block; max-width: 100%; height: auto; }
+b, strong { font-weight: 700; }
+button { font: inherit; }
+
+/* ---------- Barra superior (botón Contenido + imprimir) ---------- */
+.fa-barra {
+  position: sticky; top: 0; z-index: 30; display: flex; align-items: center; gap: 10px;
+  padding: 10px 16px; background: rgba(255,255,255,.94); backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--gris-borde);
+}
+.fa-barra-titulo { font-weight: 700; color: var(--morado-700); font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; flex: 1; }
+.fa-boton {
+  appearance: none; border: 1.5px solid var(--morado-300); background: var(--blanco); color: var(--morado-700);
+  font-weight: 700; font-size: 14px; padding: 7px 13px; border-radius: 999px; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 7px; flex: none;
+}
+.fa-boton:hover { background: var(--morado-050); }
+.fa-boton:focus-visible, .fa-det > summary:focus-visible { outline: 3px solid var(--morado-600); outline-offset: 2px; }
+.fa-boton svg { width: 18px; height: 18px; }
+
+/* ---------- Barra lateral ---------- */
+.fa-side {
+  position: fixed; z-index: 40; top: 0; bottom: 0; left: 0; width: min(86vw, var(--ancho-side));
+  background: var(--blanco); border-right: 1px solid var(--gris-borde); overflow-y: auto;
+  transform: translateX(-100%); visibility: hidden; transition: transform .25s ease, visibility 0s linear .25s; padding: 14px 14px 30px;
+}
+.fa-side-cab { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.fa-side-cab h2 { margin: 0; font-size: 13px; letter-spacing: .07em; text-transform: uppercase; color: var(--tinta-suave); }
+.fa-side ul { list-style: none; margin: 0; padding: 0; }
+
+/* Partes: botón grande que se despliega y muestra sus botones */
+.fa-grupo { margin: 8px 0; }
+.fa-grupo-btn {
+  appearance: none; width: 100%; display: flex; align-items: center; gap: 8px; text-align: left; cursor: pointer;
+  border: 0; border-radius: 12px; padding: 10px 12px; background: var(--morado-700); color: var(--blanco);
+  font-weight: 700; font-size: 14px; line-height: 1.3;
+}
+.fa-grupo-btn:hover { background: var(--morado-600); }
+.fa-grupo-btn svg { width: 18px; height: 18px; flex: none; transition: transform .2s; }
+.fa-grupo-btn[aria-expanded="false"] svg { transform: rotate(-90deg); }
+.fa-grupo-btn:focus-visible { outline: 3px solid var(--morado-300); outline-offset: 2px; }
+.fa-grupo-lista { padding: 8px 0 2px 6px !important; display: grid; gap: 6px; }
+.fa-grupo-btn[aria-expanded="false"] + .fa-grupo-lista { display: none; }
+.fa-side > nav > ul { display: grid; gap: 6px; }
+
+/* Botones de cada sección */
+.fa-nav-btn {
+  display: flex; align-items: center; gap: 10px; padding: 9px 11px; border-radius: 12px; text-decoration: none;
+  color: var(--tinta); font-size: 15px; line-height: 1.3; background: var(--blanco); border: 1.5px solid var(--gris-borde);
+  transition: background .15s, border-color .15s, transform .15s;
+}
+.fa-nav-btn:hover { border-color: var(--morado-300); background: var(--morado-050); transform: translateX(2px); }
+.fa-nav-ico { flex: none; width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; background: var(--morado-100); color: var(--morado-700); }
+.fa-nav-ico svg { width: 17px; height: 17px; }
+.fa-nav-btn.activo { background: var(--morado-600); border-color: var(--morado-600); color: var(--blanco); font-weight: 700; box-shadow: 0 4px 12px rgba(118,4,103,.25); }
+.fa-nav-btn.activo .fa-nav-ico { background: rgba(255,255,255,.2); color: var(--blanco); }
+.fa-nav-btn:focus-visible { outline: 3px solid var(--morado-600); outline-offset: 2px; }
+.fa-velo { position: fixed; inset: 0; z-index: 35; background: rgba(26,21,35,.42); opacity: 0; pointer-events: none; transition: opacity .25s; }
+
+/* Abierta en celular: encima del contenido, con velo */
+body.fa-side-abierta .fa-side { transform: none; visibility: visible; transition: transform .25s ease; box-shadow: 0 0 40px rgba(0,0,0,.18); }
+body.fa-side-abierta .fa-velo { opacity: 1; pointer-events: auto; }
+
+/* Computador: la barra empuja el contenido en vez de taparlo */
+@media (min-width: 1024px) {
+  .fa-velo { display: none; }
+  body.fa-side-abierta .fa-side { box-shadow: none; }
+  body.fa-side-abierta .fa-pagina { margin-left: var(--ancho-side); }
+  .fa-pagina { transition: margin-left .25s ease; }
+}
+
+/* ---------- Portada ---------- */
+.fa-portada { position: relative; color: var(--blanco); overflow: hidden; background: var(--morado-900); }
+.fa-portada img { width: 100%; aspect-ratio: 21 / 9; object-fit: cover; opacity: .55; }
+.fa-portada-txt { position: absolute; inset: auto 0 0 0; padding: 0 20px 22px; max-width: 900px; margin: 0 auto; }
+.fa-eyebrow { margin: 0; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--morado-300); font-weight: 700; }
+.fa-portada h1 { margin: 2px 0 6px; font-size: clamp(26px, 5.4vw, 40px); line-height: 1.15; }
+.fa-portada p.lead { margin: 0; max-width: 62ch; color: #F6E6F3; }
+.fa-fecha {
+  display: inline-flex; align-items: center; gap: 8px; margin-top: 12px; padding: 6px 12px; border-radius: 999px;
+  background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.35); font-weight: 700; font-size: 15px;
+}
+.fa-fecha svg { width: 18px; height: 18px; }
+@media (max-width: 640px) {
+  .fa-portada img { aspect-ratio: 4 / 3; }
+}
+
+/* ---------- Contenido ---------- */
+.fa-main { max-width: 900px; margin: 0 auto; padding: 18px 16px 50px; }
+.fa-parte { margin: 34px 0 4px; font-size: 24px; color: var(--morado-700); }
+.fa-parte:first-child { margin-top: 10px; }
+.fa-parte + p { margin: 0 0 6px; color: var(--tinta-suave); }
+
+.fa-card {
+  display: grid; background: var(--blanco); border: 1px solid var(--gris-borde); border-radius: var(--radio);
+  overflow: hidden; margin: 18px 0; box-shadow: 0 6px 20px rgba(54,2,47,.06);
+}
+@media (min-width: 760px) {
+  .fa-card.con-foto { grid-template-columns: 42% 1fr; }
+  .fa-card.con-foto .fa-media img { height: 100%; aspect-ratio: auto; min-height: 240px; }
+}
+.fa-media img { width: 100%; aspect-ratio: 2 / 1; object-fit: cover; }
+.fa-cuerpo { padding: 18px 20px 20px; min-width: 0; }
+.fa-cab { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; }
+.fa-ico {
+  flex: none; width: 44px; height: 44px; border-radius: 13px; display: grid; place-items: center;
+  background: var(--morado-100); color: var(--morado-700);
+}
+.fa-ico svg { width: 23px; height: 23px; }
+.fa-card h2 { margin: 0; font-size: 21px; line-height: 1.25; color: var(--morado-900); }
+.fa-tag { display: inline-block; margin-bottom: 6px; font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--morado-600); background: var(--morado-050); border: 1px solid var(--morado-100); padding: 2px 9px; border-radius: 999px; }
+.fa-cuerpo p { margin: 10px 0; }
+.fa-cuerpo ul { margin: 10px 0; padding-left: 20px; }
+.fa-cuerpo li { margin: 6px 0; }
+.fa-cuerpo h3 { margin: 16px 0 4px; font-size: 16px; color: var(--morado-700); }
+
+/* Pasos numerados */
+.fa-pasos { list-style: none; counter-reset: paso; padding: 0 !important; margin: 12px 0; }
+.fa-pasos > li { counter-increment: paso; position: relative; padding-left: 40px; margin: 12px 0; min-height: 28px; }
+.fa-pasos > li::before {
+  content: counter(paso); position: absolute; left: 0; top: 0; width: 28px; height: 28px; border-radius: 50%;
+  background: var(--morado-600); color: var(--blanco); font-weight: 700; font-size: 14px; display: grid; place-items: center;
+}
+
+/* Botones dibujados como en las apps */
+.fa-btn { display: inline; padding: 1px 9px; border-radius: 8px; background: var(--morado-600); color: var(--blanco); font-weight: 700; font-size: .9em; -webkit-box-decoration-break: clone; box-decoration-break: clone; line-height: 1.9; }
+.fa-btn.claro { background: var(--blanco); color: var(--morado-700); border: 1.5px solid var(--morado-300); }
+.fa-texto { font-weight: 700; color: var(--morado-700); }
+
+/* Avisos */
+.fa-nota, .fa-alerta { border-radius: 12px; padding: 11px 14px; margin: 12px 0; }
+.fa-nota { background: var(--morado-050); border: 1px solid var(--morado-100); }
+.fa-alerta { background: var(--ambar-suave); border: 1px solid #F2DDAA; color: #3D2A00; }
+.fa-alerta b { color: inherit; }
+
+/* Ver detalle */
+.fa-det { margin-top: 12px; border-top: 1px dashed var(--gris-borde); padding-top: 8px; }
+.fa-det > summary {
+  list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-weight: 700; color: var(--morado-600);
+  padding: 4px 0; border-radius: 6px;
+}
+.fa-det > summary::-webkit-details-marker { display: none; }
+.fa-det > summary::after { content: ""; width: 8px; height: 8px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg); margin-top: -3px; transition: transform .2s; }
+.fa-det[open] > summary::after { transform: rotate(-135deg); margin-top: 3px; }
+.fa-det .ocultar { display: none; }
+.fa-det[open] .ver { display: none; }
+.fa-det[open] .ocultar { display: inline; }
+
+/* Lista de definiciones (mensajes, secciones) */
+.fa-lista { list-style: none; padding: 0 !important; margin: 8px 0; }
+.fa-lista li { padding: 9px 0; border-bottom: 1px dashed var(--gris-borde); margin: 0; }
+.fa-lista li:last-child { border-bottom: 0; }
+.fa-lista .t { display: block; font-weight: 700; color: var(--morado-900); }
+
+/* Ejemplo de pantalla (productos) */
+.fa-pantalla { border: 1px solid var(--gris-borde); border-radius: 12px; overflow: hidden; margin: 12px 0; max-width: 340px; font-size: 15px; }
+.fa-pantalla .cab { background: var(--morado-050); padding: 8px 12px; font-weight: 700; }
+.fa-pantalla .fila { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 8px 12px; border-top: 1px solid var(--gris-borde); }
+.fa-pantalla .cant { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; }
+.fa-pantalla .cant span { width: 24px; height: 24px; border: 1px solid var(--gris-borde); border-radius: 7px; display: grid; place-items: center; }
+.fa-pantalla .tot { text-align: right; font-weight: 700; border-top: 1px solid var(--gris-borde); padding: 8px 12px; }
+
+.fa-pie { text-align: center; color: var(--tinta-suave); font-size: 14px; margin-top: 30px; }
+
+/* ---------- Una sección a la vez (lo activa adultos.js) ---------- */
+.fa-card-parte { display: none; }
+.fa-pager { display: none; }
+body.fa-una .fa-card { display: none; }
+body.fa-una .fa-card.actual { display: grid; }
+body.fa-una .fa-parte, body.fa-una .fa-parte-txt { display: none; }
+body.fa-una .fa-card-parte {
+  display: block; grid-column: 1 / -1; margin: 0; padding: 9px 20px; font-size: 12px; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase; color: var(--morado-600); background: var(--morado-050);
+  border-bottom: 1px solid var(--morado-100);
+}
+body.fa-una:not(.fa-en-inicio) .fa-portada { display: none; }
+body.fa-una .fa-pager { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 16px; }
+.fa-pager .fa-boton { text-decoration: none; padding: 10px 16px; }
+.fa-pager .fa-boton[aria-disabled="true"] { visibility: hidden; }
+.fa-pager .fa-sig { background: var(--morado-600); border-color: var(--morado-600); color: var(--blanco); }
+.fa-pager .fa-sig:hover { background: var(--morado-700); }
+.fa-pos { font-size: 14px; color: var(--tinta-suave); font-weight: 600; }
+
+/* ---------- Animación suave ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .js .fa-anim { opacity: 0; transform: translateY(18px); transition: opacity .5s ease, transform .5s ease; }
+  .js .fa-anim.visible { opacity: 1; transform: none; }
+  body.fa-una .fa-card.actual { animation: fa-entra .35s ease both; }
+}
+@keyframes fa-entra { from { opacity: 0; transform: translateX(16px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .fa-side, .fa-velo, .fa-pagina { transition: none; }
+}
+
+/* ---------- Impresión / PDF ---------- */
+@media print {
+  body { background: #fff; font-size: 12pt; }
+  .fa-barra, .fa-side, .fa-velo, .fa-pager, .fa-card-parte { display: none !important; }
+  body.fa-una .fa-card { display: block !important; animation: none !important; }
+  body.fa-una .fa-parte, body.fa-una .fa-parte-txt, body.fa-una .fa-portada { display: block !important; }
+  .fa-pagina { margin: 0 !important; }
+  .fa-portada { background: none; color: var(--tinta); }
+  .fa-portada img { display: none; }
+  .fa-portada-txt { position: static; padding: 0 0 10px; border-bottom: 2px solid var(--morado-700); }
+  .fa-portada p.lead { color: var(--tinta-suave); }
+  .fa-fecha { border-color: var(--morado-300); }
+  .fa-anim { opacity: 1 !important; transform: none !important; }
+  .fa-card { break-inside: avoid-page; box-shadow: none; display: block; }
+  .fa-media { display: none; }
+  .fa-det > summary { display: none; }
+}
