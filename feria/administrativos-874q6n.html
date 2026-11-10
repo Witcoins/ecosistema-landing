@@ -5,7 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Instructivo de la Feria I'witown para administrativos. Solo se entra con el link,
      que ya se compartió y NO se cambia: la portada (/feria) no lo enlaza a
-     propósito. No sale en el menú de la landing, ni en el sitemap, ni en buscadores. -->
+     propósito. No sale en el menú de la landing, ni en el sitemap, ni en buscadores.
+
+     Tiene dos partes: "Lo básico" (tres pasos) y "Preguntas frecuentes" (cada
+     tema es una pregunta que se abre). Los id de las preguntas (#cobrar, ...)
+     no se cambian: un link con ese final abre esa pregunta. -->
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#1B0118">
@@ -14,207 +18,253 @@
 <link rel="apple-touch-icon" href="/assets/img/favicon-180.png" sizes="180x180">
 <link rel="preload" as="image" href="/feria/img/dia-magico.webp">
 <link rel="preload" as="font" type="font/woff2" href="/feria/fuentes/bricolage-grotesque.woff2" crossorigin>
-<link rel="stylesheet" href="/feria/adultos.css?v=4">
-<script>document.documentElement.classList.add("js");</script>
+<link rel="stylesheet" href="/feria/adultos.css?v=5">
+<link rel="stylesheet" href="/feria/fiesta.css?v=1">
 </head>
 <body>
-<script>/* La barra lateral abre como la dejaron, antes de dibujar (sin saltos). */try{if(matchMedia("(min-width:1024px)").matches&&localStorage.getItem("feria-instructivo-barra")!=="oculta")document.body.classList.add("fa-side-abierta")}catch(e){}</script>
 
-<aside class="fa-side" id="fa-side" aria-label="Contenido">
-  <div class="fa-side-cab">
-    <h2>Contenido</h2>
-    <button type="button" class="fa-boton" data-barra="cerrar" aria-controls="fa-side"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg> Ocultar</button>
+<div class="fa-avance" aria-hidden="true"><span></span></div>
+
+<header class="fa-portada">
+  <img src="/feria/img/dia-magico.webp" width="1200" height="598" alt="La feria llena de puestos de juguetes, dulces y palomitas">
+  <svg class="fx-deco fa-deco-rueda fx-gira" aria-hidden="true"><use href="/feria/img/elementos.svg#rueda"/></svg>
+  <div class="fa-top">
+    <a class="fa-volver" href="/feria"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg> Feria</a>
+    <span class="fa-top-botones">
+      <!-- Los dos botones solo sirven con JavaScript: llegan ocultos y los muestra el .js -->
+      <button type="button" class="fx-sonido" data-sonido aria-pressed="true" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9Z"/><path class="fx-ondas" d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/><path class="fx-raya" d="m17 9 5 6M22 9l-5 6"/></svg> <span data-sonido-txt>Sonido</span></button>
+      <button type="button" class="fa-boton fa-imprimir" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4v-6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v6h-2"/><rect x="6" y="14" width="12" height="7"/></svg> <span>Imprimir</span></button>
+    </span>
   </div>
-  <a class="fa-volver" href="/feria"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg> Portada de la feria</a>
-  <nav><ul>
-    <li class="fa-grupo"><button type="button" class="fa-grupo-btn" aria-expanded="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg><span>Parte A · Organizar la feria</span></button><ul class="fa-grupo-lista"><li><a class="fa-nav-btn" href="#organizar"><span class="fa-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 10h6M9 14h6M9 18h3"/></svg></span><span>Dónde y quién organiza</span></a></li><li><a class="fa-nav-btn" href="#secciones"><span class="fa-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span><span>Secciones del organizador</span></a></li><li><a class="fa-nav-btn" href="#pasos"><span class="fa-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span><span>Pasos recomendados</span></a></li><li><a class="fa-nav-btn" href="#guardar"><span class="fa-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v5h7M8 21v-7h8v7"/></svg></span><span>Guardar e invitaciones</span></a></li></ul></li><li class="fa-grupo"><button type="button" class="fa-grupo-btn" aria-expanded="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg><span>Parte B · El dinero de la feria</span></button><ul class="fa-grupo-lista"><li><a class="fa-nav-btn" href="#recaudado"><span class="fa-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span><span>Lo recaudado queda bloqueado</span></a></li><li><a class="fa-nav-btn" href="#resultados"><span class="fa-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></span><span>Dónde ver lo recaudado</span></a></li><li><a class="fa-nav-btn" href="#autorizar"><span class="fa-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10h18L12 4Z"/><path d="M5 10v8M9 10v8M15 10v8M19 10v8M3 21h18"/></svg></span><span>I'witown autoriza al Banco del colegio</span></a></li><li><a class="fa-nav-btn" href="#responsable"><span class="fa-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><span>El responsable del Banco del colegio</span></a></li><li><a class="fa-nav-btn" href="#enviar"><span class="fa-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></span><span>Enviar witkis desde el Banco del colegio</span></a></li></ul></li>
-  </ul></nav>
-</aside>
-<div class="fa-velo" aria-hidden="true"></div>
-
-<div class="fa-pagina">
-  <div class="fa-barra">
-    <button type="button" class="fa-boton" data-barra="alternar" aria-controls="fa-side" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg> Contenido</button>
-    <span class="fa-barra-titulo">Instructivo para administrativos</span>
-    <button type="button" class="fa-boton fa-imprimir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4v-6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v6h-2"/><rect x="6" y="14" width="12" height="7"/></svg> <span>Imprimir</span></button>
-    <span class="fa-avance" aria-hidden="true"><span></span></span>
+  <div class="fa-portada-txt">
+    <p class="fa-eyebrow"><a href="/feria">Feria I'witown</a></p>
+    <h1 class="fa-h1--largo"><span class="fa-h1-sobre">Instructivo para</span> <span class="fa-h1-rol">administrativos</span></h1>
+    <p class="lead" data-texto>Cómo se organiza la feria desde el panel del colegio y qué pasa con los witkis que se cobran.</p>
+    <span class="fa-fecha"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg> 30 de noviembre · 2:00 p. m.</span>
   </div>
+</header>
 
-  <header class="fa-portada">
-    <img src="/feria/img/dia-magico.webp" width="1200" height="598" alt="La feria llena de puestos de juguetes, dulces y palomitas">
-    <div class="fa-portada-txt">
-      <p class="fa-eyebrow"><a href="/feria">Feria I'witown</a></p>
-      <h1>Instructivo para administrativos</h1>
-      <p class="lead">Cómo se organiza la feria desde el panel del colegio y qué pasa con los witkis que se cobran.</p>
-      <span class="fa-fecha"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg> 30 de noviembre · 2:00 p. m.</span>
-    </div>
-  </header>
-
-  <main class="fa-main"><h2 class="fa-parte">Parte A · Organizar la feria</h2><p class="fa-parte-txt">Desde el panel del colegio (admin).</p>
-    <article class="fa-card fa-anim" id="organizar">
-      <p class="fa-card-parte">Parte A · Organizar la feria</p>
-      
-      <div class="fa-cuerpo">
-        
-        <div class="fa-cab"><span class="fa-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 10h6M9 14h6M9 18h3"/></svg></span><h2>Dónde y quién organiza</h2></div>
-        <ul>
-          <li>Menú <b>Operaciones</b> → pestaña <b>Feria I'witown</b>.</li>
-          <li>Pestaña <b>«Feria»</b>: el documento. El botón <span class="fa-btn">Editar</span> abre el organizador.</li>
-          <li>Pestaña <b>«Estados de resultados»</b>: lo recaudado, los cobros, los gastos y los asistentes.</li>
-        </ul>
-        <div class="fa-nota"><b>Quién organiza:</b> Rector(a), Director(a), Coordinador(a) académico(a), Director(a) administrativo(a) y Coordinador(a) administrativo(a). Los demás administrativos ven el documento y tienen el botón <b>«Códigos QR»</b> para imprimir y renovar los QR.</div>
-          <details class="fa-det"><summary><span class="ver">Ver detalle</span><span class="ocultar">Ocultar detalle</span></summary>
-          <p><b>Primera vez:</b> elija <span class="fa-btn claro">Cargar el plan de ejemplo</span> o <span class="fa-btn claro">Empezar un plan en blanco</span>.</p>
-          <p><b>Las siguientes veces:</b> <span class="fa-btn claro">Seguir editando la planeación guardada</span> o <span class="fa-btn claro">Crear nueva planeación</span>.</p>
-          <div class="fa-alerta">«Crear nueva planeación» <b>borra el plan y cancela todas las invitaciones</b>.</div>
-          </details>
-      </div>
-    </article>
-    <article class="fa-card fa-anim" id="secciones">
-      <p class="fa-card-parte">Parte A · Organizar la feria</p>
-      
-      <div class="fa-cuerpo">
-        
-        <div class="fa-cab"><span class="fa-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span><h2>Secciones del organizador</h2></div>
-        <p>Resumen, Actividades, Equipo y espacios, Sistema de cobro, Cronograma, Inventario, Presupuesto y donaciones, y Códigos QR.</p>
-          <details class="fa-det"><summary><span class="ver">Ver detalle</span><span class="ocultar">Ocultar detalle</span></summary>
-          <ul class="fa-lista">
-            <li><span class="t">Resumen</span>Fecha de la feria, lugar, responsable operativo, coordinación y niños esperados. Pendientes críticos y resumen para Coordinación.</li>
-            <li><span class="t">1. Actividades recreativas</span>Nombre, dinámica, materiales, <b>precio en witkis</b>, personas y estado (<b>Propuesta / Aprobada / Descartada</b>). Solo las <b>aprobadas</b> entran a la feria y se pueden cobrar.</li>
-            <li><span class="t">2. Equipo y espacios</span><b>Espacios:</b> el tipo y las actividades de cada uno; en un <b>Punto de venta</b>, sus <b>productos</b> elegidos del inventario. <b>Personas:</b> tipo (Docente, Tutor, Administrativo), nombre, rol, espacio, actividad, responsabilidades y «Enviar invitación».</li>
-            <li><span class="t">3. Sistema de cobro</span>Cómo se cobra (QR, moneda, dispositivos, quién escanea, flujo) y la prueba del pago.</li>
-            <li><span class="t">4. Cronograma</span>Tareas de Montaje, Jornada y Cierre, con hora, espacio y responsable.</li>
-            <li><span class="t">5. Inventario</span>Qué se necesita, qué hay, qué falta y qué se compra (las compras van al presupuesto). Lo que se vende lleva su <b>Precio venta (witkis)</b>.</li>
-            <li><span class="t">6. Presupuesto y donaciones</span>Gastos y donaciones recibidas, con su valor en witkis.</li>
-            <li><span class="t">7. Códigos QR</span>Lista de estudiantes: imprimir los QR (uno, varios o todos) y renovar el de quien lo perdió.</li>
-          </ul>
-          <p>En el celular, las tablas se ven como <b>tarjetas</b> que se abren al tocarlas.</p>
-          </details>
-      </div>
-    </article>
-    <article class="fa-card fa-anim" id="pasos">
-      <p class="fa-card-parte">Parte A · Organizar la feria</p>
-      
-      <div class="fa-cuerpo">
-        
-        <div class="fa-cab"><span class="fa-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span><h2>Pasos recomendados</h2></div>
-        <ol class="fa-pasos">
-          <li><b>Resumen:</b> ponga la <b>fecha de la feria</b>.</li>
-          <li><b>Actividades:</b> créelas con su precio y márquelas como <b>Aprobada</b>.</li>
-          <li><b>Inventario:</b> a lo que se vende, póngale su <b>Precio venta (witkis)</b>.</li>
-          <li><b>Espacios:</b> asigne actividades y, a cada punto de venta, sus productos.</li>
-          <li><b>Personas:</b> asigne rol, espacio y actividad; guarde y envíe las invitaciones.</li>
-        </ol>
-          <details class="fa-det"><summary><span class="ver">Ver detalle</span><span class="ocultar">Ocultar detalle</span></summary>
-          <ul>
-            <li>Sin fecha, los estudiantes no ven el botón para confirmar su asistencia.</li>
-            <li>A cada punto de venta se le agregan los productos con <span class="fa-btn claro">+ Agregar producto</span>.</li>
-            <li>Cada actividad y cada punto de venta que cobra necesita un <b>Encargado</b>.</li>
-            <li>El <b>Encargado de una tienda solo atiende esa tienda</b>. Si se repite, aparece un aviso y el plan no se guarda.</li>
-            <li>Luego complete el <b>cronograma</b> y el <b>presupuesto</b>.</li>
-            <li><b>Códigos QR:</b> imprima los de los estudiantes que los necesiten. El navegador debe permitir ventanas emergentes.</li>
-            <li><b>Antes de la feria:</b> revise los <b>asistentes confirmados</b> en el documento; allí puede quitar una confirmación.</li>
-          </ul>
-          </details>
-      </div>
-    </article>
-    <article class="fa-card fa-anim" id="guardar">
-      <p class="fa-card-parte">Parte A · Organizar la feria</p>
-      
-      <div class="fa-cuerpo">
-        
-        <div class="fa-cab"><span class="fa-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v5h7M8 21v-7h8v7"/></svg></span><h2>Guardar e invitaciones</h2></div>
-        <ul>
-          <li>Los cambios se guardan <b>solo con «Guardar»</b>. Guardar en cualquier sección guarda todo el plan.</li>
-          <li>La persona invitada recibe una notificación y debe aceptarla. En la tabla ve el estado: <b>Sin enviar / Enviada / Aceptada / Rechazada</b>.</li>
-        </ul>
-          <details class="fa-det"><summary><span class="ver">Ver detalle</span><span class="ocultar">Ocultar detalle</span></summary>
-          <ul>
-            <li>Si cambia de sección o sale con cambios sin guardar, se le pregunta antes. Si sale sin guardar, se pierden.</li>
-            <li><b>Si borra la fila</b> o <b>cambia el rol o la actividad</b> de una persona invitada, su invitación se cancela y hay que <b>volver a enviarla</b>.</li>
-            <li>Para cambiar a la persona de una fila con invitación, <b>elimine la fila</b> y cree una nueva.</li>
-          </ul>
-          </details>
-      </div>
-    </article><h2 class="fa-parte">Parte B · El dinero de la feria</h2><p class="fa-parte-txt">Qué pasa con los witkis que se cobran.</p>
-    <article class="fa-card fa-anim" id="recaudado">
-      <p class="fa-card-parte">Parte B · El dinero de la feria</p>
-      
-      <div class="fa-cuerpo">
-        
-        <div class="fa-cab"><span class="fa-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span><h2>Lo recaudado queda bloqueado</h2></div>
-        <ul>
-          <li>Cada cobro se descuenta al estudiante y entra a la <b>cuenta de la Feria</b> del colegio.</li>
-          <li>Queda <b>bloqueado</b> hasta que I'witown lo autorice.</li>
-        </ul>
-      </div>
-    </article>
-    <article class="fa-card fa-anim" id="resultados">
-      <p class="fa-card-parte">Parte B · El dinero de la feria</p>
-      
-      <div class="fa-cuerpo">
-        
-        <div class="fa-cab"><span class="fa-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></span><h2>Dónde ver lo recaudado</h2></div>
-        <p><b>Operaciones</b> → <b>Feria I'witown</b> → <b>Estados de resultados</b>.</p>
-          <details class="fa-det"><summary><span class="ver">Ver detalle</span><span class="ocultar">Ocultar detalle</span></summary>
-          <ul>
-            <li>Los witkis cobrados y los bloqueados.</li>
-            <li>El número de cobros.</li>
-            <li>Las actividades con más cobros.</li>
-            <li>Lo cobrado por cada responsable.</li>
-            <li>Los gastos y las donaciones.</li>
-          </ul>
-          </details>
-      </div>
-    </article>
-    <article class="fa-card fa-anim" id="autorizar">
-      <p class="fa-card-parte">Parte B · El dinero de la feria</p>
-      
-      <div class="fa-cuerpo">
-        
-        <div class="fa-cab"><span class="fa-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10h18L12 4Z"/><path d="M5 10v8M9 10v8M15 10v8M19 10v8M3 21h18"/></svg></span><h2>I'witown autoriza al Banco del colegio</h2></div>
-        <p>I'witown puede autorizar <b>todo o una parte</b> de lo bloqueado al <b>Banco del colegio</b>, la cuenta de witkis propia del colegio.</p>
-        <div class="fa-alerta"><b>Una autorización no se puede deshacer.</b></div>
-      </div>
-    </article>
-    <article class="fa-card fa-anim" id="responsable">
-      <p class="fa-card-parte">Parte B · El dinero de la feria</p>
-      
-      <div class="fa-cuerpo">
-        
-        <div class="fa-cab"><span class="fa-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><h2>El responsable del Banco del colegio</h2></div>
-        <ul>
-          <li>I'witown elige <b>una sola persona</b> responsable: un administrativo del colegio.</li>
-          <li>Solo esa persona ve la pestaña <span class="fa-texto">Banco del colegio</span> en Operaciones. Su banco personal pasa a llamarse <span class="fa-texto">Mi banco</span>.</li>
-        </ul>
-      </div>
-    </article>
-    <article class="fa-card fa-anim" id="enviar">
-      <p class="fa-card-parte">Parte B · El dinero de la feria</p>
-      
-      <div class="fa-cuerpo">
-        
-        <div class="fa-cab"><span class="fa-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></span><h2>Enviar witkis desde el Banco del colegio</h2></div>
-        <p>A <b>estudiantes, docentes, tutores y administrativos de ese colegio</b>, nunca a sí mismo.</p>
-          <details class="fa-det"><summary><span class="ver">Ver detalle</span><span class="ocultar">Ocultar detalle</span></summary>
-          <ul>
-            <li>Solo cantidades enteras, hasta el saldo disponible.</li>
-            <li>Con un mensaje de máximo 200 caracteres.</li>
-            <li>Quien recibe ve el movimiento <span class="fa-texto">Recibiste del Banco del colegio</span> y una notificación.</li>
-            <li>Todo queda en el historial: autorizaciones, envíos y cambios de responsable.</li>
-          </ul>
-          </details>
-      </div>
-    </article>
-    <nav class="fa-pager" aria-label="Pasar de sección">
-      <a class="fa-boton fa-ant" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> Anterior</a>
-      <span class="fa-pos" aria-live="polite"></span>
-      <a class="fa-boton fa-sig" href="#">Siguiente <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
-    </nav>
-    <p class="fa-pie"><a href="/feria">Feria I'witown</a> · Si tiene dudas, pregunte en el colegio.</p>
-  </main>
+<!-- Cinta en movimiento, la misma de la portada. Aquí es solo adorno (la fecha
+     ya está arriba): va oculta a los lectores de pantalla. El texto se repite
+     para que la cinta no se corte en pantallas grandes. -->
+<div class="fa-cinta-caja" aria-hidden="true">
+<div class="fa-cinta">
+  <div class="fa-cinta-pista">
+    <p>30 de noviembre <i>★</i> 2:00 p. m. <i>★</i> Juegos <i>★</i> Dulces <i>★</i> Juguetes <i>★</i> Witkis <i>★</i> Código QR <i>★</i> WiwiQuest <i>★</i> 30 de noviembre <i>★</i> 2:00 p. m. <i>★</i> Juegos <i>★</i> Dulces <i>★</i> Juguetes <i>★</i> Witkis <i>★</i> Código QR <i>★</i> WiwiQuest <i>★</i></p>
+    <p>30 de noviembre <i>★</i> 2:00 p. m. <i>★</i> Juegos <i>★</i> Dulces <i>★</i> Juguetes <i>★</i> Witkis <i>★</i> Código QR <i>★</i> WiwiQuest <i>★</i> 30 de noviembre <i>★</i> 2:00 p. m. <i>★</i> Juegos <i>★</i> Dulces <i>★</i> Juguetes <i>★</i> Witkis <i>★</i> Código QR <i>★</i> WiwiQuest <i>★</i></p>
+  </div>
+</div>
 </div>
 
-<script src="/feria/adultos.js?v=4"></script>
+<main class="fa-main">
+
+  <!-- La feria en tres datos: un círculo, un cuadrado y un rectángulo. -->
+  <section class="fa-seccion fa-datos" aria-label="La feria en tres datos">
+    <ul class="fx-formas fa-anim">
+      <li class="fx-forma fx-circulo"><span class="fx-forma-grande">30</span> de noviembre</li>
+      <li class="fx-forma fx-cuadrado"><svg class="fx-deco " aria-hidden="true"><use href="/feria/img/elementos.svg#carpa"/></svg><span class="fx-forma-grande">2:00</span> p. m.</li>
+      <li class="fx-forma fx-rect"><svg class="fx-deco " aria-hidden="true"><use href="/feria/img/elementos.svg#boleta"/></svg><span>Todo se paga con <b>witkis</b> y un <b>código QR</b>. No se necesita dinero.</span></li>
+    </ul>
+  </section>
+
+  <section class="fa-seccion" id="basico" aria-labelledby="t-basico">
+    <div class="fa-seccion-cab">
+      <div>
+        <p class="fa-sobre fa-anim">Lo básico</p>
+        <h2 class="fa-h2" id="t-basico" data-texto>Tres pasos y listo</h2>
+      </div>
+      <svg class="fx-deco fa-deco-titulo fx-flota" aria-hidden="true"><use href="/feria/img/elementos.svg#globo"/></svg>
+    </div>
+    <ol class="fa-tres">
+      <li class="fa-anim">
+        <span class="fa-tres-num" aria-hidden="true">1</span>
+        <h3>Poner la fecha</h3>
+        <p>En Operaciones → Feria I'witown → Editar, ponga la fecha de la feria en el Resumen.</p>
+      </li>
+      <li class="fa-anim">
+        <span class="fa-tres-num" aria-hidden="true">2</span>
+        <h3>Armar el plan</h3>
+        <p>Actividades aprobadas con su precio, espacios y productos de cada punto de venta.</p>
+      </li>
+      <li class="fa-anim">
+        <span class="fa-tres-num" aria-hidden="true">3</span>
+        <h3>Invitar al equipo</h3>
+        <p>Asigne rol, espacio y actividad a cada persona; guarde y envíe las invitaciones.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section class="fa-seccion" id="preguntas" aria-labelledby="t-preguntas">
+    <div class="fa-seccion-cab">
+      <div>
+        <p class="fa-sobre fa-anim">Preguntas frecuentes</p>
+        <h2 class="fa-h2" id="t-preguntas" data-texto>¿Tiene dudas?</h2>
+      </div>
+      <svg class="fx-deco fa-deco-titulo fx-flota fx-lento" aria-hidden="true"><use href="/feria/img/elementos.svg#palomitas"/></svg>
+    </div>
+    <h3 class="fa-grupo-t fa-anim">Organizar la feria</h3>
+    <p class="fa-grupo-txt fa-anim">Desde el panel del colegio (admin).</p>
+    <div class="fa-faqs">
+      <details class="fa-faq fa-anim" id="organizar">
+        <summary><span class="fa-faq-q">¿Dónde se organiza y quién puede hacerlo?</span><span class="fa-faq-mas" aria-hidden="true"></span></summary>
+        <div class="fa-resp">
+          <div class="fa-cuerpo">
+            <ul>
+              <li>Menú <b>Operaciones</b> → pestaña <b>Feria I'witown</b>.</li>
+              <li>Pestaña <b>«Feria»</b>: el documento. El botón <span class="fa-btn">Editar</span> abre el organizador.</li>
+              <li>Pestaña <b>«Estados de resultados»</b>: lo recaudado, los cobros, los gastos y los asistentes.</li>
+            </ul>
+            <div class="fa-nota"><b>Quién organiza:</b> Rector(a), Director(a), Coordinador(a) académico(a), Director(a) administrativo(a) y Coordinador(a) administrativo(a). Los demás administrativos ven el documento y tienen el botón <b>«Códigos QR»</b> para imprimir y renovar los QR.</div>
+              <details class="fa-det"><summary><span class="ver">Ver detalle</span><span class="ocultar">Ocultar detalle</span></summary>
+              <p><b>Primera vez:</b> elija <span class="fa-btn claro">Cargar el plan de ejemplo</span> o <span class="fa-btn claro">Empezar un plan en blanco</span>.</p>
+              <p><b>Las siguientes veces:</b> <span class="fa-btn claro">Seguir editando la planeación guardada</span> o <span class="fa-btn claro">Crear nueva planeación</span>.</p>
+              <div class="fa-alerta">«Crear nueva planeación» <b>borra el plan y cancela todas las invitaciones</b>.</div>
+              </details>
+          </div>
+        </div>
+      </details>
+      <details class="fa-faq fa-anim" id="secciones">
+        <summary><span class="fa-faq-q">¿Qué secciones tiene el organizador?</span><span class="fa-faq-mas" aria-hidden="true"></span></summary>
+        <div class="fa-resp">
+          <div class="fa-cuerpo">
+            <p>Resumen, Actividades, Equipo y espacios, Sistema de cobro, Cronograma, Inventario, Presupuesto y donaciones, y Códigos QR.</p>
+              <details class="fa-det"><summary><span class="ver">Ver detalle</span><span class="ocultar">Ocultar detalle</span></summary>
+              <ul class="fa-lista">
+                <li><span class="t">Resumen</span>Fecha de la feria, lugar, responsable operativo, coordinación y niños esperados. Pendientes críticos y resumen para Coordinación.</li>
+                <li><span class="t">1. Actividades recreativas</span>Nombre, dinámica, materiales, <b>precio en witkis</b>, personas y estado (<b>Propuesta / Aprobada / Descartada</b>). Solo las <b>aprobadas</b> entran a la feria y se pueden cobrar.</li>
+                <li><span class="t">2. Equipo y espacios</span><b>Espacios:</b> el tipo y las actividades de cada uno; en un <b>Punto de venta</b>, sus <b>productos</b> elegidos del inventario. <b>Personas:</b> tipo (Docente, Tutor, Administrativo), nombre, rol, espacio, actividad, responsabilidades y «Enviar invitación».</li>
+                <li><span class="t">3. Sistema de cobro</span>Cómo se cobra (QR, moneda, dispositivos, quién escanea, flujo) y la prueba del pago.</li>
+                <li><span class="t">4. Cronograma</span>Tareas de Montaje, Jornada y Cierre, con hora, espacio y responsable.</li>
+                <li><span class="t">5. Inventario</span>Qué se necesita, qué hay, qué falta y qué se compra (las compras van al presupuesto). Lo que se vende lleva su <b>Precio venta (witkis)</b>.</li>
+                <li><span class="t">6. Presupuesto y donaciones</span>Gastos y donaciones recibidas, con su valor en witkis.</li>
+                <li><span class="t">7. Códigos QR</span>Lista de estudiantes: imprimir los QR (uno, varios o todos) y renovar el de quien lo perdió.</li>
+              </ul>
+              <p>En el celular, las tablas se ven como <b>tarjetas</b> que se abren al tocarlas.</p>
+              </details>
+          </div>
+        </div>
+      </details>
+      <details class="fa-faq fa-anim" id="pasos">
+        <summary><span class="fa-faq-q">¿En qué orden conviene hacerlo?</span><span class="fa-faq-mas" aria-hidden="true"></span></summary>
+        <div class="fa-resp">
+          <div class="fa-cuerpo">
+            <ol class="fa-pasos">
+              <li><b>Resumen:</b> ponga la <b>fecha de la feria</b>.</li>
+              <li><b>Actividades:</b> créelas con su precio y márquelas como <b>Aprobada</b>.</li>
+              <li><b>Inventario:</b> a lo que se vende, póngale su <b>Precio venta (witkis)</b>.</li>
+              <li><b>Espacios:</b> asigne actividades y, a cada punto de venta, sus productos.</li>
+              <li><b>Personas:</b> asigne rol, espacio y actividad; guarde y envíe las invitaciones.</li>
+            </ol>
+              <details class="fa-det"><summary><span class="ver">Ver detalle</span><span class="ocultar">Ocultar detalle</span></summary>
+              <ul>
+                <li>Sin fecha, los estudiantes no ven el botón para confirmar su asistencia.</li>
+                <li>A cada punto de venta se le agregan los productos con <span class="fa-btn claro">+ Agregar producto</span>.</li>
+                <li>Cada actividad y cada punto de venta que cobra necesita un <b>Encargado</b>.</li>
+                <li>El <b>Encargado de una tienda solo atiende esa tienda</b>. Si se repite, aparece un aviso y el plan no se guarda.</li>
+                <li>Luego complete el <b>cronograma</b> y el <b>presupuesto</b>.</li>
+                <li><b>Códigos QR:</b> imprima los de los estudiantes que los necesiten. El navegador debe permitir ventanas emergentes.</li>
+                <li><b>Antes de la feria:</b> revise los <b>asistentes confirmados</b> en el documento; allí puede quitar una confirmación.</li>
+              </ul>
+              </details>
+          </div>
+        </div>
+      </details>
+      <details class="fa-faq fa-anim" id="guardar">
+        <summary><span class="fa-faq-q">¿Cómo se guarda y cómo van las invitaciones?</span><span class="fa-faq-mas" aria-hidden="true"></span></summary>
+        <div class="fa-resp">
+          <div class="fa-cuerpo">
+            <ul>
+              <li>Los cambios se guardan <b>solo con «Guardar»</b>. Guardar en cualquier sección guarda todo el plan.</li>
+              <li>La persona invitada recibe una notificación y debe aceptarla. En la tabla ve el estado: <b>Sin enviar / Enviada / Aceptada / Rechazada</b>.</li>
+            </ul>
+              <details class="fa-det"><summary><span class="ver">Ver detalle</span><span class="ocultar">Ocultar detalle</span></summary>
+              <ul>
+                <li>Si cambia de sección o sale con cambios sin guardar, se le pregunta antes. Si sale sin guardar, se pierden.</li>
+                <li><b>Si borra la fila</b> o <b>cambia el rol o la actividad</b> de una persona invitada, su invitación se cancela y hay que <b>volver a enviarla</b>.</li>
+                <li>Para cambiar a la persona de una fila con invitación, <b>elimine la fila</b> y cree una nueva.</li>
+              </ul>
+              </details>
+          </div>
+        </div>
+      </details>
+    </div>
+    <h3 class="fa-grupo-t fa-anim">El dinero de la feria</h3>
+    <p class="fa-grupo-txt fa-anim">Qué pasa con los witkis que se cobran.</p>
+    <div class="fa-faqs">
+      <details class="fa-faq fa-anim" id="recaudado">
+        <summary><span class="fa-faq-q">¿Qué pasa con lo recaudado?</span><span class="fa-faq-mas" aria-hidden="true"></span></summary>
+        <div class="fa-resp">
+          <div class="fa-cuerpo">
+            <ul>
+              <li>Cada cobro se descuenta al estudiante y entra a la <b>cuenta de la Feria</b> del colegio.</li>
+              <li>Queda <b>bloqueado</b> hasta que I'witown lo autorice.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+      <details class="fa-faq fa-anim" id="resultados">
+        <summary><span class="fa-faq-q">¿Dónde veo lo recaudado?</span><span class="fa-faq-mas" aria-hidden="true"></span></summary>
+        <div class="fa-resp">
+          <div class="fa-cuerpo">
+            <p><b>Operaciones</b> → <b>Feria I'witown</b> → <b>Estados de resultados</b>.</p>
+              <details class="fa-det"><summary><span class="ver">Ver detalle</span><span class="ocultar">Ocultar detalle</span></summary>
+              <ul>
+                <li>Los witkis cobrados y los bloqueados.</li>
+                <li>El número de cobros.</li>
+                <li>Las actividades con más cobros.</li>
+                <li>Lo cobrado por cada responsable.</li>
+                <li>Los gastos y las donaciones.</li>
+              </ul>
+              </details>
+          </div>
+        </div>
+      </details>
+      <details class="fa-faq fa-anim" id="autorizar">
+        <summary><span class="fa-faq-q">¿Cómo pasa lo recaudado al Banco del colegio?</span><span class="fa-faq-mas" aria-hidden="true"></span></summary>
+        <div class="fa-resp">
+          <div class="fa-cuerpo">
+            <p>I'witown puede autorizar <b>todo o una parte</b> de lo bloqueado al <b>Banco del colegio</b>, la cuenta de witkis propia del colegio.</p>
+            <div class="fa-alerta"><b>Una autorización no se puede deshacer.</b></div>
+          </div>
+        </div>
+      </details>
+      <details class="fa-faq fa-anim" id="responsable">
+        <summary><span class="fa-faq-q">¿Quién es el responsable del Banco del colegio?</span><span class="fa-faq-mas" aria-hidden="true"></span></summary>
+        <div class="fa-resp">
+          <div class="fa-cuerpo">
+            <ul>
+              <li>I'witown elige <b>una sola persona</b> responsable: un administrativo del colegio.</li>
+              <li>Solo esa persona ve la pestaña <span class="fa-texto">Banco del colegio</span> en Operaciones. Su banco personal pasa a llamarse <span class="fa-texto">Mi banco</span>.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+      <details class="fa-faq fa-anim" id="enviar">
+        <summary><span class="fa-faq-q">¿A quién se le envían witkis desde el Banco del colegio?</span><span class="fa-faq-mas" aria-hidden="true"></span></summary>
+        <div class="fa-resp">
+          <div class="fa-cuerpo">
+            <p>A <b>estudiantes, docentes, tutores y administrativos de ese colegio</b>, nunca a sí mismo.</p>
+              <details class="fa-det"><summary><span class="ver">Ver detalle</span><span class="ocultar">Ocultar detalle</span></summary>
+              <ul>
+                <li>Solo cantidades enteras, hasta el saldo disponible.</li>
+                <li>Con un mensaje de máximo 200 caracteres.</li>
+                <li>Quien recibe ve el movimiento <span class="fa-texto">Recibiste del Banco del colegio</span> y una notificación.</li>
+                <li>Todo queda en el historial: autorizaciones, envíos y cambios de responsable.</li>
+              </ul>
+              </details>
+          </div>
+        </div>
+      </details>
+    </div>
+  </section>
+
+</main>
+
+<footer class="fa-pie">
+  <p><a href="/feria">Feria I'witown</a> · Si tiene dudas, pregunte en el colegio.</p>
+</footer>
+
+<script src="/feria/fiesta.js?v=1"></script>
+<script src="/feria/adultos.js?v=5"></script>
 </body>
 </html>

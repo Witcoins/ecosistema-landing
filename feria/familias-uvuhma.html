@@ -5,7 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Instructivo de la Feria I'witown para padres y tutores (Witutor). Se llega desde la portada
      de la feria (/feria) o con su link, que ya se compartió y NO se cambia.
-     No sale en el menú de la landing ni en buscadores, y solo enlaza a /feria. -->
+     No sale en el menú de la landing ni en buscadores, y solo enlaza a /feria.
+
+     Tiene dos partes: "Lo básico" (tres pasos) y "Preguntas frecuentes" (cada
+     tema es una pregunta que se abre). Los id de las preguntas (#cobrar, ...)
+     no se cambian: un link con ese final abre esa pregunta. -->
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#1B0118">
@@ -14,282 +18,338 @@
 <link rel="apple-touch-icon" href="/assets/img/favicon-180.png" sizes="180x180">
 <link rel="preload" as="image" href="/feria/img/llego-la-feria.webp">
 <link rel="preload" as="font" type="font/woff2" href="/feria/fuentes/bricolage-grotesque.woff2" crossorigin>
-<link rel="stylesheet" href="/feria/adultos.css?v=4">
-<script>document.documentElement.classList.add("js");</script>
+<link rel="stylesheet" href="/feria/adultos.css?v=5">
+<link rel="stylesheet" href="/feria/fiesta.css?v=1">
 </head>
 <body>
-<script>/* La barra lateral abre como la dejaron, antes de dibujar (sin saltos). */try{if(matchMedia("(min-width:1024px)").matches&&localStorage.getItem("feria-instructivo-barra")!=="oculta")document.body.classList.add("fa-side-abierta")}catch(e){}</script>
 
-<aside class="fa-side" id="fa-side" aria-label="Contenido">
-  <div class="fa-side-cab">
-    <h2>Contenido</h2>
-    <button type="button" class="fa-boton" data-barra="cerrar" aria-controls="fa-side"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg> Ocultar</button>
+<div class="fa-avance" aria-hidden="true"><span></span></div>
+
+<header class="fa-portada">
+  <img src="/feria/img/llego-la-feria.webp" width="1200" height="598" alt="Niños felices entrando a la Feria I'witown">
+  <svg class="fx-deco fa-deco-rueda fx-gira" aria-hidden="true"><use href="/feria/img/elementos.svg#rueda"/></svg>
+  <div class="fa-top">
+    <a class="fa-volver" href="/feria"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg> Feria</a>
+    <span class="fa-top-botones">
+      <!-- Los dos botones solo sirven con JavaScript: llegan ocultos y los muestra el .js -->
+      <button type="button" class="fx-sonido" data-sonido aria-pressed="true" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9Z"/><path class="fx-ondas" d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/><path class="fx-raya" d="m17 9 5 6M22 9l-5 6"/></svg> <span data-sonido-txt>Sonido</span></button>
+      <button type="button" class="fa-boton fa-imprimir" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4v-6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v6h-2"/><rect x="6" y="14" width="12" height="7"/></svg> <span>Imprimir</span></button>
+    </span>
   </div>
-  <a class="fa-volver" href="/feria"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg> Portada de la feria</a>
-  <nav><ul>
-    <li class="fa-grupo"><button type="button" class="fa-grupo-btn" aria-expanded="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg><span>Parte A · La feria para su hijo</span></button><ul class="fa-grupo-lista"><li><a class="fa-nav-btn" href="#que-es"><span class="fa-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M5 21V10l7-6 7 6v11"/><path d="M9 21v-6h6v6"/></svg></span><span>¿Qué es la Feria I'witown?</span></a></li><li><a class="fa-nav-btn" href="#confirmar"><span class="fa-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg></span><span>Su hijo confirma si va a ir</span></a></li><li><a class="fa-nav-btn" href="#vestido"><span class="fa-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3 3 6l2 4 2-1v12h10V9l2 1 2-4-5-3a4 4 0 0 1-8 0Z"/></svg></span><span>Puede ir vestido como quiera</span></a></li><li><a class="fa-nav-btn" href="#qr"><span class="fa-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 20h4v-3"/></svg></span><span>El código QR de su hijo</span></a></li><li><a class="fa-nav-btn" href="#dia"><span class="fa-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l1.5-5h15L21 9M4 9v11h16V9M3 9h18M9 20v-6h6v6"/></svg></span><span>El día de la feria</span></a></li><li><a class="fa-nav-btn" href="#apadrinar"><span class="fa-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-8-5.2-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.8-8 11-8 11Z"/></svg></span><span>Apadrinar a un niño de preescolar</span></a></li><li><a class="fa-nav-btn" href="#participar"><span class="fa-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 20a6 6 0 0 0-2.5-5"/></svg></span><span>Cómo pueden participar ustedes</span></a></li><li><a class="fa-nav-btn" href="#donacion"><span class="fa-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M5 12v9h14v-9M12 8S10.5 3 8 4s-.5 4 4 4ZM12 8s1.5-5 4-4 .5 4-4 4Z"/></svg></span><span>Donación de juguetes y recursos</span></a></li><li><a class="fa-nav-btn" href="#gastos"><span class="fa-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></span><span>Revisar los gastos</span></a></li></ul></li><li class="fa-grupo"><button type="button" class="fa-grupo-btn" aria-expanded="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg><span>Parte B · Si lo invitan a ser responsable</span></button><ul class="fa-grupo-lista"><li><a class="fa-nav-btn" href="#invitacion"><span class="fa-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10 21a2 2 0 0 0 4 0"/></svg></span><span>La invitación</span></a></li><li><a class="fa-nav-btn" href="#aceptar"><span class="fa-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><span>Después de aceptar</span></a></li><li><a class="fa-nav-btn" href="#escanear"><span class="fa-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7V5a1 1 0 0 1 1-1h2M17 4h2a1 1 0 0 1 1 1v2M20 17v2a1 1 0 0 1-1 1h-2M7 20H5a1 1 0 0 1-1-1v-2"/><path d="M7 12h10"/></svg></span><span>Escanear el QR de los niños</span></a></li><li><a class="fa-nav-btn" href="#cobrar"><span class="fa-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 9v.01M18 15v.01"/></svg></span><span>Cobrar (solo el Encargado)</span></a></li><li><a class="fa-nav-btn" href="#mensajes"><span class="fa-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z"/></svg></span><span>Mensajes que puede ver</span></a></li></ul></li>
-  </ul></nav>
-</aside>
-<div class="fa-velo" aria-hidden="true"></div>
-
-<div class="fa-pagina">
-  <div class="fa-barra">
-    <button type="button" class="fa-boton" data-barra="alternar" aria-controls="fa-side" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg> Contenido</button>
-    <span class="fa-barra-titulo">Instructivo para padres y tutores</span>
-    <button type="button" class="fa-boton fa-imprimir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4v-6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v6h-2"/><rect x="6" y="14" width="12" height="7"/></svg> <span>Imprimir</span></button>
-    <span class="fa-avance" aria-hidden="true"><span></span></span>
+  <div class="fa-portada-txt">
+    <p class="fa-eyebrow"><a href="/feria">Feria I'witown</a></p>
+    <h1><span class="fa-h1-sobre">Instructivo para</span> <span class="fa-h1-rol">padres y tutores</span></h1>
+    <p class="lead" data-texto>Cómo vive la feria su hijo, cómo pueden participar ustedes y qué hacer si el colegio lo invita a ser responsable.</p>
+    <span class="fa-fecha"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg> 30 de noviembre · 2:00 p. m.</span>
   </div>
+</header>
 
-  <header class="fa-portada">
-    <img src="/feria/img/llego-la-feria.webp" width="1200" height="598" alt="Niños felices entrando a la Feria I'witown">
-    <div class="fa-portada-txt">
-      <p class="fa-eyebrow"><a href="/feria">Feria I'witown</a></p>
-      <h1>Instructivo para padres y tutores</h1>
-      <p class="lead">Cómo vive la feria su hijo, cómo pueden participar ustedes y qué hacer si el colegio lo invita a ser responsable.</p>
-      <span class="fa-fecha"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg> 30 de noviembre · 2:00 p. m.</span>
-    </div>
-  </header>
-
-  <main class="fa-main"><h2 class="fa-parte">Parte A · La feria para su hijo</h2><p class="fa-parte-txt">Lo que su hijo vive antes y durante la feria, para que pueda acompañarlo.</p>
-    <article class="fa-card fa-anim con-foto" id="que-es">
-      <p class="fa-card-parte">Parte A · La feria para su hijo</p>
-      <div class="fa-media"><img src="/feria/img/dia-magico.webp" width="1200" height="598" loading="lazy" alt="La feria llena de juguetes, dulces y palomitas"></div>
-      <div class="fa-cuerpo">
-        
-        <h2>¿Qué es la Feria I'witown?</h2>
-        <p>Una feria en el colegio con actividades, juegos y puntos de venta (por ejemplo, la comida). Los niños pagan con <b>witkis</b>, la moneda de I'witown, usando su <b>código QR</b>.</p>
-        <p><b>Fecha:</b> 30 de noviembre. Su hijo no necesita llevar dinero.</p>
-      </div>
-    </article>
-    <article class="fa-card fa-anim con-foto" id="confirmar">
-      <p class="fa-card-parte">Parte A · La feria para su hijo</p>
-      <div class="fa-media"><img src="/feria/img/confirma.webp" width="1200" height="598" loading="lazy" alt="Niños tocando Aceptar en la confirmación de asistencia"></div>
-      <div class="fa-cuerpo">
-        <span class="fa-tag">Paso 1</span>
-        <h2>Su hijo confirma si va a ir</h2>
-        <ul>
-          <li>En la app de su hijo aparece el botón <span class="fa-btn">Confirmar asistencia a la feria</span>.</li>
-          <li>Su hijo elige <span class="fa-btn claro">Sí, llevo un invitado</span>, <span class="fa-btn claro">Sí, no llevo invitado</span> o <span class="fa-btn claro">No asistiré</span>.</li>
-          <li>Puede llevar <b>máximo un invitado</b> (por ejemplo, usted u otro familiar).</li>
-        </ul>
-          <details class="fa-det"><summary><span class="ver">Ver detalle</span><span class="ocultar">Ocultar detalle</span></summary>
-          <ul>
-            <li>Puede <b>cambiar la respuesta hasta el día anterior</b>. El día de la feria ya no se puede cambiar.</li>
-            <li>El botón solo aparece cuando el colegio ya puso la fecha de la feria.</li>
-            <li>Ayúdele a decidir y a confirmar con tiempo: así el colegio sabe cuántas personas esperar.</li>
-          </ul>
-          </details>
-      </div>
-    </article>
-    <article class="fa-card fa-anim con-foto" id="vestido">
-      <p class="fa-card-parte">Parte A · La feria para su hijo</p>
-      <div class="fa-media"><img src="/feria/img/disfraces.webp" width="1200" height="598" loading="lazy" alt="Niños disfrazados celebrando en la feria"></div>
-      <div class="fa-cuerpo">
-        
-        <h2>Puede ir vestido como quiera</h2>
-        <p>Su hijo puede ir disfrazado o con la ropa que prefiera.</p>
-      </div>
-    </article>
-    <article class="fa-card fa-anim con-foto" id="qr">
-      <p class="fa-card-parte">Parte A · La feria para su hijo</p>
-      <div class="fa-media"><img src="/feria/img/qr-billetera.webp" width="1200" height="598" loading="lazy" alt="Una niña muestra su código QR para pagar"></div>
-      <div class="fa-cuerpo">
-        <span class="fa-tag">Paso 2</span>
-        <h2>El código QR de su hijo</h2>
-        <ul>
-          <li>Está en el <b>Perfil</b> de la app de su hijo, en la tarjeta <span class="fa-texto">Mi código QR</span>. El colegio también puede entregarlo impreso.</li>
-          <li>Funciona como su «billetera» en la feria.</li>
-        </ul>
-          <details class="fa-det"><summary><span class="ver">Ver detalle</span><span class="ocultar">Ocultar detalle</span></summary>
-          <div class="fa-alerta">Explíquele que <b>no lo comparta</b> ni lo muestre a otras personas fuera de la feria.</div>
-          <p><b>Si lo pierde</b>, avise al colegio para que le generen uno nuevo; el anterior deja de servir.</p>
-          </details>
-      </div>
-    </article>
-    <article class="fa-card fa-anim con-foto" id="dia">
-      <p class="fa-card-parte">Parte A · La feria para su hijo</p>
-      <div class="fa-media"><img src="/feria/img/juegos.webp" width="1200" height="598" loading="lazy" alt="Niños en la zona de juegos de la feria"></div>
-      <div class="fa-cuerpo">
-        <span class="fa-tag">Paso 3</span>
-        <h2>El día de la feria</h2>
-        <ul>
-          <li>En cada <b>actividad</b> su hijo muestra el QR al <b>Encargado</b>, que le cobra el precio fijo en witkis.</li>
-          <li>En los <b>puntos de venta</b> se le cobran los productos que elija.</li>
-          <li><b>Se paga cada vez que participa:</b> si repite una actividad, paga de nuevo.</li>
-        </ul>
-          <details class="fa-det"><summary><span class="ver">Ver detalle</span><span class="ocultar">Ocultar detalle</span></summary>
-          <ul>
-            <li>Si no tiene saldo suficiente, <b>no se le cobra nada</b> y no puede hacer esa actividad.</li>
-            <li>Su hijo ve su saldo en <b>su cuenta</b> de la app. En la entrada y durante la feria, los <b>Asesores</b> y <b>Anfitriones</b> le dicen su saldo.</li>
-            <li><b>Si se queda sin witkis</b>, puede ir a la actividad de <b>WiwiQuest</b>, donde gana más witkis para seguir participando.</li>
-          </ul>
-          <div class="fa-alerta"><b>Un cobro hecho es definitivo:</b> no se devuelve.</div>
-          <div class="fa-nota">Converse antes con su hijo sobre <b>cuántos witkis tiene y en qué quiere gastarlos</b>. Es una buena oportunidad para practicar educación financiera.</div>
-          </details>
-      </div>
-    </article>
-    <article class="fa-card fa-anim con-foto" id="apadrinar">
-      <p class="fa-card-parte">Parte A · La feria para su hijo</p>
-      <div class="fa-media"><img src="/feria/img/apadrina.webp" width="1200" height="598" loading="lazy" alt="Niños grandes acompañan de la mano a niños de preescolar"></div>
-      <div class="fa-cuerpo">
-        
-        <h2>Apadrinar a un niño de preescolar</h2>
-        <p>Su hijo puede <b>acompañar a un niño de preescolar</b> durante la feria: ayudarle a recorrerla y que también se divierta.</p>
-      </div>
-    </article>
-    <article class="fa-card fa-anim con-foto" id="participar">
-      <p class="fa-card-parte">Parte A · La feria para su hijo</p>
-      <div class="fa-media"><img src="/feria/img/papas.webp" width="1200" height="742" loading="lazy" alt="Un niño pide a sus papás que le ayuden en la feria y ellos aceptan"></div>
-      <div class="fa-cuerpo">
-        
-        <h2>Cómo pueden participar ustedes</h2>
-        <p>Su hijo le pedirá que participe. Ustedes pueden:</p>
-        <ul>
-          <li><b>Ganar witkis.</b></li>
-          <li><b>Transferirle witkis</b> a su hijo.</li>
-          <li><b>Ayudar en la feria:</b> ventas, asesorías y más (el colegio le enviará una invitación).</li>
-          <li><b>Donar</b> juguetes, artículos o recursos.</li>
-        </ul>
-      </div>
-    </article>
-    <article class="fa-card fa-anim con-foto" id="donacion">
-      <p class="fa-card-parte">Parte A · La feria para su hijo</p>
-      <div class="fa-media"><img src="/feria/img/donacion.webp" width="1200" height="598" loading="lazy" alt="Familias entregan juguetes en la mesa de donación del colegio"></div>
-      <div class="fa-cuerpo">
-        
-        <h2>Donación de juguetes y recursos</h2>
-        <p>El colegio recibe juguetes, artículos y recursos para la feria. <b>El gran ejemplo de la educación empieza en casa.</b></p>
-      </div>
-    </article>
-    <article class="fa-card fa-anim" id="gastos">
-      <p class="fa-card-parte">Parte A · La feria para su hijo</p>
-      
-      <div class="fa-cuerpo">
-        
-        <div class="fa-cab"><span class="fa-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></span><h2>Revisar los gastos</h2></div>
-        <p>Cada cobro queda en los <b>Movimientos</b> de su hijo, por ejemplo <span class="fa-texto">Feria I'witown: Bolos</span> o <span class="fa-texto">Feria I'witown: Comidas (2 Empanada, 1 Jugo)</span>.</p>
-      </div>
-    </article><h2 class="fa-parte">Parte B · Si lo invitan a ser responsable</h2><p class="fa-parte-txt">Solo si el colegio le envía una invitación para ayudar en la feria.</p>
-    <article class="fa-card fa-anim" id="invitacion">
-      <p class="fa-card-parte">Parte B · Si lo invitan a ser responsable</p>
-      
-      <div class="fa-cuerpo">
-        
-        <div class="fa-cab"><span class="fa-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10 21a2 2 0 0 0 4 0"/></svg></span><h2>La invitación</h2></div>
-        <ol class="fa-pasos">
-          <li>Le llega una <b>notificación</b>: <span class="fa-texto">Invitación a la Feria I'witown</span>, con su rol, la actividad, el espacio, la fecha y el lugar.</li>
-          <li>Al tocarla se abre <span class="fa-texto">¿Aceptar invitación?</span> con todos los detalles.</li>
-          <li>Elija <span class="fa-btn">Aceptar</span> o <span class="fa-btn claro">Rechazar</span>.</li>
-        </ol>
-          <details class="fa-det"><summary><span class="ver">Ver detalle</span><span class="ocultar">Ocultar detalle</span></summary>
-          <ul>
-            <li>Si rechaza, el colegio recibe un aviso y puede invitar a otra persona.</li>
-            <li>Si el colegio cambia su rol o su actividad, le llega un aviso y una <b>invitación nueva</b> que debe aceptar otra vez.</li>
-          </ul>
-          </details>
-      </div>
-    </article>
-    <article class="fa-card fa-anim" id="aceptar">
-      <p class="fa-card-parte">Parte B · Si lo invitan a ser responsable</p>
-      
-      <div class="fa-cuerpo">
-        
-        <div class="fa-cab"><span class="fa-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><h2>Después de aceptar</h2></div>
-        <p>En el menú de Witutor aparece <span class="fa-texto">Feria I'witown</span> con:</p>
-        <ul>
-          <li><b>Datos de la feria:</b> fecha, lugar y cómo se cobra.</li>
-          <li><b>Su participación:</b> su rol, actividad, espacio y responsabilidades.</li>
-          <li><b>Su cronograma:</b> las tareas y horarios que le corresponden.</li>
-          <li><b>El documento de la feria:</b> en «Equipo y responsabilidades» primero aparece lo suyo y con el botón <span class="fa-btn claro">Ver otros</span> puede ver a los demás responsables.</li>
-        </ul>
-          <details class="fa-det"><summary><span class="ver">Ver detalle</span><span class="ocultar">Ocultar detalle</span></summary>
-          <p><b>Roles posibles:</b> Encargado, Apoyo, Asesores, Anfitriones y Colaboradores. <b>Solo el Encargado puede cobrar.</b></p>
-          <div class="fa-alerta"><b>Si ya no puede participar</b> después de aceptar, avise al colegio para que asigne a otra persona. Desde la app no es posible retirarse.</div>
-          </details>
-      </div>
-    </article>
-    <article class="fa-card fa-anim con-foto" id="escanear">
-      <p class="fa-card-parte">Parte B · Si lo invitan a ser responsable</p>
-      <div class="fa-media"><img src="/feria/img/qr-billetera.webp" width="1200" height="598" loading="lazy" alt="Un responsable escanea el código QR que una niña muestra en su celular"></div>
-      <div class="fa-cuerpo">
-        
-        <h2>Escanear el QR de los niños</h2>
-        <ol class="fa-pasos">
-          <li>En <span class="fa-texto">Feria I'witown</span> toque <span class="fa-btn">Escanear QR</span> (arriba a la derecha).</li>
-          <li>Permita la cámara y apunte al código QR del estudiante.</li>
-          <li>Verá su foto, nombre, curso y <b>saldo</b>.</li>
-        </ol>
-          <details class="fa-det"><summary><span class="ver">Ver detalle</span><span class="ocultar">Ocultar detalle</span></summary>
-          <ul>
-            <li><b>Escanear funciona cualquier día</b>, por ejemplo para probar. Si no es el día de la feria o su rol no cobra, solo verá los datos del estudiante.</li>
-            <li><b>Asesores y Anfitriones:</b> usen el escáner en la <b>entrada</b> y <b>durante la feria</b> para decirle a cada niño cuánto saldo tiene y ayudarle a decidir qué puede hacer.</li>
-          </ul>
-          </details>
-      </div>
-    </article>
-    <article class="fa-card fa-anim con-foto" id="cobrar">
-      <p class="fa-card-parte">Parte B · Si lo invitan a ser responsable</p>
-      <div class="fa-media"><img src="/feria/img/compras.webp" width="1200" height="598" loading="lazy" alt="Un encargado cobra palomitas de maíz escaneando el QR de una niña"></div>
-      <div class="fa-cuerpo">
-        
-        <h2>Cobrar (solo el Encargado)</h2>
-        <p>Solo <b>el día de la feria</b> y en <b>sus actividades o puntos de venta</b> con precio.</p>
-        <ol class="fa-pasos">
-          <li>Escanee el QR del niño.</li>
-          <li><b>Actividad:</b> el precio ya está fijo. <b>Punto de venta:</b> elija los productos con <b>–</b> y <b>+</b>.</li>
-          <li>Toque <span class="fa-btn">Cobrar N witkis</span> y confirme con <span class="fa-btn">Sí, cobrar</span>.</li>
-          <li>Verá <span class="fa-texto">Cobro hecho</span> y el nuevo saldo. Luego <span class="fa-btn claro">Escanear otro</span>.</li>
-        </ol>
-        <div class="fa-alerta"><b>Un cobro hecho es definitivo:</b> no se devuelve. Confirme bien antes de tocar «Sí, cobrar».</div>
-          <details class="fa-det"><summary><span class="ver">Ver detalle</span><span class="ocultar">Ocultar detalle</span></summary>
-          <h3>Ejemplo en un punto de venta</h3>
-          <div class="fa-pantalla" aria-hidden="true">
-            <div class="cab">Comidas</div>
-            <div class="fila"><span>Empanada · 3 witkis</span><span class="cant"><span>−</span>2<span>+</span></span></div>
-            <div class="fila"><span>Jugo · 2 witkis</span><span class="cant"><span>−</span>1<span>+</span></span></div>
-            <div class="tot">Total: 8 witkis</div>
-          </div>
-          <h3>Tenga en cuenta</h3>
-          <ul>
-            <li>Si tiene varias actividades, primero elija cuál está cobrando.</li>
-            <li>El precio es fijo: no se puede escribir otro valor.</li>
-            <li>Si el niño <b>no tiene saldo suficiente</b>, el cobro no se hace y aparece un aviso.</li>
-            <li>Si toca dos veces sin querer, <b>no se cobra doble</b>.</li>
-            <li><b>Se cobra cada vez que el niño participa.</b> Si repite la actividad, escanee y cobre otra vez; por eso, escanee solo cuando va a participar.</li>
-            <li>Si un cobro falla por la señal, toque <span class="fa-btn claro">Reintentar cobro</span>: si ya se había hecho, no se cobra otra vez.</li>
-            <li><b>El Encargado de una tienda solo atiende esa tienda:</b> no puede ser Encargado de otra tienda ni de actividades.</li>
-          </ul>
-          </details>
-      </div>
-    </article>
-    <article class="fa-card fa-anim" id="mensajes">
-      <p class="fa-card-parte">Parte B · Si lo invitan a ser responsable</p>
-      
-      <div class="fa-cuerpo">
-        
-        <div class="fa-cab"><span class="fa-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z"/></svg></span><h2>Mensajes que puede ver</h2></div>
-        <p>Qué significa cada aviso que puede aparecer en el escáner y qué hacer.</p>
-          <details class="fa-det"><summary><span class="ver">Ver detalle</span><span class="ocultar">Ocultar detalle</span></summary>
-          <ul class="fa-lista">
-            <li><span class="t">Solo el Encargado puede cobrar</span>Su rol no es Encargado: usted solo puede ver los datos del estudiante.</li>
-            <li><span class="t">El cobro se activa el día de la feria</span>Todavía no es el día de la feria: ese día podrá cobrar.</li>
-            <li><span class="t">La actividad o el punto de venta no tiene precio</span>Su actividad o punto de venta todavía no tiene precio en witkis. Avise al colegio.</li>
-            <li><span class="t">Saldo insuficiente</span>El niño no tiene witkis suficientes. No se le cobró nada.</li>
-            <li><span class="t">El QR no es válido o fue renovado</span>El niño tiene un código viejo: debe mostrar el nuevo que aparece en su Perfil.</li>
-            <li><span class="t">No es responsable de este estudiante</span>El niño es de otro colegio, o su invitación cambió. Consulte con el colegio.</li>
-          </ul>
-          </details>
-      </div>
-    </article>
-    <nav class="fa-pager" aria-label="Pasar de sección">
-      <a class="fa-boton fa-ant" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> Anterior</a>
-      <span class="fa-pos" aria-live="polite"></span>
-      <a class="fa-boton fa-sig" href="#">Siguiente <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
-    </nav>
-    <p class="fa-pie"><a href="/feria">Feria I'witown</a> · Si tiene dudas, pregunte en el colegio.</p>
-  </main>
+<!-- Cinta en movimiento, la misma de la portada. Aquí es solo adorno (la fecha
+     ya está arriba): va oculta a los lectores de pantalla. El texto se repite
+     para que la cinta no se corte en pantallas grandes. -->
+<div class="fa-cinta-caja" aria-hidden="true">
+<div class="fa-cinta">
+  <div class="fa-cinta-pista">
+    <p>30 de noviembre <i>★</i> 2:00 p. m. <i>★</i> Juegos <i>★</i> Dulces <i>★</i> Juguetes <i>★</i> Witkis <i>★</i> Código QR <i>★</i> WiwiQuest <i>★</i> 30 de noviembre <i>★</i> 2:00 p. m. <i>★</i> Juegos <i>★</i> Dulces <i>★</i> Juguetes <i>★</i> Witkis <i>★</i> Código QR <i>★</i> WiwiQuest <i>★</i></p>
+    <p>30 de noviembre <i>★</i> 2:00 p. m. <i>★</i> Juegos <i>★</i> Dulces <i>★</i> Juguetes <i>★</i> Witkis <i>★</i> Código QR <i>★</i> WiwiQuest <i>★</i> 30 de noviembre <i>★</i> 2:00 p. m. <i>★</i> Juegos <i>★</i> Dulces <i>★</i> Juguetes <i>★</i> Witkis <i>★</i> Código QR <i>★</i> WiwiQuest <i>★</i></p>
+  </div>
+</div>
 </div>
 
-<script src="/feria/adultos.js?v=4"></script>
+<main class="fa-main">
+
+  <!-- La feria en tres datos: un círculo, un cuadrado y un rectángulo. -->
+  <section class="fa-seccion fa-datos" aria-label="La feria en tres datos">
+    <ul class="fx-formas fa-anim">
+      <li class="fx-forma fx-circulo"><span class="fx-forma-grande">30</span> de noviembre</li>
+      <li class="fx-forma fx-cuadrado"><svg class="fx-deco " aria-hidden="true"><use href="/feria/img/elementos.svg#carpa"/></svg><span class="fx-forma-grande">2:00</span> p. m.</li>
+      <li class="fx-forma fx-rect"><svg class="fx-deco " aria-hidden="true"><use href="/feria/img/elementos.svg#boleta"/></svg><span>Todo se paga con <b>witkis</b> y un <b>código QR</b>. No se necesita dinero.</span></li>
+    </ul>
+  </section>
+
+  <section class="fa-seccion" id="basico" aria-labelledby="t-basico">
+    <div class="fa-seccion-cab">
+      <div>
+        <p class="fa-sobre fa-anim">Lo básico</p>
+        <h2 class="fa-h2" id="t-basico" data-texto>Tres pasos y listo</h2>
+      </div>
+      <svg class="fx-deco fa-deco-titulo fx-flota" aria-hidden="true"><use href="/feria/img/elementos.svg#globo"/></svg>
+    </div>
+    <ol class="fa-tres">
+      <li class="fa-anim">
+        <span class="fa-tres-num" aria-hidden="true">1</span>
+        <h3>Confirmar</h3>
+        <p>Su hijo confirma en su app si va a ir y si lleva un invitado.</p>
+      </li>
+      <li class="fa-anim">
+        <span class="fa-tres-num" aria-hidden="true">2</span>
+        <h3>Cuidar el QR</h3>
+        <p>El código QR de su hijo es su billetera en la feria.</p>
+      </li>
+      <li class="fa-anim">
+        <span class="fa-tres-num" aria-hidden="true">3</span>
+        <h3>Pagar con witkis</h3>
+        <p>Los juegos y las compras se pagan con witkis. Su hijo no necesita llevar dinero.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section class="fa-seccion" id="preguntas" aria-labelledby="t-preguntas">
+    <div class="fa-seccion-cab">
+      <div>
+        <p class="fa-sobre fa-anim">Preguntas frecuentes</p>
+        <h2 class="fa-h2" id="t-preguntas" data-texto>¿Tiene dudas?</h2>
+      </div>
+      <svg class="fx-deco fa-deco-titulo fx-flota fx-lento" aria-hidden="true"><use href="/feria/img/elementos.svg#palomitas"/></svg>
+    </div>
+    <h3 class="fa-grupo-t fa-anim">La feria para su hijo</h3>
+    <p class="fa-grupo-txt fa-anim">Lo que su hijo vive antes y durante la feria, para que pueda acompañarlo.</p>
+    <div class="fa-faqs">
+      <details class="fa-faq fa-anim" id="que-es">
+        <summary><span class="fa-faq-q">¿Qué es la Feria I'witown?</span><span class="fa-faq-mas" aria-hidden="true"></span></summary>
+        <div class="fa-resp con-foto">
+          <div class="fa-media"><div class="fx-foto"><img src="/feria/img/dia-magico.webp" width="1200" height="598" loading="lazy" alt="La feria llena de juguetes, dulces y palomitas"></div></div>
+          <div class="fa-cuerpo">
+            <p>Una feria en el colegio con actividades, juegos y puntos de venta (por ejemplo, la comida). Los niños pagan con <b>witkis</b>, la moneda de I'witown, usando su <b>código QR</b>.</p>
+            <p><b>Fecha:</b> 30 de noviembre. Su hijo no necesita llevar dinero.</p>
+          </div>
+        </div>
+      </details>
+      <details class="fa-faq fa-anim" id="confirmar">
+        <summary><span class="fa-faq-q">¿Cómo confirma mi hijo si va a ir?</span><span class="fa-faq-mas" aria-hidden="true"></span></summary>
+        <div class="fa-resp con-foto">
+          <div class="fa-media"><div class="fx-cel"><img src="/feria/img/confirma.webp" width="1200" height="598" loading="lazy" alt="Niños tocando Aceptar en la confirmación de asistencia"></div></div>
+          <div class="fa-cuerpo">
+            <span class="fa-tag">Paso 1</span>
+            <ul>
+              <li>En la app de su hijo aparece el botón <span class="fa-btn">Confirmar asistencia a la feria</span>.</li>
+              <li>Su hijo elige <span class="fa-btn claro">Sí, llevo un invitado</span>, <span class="fa-btn claro">Sí, no llevo invitado</span> o <span class="fa-btn claro">No asistiré</span>.</li>
+              <li>Puede llevar <b>máximo un invitado</b> (por ejemplo, usted u otro familiar).</li>
+            </ul>
+              <details class="fa-det"><summary><span class="ver">Ver detalle</span><span class="ocultar">Ocultar detalle</span></summary>
+              <ul>
+                <li>Puede <b>cambiar la respuesta hasta el día anterior</b>. El día de la feria ya no se puede cambiar.</li>
+                <li>El botón solo aparece cuando el colegio ya puso la fecha de la feria.</li>
+                <li>Ayúdele a decidir y a confirmar con tiempo: así el colegio sabe cuántas personas esperar.</li>
+              </ul>
+              </details>
+          </div>
+        </div>
+      </details>
+      <details class="fa-faq fa-anim" id="vestido">
+        <summary><span class="fa-faq-q">¿Cómo debe ir vestido?</span><span class="fa-faq-mas" aria-hidden="true"></span></summary>
+        <div class="fa-resp con-foto">
+          <div class="fa-media"><div class="fx-foto"><img src="/feria/img/disfraces.webp" width="1200" height="598" loading="lazy" alt="Niños disfrazados celebrando en la feria"></div></div>
+          <div class="fa-cuerpo">
+            <p>Su hijo puede ir disfrazado o con la ropa que prefiera.</p>
+          </div>
+        </div>
+      </details>
+      <details class="fa-faq fa-anim" id="qr">
+        <summary><span class="fa-faq-q">¿Dónde está el código QR de mi hijo?</span><span class="fa-faq-mas" aria-hidden="true"></span></summary>
+        <div class="fa-resp con-foto">
+          <div class="fa-media"><div class="fx-cel"><img src="/feria/img/qr-billetera.webp" width="1200" height="598" loading="lazy" alt="Una niña muestra su código QR para pagar"></div></div>
+          <div class="fa-cuerpo">
+            <span class="fa-tag">Paso 2</span>
+            <ul>
+              <li>Está en el <b>Perfil</b> de la app de su hijo, en la tarjeta <span class="fa-texto">Mi código QR</span>. El colegio también puede entregarlo impreso.</li>
+              <li>Funciona como su «billetera» en la feria.</li>
+            </ul>
+              <details class="fa-det"><summary><span class="ver">Ver detalle</span><span class="ocultar">Ocultar detalle</span></summary>
+              <div class="fa-alerta">Explíquele que <b>no lo comparta</b> ni lo muestre a otras personas fuera de la feria.</div>
+              <p><b>Si lo pierde</b>, avise al colegio para que le generen uno nuevo; el anterior deja de servir.</p>
+              </details>
+          </div>
+        </div>
+      </details>
+      <details class="fa-faq fa-anim" id="dia">
+        <summary><span class="fa-faq-q">¿Cómo paga mi hijo el día de la feria?</span><span class="fa-faq-mas" aria-hidden="true"></span></summary>
+        <div class="fa-resp con-foto">
+          <div class="fa-media"><div class="fx-foto"><img src="/feria/img/juegos.webp" width="1200" height="598" loading="lazy" alt="Niños en la zona de juegos de la feria"></div></div>
+          <div class="fa-cuerpo">
+            <span class="fa-tag">Paso 3</span>
+            <ul>
+              <li>En cada <b>actividad</b> su hijo muestra el QR al <b>Encargado</b>, que le cobra el precio fijo en witkis.</li>
+              <li>En los <b>puntos de venta</b> se le cobran los productos que elija.</li>
+              <li><b>Se paga cada vez que participa:</b> si repite una actividad, paga de nuevo.</li>
+            </ul>
+              <details class="fa-det"><summary><span class="ver">Ver detalle</span><span class="ocultar">Ocultar detalle</span></summary>
+              <ul>
+                <li>Si no tiene saldo suficiente, <b>no se le cobra nada</b> y no puede hacer esa actividad.</li>
+                <li>Su hijo ve su saldo en <b>su cuenta</b> de la app. En la entrada y durante la feria, los <b>Asesores</b> y <b>Anfitriones</b> le dicen su saldo.</li>
+                <li><b>Si se queda sin witkis</b>, puede ir a la actividad de <b>WiwiQuest</b>, donde gana más witkis para seguir participando.</li>
+              </ul>
+              <div class="fa-alerta"><b>Un cobro hecho es definitivo:</b> no se devuelve.</div>
+              <div class="fa-nota">Converse antes con su hijo sobre <b>cuántos witkis tiene y en qué quiere gastarlos</b>. Es una buena oportunidad para practicar educación financiera.</div>
+              </details>
+          </div>
+        </div>
+      </details>
+      <details class="fa-faq fa-anim" id="apadrinar">
+        <summary><span class="fa-faq-q">¿Qué es apadrinar a un niño de preescolar?</span><span class="fa-faq-mas" aria-hidden="true"></span></summary>
+        <div class="fa-resp con-foto">
+          <div class="fa-media"><div class="fx-foto"><img src="/feria/img/apadrina.webp" width="1200" height="598" loading="lazy" alt="Niños grandes acompañan de la mano a niños de preescolar"></div></div>
+          <div class="fa-cuerpo">
+            <p>Su hijo puede <b>acompañar a un niño de preescolar</b> durante la feria: ayudarle a recorrerla y que también se divierta.</p>
+          </div>
+        </div>
+      </details>
+      <details class="fa-faq fa-anim" id="participar">
+        <summary><span class="fa-faq-q">¿Cómo podemos participar nosotros?</span><span class="fa-faq-mas" aria-hidden="true"></span></summary>
+        <div class="fa-resp con-foto">
+          <div class="fa-media"><div class="fx-foto"><img src="/feria/img/papas.webp" width="1200" height="742" loading="lazy" alt="Un niño pide a sus papás que le ayuden en la feria y ellos aceptan"></div></div>
+          <div class="fa-cuerpo">
+            <p>Su hijo le pedirá que participe. Ustedes pueden:</p>
+            <ul>
+              <li><b>Ganar witkis.</b></li>
+              <li><b>Transferirle witkis</b> a su hijo.</li>
+              <li><b>Ayudar en la feria:</b> ventas, asesorías y más (el colegio le enviará una invitación).</li>
+              <li><b>Donar</b> juguetes, artículos o recursos.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+      <details class="fa-faq fa-anim" id="donacion">
+        <summary><span class="fa-faq-q">¿Podemos donar juguetes y recursos?</span><span class="fa-faq-mas" aria-hidden="true"></span></summary>
+        <div class="fa-resp con-foto">
+          <div class="fa-media"><div class="fx-foto"><img src="/feria/img/donacion.webp" width="1200" height="598" loading="lazy" alt="Familias entregan juguetes en la mesa de donación del colegio"></div></div>
+          <div class="fa-cuerpo">
+            <p>El colegio recibe juguetes, artículos y recursos para la feria. <b>El gran ejemplo de la educación empieza en casa.</b></p>
+          </div>
+        </div>
+      </details>
+      <details class="fa-faq fa-anim" id="gastos">
+        <summary><span class="fa-faq-q">¿Dónde reviso lo que gastó mi hijo?</span><span class="fa-faq-mas" aria-hidden="true"></span></summary>
+        <div class="fa-resp">
+          <div class="fa-cuerpo">
+            <p>Cada cobro queda en los <b>Movimientos</b> de su hijo, por ejemplo <span class="fa-texto">Feria I'witown: Bolos</span> o <span class="fa-texto">Feria I'witown: Comidas (2 Empanada, 1 Jugo)</span>.</p>
+          </div>
+        </div>
+      </details>
+    </div>
+    <h3 class="fa-grupo-t fa-anim">Si lo invitan a ser responsable</h3>
+    <p class="fa-grupo-txt fa-anim">Solo si el colegio le envía una invitación para ayudar en la feria.</p>
+    <div class="fa-faqs">
+      <details class="fa-faq fa-anim" id="invitacion">
+        <summary><span class="fa-faq-q">¿Cómo me llega la invitación?</span><span class="fa-faq-mas" aria-hidden="true"></span></summary>
+        <div class="fa-resp">
+          <div class="fa-cuerpo">
+            <ol class="fa-pasos">
+              <li>Le llega una <b>notificación</b>: <span class="fa-texto">Invitación a la Feria I'witown</span>, con su rol, la actividad, el espacio, la fecha y el lugar.</li>
+              <li>Al tocarla se abre <span class="fa-texto">¿Aceptar invitación?</span> con todos los detalles.</li>
+              <li>Elija <span class="fa-btn">Aceptar</span> o <span class="fa-btn claro">Rechazar</span>.</li>
+            </ol>
+              <details class="fa-det"><summary><span class="ver">Ver detalle</span><span class="ocultar">Ocultar detalle</span></summary>
+              <ul>
+                <li>Si rechaza, el colegio recibe un aviso y puede invitar a otra persona.</li>
+                <li>Si el colegio cambia su rol o su actividad, le llega un aviso y una <b>invitación nueva</b> que debe aceptar otra vez.</li>
+              </ul>
+              </details>
+          </div>
+        </div>
+      </details>
+      <details class="fa-faq fa-anim" id="aceptar">
+        <summary><span class="fa-faq-q">¿Qué pasa después de aceptar?</span><span class="fa-faq-mas" aria-hidden="true"></span></summary>
+        <div class="fa-resp">
+          <div class="fa-cuerpo">
+            <p>En el menú de Witutor aparece <span class="fa-texto">Feria I'witown</span> con:</p>
+            <ul>
+              <li><b>Datos de la feria:</b> fecha, lugar y cómo se cobra.</li>
+              <li><b>Su participación:</b> su rol, actividad, espacio y responsabilidades.</li>
+              <li><b>Su cronograma:</b> las tareas y horarios que le corresponden.</li>
+              <li><b>El documento de la feria:</b> en «Equipo y responsabilidades» primero aparece lo suyo y con el botón <span class="fa-btn claro">Ver otros</span> puede ver a los demás responsables.</li>
+            </ul>
+              <details class="fa-det"><summary><span class="ver">Ver detalle</span><span class="ocultar">Ocultar detalle</span></summary>
+              <p><b>Roles posibles:</b> Encargado, Apoyo, Asesores, Anfitriones y Colaboradores. <b>Solo el Encargado puede cobrar.</b></p>
+              <div class="fa-alerta"><b>Si ya no puede participar</b> después de aceptar, avise al colegio para que asigne a otra persona. Desde la app no es posible retirarse.</div>
+              </details>
+          </div>
+        </div>
+      </details>
+      <details class="fa-faq fa-anim" id="escanear">
+        <summary><span class="fa-faq-q">¿Cómo escaneo el QR de los niños?</span><span class="fa-faq-mas" aria-hidden="true"></span></summary>
+        <div class="fa-resp con-foto">
+          <div class="fa-media"><div class="fx-cel"><img src="/feria/img/qr-billetera.webp" width="1200" height="598" loading="lazy" alt="Un responsable escanea el código QR que una niña muestra en su celular"></div></div>
+          <div class="fa-cuerpo">
+            <ol class="fa-pasos">
+              <li>En <span class="fa-texto">Feria I'witown</span> toque <span class="fa-btn">Escanear QR</span> (arriba a la derecha).</li>
+              <li>Permita la cámara y apunte al código QR del estudiante.</li>
+              <li>Verá su foto, nombre, curso y <b>saldo</b>.</li>
+            </ol>
+              <details class="fa-det"><summary><span class="ver">Ver detalle</span><span class="ocultar">Ocultar detalle</span></summary>
+              <ul>
+                <li><b>Escanear funciona cualquier día</b>, por ejemplo para probar. Si no es el día de la feria o su rol no cobra, solo verá los datos del estudiante.</li>
+                <li><b>Asesores y Anfitriones:</b> usen el escáner en la <b>entrada</b> y <b>durante la feria</b> para decirle a cada niño cuánto saldo tiene y ayudarle a decidir qué puede hacer.</li>
+              </ul>
+              </details>
+          </div>
+        </div>
+      </details>
+      <details class="fa-faq fa-anim" id="cobrar">
+        <summary><span class="fa-faq-q">¿Cómo cobro? (solo el Encargado)</span><span class="fa-faq-mas" aria-hidden="true"></span></summary>
+        <div class="fa-resp con-foto">
+          <div class="fa-media"><div class="fx-foto"><img src="/feria/img/compras.webp" width="1200" height="598" loading="lazy" alt="Un encargado cobra palomitas de maíz escaneando el QR de una niña"></div></div>
+          <div class="fa-cuerpo">
+                    <p>Solo <b>el día de la feria</b> y en <b>sus actividades o puntos de venta</b> con precio.</p>
+                    <ol class="fa-pasos">
+                      <li>Escanee el QR del niño.</li>
+                      <li><b>Actividad:</b> el precio ya está fijo. <b>Punto de venta:</b> elija los productos con <b>–</b> y <b>+</b>.</li>
+                      <li>Toque <span class="fa-btn">Cobrar N witkis</span> y confirme con <span class="fa-btn">Sí, cobrar</span>.</li>
+                      <li>Verá <span class="fa-texto">Cobro hecho</span> y el nuevo saldo. Luego <span class="fa-btn claro">Escanear otro</span>.</li>
+                    </ol>
+                    <div class="fa-alerta"><b>Un cobro hecho es definitivo:</b> no se devuelve. Confirme bien antes de tocar «Sí, cobrar».</div>
+                      <details class="fa-det"><summary><span class="ver">Ver detalle</span><span class="ocultar">Ocultar detalle</span></summary>
+                      <h3>Ejemplo en un punto de venta</h3>
+                      <div class="fx-cel fx-cel--alto">
+            <div class="fa-pantalla" aria-hidden="true">
+                        <div class="cab">Comidas</div>
+                        <div class="fila"><span>Empanada · 3 witkis</span><span class="cant"><span>−</span>2<span>+</span></span></div>
+                        <div class="fila"><span>Jugo · 2 witkis</span><span class="cant"><span>−</span>1<span>+</span></span></div>
+                        <div class="tot">Total: 8 witkis</div>
+                      </div>
+            </div>
+                      <h3>Tenga en cuenta</h3>
+                      <ul>
+                        <li>Si tiene varias actividades, primero elija cuál está cobrando.</li>
+                        <li>El precio es fijo: no se puede escribir otro valor.</li>
+                        <li>Si el niño <b>no tiene saldo suficiente</b>, el cobro no se hace y aparece un aviso.</li>
+                        <li>Si toca dos veces sin querer, <b>no se cobra doble</b>.</li>
+                        <li><b>Se cobra cada vez que el niño participa.</b> Si repite la actividad, escanee y cobre otra vez; por eso, escanee solo cuando va a participar.</li>
+                        <li>Si un cobro falla por la señal, toque <span class="fa-btn claro">Reintentar cobro</span>: si ya se había hecho, no se cobra otra vez.</li>
+                        <li><b>El Encargado de una tienda solo atiende esa tienda:</b> no puede ser Encargado de otra tienda ni de actividades.</li>
+                      </ul>
+                      </details>
+          </div>
+        </div>
+      </details>
+      <details class="fa-faq fa-anim" id="mensajes">
+        <summary><span class="fa-faq-q">¿Qué significan los mensajes del escáner?</span><span class="fa-faq-mas" aria-hidden="true"></span></summary>
+        <div class="fa-resp">
+          <div class="fa-cuerpo">
+            <p>Qué significa cada aviso que puede aparecer en el escáner y qué hacer.</p>
+              <details class="fa-det"><summary><span class="ver">Ver detalle</span><span class="ocultar">Ocultar detalle</span></summary>
+              <ul class="fa-lista">
+                <li><span class="t">Solo el Encargado puede cobrar</span>Su rol no es Encargado: usted solo puede ver los datos del estudiante.</li>
+                <li><span class="t">El cobro se activa el día de la feria</span>Todavía no es el día de la feria: ese día podrá cobrar.</li>
+                <li><span class="t">La actividad o el punto de venta no tiene precio</span>Su actividad o punto de venta todavía no tiene precio en witkis. Avise al colegio.</li>
+                <li><span class="t">Saldo insuficiente</span>El niño no tiene witkis suficientes. No se le cobró nada.</li>
+                <li><span class="t">El QR no es válido o fue renovado</span>El niño tiene un código viejo: debe mostrar el nuevo que aparece en su Perfil.</li>
+                <li><span class="t">No es responsable de este estudiante</span>El niño es de otro colegio, o su invitación cambió. Consulte con el colegio.</li>
+              </ul>
+              </details>
+          </div>
+        </div>
+      </details>
+    </div>
+  </section>
+
+</main>
+
+<footer class="fa-pie">
+  <p><a href="/feria">Feria I'witown</a> · Si tiene dudas, pregunte en el colegio.</p>
+</footer>
+
+<script src="/feria/fiesta.js?v=1"></script>
+<script src="/feria/adultos.js?v=5"></script>
 </body>
 </html>

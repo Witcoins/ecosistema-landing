@@ -1,0 +1,126 @@
+/* ┌──────────────────────────────────────────────────────────────────────┐
+   │ Feria I'witown — la "fiesta" que comparten los cuatro instructivos.  │
+   │ Va DESPUÉS de adultos.css o ninos.css: usa sus colores (:root).      │
+   │                                                                      │
+   │ Lo que hay aquí:                                                     │
+   │  · Serpentinas ......... .fx-capa, .fx-pieza (las lanza fiesta.js)   │
+   │  · Textos animados ..... [data-texto] y .fx-palabra                  │
+   │  · Botón de sonido ..... .fx-sonido                                  │
+   │  · Marco de foto ....... .fx-foto   (con cinta adhesiva amarilla)    │
+   │  · Marco de celular .... .fx-cel    (acostado) y .fx-cel--alto       │
+   │  · Tarjetas en formas .. .fx-formas con .fx-circulo, .fx-cuadrado    │
+   │                          y .fx-rect                                  │
+   │  · Dibujos de feria .... .fx-deco (salen de img/elementos.svg)       │
+   └──────────────────────────────────────────────────────────────────────┘ */
+
+/* ---------- Serpentinas ---------- */
+.fx-capa { position: fixed; inset: 0; z-index: 60; pointer-events: none; overflow: hidden; }
+.fx-pieza { position: absolute; width: 10px; height: 14px; margin: -7px 0 0 -5px; border-radius: 2px; will-change: transform, opacity; }
+.fx-pieza.fx-tira { width: 6px; height: 30px; margin: -15px 0 0 -3px; border-radius: 6px; }
+.fx-pieza.fx-punto { width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; }
+
+/* ---------- Textos que aparecen palabra por palabra ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .fx-textos [data-texto] .fx-palabra {
+    display: inline-block; opacity: 0; transform: translateY(.55em) rotate(4deg);
+    transition: opacity .5s ease, transform .6s cubic-bezier(.2, .8, .2, 1.2);
+    transition-delay: calc(var(--i, 0) * 45ms);
+  }
+  .fx-textos [data-texto].fx-leido .fx-palabra { opacity: 1; transform: none; }
+}
+
+/* ---------- Botón de sonido ---------- */
+.fx-sonido {
+  appearance: none; border: 1.5px solid var(--crema-suave); background: rgba(27, 1, 24, .35); color: var(--crema);
+  font: inherit; font-weight: 700; font-size: 14px; padding: 8px 14px; border-radius: 999px; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 7px; flex: none; transition: background .15s, transform .15s;
+}
+.fx-sonido:hover { background: rgba(255, 247, 234, .14); }
+.fx-sonido:active { transform: scale(.96); }
+.fx-sonido svg { width: 18px; height: 18px; flex: none; }
+.fx-sonido .fx-ondas { transition: opacity .2s; }
+.fx-sonido .fx-raya { opacity: 0; transition: opacity .2s; }
+.fx-sonido[aria-pressed="false"] { color: var(--crema-suave); }
+.fx-sonido[aria-pressed="false"] .fx-ondas { opacity: 0; }
+.fx-sonido[aria-pressed="false"] .fx-raya { opacity: 1; }
+
+/* ---------- Marco de fotografía ---------- */
+/* Un borde crema como de foto instantánea, un poco torcido y pegado con cinta
+   amarilla. Se endereza al pasar o tocar. */
+.fx-foto {
+  position: relative; background: var(--crema); padding: 10px 10px 34px; border-radius: 6px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, .45); transform: rotate(-2deg);
+  transition: transform .5s cubic-bezier(.2, .8, .2, 1.3);
+}
+.fx-foto:nth-of-type(even), .fx-foto.fx-der { transform: rotate(1.8deg); }
+@media (hover: hover) { .fx-foto:hover { transform: rotate(0deg) scale(1.02); } }
+.fx-foto img { width: 100%; border-radius: 2px; }
+.fx-foto::before {
+  content: ""; position: absolute; left: 50%; top: -13px; width: 96px; height: 26px; margin-left: -48px;
+  background: var(--acento); opacity: .92; transform: rotate(-3deg); border-radius: 2px;
+}
+
+/* ---------- Marco de celular ---------- */
+/* Acostado, para las imágenes (que son anchas). La "pantalla" es la imagen. */
+.fx-cel {
+  position: relative; padding: 9px 30px; border-radius: 26px; background: #0D000B;
+  border: 2px solid rgba(255, 247, 234, .38); box-shadow: 0 18px 40px rgba(0, 0, 0, .45);
+}
+.fx-cel img { width: 100%; border-radius: 10px; }
+.fx-cel::before { content: ""; position: absolute; left: 11px; top: 50%; width: 8px; height: 8px; margin-top: -4px; border-radius: 50%; background: rgba(255, 247, 234, .45); }
+.fx-cel::after { content: ""; position: absolute; right: 11px; top: 50%; width: 4px; height: 34px; margin-top: -17px; border-radius: 4px; background: rgba(255, 247, 234, .3); }
+/* De pie, para los ejemplos de pantalla de la app. */
+.fx-cel--alto { padding: 34px 10px 26px; border-radius: 32px; max-width: 300px; }
+.fx-cel--alto::before { left: 50%; top: 13px; width: 54px; height: 8px; margin: 0 0 0 -27px; border-radius: 8px; }
+.fx-cel--alto::after { right: auto; left: 50%; top: auto; bottom: 10px; width: 80px; height: 4px; margin: 0 0 0 -40px; }
+
+/* ---------- Tarjetas en círculos, cuadrados y rectángulos ---------- */
+/* "dense": las formas pequeñas se acomodan de a dos aunque haya un rectángulo en medio. */
+.fx-formas { display: grid; grid-template-columns: repeat(2, 1fr); grid-auto-flow: dense; gap: 12px; list-style: none; margin: 0; padding: 0; }
+.fx-forma {
+  position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+  padding: 16px; border: 1.5px solid var(--acento); color: var(--crema); min-width: 0;
+  transition: transform .35s cubic-bezier(.2, .8, .2, 1.4), background .25s, color .25s;
+}
+.fx-forma b { color: var(--acento); transition: color .25s; }
+/* Se llenan de amarillo al pasar el cursor; en celular, mientras se tocan
+   (con :hover a secas se quedarían pegadas después del toque). */
+.fx-forma:active { background: var(--acento); color: var(--noche); }
+.fx-forma:active b, .fx-forma:active .fx-forma-grande, .fx-forma:active .fx-deco { color: inherit; }
+@media (hover: hover) {
+  .fx-forma:hover { background: var(--acento); color: var(--noche); transform: scale(1.03) rotate(-1.5deg); }
+  .fx-forma:hover b, .fx-forma:hover .fx-forma-grande, .fx-forma:hover .fx-deco { color: inherit; }
+}
+.fx-circulo { aspect-ratio: 1; border-radius: 50%; }
+.fx-cuadrado { aspect-ratio: 1; border-radius: 22px; }
+.fx-rect { grid-column: 1 / -1; border-radius: 22px; min-height: 96px; }
+.fx-rect { flex-direction: row; gap: 16px; text-align: left; padding: 18px 22px; }
+.fx-forma.fx-rect .fx-deco { width: 56px; height: 44px; margin: 0; flex: none; }
+.fx-forma-grande { display: block; font-family: var(--titulos); font-weight: 800; font-stretch: 75%; text-transform: uppercase; font-size: clamp(34px, 9vw, 64px); line-height: .9; color: var(--acento); transition: color .25s; }
+.fx-forma .fx-deco { width: 38px; height: 38px; margin-bottom: 6px; color: var(--acento); transition: color .25s; }
+@media (min-width: 860px) {
+  .fx-formas { grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .fx-rect { grid-column: span 2; }
+}
+
+/* ---------- Dibujos de feria ---------- */
+.fx-deco { display: block; color: var(--acento); pointer-events: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .fx-gira { animation: fx-gira 40s linear infinite; }
+  .fx-flota { animation: fx-flota 5s ease-in-out infinite; }
+  .fx-flota.fx-lento { animation-duration: 7s; animation-delay: -2s; }
+}
+@keyframes fx-gira { to { transform: rotate(360deg); } }
+@keyframes fx-flota { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-14px) rotate(3deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .fx-foto, .fx-forma, .fx-sonido { transition: none; }
+}
+
+@media print {
+  .fx-capa, .fx-sonido, .fx-deco { display: none !important; }
+  .fx-palabra { opacity: 1 !important; transform: none !important; }
+  .fx-foto, .fx-cel { transform: none; box-shadow: none; background: none; border: 1px solid #D9D3E0; padding: 6px; }
+  .fx-foto::before, .fx-cel::before, .fx-cel::after { display: none; }
+  .fx-forma { border-color: #520348; color: #1A1523; break-inside: avoid; }
+}
