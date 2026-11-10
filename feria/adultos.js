@@ -4,6 +4,7 @@
      "Anterior / Siguiente". La dirección cambia (#seccion): el botón atrás funciona.
    - En computador la barra se oculta / muestra y recuerda cómo la dejaron;
      en celular se abre con "Contenido" y se cierra al elegir.
+   - La raya amarilla de la barra de arriba muestra cuánto se ha recorrido.
    - Imprimir / Guardar PDF: imprime todo el instructivo con los detalles abiertos.
    Sin JavaScript se ven todas las secciones seguidas. */
 (function () {
@@ -50,6 +51,7 @@
   var ant = document.querySelector(".fa-ant");
   var sig = document.querySelector(".fa-sig");
   var pos = document.querySelector(".fa-pos");
+  var avance = document.querySelector(".fa-avance span");
   if (!tarjetas.length) return;
   body.classList.add("fa-una");
 
@@ -84,6 +86,7 @@
     enlace(ant, i - 1);
     enlace(sig, i + 1);
     if (pos) pos.textContent = (i + 1) + " de " + tarjetas.length;
+    if (avance) avance.style.width = ((i + 1) / tarjetas.length * 100) + "%";
     if (desplazar) window.scrollTo({ top: 0, behavior: "auto" });
   }
 

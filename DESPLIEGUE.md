@@ -264,6 +264,47 @@ La politica de tratamiento de datos (https://politicas.iwitown.com/) ya nombra a
 analiticas (numeral 4.15), asi que el aviso esta respaldado. Quedan los dos
 ajustes de consola anotados en [`PENDIENTES.md`](PENDIENTES.md) §3 bis.
 
+## 2 quater. La Feria I'witown (`/feria`)
+
+La feria **no es una vista** de `index.html`: son páginas sueltas en la carpeta
+`feria/`, con sus propios `.css` y `.js`. La landing no las enlaza.
+
+| Dirección | Archivo | Quién llega |
+|---|---|---|
+| `/feria` | `feria/portada.html` | Todos. Puede salir en buscadores y está en `sitemap.xml`. |
+| `/feria/estudiantes-nh6pjj` | `feria/estudiantes-nh6pjj.html` | Desde la portada o con su link. |
+| `/feria/familias-uvuhma` | `feria/familias-uvuhma.html` | Desde la portada o con su link. |
+| `/feria/docentes-urmagt` | `feria/docentes-urmagt.html` | Desde la portada o con su link. |
+| `/feria/administrativos-874q6n` | `feria/administrativos-874q6n.html` | **Solo con su link**: la portada no lo enlaza. |
+
+Lo que hay que saber para no romperla:
+
+- **Los cuatro links con código ya se compartieron en anuncios: no se cambian**
+  ni se renombran sus archivos. Están uno por uno en los `rewrites` de
+  `firebase.json`.
+- **La portada se llama `portada.html`, no `index.html`**, a propósito: con un
+  `index.html` Hosting redirige `/feria` a `/feria/`.
+- **Un link de la feria mal escrito** cae en `feria/volver.html`, que lleva a
+  `/feria`.
+- **Los instructivos siguen fuera de buscadores** (`meta robots` en cada página
+  y `X-Robots-Tag` en `firebase.json`). La portada no.
+- **La fecha y la hora** de la cuenta regresiva están en `feria/portada.html`
+  (`data-inicio` y `data-fin` de `#cuenta`, en hora de Colombia). Pasada la
+  feria, la portada dice sola "¡Gracias por venir!".
+- **El `?v=` de la feria va por archivo**: si cambia `portada.css`,
+  `portada.js`, `adultos.css`, `adultos.js`, `ninos.css` o `ninos.js`, se sube
+  su `?v=` en **todas** las páginas de `feria/` que lo cargan (los tres
+  instructivos de adultos comparten `adultos.css` y `adultos.js`).
+- **La letra de los títulos está en `feria/fuentes/`** (Bricolage Grotesque,
+  licencia OFL) y se sirve desde el propio sitio. Solo el instructivo de
+  estudiantes pide además Baloo 2 a Google Fonts, como ya lo hacía.
+- **Los colores son los mismos en los tres `.css`** (`--noche`, `--acento` y los
+  morados en `:root`): si cambia uno, se cambian los tres.
+- **El video** es de YouTube y solo se carga cuando la persona toca reproducir
+  (desde `youtube-nocookie.com`). La carátula es `feria/img/video-feria.webp`.
+- **Para probarla en el computador** sin permisos del proyecto:
+  `firebase emulators:start --only hosting --project demo-feria`.
+
 ## 3. Se prueba en dos tiempos
 
 **Primero la página.** Que se vea igual que en local. Pero **no todo lo que falte

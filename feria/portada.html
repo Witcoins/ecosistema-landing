@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- ┌──────────────────────────────────────────────────────────────────────┐
+     │ Portada de la Feria I'witown: lo que se ve en /feria.                │
+     │                                                                      │
+     │ Lo que se cambia está aquí:                                          │
+     │  · Fecha y hora ........ data-inicio / data-fin de #cuenta (abajo)   │
+     │                          y los textos "30 de noviembre · 2:00 p. m." │
+     │  · Las entradas ........ la sección #entradas (una <a> por rol)      │
+     │  · El video ............ data-video de .fp-video-btn                 │
+     │                                                                      │
+     │ Reglas de esta página:                                               │
+     │  · Enlaza a estudiantes, familias y docentes. El instructivo de      │
+     │    administrativos NO va aquí: solo se entra con su link.            │
+     │  · Los links de cada rol ya se compartieron: no se cambian.          │
+     │  · Sí puede salir en buscadores, pero la landing no la enlaza.       │
+     │  · No usa <base>: aquí "#entradas" baja a la sección (en index.html  │
+     │    no se puede).                                                     │
+     └──────────────────────────────────────────────────────────────────────┘ -->
+<title>Feria I'witown · 30 de noviembre</title>
+<meta name="description" content="La Feria I'witown es el 30 de noviembre a las 2:00 p. m.: juegos, dulces y compras que se pagan con witkis y un código QR. Elija su entrada y vea cómo participar.">
+<link rel="canonical" href="https://www.ecosistema.iwitown.com/feria">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_CO">
+<meta property="og:title" content="Feria I'witown · 30 de noviembre">
+<meta property="og:description" content="Juegos, dulces y compras que se pagan con witkis. 30 de noviembre, 2:00 p. m.">
+<meta property="og:url" content="https://www.ecosistema.iwitown.com/feria">
+<!-- La imagen para compartir va en JPG: varias redes no muestran WebP. -->
+<meta property="og:image" content="https://www.ecosistema.iwitown.com/feria/img/og-feria.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.ecosistema.iwitown.com/feria/img/og-feria.jpg">
+<meta name="theme-color" content="#1B0118">
+<link rel="icon" href="/assets/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/assets/img/favicon-180.png" sizes="180x180">
+<link rel="preload" as="font" type="font/woff2" href="/feria/fuentes/bricolage-grotesque.woff2" crossorigin>
+<link rel="stylesheet" href="/feria/portada.css?v=1">
+</head>
+<body>
+
+<header class="fp-hero" id="inicio">
+  <div class="fp-luz" aria-hidden="true"></div>
+
+  <div class="fp-top">
+    <span class="fp-marca">I'witown</span>
+    <span class="fp-top-fecha">30 NOV · 2:00 p. m.</span>
+  </div>
+
+  <div class="fp-hero-centro">
+    <h1 class="fp-titulo"><span class="fp-l1">Feria</span> <span class="fp-l2">I'witown</span></h1>
+    <p class="fp-lema">Un día para jugar, comprar y celebrar con <b>witkis</b>.</p>
+
+    <!-- La cuenta la mueve portada.js. data-inicio y data-fin van en hora de
+         Colombia (-05:00). Sin JavaScript queda solo la fecha, que ya dice todo. -->
+    <div class="fp-cuenta" id="cuenta" data-inicio="2026-11-30T14:00:00-05:00" data-fin="2026-12-01T00:00:00-05:00">
+      <p class="fp-cuenta-fecha"><time datetime="2026-11-30T14:00:00-05:00">30 de noviembre · 2:00 p. m.</time></p>
+      <div class="fp-reloj" role="timer" aria-live="off" hidden>
+        <div class="fp-cifra"><b data-u="d">00</b><span>días</span></div>
+        <div class="fp-cifra"><b data-u="h">00</b><span>horas</span></div>
+        <div class="fp-cifra"><b data-u="m">00</b><span>min</span></div>
+        <div class="fp-cifra"><b data-u="s">00</b><span>seg</span></div>
+      </div>
+      <p class="fp-estado" hidden></p>
+    </div>
+
+    <a class="fp-cta" href="#entradas">Elija su entrada
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </a>
+  </div>
+</header>
+
+<!-- Cinta en movimiento. El segundo grupo es copia para que la cinta no se corte:
+     va oculto a los lectores de pantalla. Dentro de cada grupo el texto va dos
+     veces para que un grupo sea más ancho que cualquier pantalla (si no, en un
+     monitor grande se vería un hueco al final de cada vuelta). -->
+<div class="fp-cinta-caja">
+<div class="fp-cinta">
+  <div class="fp-cinta-pista">
+    <p>30 de noviembre <i>★</i> 2:00 p. m. <i>★</i> Juegos <i>★</i> Dulces <i>★</i> Juguetes <i>★</i> Witkis <i>★</i> Código QR <i>★</i> WiwiQuest <i>★</i> <span aria-hidden="true">30 de noviembre <i>★</i> 2:00 p. m. <i>★</i> Juegos <i>★</i> Dulces <i>★</i> Juguetes <i>★</i> Witkis <i>★</i> Código QR <i>★</i> WiwiQuest <i>★</i></span></p>
+    <p aria-hidden="true">30 de noviembre <i>★</i> 2:00 p. m. <i>★</i> Juegos <i>★</i> Dulces <i>★</i> Juguetes <i>★</i> Witkis <i>★</i> Código QR <i>★</i> WiwiQuest <i>★</i> 30 de noviembre <i>★</i> 2:00 p. m. <i>★</i> Juegos <i>★</i> Dulces <i>★</i> Juguetes <i>★</i> Witkis <i>★</i> Código QR <i>★</i> WiwiQuest <i>★</i></p>
+  </div>
+</div>
+</div>
+
+<main>
+
+  <section class="fp-seccion" id="entradas" aria-labelledby="t-entradas">
+    <p class="fp-sobre fp-anim">Instructivos</p>
+    <h2 class="fp-h2 fp-anim" id="t-entradas">Elija su entrada</h2>
+
+    <div class="fp-puertas">
+      <a class="fp-puerta fp-anim" href="/feria/estudiantes-nh6pjj">
+        <img src="/feria/img/urra.webp" width="1200" height="598" loading="lazy" alt="">
+        <span class="fp-puerta-num">01</span>
+        <span class="fp-puerta-txt">
+          <span class="fp-puerta-nombre">Estudiantes</span>
+          <span class="fp-puerta-desc">La aventura de la feria, paso a paso.</span>
+        </span>
+        <span class="fp-puerta-flecha" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+      </a>
+      <a class="fp-puerta fp-anim" href="/feria/familias-uvuhma">
+        <img src="/feria/img/donacion.webp" width="1200" height="598" loading="lazy" alt="">
+        <span class="fp-puerta-num">02</span>
+        <span class="fp-puerta-txt">
+          <span class="fp-puerta-nombre">Familias</span>
+          <span class="fp-puerta-desc">Cómo acompañar a su hijo y participar.</span>
+        </span>
+        <span class="fp-puerta-flecha" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+      </a>
+      <a class="fp-puerta fp-anim" href="/feria/docentes-urmagt">
+        <img src="/feria/img/te-esperamos.webp" width="1200" height="598" loading="lazy" alt="">
+        <span class="fp-puerta-num">03</span>
+        <span class="fp-puerta-txt">
+          <span class="fp-puerta-nombre">Docentes</span>
+          <span class="fp-puerta-desc">Su papel como responsable: escanear y cobrar.</span>
+        </span>
+        <span class="fp-puerta-flecha" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+      </a>
+    </div>
+  </section>
+
+  <section class="fp-seccion" id="asi-funciona" aria-labelledby="t-funciona">
+    <p class="fp-sobre fp-anim">Así funciona</p>
+    <h2 class="fp-h2 fp-anim" id="t-funciona">Tres pasos y a disfrutar</h2>
+    <ol class="fp-pasos">
+      <li class="fp-anim">
+        <span class="fp-paso-num" aria-hidden="true">1</span>
+        <h3>Confirmar</h3>
+        <p>Cada estudiante confirma en su app si va a ir y si lleva un invitado.</p>
+      </li>
+      <li class="fp-anim">
+        <span class="fp-paso-num" aria-hidden="true">2</span>
+        <h3>Mostrar el QR</h3>
+        <p>El código QR del estudiante es su billetera en la feria.</p>
+      </li>
+      <li class="fp-anim">
+        <span class="fp-paso-num" aria-hidden="true">3</span>
+        <h3>Pagar con witkis</h3>
+        <p>Los juegos y las compras se pagan con witkis. No se necesita dinero.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section class="fp-seccion" id="video" aria-labelledby="t-video">
+    <p class="fp-sobre fp-anim">Video</p>
+    <h2 class="fp-h2 fp-anim" id="t-video">Mire cómo será</h2>
+    <!-- El video de YouTube solo se carga cuando la persona toca reproducir
+         (y desde youtube-nocookie): antes de eso la página no pide nada a
+         otros dominios (la letra y la carátula son del propio sitio).
+         Sin JavaScript es un enlace normal a YouTube. -->
+    <div class="fp-video fp-anim">
+      <a class="fp-video-btn" href="https://www.youtube.com/watch?v=lsPDEz4qSrc" target="_blank" rel="noopener" data-video="lsPDEz4qSrc">
+        <img src="/feria/img/video-feria.webp" width="1280" height="720" loading="lazy" alt="">
+        <span class="fp-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l11-6.5a1 1 0 0 0 0-1.72l-11-6.5A1 1 0 0 0 8 5.5Z"/></svg></span>
+        <span class="fp-video-txt">Reproducir el video de la Feria I'witown 2026</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="fp-cierre" aria-labelledby="t-cierre">
+    <h2 class="fp-cierre-titulo fp-anim" id="t-cierre"><span data-antes>¡Nos vemos el 30!</span></h2>
+    <a class="fp-cta" href="#entradas">Ver los instructivos
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+    </a>
+  </section>
+
+</main>
+
+<footer class="fp-pie">
+  <p>Feria I'witown · Si tiene dudas, pregunte en el colegio.</p>
+</footer>
+
+<script src="/feria/portada.js?v=1"></script>
+</body>
+</html>
