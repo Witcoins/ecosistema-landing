@@ -9,12 +9,17 @@ este archivo no se publica.
   la documentación. Los comentarios explican el *porqué*, con el mismo tono de los
   archivos que ya existen (recuadros `┌──┐` arriba de cada archivo con "lo que se
   cambia está aquí").
+- **Primero se pregunta y se presenta el plan**: lo que no se sabe se pregunta,
+  no se asume. Antes de cambiar algo se muestra un plan corto y se espera el
+  "sí". Las explicaciones van cortas y sin tecnicismos. (Son las mismas reglas
+  del repositorio de admin.)
 - **Una rama por tarea**, creada desde `origin/main` (`feature/...`, `fix/...`).
   Los cambios entran por **Pull Request**, nunca con push directo a `main`. El
   repositorio es compartido con otro desarrollador que también publica.
 - **Antes de subir, pasar el verificador** (`/code-review`). Se corrige lo
   **bloqueante** y lo que **afecta directamente al usuario** de la página; lo
-  demás se reporta y se deja. Se vuelve a pasar hasta que no quede nada
+  demás se reporta y se deja. La revisión es doble: que funcione lo nuevo y que
+  no se rompa lo que ya funcionaba. Se vuelve a pasar hasta que no quede nada
   bloqueante, y solo entonces se sube a GitHub y se abre el PR.
 - **Probar en el navegador antes de dar algo por hecho**: escritorio y celular
   (375 px), sin scroll horizontal, sin errores de consola, y el formulario
@@ -49,9 +54,28 @@ este archivo no se publica.
 - **Textos para colegios fuera de Colombia**: español neutro, con "usted", sin
   referencias al sistema educativo colombiano.
 
+## La Feria I'witown (`/feria`)
+
+- **Los links de cada rol ya se compartieron en anuncios: nunca se cambian** ni
+  se renombran sus archivos (`feria/estudiantes-nh6pjj.html`,
+  `familias-uvuhma`, `docentes-urmagt`, `administrativos-874q6n`).
+- **La portada `/feria` enlaza a estudiantes, familias y docentes.** El de
+  administrativos queda por fuera: solo se entra con su link.
+- **`/feria` puede salir en buscadores, pero la landing no la enlaza.** Los
+  cuatro instructivos siguen con `noindex`.
+- **Todo el contenido instructivo se conserva**: se puede cambiar el diseño,
+  pero no se quita ningún paso, aviso ni detalle. Lo largo va en "Ver detalle".
+- **Diseño: minimalismo, impacto e interactividad.** Fondo oscuro, una sola
+  letra para títulos, un solo color de acento (amarillo), títulos enormes y
+  algo que responda al usuario. Los colores viven en el `:root` de
+  `feria/portada.css`, `adultos.css` y `ninos.css`: si cambia uno, cambian los
+  tres.
+- **El `?v=` de la feria va por archivo** y se sube en todas las páginas de
+  `feria/` que lo cargan. Ver `DESPLIEGUE.md` §2 quater.
+
 ## Dónde está cada cosa
 
-- `DESPLIEGUE.md`: cómo se publica y qué revisar antes.
+- `DESPLIEGUE.md`: cómo se publica y qué revisar antes. La feria está en §2 quater.
 - `PENDIENTES.md`: lo que falta y lo que nunca existió (no confundirlo con
   errores de publicación).
 - `ALIANZAS.md`: la página `/alianzas-educativas` y el contrato de la función

@@ -49,7 +49,7 @@
         "destination": "/index.html"
       },
       {
-        "//": "Instructivos de la Feria I'witown: un link por tipo de usuario, con un codigo para que no se adivinen entre si. No salen en el menu, ni en el sitemap, ni en buscadores, y ninguno enlaza a los otros.",
+        "//": "Instructivos de la Feria I'witown: un link por tipo de usuario. Estos links ya se compartieron: NO se cambian. La portada (/feria) enlaza a estudiantes, familias y docentes; el de administrativos solo se abre con su link.",
         "source": "/feria/estudiantes-nh6pjj",
         "destination": "/feria/estudiantes-nh6pjj.html"
       },
@@ -61,11 +61,16 @@
       { "source": "/feria/docentes-urmagt/", "destination": "/feria/docentes-urmagt.html" },
       { "source": "/feria/administrativos-874q6n/", "destination": "/feria/administrativos-874q6n.html" },
       {
-        "//": "/feria sola o un link equivocado: al inicio (no hay pagina que liste los instructivos). Los archivos reales de /feria/ se sirven antes que esta regla.",
+        "//": "/feria es la portada de la feria (feria/portada.html). No se llama index.html a proposito: asi Hosting no redirige /feria a /feria/.",
         "source": "/feria",
-        "destination": "/feria/volver.html"
+        "destination": "/feria/portada.html"
       },
-      { "source": "/feria/**", "destination": "/feria/volver.html" }
+      { "source": "/feria/", "destination": "/feria/portada.html" },
+      {
+        "//": "Un link de la feria mal escrito: a la portada de la feria (volver.html redirige a /feria). Los archivos reales de /feria/ se sirven antes que esta regla.",
+        "source": "/feria/**",
+        "destination": "/feria/volver.html"
+      }
     ],
     "headers": [
       {
@@ -81,11 +86,40 @@
         ]
       },
       {
-        "//": "Instructivos de la Feria: fuera de buscadores.",
-        "source": "/feria/**",
+        "//": "Las imagenes de la Feria no llevan version en el nombre: se revalidan en vez de guardarse un ano (va DESPUES de la regla general de imagenes para ganarle). Y siguen fuera de la busqueda de imagenes, como antes.",
+        "source": "/feria/img/**",
+        "headers": [
+          { "key": "X-Robots-Tag", "value": "noindex, noarchive" },
+          { "key": "Cache-Control", "value": "no-cache, must-revalidate" }
+        ]
+      },
+      {
+        "//": "Los cuatro instructivos de la Feria: fuera de buscadores (cada pagina lleva ademas su meta robots). La portada /feria SI puede salir en buscadores, por eso esta regla ya no cubre toda la carpeta. La regla siguiente es la misma con barra final.",
+        "source": "/feria/@(estudiantes|familias|docentes|administrativos)-*",
         "headers": [
           { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" },
           { "key": "Referrer-Policy", "value": "no-referrer" },
+          { "key": "Cache-Control", "value": "no-cache, must-revalidate" }
+        ]
+      },
+      {
+        "source": "/feria/@(estudiantes|familias|docentes|administrativos)-*/",
+        "headers": [
+          { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" },
+          { "key": "Referrer-Policy", "value": "no-referrer" },
+          { "key": "Cache-Control", "value": "no-cache, must-revalidate" }
+        ]
+      },
+      {
+        "//": "La portada de la Feria se sirve sin .html: se le dice aqui que no se guarde, igual que a las demas paginas. Dos reglas (con y sin barra final) en vez de un patron con llaves.",
+        "source": "/feria",
+        "headers": [
+          { "key": "Cache-Control", "value": "no-cache, must-revalidate" }
+        ]
+      },
+      {
+        "source": "/feria/",
+        "headers": [
           { "key": "Cache-Control", "value": "no-cache, must-revalidate" }
         ]
       },
