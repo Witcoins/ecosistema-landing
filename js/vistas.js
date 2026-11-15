@@ -55,7 +55,7 @@ var DESCRIPCIONES = {
   "consultoria":"Acompañamos al colegio para que la innovación tenga sentido dentro de su proyecto educativo.",
   "contacto":   "Habla con i'Witown: reunión por Teams, WhatsApp o déjanos un mensaje.",
   "conversemos":"Déjanos tu mensaje y te contactamos para conocer i'Witown en tu colegio.",
-  "demo-directivos": "Demo para rectores y coordinadores: responda tres preguntas como estudiante y véalo en el panel real de un colegio de prueba."
+  "demo-directivos": "Demo privada para rectores y coordinadores: arme su i'Witown, véalo funcionando y llévese su número. Se abre con el enlace de su asesora."
 };
 
 /* El título de cada vista. Lo ve quien comparte el enlace o lo guarda en
@@ -167,8 +167,8 @@ var TITULOS = {
     ponerLosDatosDeLaVista(vista);
 
     /* Avisa qué vista quedó a la vista, para lo que tiene que arrancar o
-       detenerse al entrar o salir (la demo para directivos carga su panel y
-       mide la apertura, en js/demo-directivos.js). Los enlaces usan
+       detenerse al entrar o salir (la demo para directivos monta el
+       configurador al abrirse, en js/configurador.js). Los enlaces usan
        pushState, que no dispara ningún evento propio del navegador. */
     try {
       document.dispatchEvent(new CustomEvent("vista-cambio", { detail: { vista: vista } }));

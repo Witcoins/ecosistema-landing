@@ -179,7 +179,8 @@ pero **cada vista tiene su propia direccion**: `/`, `/marca`, `/problema`,
 `/solucion`, `/ecosistema`, `/logbooks`, `/acp`, `/alianzas-educativas`,
 `/consultoria`, `/contacto`, `/conversemos` y
 `/demo-directivos`.
-Se pueden compartir, guardar en favoritos e indexar.
+Se pueden compartir, guardar en favoritos e indexar, salvo `/demo-directivos`:
+es privada (solo con enlace) y no va en el menu, el sitemap ni `llms.txt`.
 
 Cinco cosas que hay que saber para no romperlo:
 
@@ -202,17 +203,21 @@ Cinco cosas que hay que saber para no romperlo:
   assets se piden con rutas relativas; sin esa base, una direccion con barra
   final (`/solucion/`) los buscaria en `/solucion/css/` y la pagina saldria sin
   estilos.
-- **`/demo-directivos` llama a su propia funcion.** Ademas de su ruta, tiene el
-  rewrite `/api/demo-jugar` -> `landingDemoJugar` (repo `witown-cloud-functions`),
-  declarado ANTES de los de las vistas. El panel que se ve al lado es el admin
-  real servido desde `https://directivos-iwitown.web.app` (constante
-  `DEMO_PANEL` en `js/demo-directivos.js`); al terminar la partida la pagina le
-  manda `postMessage({tipo: "demo-jugada", uid})` para que se refresque.
-  **Orden al publicar** (las funciones y las reglas, desde `main`): 1) las
-  reglas de Firestore, que cierran `LandingDemoPartidas`; 2) las funciones
-  `landingDemoApi` y `landingDemoJugar`; 3) el sitio del panel demo (repo
-  admin); 4) la landing. Al reves, la vista sale con el juego caido y el
-  iframe en "Site Not Found", o las partidas quedan legibles antes de tiempo.
+- **`/demo-directivos` es privada: muestra el Configurador i'Witown.** Solo se
+  abre con el enlace que crea la asesora en founders (`/demo-directivos?e=<token>`).
+  Un `<script>` al inicio de `index.html` quita el token de la barra antes de
+  la medicion (siempre, valido o no) y lo deja en memoria; `js/configurador.js`
+  lleva a `https://directivos-iwitown.web.app` (constante `CONFIGURADOR`) como
+  pagina principal (no en iframe: dentro de otro sitio el navegador puede
+  negarle el almacenamiento), o muestra "Esta demo es privada" si no hay token. El configurador
+  vive en el repo `witown_configurador` y sus funciones (`configurador*`) en
+  `witown-cloud-functions`. El rewrite `/api/demo-jugar` queda por compatibilidad
+  (la funcion sigue existiendo), pero esta pagina ya no lo usa.
+  **Orden al publicar** (funciones y reglas desde `main`): 1) reglas de
+  Firestore; 2) funciones `configurador*` y `landingDemoJugar`; 3) el sitio
+  `directivos-iwitown` con el configurador y sus vistas previas; 4) founders
+  (para crear enlaces); 5) la landing. Al reves, la pagina abre un sitio que
+  todavia muestra la demo vieja.
 - **Los enlaces viejos con `#` siguen funcionando.** Si alguien mando por correo
   `.../#acp`, el router lo entiende y abre esa vista. El `#` se usa ahora solo
   para las secciones de adentro de una vista, como `/#presentacion`.
