@@ -1,0 +1,223 @@
+/* ┌──────────────────────────────────────────────────────────────────────┐
+   │ Feria I'witown — Portada (/feria). Solo la usa feria/portada.html.   │
+   │                                                                      │
+   │ Tres ideas mandan en el diseño:                                      │
+   │  · Minimalismo: fondo oscuro, una letra, un solo color de acento.    │
+   │  · Impacto: el título y la fecha ocupan la pantalla.                 │
+   │  · Interactividad: la luz sigue el cursor, la cuenta regresiva,      │
+   │    la cinta y las entradas que se abren al pasar o tocar.            │
+   │                                                                      │
+   │ Lo que se cambia está aquí:                                          │
+   │  · Colores ............. :root (los mismos de adultos.css y          │
+   │                          ninos.css: si cambia uno, cambian los tres) │
+   │  · Tamaño del título ... .fp-titulo                                  │
+   │  · Velocidad de cinta .. .fp-cinta-pista (animation)                 │
+   └──────────────────────────────────────────────────────────────────────┘ */
+
+/* La letra de los títulos se sirve desde el propio sitio (feria/fuentes/), no
+   desde Google Fonts: así no depende de otro dominio ni se cae en redes de
+   colegio que lo bloquean. Es Bricolage Grotesque (licencia OFL), solo latín. */
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("/feria/fuentes/bricolage-grotesque.woff2") format("woff2");
+  font-weight: 400 800;
+  font-stretch: 75% 100%;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --noche:      #1B0118;   /* fondo de la feria */
+  --morado-900: #36022F;
+  --morado-700: #520348;
+  --morado-600: #760467;
+  --morado-300: #D692CE;
+  --acento:     #FFC93A;   /* el único color de acento */
+  --crema:      #FFF7EA;
+  --crema-suave: rgba(255, 247, 234, .72);
+  --linea:      rgba(255, 247, 234, .16);
+  --titulos: "Bricolage Grotesque", "Arial Narrow", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --texto: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --borde: 16px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body { margin: 0; background: var(--noche); color: var(--crema); font-family: var(--texto); font-size: 17px; line-height: 1.55; overflow-x: hidden; }
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+[hidden] { display: none !important; }
+:focus-visible { outline: 3px solid var(--acento); outline-offset: 4px; border-radius: 6px; }
+
+/* ---------- Portada ---------- */
+.fp-hero {
+  position: relative; min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column;
+  padding: 18px var(--borde) 34px; overflow: hidden; isolation: isolate;
+}
+/* La luz: un resplandor que portada.js mueve con el cursor (--x, --y).
+   Sin cursor (celular) se queda arriba, quieta. */
+.fp-luz {
+  position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(520px circle at var(--x, 70%) var(--y, 18%), rgba(118, 4, 103, .85), transparent 70%),
+    radial-gradient(900px circle at 10% 100%, rgba(82, 3, 72, .7), transparent 70%);
+}
+.fp-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-family: var(--titulos); font-weight: 700; font-size: 15px; letter-spacing: .04em; }
+.fp-marca { font-size: 19px; letter-spacing: 0; }
+.fp-top-fecha { color: var(--acento); text-transform: uppercase; white-space: nowrap; }
+
+.fp-hero-centro { margin: auto 0; padding: 40px 0 10px; }
+.fp-titulo {
+  margin: 0; font-family: var(--titulos); font-weight: 800; font-stretch: 75%; text-transform: uppercase;
+  font-size: clamp(56px, 28vw, 230px); line-height: .84; letter-spacing: -.02em;
+}
+.fp-titulo span { display: block; }
+.fp-l2 { color: var(--acento); }
+.fp-lema { margin: 22px 0 0; max-width: 30ch; font-size: clamp(18px, 2.2vw, 24px); color: var(--crema-suave); }
+.fp-lema b { color: var(--crema); }
+
+/* Computador: el título va en una sola línea, de lado a lado, y debajo
+   quedan el lema a la izquierda y la cuenta regresiva a la derecha. */
+@media (min-width: 1000px) {
+  .fp-hero-centro { display: grid; grid-template-columns: 1fr auto; column-gap: 40px; align-items: end; padding-top: 20px; }
+  .fp-titulo { grid-column: 1 / -1; font-size: min(19.6vw, 400px); white-space: nowrap; margin-bottom: 34px; }
+  .fp-titulo span { display: inline; }
+  .fp-lema { grid-column: 1; grid-row: 2; margin: 0; }
+  .fp-hero .fp-cta { grid-column: 1; grid-row: 3; justify-self: start; }
+  .fp-cuenta { grid-column: 2; grid-row: 2 / 4; margin: 0; }
+  .fp-cuenta-fecha { text-align: right; }
+}
+
+/* ---------- Cuenta regresiva ---------- */
+.fp-cuenta { margin-top: 30px; }
+.fp-cuenta-fecha { margin: 0 0 12px; font-family: var(--titulos); font-weight: 700; font-size: clamp(20px, 3vw, 30px); }
+.fp-reloj { display: flex; gap: clamp(8px, 2vw, 18px); }
+.fp-cifra { min-width: clamp(68px, 12vw, 132px); padding: 12px 8px 10px; text-align: center; border: 1px solid var(--linea); border-radius: 16px; background: rgba(255, 247, 234, .04); }
+.fp-cifra b { display: block; font-family: var(--titulos); font-weight: 800; font-stretch: 75%; font-size: clamp(34px, 7vw, 76px); line-height: 1; font-variant-numeric: tabular-nums; }
+.fp-cifra span { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--crema-suave); }
+.fp-estado { margin: 0; font-family: var(--titulos); font-weight: 800; font-stretch: 75%; text-transform: uppercase; color: var(--acento); font-size: clamp(34px, 7vw, 76px); line-height: 1; }
+
+/* ---------- Botón ---------- */
+.fp-cta {
+  display: inline-flex; align-items: center; gap: 10px; margin-top: 30px; padding: 15px 26px; border-radius: 999px;
+  background: var(--acento); color: var(--noche); font-family: var(--titulos); font-weight: 800; font-size: 18px; text-decoration: none;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.fp-cta svg { width: 20px; height: 20px; }
+.fp-cta:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(255, 201, 58, .35); }
+
+/* ---------- Cinta ---------- */
+/* La caja recorta lo que sobra de la cinta al inclinarla: sin ella la página
+   quedaría con scroll horizontal. */
+.fp-cinta-caja { overflow: hidden; padding: 16px 0; margin: -16px 0; }
+.fp-cinta { background: var(--acento); color: var(--noche); overflow: hidden; transform: rotate(-1.2deg); margin: 0 -12px; }
+.fp-cinta-pista { display: flex; width: max-content; }
+.fp-cinta p { margin: 0; padding: 12px 0; white-space: nowrap; font-family: var(--titulos); font-weight: 800; font-stretch: 75%; text-transform: uppercase; font-size: clamp(20px, 3.4vw, 34px); }
+.fp-cinta i { font-style: normal; margin: 0 .55em; }
+
+/* ---------- Secciones ---------- */
+.fp-seccion { max-width: 1240px; margin: 0 auto; padding: clamp(64px, 10vw, 130px) var(--borde) 0; }
+.fp-sobre { margin: 0 0 6px; font-size: 13px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--acento); }
+.fp-h2 { margin: 0 0 clamp(24px, 4vw, 44px); font-family: var(--titulos); font-weight: 800; font-stretch: 75%; text-transform: uppercase; font-size: clamp(40px, 8vw, 104px); line-height: .92; letter-spacing: -.015em; }
+
+/* ---------- Las entradas ---------- */
+.fp-puertas { display: grid; gap: 14px; }
+.fp-puerta {
+  position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 250px; padding: 20px;
+  border-radius: 24px; overflow: hidden; text-decoration: none; color: var(--crema); background: var(--morado-900); isolation: isolate;
+  transition: flex-grow .5s cubic-bezier(.2, .8, .2, 1);
+}
+.fp-puerta img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; transition: transform .7s cubic-bezier(.2, .8, .2, 1), filter .5s ease; }
+.fp-puerta::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(27, 1, 24, .15) 0%, rgba(27, 1, 24, .92) 88%); transition: opacity .5s ease; }
+.fp-puerta-num { position: absolute; top: 18px; left: 20px; font-family: var(--titulos); font-weight: 800; font-size: 15px; letter-spacing: .1em; color: var(--acento); }
+.fp-puerta-nombre { display: block; font-family: var(--titulos); font-weight: 800; font-stretch: 75%; text-transform: uppercase; font-size: clamp(38px, 5.4vw, 68px); line-height: .92; }
+.fp-puerta-desc { display: block; margin-top: 8px; max-width: 26ch; color: var(--crema-suave); }
+.fp-puerta-flecha {
+  position: absolute; top: 14px; right: 14px; width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--acento); color: var(--noche); transition: transform .35s cubic-bezier(.2, .8, .2, 1.4);
+}
+.fp-puerta-flecha svg { width: 22px; height: 22px; }
+.fp-puerta:hover img, .fp-puerta:focus-visible img { transform: scale(1.06); }
+.fp-puerta:hover .fp-puerta-flecha, .fp-puerta:focus-visible .fp-puerta-flecha { transform: rotate(45deg) scale(1.1); }
+.fp-puerta:active { transform: scale(.985); }
+
+/* Computador con cursor: tres puertas en fila; la que se señala se abre y
+   las otras se apagan. En celular van una debajo de otra, siempre a color. */
+@media (min-width: 860px) {
+  .fp-puertas { display: flex; height: min(64vh, 560px); min-height: 420px; }
+  .fp-puerta { flex: 1 1 0; min-width: 0; min-height: 0; padding: 26px; }
+}
+@media (min-width: 860px) and (hover: hover) {
+  .fp-puerta img { filter: grayscale(.55) brightness(.72); }
+  .fp-puerta:hover, .fp-puerta:focus-visible { flex-grow: 2.1; }
+  .fp-puerta:hover img, .fp-puerta:focus-visible img { filter: none; }
+  .fp-puerta:hover::after, .fp-puerta:focus-visible::after { opacity: .75; }
+}
+
+/* ---------- Tres pasos ---------- */
+.fp-pasos { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; border-top: 1px solid var(--linea); }
+.fp-pasos li { position: relative; padding: 26px 0 26px 92px; border-bottom: 1px solid var(--linea); min-height: 116px; }
+.fp-paso-num { position: absolute; left: 0; top: 14px; font-family: var(--titulos); font-weight: 800; font-stretch: 75%; font-size: 88px; line-height: 1; color: transparent; -webkit-text-stroke: 2px var(--acento); transition: color .3s ease; }
+.fp-pasos li:hover .fp-paso-num { color: var(--acento); }
+.fp-pasos h3 { margin: 0 0 4px; font-family: var(--titulos); font-weight: 800; font-size: clamp(24px, 3vw, 32px); line-height: 1.1; }
+.fp-pasos p { margin: 0; color: var(--crema-suave); max-width: 34ch; }
+@media (min-width: 860px) {
+  .fp-pasos { grid-template-columns: repeat(3, 1fr); border-top: 0; gap: 14px; }
+  .fp-pasos li { padding: 150px 26px 30px; border: 1px solid var(--linea); border-radius: 24px; }
+  .fp-paso-num { left: 24px; top: 22px; font-size: 120px; }
+}
+
+/* ---------- Video ---------- */
+.fp-video { position: relative; aspect-ratio: 16 / 9; border-radius: 24px; overflow: hidden; background: #000; }
+.fp-video-btn { position: absolute; inset: 0; display: block; }
+.fp-video-btn img { width: 100%; height: 100%; object-fit: cover; opacity: .8; transition: opacity .3s ease, transform .7s cubic-bezier(.2, .8, .2, 1); }
+.fp-video-btn:hover img { opacity: 1; transform: scale(1.03); }
+.fp-play {
+  position: absolute; left: 50%; top: 50%; width: clamp(72px, 12vw, 120px); height: clamp(72px, 12vw, 120px); margin: calc(clamp(72px, 12vw, 120px) / -2) 0 0 calc(clamp(72px, 12vw, 120px) / -2);
+  border-radius: 50%; display: grid; place-items: center; background: var(--acento); color: var(--noche); transition: transform .3s cubic-bezier(.2, .8, .2, 1.4);
+}
+.fp-play svg { width: 44%; height: 44%; margin-left: 4%; }
+.fp-video-btn:hover .fp-play { transform: scale(1.12); }
+.fp-video-txt { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.fp-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+/* ---------- Cierre ---------- */
+.fp-cierre { padding: clamp(80px, 13vw, 170px) var(--borde) clamp(50px, 8vw, 90px); text-align: center; }
+.fp-cierre-titulo { margin: 0; font-family: var(--titulos); font-weight: 800; font-stretch: 75%; text-transform: uppercase; color: var(--acento); font-size: clamp(44px, 12.5vw, 190px); line-height: .88; letter-spacing: -.02em; }
+.fp-pie { padding: 22px var(--borde) 34px; text-align: center; font-size: 14px; color: var(--crema-suave); border-top: 1px solid var(--linea); }
+.fp-pie p { margin: 0; }
+
+/* ---------- Movimiento ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .fp-cinta-pista { animation: fp-cinta 26s linear infinite; }
+  .fp-cinta:hover .fp-cinta-pista { animation-play-state: paused; }
+  .fp-titulo span { animation: fp-sube .9s cubic-bezier(.2, .8, .2, 1) both; }
+  .fp-titulo .fp-l2 { animation-delay: .12s; }
+  /* "backwards" y no "both": al terminar, el botón recupera su transform y puede subir al pasar el cursor. */
+  .fp-lema, .fp-cuenta, .fp-hero .fp-cta { animation: fp-sube .9s cubic-bezier(.2, .8, .2, 1) backwards .3s; }
+  .js .fp-anim { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s cubic-bezier(.2, .8, .2, 1); }
+  .js .fp-anim.visible { opacity: 1; transform: none; }
+  /* Las entradas también aparecen al llegar, pero no pueden perder lo suyo:
+     abrirse (flex-grow) y hundirse al tocarlas. Por eso se repite aquí con más peso. */
+  .js .fp-puerta.fp-anim { transition: opacity .7s ease, transform .7s cubic-bezier(.2, .8, .2, 1), flex-grow .5s cubic-bezier(.2, .8, .2, 1); }
+  .js .fp-puerta.fp-anim.visible:active { transform: scale(.985); transition-duration: .15s; }
+  .fp-puertas .fp-anim:nth-child(2), .fp-pasos .fp-anim:nth-child(2) { transition-delay: .1s; }
+  .fp-puertas .fp-anim:nth-child(3), .fp-pasos .fp-anim:nth-child(3) { transition-delay: .2s; }
+}
+@keyframes fp-cinta { to { transform: translateX(-50%); } }
+@keyframes fp-sube { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .fp-puerta, .fp-puerta img, .fp-cta, .fp-play { transition: none; }
+}
+
+@media print {
+  /* En papel no hay fondo oscuro: los textos claros y amarillos pasan a tinta. */
+  :root { --crema: #1A1523; --crema-suave: #4A4458; --acento: #520348; --linea: #D9D3E0; }
+  body { background: #fff; color: #1A1523; }
+  .fp-luz, .fp-cinta-caja, .fp-video, .fp-cta, .fp-puerta img, .fp-puerta::after, .fp-puerta-flecha { display: none; }
+  .fp-puerta { background: none; border: 1px solid #D9D3E0; min-height: 0; padding-top: 44px; }
+  .fp-paso-num { -webkit-text-stroke: 0; color: #520348; }
+  .fp-hero { min-height: 0; }
+  .fp-anim { opacity: 1 !important; transform: none !important; }
+}

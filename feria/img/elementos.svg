@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+<!-- Elementos de feria, dibujados en línea. Los usan los instructivos con
+     <svg><use href="/feria/img/elementos.svg#rueda"/></svg>. Toman el color
+     del texto (currentColor): no llevan colores propios. -->
+<symbol id="rueda" viewBox="0 0 120 130" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="60" cy="56" r="44"/><circle cx="60" cy="56" r="7"/>
+  <path d="M60 12v88M16 56h88M29 25l62 62M91 25 29 87"/>
+  <path d="M60 60 38 124M60 60l22 64M26 124h68"/>
+  <rect x="53" y="4" width="14" height="12" rx="3" fill="currentColor"/><rect x="53" y="96" width="14" height="12" rx="3" fill="currentColor"/>
+  <rect x="8" y="50" width="14" height="12" rx="3" fill="currentColor"/><rect x="98" y="50" width="14" height="12" rx="3" fill="currentColor"/>
+  <rect x="22" y="19" width="14" height="12" rx="3" fill="currentColor"/><rect x="84" y="19" width="14" height="12" rx="3" fill="currentColor"/>
+  <rect x="22" y="81" width="14" height="12" rx="3" fill="currentColor"/><rect x="84" y="81" width="14" height="12" rx="3" fill="currentColor"/>
+</symbol>
+<symbol id="carpa" viewBox="0 0 120 110" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M60 22 10 52v8h100v-8Z"/><path d="M16 60v44h88V60"/>
+  <path d="M60 22v-16l14 5-14 5"/>
+  <path d="M60 22 38 60M60 22l22 38M60 22v38"/>
+  <path d="M48 104V80a12 12 0 0 1 24 0v24"/>
+  <path d="M10 60c6 8 14 8 20 0 6 8 14 8 20 0 6 8 14 8 20 0 6 8 14 8 20 0 6 8 14 8 20 0"/>
+</symbol>
+<symbol id="globo" viewBox="0 0 70 130" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M35 6c17 0 28 13 28 30 0 19-15 36-28 40C22 72 7 55 7 36 7 19 18 6 35 6Z"/>
+  <path d="m30 76-3 8h16l-3-8"/><path d="M35 84c-8 12 8 18 0 30-3 5-2 8 0 12"/>
+  <path d="M22 28c2-7 7-11 13-12"/>
+</symbol>
+<symbol id="boleta" viewBox="0 0 130 70" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M8 8h114v18a9 9 0 0 0 0 18v18H8V44a9 9 0 0 0 0-18Z"/>
+  <path d="M92 10v6M92 24v6M92 38v6M92 52v6"/>
+  <path d="m50 20 4.6 9.6 10.4 1.4-7.6 7.2 1.9 10.3L50 43.5l-9.3 5 1.9-10.3L35 31l10.4-1.4Z" fill="currentColor"/>
+</symbol>
+<symbol id="palomitas" viewBox="0 0 90 120" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m14 46 10 68h42l10-68Z"/><path d="m32 46 4 68M58 46l-4 68M45 46v68"/>
+  <path d="M14 46c-6-8 0-18 9-16 0-10 13-14 19-6 5-9 19-7 20 4 10-3 17 8 12 18"/>
+  <circle cx="36" cy="38" r="3" fill="currentColor"/><circle cx="56" cy="36" r="3" fill="currentColor"/>
+</symbol>
+<symbol id="dulce" viewBox="0 0 70 130" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="35" cy="36" r="29"/><path d="M35 36c0-6 9-6 9 1 0 10-17 11-18-2-1-15 22-19 27-3 5 18-19 30-33 18"/>
+  <path d="M35 65v60"/>
+</symbol>
+<symbol id="estrella" viewBox="0 0 60 60">
+  <path fill="currentColor" d="m30 3 7.9 17.3 18.9 2.2-14 12.9 3.8 18.6L30 44.8 13.4 54l3.8-18.6-14-12.9 18.9-2.2Z"/>
+</symbol>
+</svg>
