@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- ┌──────────────────────────────────────────────────────────────────────┐
+     │ Donar artículos para la Feria I'witown, con pago en línea (/feria/   │
+     │ donar). Cualquiera la abre, sin cuenta: arma paquetes de artículos   │
+     │ (desde 10 unidades de cada uno; los dulces por bolsa) y los paga con │
+     │ el Wompi de i'Witown. i'Witown compra los artículos al por mayor y   │
+     │ los lleva al colegio.                                                │
+     │                                                                      │
+     │ Lo que se cambia está aquí:                                          │
+     │  · Artículos y precios .. NO van aquí: en Firestore,                 │
+     │                           WitGeneral/FeriaDonarArticulos, lista      │
+     │                           `articulos` (los manda el servidor).       │
+     │  · Abrir / cerrar ....... el mismo documento (activo: true/false).   │
+     │  · Servidor ............. data-api del <body> (en localhost se usa   │
+     │                           el backend local, http://localhost:5001).  │
+     │                                                                      │
+     │ Reglas de esta página:                                               │
+     │  · Usa el diseño de los instructivos (adultos.css y fiesta.css) y    │
+     │    agrega lo suyo en donar.css.                                      │
+     │  · Fuera de buscadores, como los instructivos.                       │
+     │  · Sin JavaScript no se puede pagar: lo dice el <noscript>.          │
+     └──────────────────────────────────────────────────────────────────────┘ -->
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#1B0118">
+<title>Done artículos para la feria · Feria I'witown</title>
+<meta name="description" content="Arme un paquete de artículos para la Feria I'witown y páguelo en línea. i'Witown los compra al por mayor y los lleva a la feria.">
+<link rel="icon" href="/assets/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/assets/img/favicon-180.png" sizes="180x180">
+<link rel="preload" as="image" href="/feria/img/donacion.webp">
+<link rel="preload" as="font" type="font/woff2" href="/feria/fuentes/bricolage-grotesque.woff2" crossorigin>
+<link rel="stylesheet" href="/feria/adultos.css?v=5">
+<link rel="stylesheet" href="/feria/fiesta.css?v=1">
+<link rel="stylesheet" href="/feria/donar.css?v=1">
+</head>
+<body data-api="https://witown-be-405433677445.us-central1.run.app">
+
+<div class="fa-avance" aria-hidden="true"><span></span></div>
+
+<header class="fa-portada">
+  <img src="/feria/img/donacion.webp" width="1200" height="598" alt="Juguetes y dulces donados para la Feria I'witown">
+  <svg class="fx-deco fa-deco-rueda fx-gira" aria-hidden="true"><use href="/feria/img/elementos.svg#rueda"/></svg>
+  <div class="fa-top">
+    <a class="fa-volver" href="/feria"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg> Feria</a>
+    <span class="fa-top-botones">
+      <button type="button" class="fx-sonido" data-sonido aria-pressed="true" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9Z"/><path class="fx-ondas" d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/><path class="fx-raya" d="m17 9 5 6M22 9l-5 6"/></svg> <span data-sonido-txt>Sonido</span></button>
+    </span>
+  </div>
+  <div class="fa-portada-txt">
+    <p class="fa-eyebrow"><a href="/feria">Feria I'witown</a></p>
+    <h1><span class="fa-h1-sobre">Done artículos para</span> <span class="fa-h1-rol">la feria</span></h1>
+    <p class="lead" data-texto>Arme un paquete y páguelo en línea. i'Witown compra los artículos al por mayor y los lleva a la feria<span data-colegio></span>.</p>
+    <a class="fa-fecha dn-ir" href="/feria/donar#articulos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12v9H4v-9M2 7h20v5H2zM12 21V7M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7ZM12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7Z"/></svg> Armar mi paquete</a>
+  </div>
+</header>
+
+<div class="fa-cinta-caja" aria-hidden="true">
+<div class="fa-cinta">
+  <div class="fa-cinta-pista">
+    <p>Slime <i>★</i> Llaveros <i>★</i> Legos <i>★</i> Esferos <i>★</i> Dulces <i>★</i> Burbujeros <i>★</i> Accesorios <i>★</i> Carritos <i>★</i> Slime <i>★</i> Llaveros <i>★</i> Legos <i>★</i> Esferos <i>★</i> Dulces <i>★</i> Burbujeros <i>★</i> Accesorios <i>★</i> Carritos <i>★</i></p>
+    <p>Slime <i>★</i> Llaveros <i>★</i> Legos <i>★</i> Esferos <i>★</i> Dulces <i>★</i> Burbujeros <i>★</i> Accesorios <i>★</i> Carritos <i>★</i> Slime <i>★</i> Llaveros <i>★</i> Legos <i>★</i> Esferos <i>★</i> Dulces <i>★</i> Burbujeros <i>★</i> Accesorios <i>★</i> Carritos <i>★</i></p>
+  </div>
+</div>
+</div>
+
+<main class="fa-main">
+
+  <!-- Resultado del pago: aparece al volver de Wompi (?ref=...). Lo llena donar.js. -->
+  <section class="fa-seccion dn-resultado" id="resultado" aria-live="polite" hidden></section>
+
+  <section class="fa-seccion" id="basico" aria-labelledby="t-basico">
+    <div class="fa-seccion-cab">
+      <div>
+        <p class="fa-sobre fa-anim">Cómo donar</p>
+        <h2 class="fa-h2" id="t-basico" data-texto>Tres pasos y listo</h2>
+      </div>
+      <svg class="fx-deco fa-deco-titulo fx-flota" aria-hidden="true"><use href="/feria/img/elementos.svg#globo"/></svg>
+    </div>
+    <ol class="fa-tres">
+      <li class="fa-anim">
+        <span class="fa-tres-num" aria-hidden="true">1</span>
+        <h3>Elija</h3>
+        <p>Escoja los artículos y cuántos. Desde 10 unidades de cada uno; los dulces van por bolsa.</p>
+      </li>
+      <li class="fa-anim">
+        <span class="fa-tres-num" aria-hidden="true">2</span>
+        <h3>Pague en línea</h3>
+        <p>Con tarjeta, PSE, Nequi o Bancolombia, en la pasarela segura de Wompi. Le llega la factura a su correo.</p>
+      </li>
+      <li class="fa-anim">
+        <span class="fa-tres-num" aria-hidden="true">3</span>
+        <h3>Llega a la feria</h3>
+        <p>i'Witown compra los artículos al por mayor y los entrega al colegio para la feria.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section class="fa-seccion" id="articulos" aria-labelledby="t-articulos">
+    <div class="fa-seccion-cab">
+      <div>
+        <p class="fa-sobre fa-anim">Los artículos</p>
+        <h2 class="fa-h2" id="t-articulos" data-texto>Arme su paquete</h2>
+      </div>
+      <svg class="fx-deco fa-deco-titulo fx-flota fx-lento" aria-hidden="true"><use href="/feria/img/elementos.svg#dulce"/></svg>
+    </div>
+    <noscript><p class="fa-alerta">Para donar en línea necesita tener JavaScript activado en su navegador.</p></noscript>
+    <p class="dn-estado" data-estado>Cargando los artículos…</p>
+    <ul class="dn-grilla" data-grilla></ul>
+  </section>
+
+  <section class="fa-seccion" id="datos" aria-labelledby="t-datos" hidden data-seccion-datos>
+    <div class="fa-seccion-cab">
+      <div>
+        <p class="fa-sobre fa-anim">Sus datos</p>
+        <h2 class="fa-h2" id="t-datos" data-texto>Para la factura</h2>
+      </div>
+      <svg class="fx-deco fa-deco-titulo fx-flota" aria-hidden="true"><use href="/feria/img/elementos.svg#boleta"/></svg>
+    </div>
+
+    <form class="dn-form" data-form novalidate>
+      <div class="dn-resumen" data-resumen></div>
+
+      <label class="dn-campo dn-campo--ancho">
+        <span>¿A nombre de quién es la donación? <em>(opcional)</em></span>
+        <input name="a_nombre_de" maxlength="120" autocomplete="off" placeholder="Por ejemplo: Familia Pérez, de Juan en Tercero">
+        <small>Así la ve el colegio. Si lo deja vacío, va con su nombre y la inicial del apellido.</small>
+      </label>
+
+      <fieldset class="dn-grupo">
+        <legend>Datos de facturación</legend>
+        <label class="dn-campo">
+          <span>Tipo de documento</span>
+          <select name="tipo_documento" required>
+            <option value="CC">Cédula de ciudadanía</option>
+            <option value="CE">Cédula de extranjería</option>
+            <option value="PA">Pasaporte</option>
+            <option value="TI">Tarjeta de identidad</option>
+          </select>
+        </label>
+        <label class="dn-campo"><span>Número de documento</span><input name="num_documento" required maxlength="20" inputmode="numeric" autocomplete="off"></label>
+        <label class="dn-campo"><span>Nombres</span><input name="nombres" required maxlength="80" autocomplete="given-name"></label>
+        <label class="dn-campo"><span>Apellidos</span><input name="apellidos" required maxlength="80" autocomplete="family-name"></label>
+        <label class="dn-campo"><span>Correo (aquí llega la factura)</span><input name="email" type="email" required maxlength="120" autocomplete="email"></label>
+        <label class="dn-campo"><span>Celular <em>(opcional)</em></span><input name="telefono" type="tel" maxlength="20" autocomplete="tel"></label>
+        <label class="dn-campo dn-campo--ancho"><span>Dirección</span><input name="direccion" required maxlength="160" autocomplete="street-address"></label>
+        <label class="dn-campo"><span>Ciudad</span><input name="ciudad" required maxlength="80" autocomplete="address-level2"></label>
+        <label class="dn-campo"><span>Departamento</span><input name="departamento" required maxlength="80" autocomplete="address-level1"></label>
+      </fieldset>
+
+      <!-- Trampa anti-spam: una persona no la ve ni la llena. -->
+      <label class="dn-trampa" aria-hidden="true">Sitio web <input name="sitio_web" tabindex="-1" autocomplete="off"></label>
+
+      <label class="dn-check"><input type="checkbox" name="acepta_aviso" required> <span data-aviso>Es una donación: el dinero no se devuelve.</span></label>
+      <label class="dn-check"><input type="checkbox" name="acepta_datos" required> <span>Autorizo el tratamiento de mis datos para facturar esta donación, según la <a href="https://politicas.iwitown.com/" target="_blank" rel="noopener">política de datos</a>.</span></label>
+
+      <p class="dn-error" data-error role="alert" hidden></p>
+      <button type="submit" class="dn-pagar" data-pagar>Pagar con Wompi</button>
+      <p class="dn-seguro">Será llevado a la pasarela segura de Wompi para pagar.</p>
+    </form>
+  </section>
+
+</main>
+
+<!-- La barra con el total: aparece al elegir el primer artículo. -->
+<div class="dn-barra" data-barra hidden>
+  <p><span data-barra-cant></span><b data-barra-total></b></p>
+  <a class="dn-barra-btn" href="/feria/donar#datos" data-barra-btn>Continuar</a>
+</div>
+
+<footer class="fa-pie">
+  <p><a href="/feria">Feria I'witown</a> · Si tiene dudas, pregunte en el colegio.</p>
+</footer>
+
+<script src="/feria/fiesta.js?v=1"></script>
+<script src="/feria/adultos.js?v=5"></script>
+<script src="/feria/donar.js?v=1"></script>
+</body>
+</html>
