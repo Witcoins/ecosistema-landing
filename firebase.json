@@ -12,6 +12,14 @@
       "herramientas/**",
       "assets/**/*.txt"
     ],
+    "redirects": [
+      {
+        "//": "La pagina de donar articulos paso a ser la de kits de pre-venta (2026-11-25): el link viejo lleva a la nueva.",
+        "source": "/feria/donar{,/**}",
+        "destination": "/feria/kits",
+        "type": 302
+      }
+    ],
     "rewrites": [
       {
         "source": "/api/contacto",
@@ -61,6 +69,12 @@
       { "source": "/feria/docentes-urmagt/", "destination": "/feria/docentes-urmagt.html" },
       { "source": "/feria/administrativos-874q6n/", "destination": "/feria/administrativos-874q6n.html" },
       {
+        "//": "Kits de pre-venta para la feria con pago en linea (feria/kits.html). Wompi vuelve a /feria/kits?ref=... Va antes de la regla /feria/** para no caer en volver.html.",
+        "source": "/feria/kits",
+        "destination": "/feria/kits.html"
+      },
+      { "source": "/feria/kits/", "destination": "/feria/kits.html" },
+      {
         "//": "/feria es la portada de la feria (feria/portada.html). No se llama index.html a proposito: asi Hosting no redirige /feria a /feria/.",
         "source": "/feria",
         "destination": "/feria/portada.html"
@@ -104,6 +118,23 @@
       },
       {
         "source": "/feria/@(estudiantes|familias|docentes|administrativos)-*/",
+        "headers": [
+          { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" },
+          { "key": "Referrer-Policy", "value": "no-referrer" },
+          { "key": "Cache-Control", "value": "no-cache, must-revalidate" }
+        ]
+      },
+      {
+        "//": "Kits de pre-venta (/feria/kits): fuera de buscadores y sin guardarse, como los instructivos. Dos reglas (con y sin barra final).",
+        "source": "/feria/kits",
+        "headers": [
+          { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" },
+          { "key": "Referrer-Policy", "value": "no-referrer" },
+          { "key": "Cache-Control", "value": "no-cache, must-revalidate" }
+        ]
+      },
+      {
+        "source": "/feria/kits/",
         "headers": [
           { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" },
           { "key": "Referrer-Policy", "value": "no-referrer" },

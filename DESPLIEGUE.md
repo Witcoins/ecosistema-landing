@@ -281,12 +281,20 @@ La feria **no es una vista** de `index.html`: son páginas sueltas en la carpeta
 | `/feria/familias-uvuhma` | `feria/familias-uvuhma.html` | Desde la portada o con su link. |
 | `/feria/docentes-urmagt` | `feria/docentes-urmagt.html` | Desde la portada o con su link. |
 | `/feria/administrativos-874q6n` | `feria/administrativos-874q6n.html` | **Solo con su link**: la portada no lo enlaza. |
+| `/feria/kits` | `feria/kits.html` | Desde la portada (sección «Kits para la feria») y el instructivo de familias. Fuera de buscadores. `/feria/donar` redirige aquí. |
 
 Lo que hay que saber para no romperla:
 
 - **Los cuatro links con código ya se compartieron en anuncios: no se cambian**
   ni se renombran sus archivos. Están uno por uno en los `rewrites` de
   `firebase.json`.
+- **Kits de pre-venta (`/feria/kits`) cobra con el Wompi de i'Witown a través de
+  witown_be** (`/feria/kits`). Los kits, sus precios, los witkis (tienda de
+  witkis de Witutor) y si está abierta los decide el servidor
+  (`feria_kits_service` y `WitGeneral/FeriaKits` en Firestore: `activo`,
+  `colegio_uid`, `kits` y `refrigerio_cop`), no esta página. El backend tiene
+  `https://www.ecosistema.iwitown.com` en `CORS_ORIGINS` (Cloud Run): si se
+  quita, la página no carga los kits. Wompi vuelve a `/feria/kits?ref=...`.
 - **La portada se llama `portada.html`, no `index.html`**, a propósito: con un
   `index.html` Hosting redirige `/feria` a `/feria/`.
 - **Un link de la feria mal escrito** cae en `feria/volver.html`, que lleva a

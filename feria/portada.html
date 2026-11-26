@@ -10,6 +10,7 @@
      │  · Fecha y hora ........ data-inicio / data-fin de #cuenta (abajo)   │
      │                          y los textos "30 de noviembre · 4:00 p. m." │
      │  · Las entradas ........ la sección #entradas (una <a> por rol)      │
+     │  · Kits de pre-venta ... la sección #kits (va a /feria/kits)         │
      │  · El video ............ data-video de .fp-video-btn                 │
      │                                                                      │
      │ Reglas de esta página:                                               │
@@ -121,6 +122,21 @@
         <span class="fp-puerta-flecha" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
       </a>
     </div>
+  </section>
+
+  <!-- Kits de pre-venta con pago en línea (feria/kits.html). No es un rol: va
+       aparte de las entradas, en una sola puerta ancha. -->
+  <section class="fp-seccion" id="kits" aria-labelledby="t-kits">
+    <p class="fp-sobre fp-anim">Pre-venta</p>
+    <h2 class="fp-h2 fp-anim" id="t-kits">Kits para la feria</h2>
+    <a class="fp-puerta fp-anim" href="/feria/kits">
+      <img src="/feria/img/compras.webp" width="1200" height="598" loading="lazy" alt="">
+      <span class="fp-puerta-txt">
+        <span class="fp-puerta-nombre">Comprar un kit</span>
+        <span class="fp-puerta-desc">Escarapela con witkis y refrigerio para un invitado, su hijo de preescolar o si a su hijo le faltan witkis.</span>
+      </span>
+      <span class="fp-puerta-flecha" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+    </a>
   </section>
 
   <section class="fp-seccion" id="asi-funciona" aria-labelledby="t-funciona">
