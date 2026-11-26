@@ -1,11 +1,11 @@
 /* ┌──────────────────────────────────────────────────────────────────────┐
-   │ Feria I'witown — Donar artículos (/feria/donar). Va DESPUÉS de       │
+   │ Feria I'witown — Kits de pre-venta (/feria/kits). Va DESPUÉS de      │
    │ adultos.css y fiesta.css: usa sus colores (:root) y su letra, y aquí │
    │ solo está lo propio de esta página.                                  │
    │                                                                      │
    │ Lo que se cambia está aquí:                                          │
-   │  · Tarjetas de artículos ... .dn-grilla / .dn-art                    │
-   │  · Botones de cantidad ..... .dn-cant                                │
+   │  · Tarjetas de kits ........ .dn-grilla / .dn-art                    │
+   │  · Una escarapela por kit .. .dn-lineas / .dn-linea                  │
    │  · Barra del total ......... .dn-barra (fija abajo)                  │
    │  · Formulario .............. .dn-form / .dn-campo                    │
    │  · Resultado del pago ...... .dn-resultado                           │
@@ -67,6 +67,38 @@
 }
 .dn-cant input::-webkit-outer-spin-button, .dn-cant input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .dn-cant input:focus { outline: 3px solid var(--acento); outline-offset: 1px; }
+
+/* La escarapela del QR: número grande y estado. */
+.dn-escarapela { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; margin: 0 0 24px; padding: 18px 22px; border-radius: 22px; border: 1.5px solid var(--acento); background: rgba(255, 201, 58, .07); }
+.dn-escarapela .num { font-family: var(--titulos); font-weight: 800; font-stretch: 75%; font-size: clamp(40px, 7vw, 64px); line-height: 1; color: var(--acento); letter-spacing: .02em; }
+.dn-escarapela p { margin: 0; color: var(--crema-suave); max-width: 52ch; }
+.dn-escarapela b { color: var(--crema); }
+.dn-art--info .dn-agregar { display: none; }
+.dn-buscar { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px 12px; width: 100%; }
+.dn-buscar .dn-campo { flex: 1 1 220px; }
+.dn-buscar .dn-agregar { margin-top: 0; }
+.dn-buscar .dn-error { flex-basis: 100%; margin: 0; }
+
+/* El refrigerio y de dónde salen los witkis, debajo de los kits. */
+.dn-nota { margin: 18px 0 0; color: var(--crema-suave); font-size: 15px; max-width: 70ch; }
+.dn-ayuda { margin: -10px 0 18px; color: var(--crema-suave); }
+
+/* ---------- Una escarapela por kit ---------- */
+.dn-lineas { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; max-width: 820px; counter-reset: linea; }
+.dn-linea {
+  counter-increment: linea; display: grid; gap: 12px 16px; grid-template-columns: 1fr; padding: 18px 20px 20px;
+  border: 1px solid var(--acento); border-radius: 22px; background: rgba(255, 201, 58, .05);
+}
+@media (min-width: 640px) { .dn-linea { grid-template-columns: 1.4fr 1fr; } }
+.dn-linea-cab { grid-column: 1 / -1; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.dn-linea-cab::before { content: "Escarapela " counter(linea); font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--acento); width: 100%; }
+.dn-linea-cab b { font-family: var(--titulos); font-weight: 800; font-size: 26px; }
+.dn-linea-cab span { color: var(--crema-suave); }
+.dn-quitar { margin-left: auto; appearance: none; border: 0; background: none; color: var(--crema-suave); text-decoration: underline; cursor: pointer; font-weight: 700; }
+.dn-quitar:hover { color: var(--acento); }
+.dn-linea select[aria-invalid="true"], .dn-campo select[aria-invalid="true"] { border-color: #ff8a7a; }
+.dn-error-lineas { max-width: 820px; }
+.dn-cuenta { color: var(--acento); }
 
 /* ---------- Barra del total (fija abajo) ---------- */
 .dn-barra {
@@ -143,10 +175,19 @@ body.con-barra .fa-pie { padding-bottom: 110px; }
 .dn-girando { display: inline-block; width: 22px; height: 22px; border: 3px solid var(--linea); border-top-color: var(--acento); border-radius: 50%; animation: dn-gira 1s linear infinite; vertical-align: middle; margin-right: 8px; }
 @keyframes dn-gira { to { transform: rotate(360deg); } }
 
+/* QR de cada escarapela al terminar la compra (para imprimir o reclamar). */
+.dn-qrs { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); margin: 18px 0; }
+.dn-qr { background: #fff; color: #1B0118; border-radius: 18px; padding: 16px; text-align: center; break-inside: avoid; }
+.dn-qr img { width: 100%; max-width: 200px; margin: 0 auto; }
+.dn-qr p { margin: 6px 0 0; color: #1B0118; }
+.dn-qr .dn-qr-num { font-family: var(--titulos); font-weight: 800; font-size: 26px; letter-spacing: .04em; }
+
 @media (prefers-reduced-motion: reduce) {
   .dn-barra { animation: none; }
   .dn-girando { animation-duration: 3s; }
 }
 @media print {
   .dn-barra, .dn-agregar, .dn-cant button { display: none !important; }
+  /* Con la compra hecha, se imprimen solo las escarapelas. */
+  body.con-qrs > *:not(main), body.con-qrs main > section:not(#resultado), body.con-qrs .dn-otra { display: none !important; }
 }

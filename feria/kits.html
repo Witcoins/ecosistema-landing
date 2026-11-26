@@ -4,45 +4,43 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- ┌──────────────────────────────────────────────────────────────────────┐
-     │ Donar artículos para la Feria I'witown, con pago en línea (/feria/   │
-     │ donar). Cualquiera la abre, sin cuenta: arma paquetes de artículos   │
-     │ (desde 10 unidades de cada uno; los dulces por bolsa) y los paga con │
-     │ el Wompi de i'Witown. i'Witown compra los artículos al por mayor y   │
-     │ los lleva al colegio.                                                │
+     │ Kits de pre-venta para la Feria I'witown (/feria/kits; /feria/donar  │
+     │ redirige aquí). Es el link que se comparte por WhatsApp: el papá     │
+     │ elige uno o varios kits (escarapela con witkis + bono de refrigerio),│
+     │ escribe para quién es cada uno y paga con el Wompi de i'Witown. Al   │
+     │ aprobarse, la página muestra el QR y el número de cada escarapela:   │
+     │ la imprime o la reclama impresa en la entrada de la feria.           │
      │                                                                      │
      │ Lo que se cambia está aquí:                                          │
-     │  · Artículos y precios .. NO van aquí: en Firestore,                 │
-     │                           WitGeneral/FeriaDonarArticulos, lista      │
-     │                           `articulos` (los manda el servidor).       │
-     │  · Abrir / cerrar ....... el mismo documento (activo: true/false).   │
-     │  · Servidor ............. data-api del <body> (en localhost se usa   │
-     │                           el backend local, http://localhost:5001).  │
+     │  · Kits, precios y witkis .. NO van aquí: Firestore,                 │
+     │                              WitGeneral/FeriaKits (los manda el      │
+     │                              servidor; witkis = tienda de witutor).  │
+     │  · Abrir / cerrar .......... el mismo documento (activo).            │
+     │  · Servidor ................ data-api del <body> (en localhost se    │
+     │                              usa el backend local :5001).            │
      │                                                                      │
-     │ Reglas de esta página:                                               │
-     │  · Usa el diseño de los instructivos (adultos.css y fiesta.css) y    │
-     │    agrega lo suyo en donar.css.                                      │
-     │  · Fuera de buscadores, como los instructivos.                       │
-     │  · Sin JavaScript no se puede pagar: lo dice el <noscript>.          │
+     │ Reglas: diseño de los instructivos (adultos.css y fiesta.css) +      │
+     │ kits.css. Fuera de buscadores. Sin JavaScript no se puede pagar.     │
      └──────────────────────────────────────────────────────────────────────┘ -->
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#1B0118">
-<title>Done artículos para la feria · Feria I'witown</title>
-<meta name="description" content="Arme un paquete de artículos para la Feria I'witown y páguelo en línea. i'Witown los compra al por mayor y los lleva a la feria.">
+<title>Kits de pre-venta · Feria I'witown</title>
+<meta name="description" content="Compre en línea un kit para la Feria I'witown: escarapela con witkis y refrigerio, para un invitado, un hijo de preescolar o un hijo al que le faltan witkis.">
 <link rel="icon" href="/assets/img/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/assets/img/favicon-180.png" sizes="180x180">
-<link rel="preload" as="image" href="/feria/img/donacion.webp">
+<link rel="preload" as="image" href="/feria/img/qr-billetera.webp">
 <link rel="preload" as="font" type="font/woff2" href="/feria/fuentes/bricolage-grotesque.woff2" crossorigin>
 <link rel="stylesheet" href="/feria/adultos.css?v=5">
 <link rel="stylesheet" href="/feria/fiesta.css?v=1">
-<link rel="stylesheet" href="/feria/donar.css?v=1">
+<link rel="stylesheet" href="/feria/kits.css?v=1">
 </head>
 <body data-api="https://witown-be-405433677445.us-central1.run.app">
 
 <div class="fa-avance" aria-hidden="true"><span></span></div>
 
 <header class="fa-portada">
-  <img src="/feria/img/donacion.webp" width="1200" height="598" alt="Juguetes y dulces donados para la Feria I'witown">
+  <img src="/feria/img/qr-billetera.webp" width="1200" height="598" alt="Escarapela con código QR de la Feria I'witown">
   <svg class="fx-deco fa-deco-rueda fx-gira" aria-hidden="true"><use href="/feria/img/elementos.svg#rueda"/></svg>
   <div class="fa-top">
     <a class="fa-volver" href="/feria"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg> Feria</a>
@@ -51,31 +49,31 @@
     </span>
   </div>
   <div class="fa-portada-txt">
-    <p class="fa-eyebrow"><a href="/feria">Feria I'witown</a></p>
-    <h1><span class="fa-h1-sobre">Done artículos para</span> <span class="fa-h1-rol">la feria</span></h1>
-    <p class="lead" data-texto>Arme un paquete y páguelo en línea. i'Witown compra los artículos al por mayor y los lleva a la feria<span data-colegio></span>.</p>
-    <a class="fa-fecha dn-ir" href="/feria/donar#articulos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12v9H4v-9M2 7h20v5H2zM12 21V7M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7ZM12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7Z"/></svg> Armar mi paquete</a>
+    <p class="fa-eyebrow"><a href="/feria">Feria I'witown</a> · Pre-venta</p>
+    <h1><span class="fa-h1-sobre">Kits de pre-venta para</span> <span class="fa-h1-rol">la feria</span></h1>
+    <p class="lead">¿Va un invitado sin usuario, su hijo de preescolar, o a su hijo no le alcanzan los witkis? Cómprele un kit: escarapela con witkis para la feria y un bono de refrigerio<span data-colegio></span>.</p>
+    <a class="fa-fecha dn-ir" href="/feria/kits#kits" data-ir><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12v9H4v-9M2 7h20v5H2zM12 21V7M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7ZM12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7Z"/></svg> Ver los kits</a>
   </div>
 </header>
 
 <div class="fa-cinta-caja" aria-hidden="true">
 <div class="fa-cinta">
   <div class="fa-cinta-pista">
-    <p>Slime <i>★</i> Llaveros <i>★</i> Legos <i>★</i> Esferos <i>★</i> Dulces <i>★</i> Burbujeros <i>★</i> Accesorios <i>★</i> Carritos <i>★</i> Slime <i>★</i> Llaveros <i>★</i> Legos <i>★</i> Esferos <i>★</i> Dulces <i>★</i> Burbujeros <i>★</i> Accesorios <i>★</i> Carritos <i>★</i></p>
-    <p>Slime <i>★</i> Llaveros <i>★</i> Legos <i>★</i> Esferos <i>★</i> Dulces <i>★</i> Burbujeros <i>★</i> Accesorios <i>★</i> Carritos <i>★</i> Slime <i>★</i> Llaveros <i>★</i> Legos <i>★</i> Esferos <i>★</i> Dulces <i>★</i> Burbujeros <i>★</i> Accesorios <i>★</i> Carritos <i>★</i></p>
+    <p>Pre-venta <i>★</i> Escarapela <i>★</i> Witkis <i>★</i> Refrigerio <i>★</i> Invitados <i>★</i> Preescolar <i>★</i> Pre-venta <i>★</i> Escarapela <i>★</i> Witkis <i>★</i> Refrigerio <i>★</i> Invitados <i>★</i> Preescolar <i>★</i></p>
+    <p>Pre-venta <i>★</i> Escarapela <i>★</i> Witkis <i>★</i> Refrigerio <i>★</i> Invitados <i>★</i> Preescolar <i>★</i> Pre-venta <i>★</i> Escarapela <i>★</i> Witkis <i>★</i> Refrigerio <i>★</i> Invitados <i>★</i> Preescolar <i>★</i></p>
   </div>
 </div>
 </div>
 
 <main class="fa-main">
 
-  <!-- Resultado del pago: aparece al volver de Wompi (?ref=...). Lo llena donar.js. -->
+  <!-- Resultado del pago: aparece al volver de Wompi (?ref=...). Lo llena kits.js. -->
   <section class="fa-seccion dn-resultado" id="resultado" aria-live="polite" hidden></section>
 
   <section class="fa-seccion" id="basico" aria-labelledby="t-basico">
     <div class="fa-seccion-cab">
       <div>
-        <p class="fa-sobre fa-anim">Cómo donar</p>
+        <p class="fa-sobre fa-anim">Cómo funciona</p>
         <h2 class="fa-h2" id="t-basico" data-texto>Tres pasos y listo</h2>
       </div>
       <svg class="fx-deco fa-deco-titulo fx-flota" aria-hidden="true"><use href="/feria/img/elementos.svg#globo"/></svg>
@@ -83,34 +81,47 @@
     <ol class="fa-tres">
       <li class="fa-anim">
         <span class="fa-tres-num" aria-hidden="true">1</span>
-        <h3>Elija</h3>
-        <p>Escoja los artículos y cuántos. Desde 10 unidades de cada uno; los dulces van por bolsa.</p>
+        <h3>Elija el kit</h3>
+        <p>Uno o varios. Escriba el nombre de quien usará cada escarapela y para quién es.</p>
       </li>
       <li class="fa-anim">
         <span class="fa-tres-num" aria-hidden="true">2</span>
         <h3>Pague en línea</h3>
-        <p>Con tarjeta, PSE, Nequi o Bancolombia, en la pasarela segura de Wompi. Le llega la factura a su correo.</p>
+        <p>Con tarjeta, PSE, Nequi o Bancolombia, en la pasarela segura de Wompi. Le llega la factura al correo.</p>
       </li>
       <li class="fa-anim">
         <span class="fa-tres-num" aria-hidden="true">3</span>
-        <h3>Llega a la feria</h3>
-        <p>i'Witown compra los artículos al por mayor y los entrega al colegio para la feria.</p>
+        <h3>Reciba su QR</h3>
+        <p>Al pagar le mostramos el QR de cada escarapela, ya con sus witkis: imprímalo o reclámelo impreso en la entrada de la feria, con su bono de refrigerio.</p>
       </li>
     </ol>
   </section>
 
-  <section class="fa-seccion" id="articulos" aria-labelledby="t-articulos">
+  <section class="fa-seccion" id="kits" aria-labelledby="t-kits">
     <div class="fa-seccion-cab">
       <div>
-        <p class="fa-sobre fa-anim">Los artículos</p>
-        <h2 class="fa-h2" id="t-articulos" data-texto>Arme su paquete</h2>
+        <p class="fa-sobre fa-anim">Los kits</p>
+        <h2 class="fa-h2" id="t-kits" data-texto>Elija su kit</h2>
       </div>
-      <svg class="fx-deco fa-deco-titulo fx-flota fx-lento" aria-hidden="true"><use href="/feria/img/elementos.svg#dulce"/></svg>
+      <svg class="fx-deco fa-deco-titulo fx-flota fx-lento" aria-hidden="true"><use href="/feria/img/elementos.svg#boleta"/></svg>
     </div>
-    <noscript><p class="fa-alerta">Para donar en línea necesita tener JavaScript activado en su navegador.</p></noscript>
-    <p class="dn-estado" data-estado>Cargando los artículos…</p>
+    <noscript><p class="fa-alerta">Para comprar en línea necesita tener JavaScript activado en su navegador.</p></noscript>
+    <p class="dn-estado" data-estado>Cargando los kits…</p>
     <ul class="dn-grilla" data-grilla></ul>
+    <p class="dn-nota" data-nota hidden></p>
   </section>
+
+  <section class="fa-seccion" id="escarapelas" aria-labelledby="t-escarapelas" hidden data-seccion-lineas>
+    <div class="fa-seccion-cab">
+      <div>
+        <p class="fa-sobre fa-anim">Sus escarapelas</p>
+        <h2 class="fa-h2" id="t-escarapelas">¿Para quién?</h2>
+      </div>
+    </div>
+    <p class="dn-ayuda">Una escarapela por kit. El nombre va en la escarapela.</p>
+    <ol class="dn-lineas" data-lineas></ol>
+  </section>
+
 
   <section class="fa-seccion" id="datos" aria-labelledby="t-datos" hidden data-seccion-datos>
     <div class="fa-seccion-cab">
@@ -118,17 +129,11 @@
         <p class="fa-sobre fa-anim">Sus datos</p>
         <h2 class="fa-h2" id="t-datos" data-texto>Para la factura</h2>
       </div>
-      <svg class="fx-deco fa-deco-titulo fx-flota" aria-hidden="true"><use href="/feria/img/elementos.svg#boleta"/></svg>
+      <svg class="fx-deco fa-deco-titulo fx-flota" aria-hidden="true"><use href="/feria/img/elementos.svg#palomitas"/></svg>
     </div>
 
     <form class="dn-form" data-form novalidate>
       <div class="dn-resumen" data-resumen></div>
-
-      <label class="dn-campo dn-campo--ancho">
-        <span>¿A nombre de quién es la donación? <em>(opcional)</em></span>
-        <input name="a_nombre_de" maxlength="120" autocomplete="off" placeholder="Por ejemplo: Familia Pérez, de Juan en Tercero">
-        <small>Así la ve el colegio. Si lo deja vacío, va con su nombre y la inicial del apellido.</small>
-      </label>
 
       <fieldset class="dn-grupo">
         <legend>Datos de facturación</legend>
@@ -154,8 +159,8 @@
       <!-- Trampa anti-spam: una persona no la ve ni la llena. -->
       <label class="dn-trampa" aria-hidden="true">Sitio web <input name="sitio_web" tabindex="-1" autocomplete="off"></label>
 
-      <label class="dn-check"><input type="checkbox" name="acepta_aviso" required> <span data-aviso>Es una donación: el dinero no se devuelve.</span></label>
-      <label class="dn-check"><input type="checkbox" name="acepta_datos" required> <span>Autorizo el tratamiento de mis datos para facturar esta donación, según la <a href="https://politicas.iwitown.com/" target="_blank" rel="noopener">política de datos</a>.</span></label>
+      <label class="dn-check"><input type="checkbox" name="acepta_aviso" required> <span data-aviso>Es una compra de pre-venta: el dinero no se devuelve.</span></label>
+      <label class="dn-check"><input type="checkbox" name="acepta_datos" required> <span>Autorizo el tratamiento de mis datos para facturar esta compra, según la <a href="https://politicas.iwitown.com/" target="_blank" rel="noopener">política de datos</a>.</span></label>
 
       <p class="dn-error" data-error role="alert" hidden></p>
       <button type="submit" class="dn-pagar" data-pagar>Pagar con Wompi</button>
@@ -165,10 +170,10 @@
 
 </main>
 
-<!-- La barra con el total: aparece al elegir el primer artículo. -->
+<!-- La barra con el total: aparece al elegir el primer kit. -->
 <div class="dn-barra" data-barra hidden>
   <p><span data-barra-cant></span><b data-barra-total></b></p>
-  <a class="dn-barra-btn" href="/feria/donar#datos" data-barra-btn>Continuar</a>
+  <a class="dn-barra-btn" href="/feria/kits#escarapelas" data-barra-btn>Continuar</a>
 </div>
 
 <footer class="fa-pie">
@@ -177,6 +182,6 @@
 
 <script src="/feria/fiesta.js?v=1"></script>
 <script src="/feria/adultos.js?v=5"></script>
-<script src="/feria/donar.js?v=1"></script>
+<script src="/feria/kits.js?v=1"></script>
 </body>
 </html>
