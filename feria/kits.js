@@ -80,9 +80,9 @@
       if (nombre) $("[data-colegio]").textContent = " para la feria de " + nombre;
       var nota = $("[data-nota]");
       if (r.datos.refrigerio_cop) {
-        nota.textContent = "Cada kit incluye de regalo un bono de refrigerio de " + pesos(r.datos.refrigerio_cop) +
-          " (bebida y snack que se eligen en la cafetería). Todo el valor del kit se vuelve witkis (1 peso = 3 witkis), " +
-          "y sirven en los puestos y compras de la feria. Los juegos de los docentes (Trivis y Stop) y las fotos se pagan con la escarapela del estudiante.";
+        nota.textContent = "Cada kit incluye un bono de refrigerio (bebida y snack que se eligen en la cafetería). " +
+          "Los witkis " +
+          "sirven en los puestos y compras de la feria. Los juegos de los docentes (Trivis y Stop) y las fotos se pagan con la escarapela del estudiante.";
         nota.hidden = false;
       }
       estado.textContent = "";
