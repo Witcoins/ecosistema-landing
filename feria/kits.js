@@ -4,7 +4,7 @@
    │                                                                      │
    │  1. Pide al servidor los kits (precio y witkis) y si está abierto.   │
    │  2. "Agregar" suma una escarapela; cada una pide el nombre de quien  │
-   │     la usa y para quién es (invitado, preescolar o estudiante).      │
+   │     la usa y para quién es (invitado o estudiante).                  │
    │  3. La barra de abajo muestra el total; "Continuar" baja a los datos.│
    │  4. Pagar: el servidor firma el pago y se va a la pasarela de Wompi. │
    │  5. Al volver (?ref=… o lo guardado) confirma el pago y muestra el   │
@@ -80,8 +80,8 @@
       if (nombre) $("[data-colegio]").textContent = " para la feria de " + nombre;
       var nota = $("[data-nota]");
       if (r.datos.refrigerio_cop) {
-        nota.textContent = "Cada kit incluye un bono de refrigerio de " + pesos(r.datos.refrigerio_cop) +
-          " (bebida y snack que se eligen en la cafetería). Los witkis salen del resto del valor, con la tienda de witkis de Witutor, " +
+        nota.textContent = "Cada kit incluye de regalo un bono de refrigerio de " + pesos(r.datos.refrigerio_cop) +
+          " (bebida y snack que se eligen en la cafetería). Todo el valor del kit se vuelve witkis (1 peso = 3 witkis), " +
           "y sirven en los puestos y compras de la feria. Los juegos de los docentes (Trivis y Stop) y las fotos se pagan con la escarapela del estudiante.";
         nota.hidden = false;
       }
